@@ -8,6 +8,6 @@ This is a fork from the original author BigScary. https://github.com/BigScary/Gr
 
 ### Versions
 
-There are now 2 seperate versions. One for Legacy 1.12.2 and one for the next 1.13 update. Becaues so many changes in the Spigot/Bukkit API in 1.13, I have decided to keep these two versions sperate.  
+There are now 2 seperate versions. One for Legacy 1.12.2 and one for the new 1.13 update. Because of so many changes in the Spigot/Bukkit API in 1.13, I have decided to keep these two versions seperate.  
 You can find both versions in the releases tab.  
-Make sure to download the currect version, for your verison of Spigot!
+Make sure to download the currect version, for your version of Spigot!
