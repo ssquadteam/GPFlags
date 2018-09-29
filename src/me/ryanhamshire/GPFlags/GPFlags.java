@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
+
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -17,6 +18,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
+
 
 import com.google.common.io.Files;
 
@@ -136,6 +138,7 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoWeatherChange(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemPickup(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoChorusFruit(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_SpleefArena(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDrop(this.flagManager, this));
 
             //try to hook into mcMMO
