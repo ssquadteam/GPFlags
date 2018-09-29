@@ -24,7 +24,7 @@ public class FlagDef_InfiniteArrows extends FlagDefinition
         Projectile arrow = event.getEntity();
         
         ProjectileSource source = arrow.getShooter();
-        if(source == null || !(source instanceof Player)) return;
+        if(source == (null || event.getHitEntity()) || !(source instanceof Player)) return;
         
         Player player = (Player)source;
         if(player.getGameMode() == GameMode.CREATIVE) return;
