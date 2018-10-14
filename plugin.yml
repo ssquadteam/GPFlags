@@ -2,6 +2,7 @@ name: GriefPreventionFlags
 main: me.ryanhamshire.GPFlags.GPFlags
 depend: [GriefPrevention]
 softdepend: [mcMMO]
+authors: [Big_Scary, ShaneBee, DmitryRendov]
 version: 4.7.0
 api-version: 1.13
 commands:
