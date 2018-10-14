@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
+import me.ryanhamshire.GPFlags.metrics.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -56,6 +57,7 @@ public class GPFlags extends JavaPlugin
 	    instance = this;
         
 	    this.loadConfig();
+        Metrics metrics = new Metrics(this);
 	    
 	    
         
