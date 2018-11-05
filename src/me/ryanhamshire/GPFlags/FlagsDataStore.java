@@ -173,8 +173,14 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.SetSpleefArena, "Now allowing some block types to be destroyed, and automatically regenerating them when players die in this area.", null);
         this.addDefault(defaults, Messages.UnSetSpleefArena, "Stopped overriding Grief Prevention's block breaking rules and generating blocks when players die in this area.", null);
 
-        this.addDefault(defaults, Messages.EnableNoGrowth, "No blocks will grown now in this area", null);
-        this.addDefault(defaults, Messages.DisableNoGrowth, "Blows will now continue to grow in this area", null);
+        this.addDefault(defaults, Messages.EnableNoGrowth, "Blocks will no longer grow in this area", null);
+        this.addDefault(defaults, Messages.DisableNoGrowth, "Blocks will now continue to grow in this area", null);
+
+        this.addDefault(defaults, Messages.ExitFlightDisabled, "Flight disabled", null);
+        this.addDefault(defaults, Messages.EnterFlightEnabled, "Flight enabled", null);
+
+        this.addDefault(defaults, Messages.OwnerFlightEnabled, "The owner of this claim can now fly in this claim", null);
+        this.addDefault(defaults, Messages.OwnerFlightDisabled, "The owner of this claim can no longer fly in this claim", null);
 
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));

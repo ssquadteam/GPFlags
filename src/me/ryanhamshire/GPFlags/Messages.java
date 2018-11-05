@@ -106,5 +106,9 @@ public enum Messages
     EnableNoItemDrop,
     DisableNoItemDrop,
     EnableNoGrowth,
-    DisableNoGrowth
+    DisableNoGrowth,
+    OwnerFlightEnabled,
+    OwnerFlightDisabled,
+    EnterFlightEnabled,
+    ExitFlightDisabled
 }

@@ -143,6 +143,7 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_SpleefArena(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDrop(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoGrowth(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerFly(this.flagManager, this));
 
             //try to hook into mcMMO
             try
