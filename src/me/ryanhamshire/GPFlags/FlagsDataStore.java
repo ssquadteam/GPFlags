@@ -172,7 +172,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.SpleefArenaHelp, "Example syntax: 'minecraft:snow_block minecraft:bricks 20'.  See the GriefPrevention Flags page on spigotmc.org for more help.", null);
         this.addDefault(defaults, Messages.SetSpleefArena, "Now allowing some block types to be destroyed, and automatically regenerating them when players die in this area.", null);
         this.addDefault(defaults, Messages.UnSetSpleefArena, "Stopped overriding Grief Prevention's block breaking rules and generating blocks when players die in this area.", null);
-        
+
+        this.addDefault(defaults, Messages.EnableNoGrowth, "No blocks will grown now in this area", null);
+        this.addDefault(defaults, Messages.DisableNoGrowth, "Blows will now continue to grow in this area", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

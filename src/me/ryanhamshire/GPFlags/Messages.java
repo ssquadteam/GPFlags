@@ -104,5 +104,7 @@ public enum Messages
     SetSpleefArena,
     UnSetSpleefArena,
     EnableNoItemDrop,
-    DisableNoItemDrop
+    DisableNoItemDrop,
+    EnableNoGrowth,
+    DisableNoGrowth
 }
