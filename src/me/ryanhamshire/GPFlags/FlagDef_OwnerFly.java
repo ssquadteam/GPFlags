@@ -8,8 +8,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
-public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition
+public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener
 {
     @Override
     public boolean allowMovement(Player player, Location lastLocation)
@@ -48,6 +53,20 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition
         return true;
     }
 
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
+
+        if(flag != null) {
+            player.setAllowFlight(true);
+            if(below == Material.AIR) {
+                player.setFlying(true);
+            }
+        }
+    }
+
     public FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
@@ -56,7 +75,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition
     String getName() {
         return "OwnerFly";
     }
-
 
     @Override
     MessageSpecifier GetSetMessage(String parameters) {

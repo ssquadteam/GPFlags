@@ -58,9 +58,6 @@ public class GPFlags extends JavaPlugin
         
 	    this.loadConfig();
         Metrics metrics = new Metrics(this);
-	    
-	    
-        
         AddLogEntry("Boot finished.");
 	}
 	
