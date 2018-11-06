@@ -182,6 +182,11 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.OwnerFlightEnabled, "The owner of this claim can now fly in this claim", null);
         this.addDefault(defaults, Messages.OwnerFlightDisabled, "The owner of this claim can no longer fly in this claim", null);
 
+        this.addDefault(defaults, Messages.EnabledNoEnterPlayer, "Enabled NoEnterPlayer for: {0}", "0: players to block");
+        this.addDefault(defaults, Messages.DisabledNoEnterPlayer, "Disabled NoEnterPlayer", null);
+        this.addDefault(defaults, Messages.NoEnterPlayerMessage, "You have been blocked from entering this claim", null);
+        this.addDefault(defaults, Messages.PlayerRequired, "Player(s) required. Use a comma to separate", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

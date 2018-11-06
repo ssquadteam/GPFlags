@@ -110,5 +110,9 @@ public enum Messages
     OwnerFlightEnabled,
     OwnerFlightDisabled,
     EnterFlightEnabled,
-    ExitFlightDisabled
+    ExitFlightDisabled,
+    EnabledNoEnterPlayer,
+    DisabledNoEnterPlayer,
+    NoEnterPlayerMessage,
+    PlayerRequired
 }
