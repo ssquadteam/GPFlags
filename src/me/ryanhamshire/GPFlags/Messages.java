@@ -109,6 +109,8 @@ public enum Messages
     DisableNoGrowth,
     OwnerFlightEnabled,
     OwnerFlightDisabled,
+    OwnerMemberFlightEnabled,
+    OwnerMemberFlightDisabled,
     EnterFlightEnabled,
     ExitFlightDisabled,
     EnabledNoEnterPlayer,
