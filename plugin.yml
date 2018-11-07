@@ -3,7 +3,7 @@ main: me.ryanhamshire.GPFlags.GPFlags
 depend: [GriefPrevention]
 softdepend: [mcMMO]
 authors: [Big_Scary, ShaneBee, DmitryRendov]
-version: 4.9.1
+version: 4.10.0
 api-version: 1.13
 commands:
    setclaimflag:
@@ -70,6 +70,7 @@ permissions:
             gpflags.reload: true
             gpflags.allflags: true
             gpflags.bypass: true
+            gpflags.bypass.fly: true
     gpflags.setflag:
         description: Grants permission to use /SetClaimFlag.
         default: op
@@ -102,4 +103,9 @@ permissions:
         default: op
     gpflags.bypass:
         description: Makes a player immune to the limitations of flags like CommandBlackList, NoEnter, and NoFlight.
+        default: op
+        children:
+            gpflags.bypass.fly: true
+    gpflags.bypass.fly:
+        description: Makes a player immune to the limitations of the fly flags
         default: op
