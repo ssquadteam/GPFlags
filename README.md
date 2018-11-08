@@ -1,4 +1,5 @@
 # GriefPreventionFlags
+![GitHub release](https://img.shields.io/github/release/ShaneBeee/GriefPreventionFlags.svg)
 
 Bringing back an old favorite of GriefPrevention users... Admin Flags
 
