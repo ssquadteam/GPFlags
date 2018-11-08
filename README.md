@@ -3,7 +3,7 @@
 ![GitHub issues](https://img.shields.io/github/issues-raw/ShaneBeee/GriefPreventionFlags.svg)
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ShaneBeee/GriefPreventionFlags.svg)
 ![GitHub All Releases](https://img.shields.io/github/downloads/ShaneBeee/GriefPreventionFlags/total.svg)
-![Discord](https://img.shields.io/discord/425192525091831808.svg)
+[![Discord](https://img.shields.io/discord/425192525091831808.svg)](https://discordapp.com/invite/km3UF8Q)
 
 Bringing back an old favorite of GriefPrevention users... Admin Flags
 
