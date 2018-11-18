@@ -42,6 +42,7 @@ public enum Messages
     UpdateGPForSubdivisionFlags,
     EnableNetherPortalConsoleCommand,
     DisableNetherPortalConsoleCommand,
+    PlayerCommandRequired,
     ConsoleCommandRequired,
     EnableNoPlayerDamage,
     DisableNoPlayerDamage,

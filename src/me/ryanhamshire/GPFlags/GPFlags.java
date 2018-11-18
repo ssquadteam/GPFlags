@@ -109,6 +109,10 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(allowPvPDef);
             this.flagManager.RegisterFlagDefinition(new FlagDef_EnterMessage(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_ExitMessage(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterPlayerCommand(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitPlayerCommand(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_RespawnLocation(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_KeepInventory(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_InfiniteArrows(this.flagManager, this));
@@ -126,8 +130,6 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFlight(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_TrappedDestination(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoLootProtection(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnderPearl(this.flagManager, this));
