@@ -106,6 +106,7 @@ public class FlagDef_AllowPvP extends FlagDefinition
     
     private void handleEntityDamageEvent(EntityDamageByEntityEvent event, boolean sendErrorMessagesToPlayers)
     {
+        //if the pet is not tamed, we don't care
         if(event.getEntityType() != EntityType.PLAYER)
         {
             Entity entity = event.getEntity();
@@ -116,6 +117,7 @@ public class FlagDef_AllowPvP extends FlagDefinition
             }
         }
 
+        // no damager, we don't care
         Entity damager = event.getDamager();
         if(damager == null)  return;
 
@@ -138,6 +140,9 @@ public class FlagDef_AllowPvP extends FlagDefinition
         //if in a flagged-for-pvp area, allow
         Flag flag = this.GetFlagInstanceAtLocation(damager.getLocation(), null);
         if(flag != null) return;
+
+        //if damaged entity is not a player, ignore, this is a PVP flag
+        if(event.getEntityType() != EntityType.PLAYER) return;
 
         //otherwise disallow
         event.setCancelled(true);
