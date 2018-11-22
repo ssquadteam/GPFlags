@@ -191,6 +191,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.NoEnterPlayerMessage, "You have been blocked from entering this claim", null);
         this.addDefault(defaults, Messages.PlayerRequired, "Player(s) required. Use a comma to separate", null);
 
+        this.addDefault(defaults, Messages.PlayerWeatherRequired, "Weather required <sun/rain>", null);
+        this.addDefault(defaults, Messages.PlayerWeatherSet, "Player weather in this claim has been set to {0}", "0: Weather to send");
+        this.addDefault(defaults, Messages.PlayerWeatherUnSet, "Player weather has been unset in this claim", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

@@ -146,6 +146,9 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, this));
 
+            // Experimental
+            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
+
             //try to hook into mcMMO
             try
             {

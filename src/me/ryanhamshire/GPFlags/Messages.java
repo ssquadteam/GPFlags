@@ -117,5 +117,8 @@ public enum Messages
     EnabledNoEnterPlayer,
     DisabledNoEnterPlayer,
     NoEnterPlayerMessage,
-    PlayerRequired
+    PlayerRequired,
+    PlayerWeatherRequired,
+    PlayerWeatherSet,
+    PlayerWeatherUnSet
 }
