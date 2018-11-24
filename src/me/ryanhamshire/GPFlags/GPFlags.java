@@ -85,8 +85,19 @@ public class GPFlags extends JavaPlugin
             settings.pvpRequiresClaimFlag = inConfig.getBoolean("World Flags." + worldName + ".PvP Only In PvP-Flagged Claims", false);
             outConfig.set("World Flags." + worldName + ".PvP Only In PvP-Flagged Claims", settings.pvpRequiresClaimFlag);
             
-            settings.pvpDeniedMessage = inConfig.getString("World Flags." + worldName + ".Message To Send When PvP Is Denied", "Player vs. player combat is restricted to designated areas.");
+            settings.pvpDeniedMessage = inConfig.getString("World Flags." + worldName + ".Message To Send When PvP Is Denied",
+                    "Player vs. player combat is restricted to designated areas.");
             outConfig.set("World Flags." + worldName + ".Message To Send When PvP Is Denied", settings.pvpDeniedMessage);
+
+            settings.pvpEnterClaimMessageEnabled = inConfig.getBoolean("World Flags." + worldName + ".Send Message On Enter PvP Enabled Claim", false);
+            outConfig.set("World Flags." + worldName + ".Send Message On Enter PvP Enabled Claim", settings.pvpEnterClaimMessageEnabled);
+
+
+            settings.pvpEnterClaimMessage = inConfig.getString("World Flags." + worldName + ".Message",
+                    "PvP is enabled in this claim, be careful");
+            outConfig.set("World Flags." + worldName + ".Message", settings.pvpEnterClaimMessage);
+
+
         }
         
         try
@@ -173,7 +184,8 @@ public class GPFlags extends JavaPlugin
                 {
                     GPFlags.AddLogEntry("Load Error: " + this.flagsDataStore.getMessage(error.messageID, error.messageParams));
                 }
-                GPFlags.AddLogEntry("Problems encountered reading the flags data file!  Please share this log and your 'flagsError.yml' file with the developer.");
+                GPFlags.AddLogEntry("Problems encountered reading the flags data file! " +
+                        "Please share this log and your 'flagsError.yml' file with the developer.");
             }
         }
         catch(Exception e)
@@ -600,7 +612,8 @@ public class GPFlags extends JavaPlugin
 	private boolean playerHasPermissionForFlag(FlagDefinition flagDef, Permissible player)
 	{
 	    String flagName = flagDef.getName();
-	    return player == null || player.hasPermission("gpflags.allflags") || player.hasPermission("gpflags." + flagName) || player.hasPermission("gpflags." + flagName.toLowerCase());
+	    return player == null || player.hasPermission("gpflags.allflags") || player.hasPermission("gpflags." +
+                flagName) || player.hasPermission("gpflags." + flagName.toLowerCase());
     }
 
     public void onDisable()

@@ -4,4 +4,6 @@ class WorldSettings
 {
     boolean pvpRequiresClaimFlag = false;
     String pvpDeniedMessage = null;
+    boolean pvpEnterClaimMessageEnabled = false;
+    String pvpEnterClaimMessage = null;
 }

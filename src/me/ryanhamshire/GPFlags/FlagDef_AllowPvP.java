@@ -5,6 +5,7 @@ import java.util.Collection;
 import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -21,9 +22,25 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
-public class FlagDef_AllowPvP extends FlagDefinition
+public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
 {
     private WorldSettingsManager settingsManager;
+
+    @Override
+    public boolean allowMovement(Player player, Location lastLocation)
+    {
+        if(lastLocation == null) return true;
+        Location to = player.getLocation();
+        Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        if(flag == null) return true;
+        if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        WorldSettings settings = this.settingsManager.Get(player.getWorld());
+        if(!settings.pvpRequiresClaimFlag) return true;
+        if(!settings.pvpEnterClaimMessageEnabled) return true;
+
+        GPFlags.sendMessage(player, TextMode.Warn, settings.pvpEnterClaimMessage);
+        return true;
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreventPvP(PreventPvPEvent event)
@@ -33,7 +50,7 @@ public class FlagDef_AllowPvP extends FlagDefinition
         
         event.setCancelled(true);
     }
-    
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPotionSplash (PotionSplashEvent event)
     {
