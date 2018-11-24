@@ -116,7 +116,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
         //handle it just like we would an entity damge by entity event, except don't send player messages to avoid double messages
         //in cases like attacking with a flame sword or flame arrow, which would ALSO trigger the direct damage event handler
         @SuppressWarnings("deprecation")
-        EntityDamageByEntityEvent eventWrapper = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(), DamageCause.FIRE_TICK, event.getDuration());
+        EntityDamageByEntityEvent eventWrapper = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(),
+                DamageCause.FIRE_TICK, event.getDuration());
         this.handleEntityDamageEvent(eventWrapper, false);
         event.setCancelled(eventWrapper.isCancelled());
     }
