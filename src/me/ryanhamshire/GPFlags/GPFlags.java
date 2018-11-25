@@ -168,6 +168,9 @@ public class GPFlags extends JavaPlugin
             //if failed, we just won't have those flags available
             catch(NoClassDefFoundError exception){ }
         }
+        else {
+            ((FlagDef_AllowPvP) this.flagManager.GetFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
+        }
         
         try
         {
