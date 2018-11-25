@@ -38,8 +38,12 @@ public class FlagDef_PlayerWeather extends PlayerMovementFlagDefinition implemen
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
 
         if(flag != null) {
-            // change this to parameter
-            player.setPlayerWeather(WeatherType.CLEAR);
+            String weather = flag.parameters;
+            if(weather.equalsIgnoreCase("sun")) {
+                player.setPlayerWeather(WeatherType.CLEAR);
+            } else if(weather.equalsIgnoreCase("rain")) {
+                player.setPlayerWeather(WeatherType.DOWNFALL);
+            }
         }
     }
 
