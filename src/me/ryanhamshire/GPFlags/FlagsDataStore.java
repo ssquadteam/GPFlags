@@ -195,6 +195,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.PlayerWeatherSet, "Player weather in this claim has been set to {0}", "0: Weather to send");
         this.addDefault(defaults, Messages.PlayerWeatherUnSet, "Player weather has been unset in this claim", null);
 
+        this.addDefault(defaults, Messages.PlayerTimeRequired, "Time required <day/noon/night/midnight", null);
+        this.addDefault(defaults, Messages.PlayerTimeSet, "Player time in this claim has been set to {0}", "0: Time to send");
+        this.addDefault(defaults, Messages.PlayerTimeUnSet, "Player time has been unset in this claim", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

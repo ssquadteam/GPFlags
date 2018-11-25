@@ -92,11 +92,9 @@ public class GPFlags extends JavaPlugin
             settings.pvpEnterClaimMessageEnabled = inConfig.getBoolean("World Flags." + worldName + ".Send Message On Enter PvP Enabled Claim", false);
             outConfig.set("World Flags." + worldName + ".Send Message On Enter PvP Enabled Claim", settings.pvpEnterClaimMessageEnabled);
 
-
             settings.pvpEnterClaimMessage = inConfig.getString("World Flags." + worldName + ".Message",
                     "PvP is enabled in this claim, be careful");
             outConfig.set("World Flags." + worldName + ".Message", settings.pvpEnterClaimMessage);
-
 
         }
         
@@ -159,6 +157,7 @@ public class GPFlags extends JavaPlugin
 
             // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
 
             //try to hook into mcMMO
             try

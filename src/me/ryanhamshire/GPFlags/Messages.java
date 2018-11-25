@@ -120,5 +120,8 @@ public enum Messages
     PlayerRequired,
     PlayerWeatherRequired,
     PlayerWeatherSet,
-    PlayerWeatherUnSet
+    PlayerWeatherUnSet,
+    PlayerTimeRequired,
+    PlayerTimeSet,
+    PlayerTimeUnSet
 }

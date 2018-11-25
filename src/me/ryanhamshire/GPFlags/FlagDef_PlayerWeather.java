@@ -1,7 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
 import org.bukkit.*;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,7 +34,6 @@ public class FlagDef_PlayerWeather extends PlayerMovementFlagDefinition implemen
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
 
         if(flag != null) {
             String weather = flag.parameters;

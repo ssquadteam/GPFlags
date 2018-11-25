@@ -39,7 +39,11 @@ class WorldSettingsManager
     public WorldSettings Create(String worldName)
     {
         WorldSettings settings = new WorldSettings();
+        this.nameToSettingsMap.remove(worldName);
         this.nameToSettingsMap.put(worldName, settings);
         return settings;
     }
+
+
+
 }
