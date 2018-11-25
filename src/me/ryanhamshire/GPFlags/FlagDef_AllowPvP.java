@@ -200,6 +200,10 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
         this.settingsManager = settingsManager;
     }
     
+    public void updateSettings(WorldSettingsManager settingsManager) {
+    	this.settingsManager = settingsManager;
+    }
+    
     @Override
     String getName()
     {
