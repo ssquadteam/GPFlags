@@ -19,6 +19,7 @@ import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -42,12 +43,31 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
         return true;
     }
 
+    // bandaid
+    private boolean hasJoined;
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        if(hasJoined) {
+            hasJoined = false;
+            return;
+        }
+        hasJoined = true;
+        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), null);
+        if(flag == null) return;
+        WorldSettings settings = this.settingsManager.Get(player.getWorld());
+        if(!settings.pvpRequiresClaimFlag) return;
+        if(!settings.pvpEnterClaimMessageEnabled) return;
+        GPFlags.sendMessage(player, TextMode.Warn, settings.pvpEnterClaimMessage);
+
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreventPvP(PreventPvPEvent event)
     {
         Flag flag = this.GetFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
         if(flag == null) return;
-        
         event.setCancelled(true);
     }
 
