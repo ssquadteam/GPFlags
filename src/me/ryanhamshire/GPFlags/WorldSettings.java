@@ -6,4 +6,6 @@ class WorldSettings
     String pvpDeniedMessage = null;
     boolean pvpEnterClaimMessageEnabled = false;
     String pvpEnterClaimMessage = null;
+    boolean pvpExitClaimMessageEnabled = false;
+    String pvpExitClaimMessage = null;
 }

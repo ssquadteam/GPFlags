@@ -76,7 +76,8 @@ public class GPFlags extends JavaPlugin
         {
             worldSettingsKeys.add(world.getName());
         }
-        worldSettingsKeys.add(this.worldSettingsManager.OtherWorldsKey);
+        // As a test I am removing this, I don't even know why its in here, since GPFlags supports multiverse worlds
+        //worldSettingsKeys.add(this.worldSettingsManager.OtherWorldsKey);
         
         for(String worldName : worldSettingsKeys)
         {
@@ -96,6 +97,13 @@ public class GPFlags extends JavaPlugin
                     "PvP is enabled in this claim, be careful");
             outConfig.set("World Flags." + worldName + ".Message", settings.pvpEnterClaimMessage);
 
+            settings.pvpExitClaimMessageEnabled = inConfig.getBoolean("World Flags." + worldName + ".Send Message On Exit PvP Enabled Claim", false);
+            outConfig.set("World Flags." + worldName + ".Send Message On Exit PvP Enabled Claim", settings.pvpExitClaimMessageEnabled);
+
+            settings.pvpExitClaimMessage = inConfig.getString("World Flags." + worldName + ".ExitMessage", "PvP is disabled in this area, you are now safe");
+            outConfig.set("World Flags." + worldName + ".ExitMessage", settings.pvpExitClaimMessage);
+            outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + this.getDescription().getVersion() +
+                    "\nServer Version: " + getServer().getVersion() + "\n\n");
         }
         
         try
