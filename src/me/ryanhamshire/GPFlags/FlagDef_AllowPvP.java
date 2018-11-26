@@ -33,6 +33,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
         if(lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        if(this.GetFlagInstanceAtLocation(lastLocation, player) != null) return true;
         if(flag == null) return true;
         if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         WorldSettings settings = this.settingsManager.Get(player.getWorld());
