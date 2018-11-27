@@ -189,6 +189,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition
 
         //if damaged entity is not a player, ignore, this is a PVP flag
         if(event.getEntityType() != EntityType.PLAYER) return;
+        // Enderpearl are considered as FALL with event.getEntityType() = player...
+        if(event.getCause() == DamageCause.FALL) return;
 
         //otherwise disallow
         event.setCancelled(true);
