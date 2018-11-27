@@ -199,6 +199,11 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.PlayerTimeSet, "Player time in this claim has been set to {0}", "0: Time to send");
         this.addDefault(defaults, Messages.PlayerTimeUnSet, "Player time has been unset in this claim", null);
 
+        this.addDefault(defaults, Messages.PlayerGamemodeRequired, "Gamemode required <survival/creative/adventure/spectator>", null);
+        this.addDefault(defaults, Messages.PlayerGamemodeSet, "Player gamemode in this claim has been set to {0}", "0: Gamemode to send");
+        this.addDefault(defaults, Messages.PlayerGamemodeUnSet, "Player gamemode has been unset in this claim", null);
+        this.addDefault(defaults, Messages.PlayerGamemode, "Your gamemode has been changed to {0}", "0: Gamemode to send");
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

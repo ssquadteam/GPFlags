@@ -82,6 +82,13 @@ public class GPFlags extends JavaPlugin
         for(String worldName : worldSettingsKeys)
         {
             WorldSettings settings = this.worldSettingsManager.Create(worldName);
+
+            settings.worldGamemodeDefault = inConfig.getString("World Flags." + worldName + ".Default Gamemode", "survival");
+            if(!settings.worldGamemodeDefault.equalsIgnoreCase("survival") && !settings.worldGamemodeDefault.equalsIgnoreCase("creative") &&
+                    !settings.worldGamemodeDefault.equalsIgnoreCase("adventure") && !settings.worldGamemodeDefault.equalsIgnoreCase("spectator")) {
+                settings.worldGamemodeDefault = "survival";
+            }
+            outConfig.set("World Flags." + worldName + ".Default Gamemode", settings.worldGamemodeDefault);
             
             settings.pvpRequiresClaimFlag = inConfig.getBoolean("World Flags." + worldName + ".PvP Only In PvP-Flagged Claims", false);
             outConfig.set("World Flags." + worldName + ".PvP Only In PvP-Flagged Claims", settings.pvpRequiresClaimFlag);
@@ -102,6 +109,7 @@ public class GPFlags extends JavaPlugin
 
             settings.pvpExitClaimMessage = inConfig.getString("World Flags." + worldName + ".ExitMessage", "PvP is disabled in this area, you are now safe");
             outConfig.set("World Flags." + worldName + ".ExitMessage", settings.pvpExitClaimMessage);
+
             outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + this.getDescription().getVersion() +
                     "\nServer Version: " + getServer().getVersion() + "\n\n");
         }
@@ -166,6 +174,7 @@ public class GPFlags extends JavaPlugin
             // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, this, this.worldSettingsManager));
 
             //try to hook into mcMMO
             try
@@ -177,6 +186,7 @@ public class GPFlags extends JavaPlugin
             catch(NoClassDefFoundError exception){ }
         }
         else {
+            ((FlagDef_PlayerGamemode) this.flagManager.GetFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
             ((FlagDef_AllowPvP) this.flagManager.GetFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
         }
         

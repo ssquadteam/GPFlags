@@ -1,5 +1,4 @@
 package me.ryanhamshire.GPFlags;
-import me.ryanhamshire.GPFlags.Messages;
 
 class MessageSpecifier
 {

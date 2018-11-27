@@ -8,4 +8,5 @@ class WorldSettings
     String pvpEnterClaimMessage = null;
     boolean pvpExitClaimMessageEnabled = false;
     String pvpExitClaimMessage = null;
+    String worldGamemodeDefault = null;
 }

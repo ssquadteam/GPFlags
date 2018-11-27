@@ -123,5 +123,10 @@ public enum Messages
     PlayerWeatherUnSet,
     PlayerTimeRequired,
     PlayerTimeSet,
-    PlayerTimeUnSet
+    PlayerTimeUnSet,
+    PlayerGamemodeRequired,
+    PlayerGamemodeSet,
+    PlayerGamemodeUnSet,
+    PlayerGamemode,
+    gameMode
 }
