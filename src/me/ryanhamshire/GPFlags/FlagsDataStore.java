@@ -207,6 +207,9 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnableNoVineGrowth, "Vines will no longer grow in this area", null);
         this.addDefault(defaults, Messages.DisableNoVineGrowth, "Vines will now continue to grow in this area", null);
 
+        this.addDefault(defaults, Messages.EnableNoSnowForm, "Snow will no longer form in this area", null);
+        this.addDefault(defaults, Messages.DisableNoSnowForm, "Snow will now continue to form in this area", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

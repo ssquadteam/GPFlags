@@ -130,5 +130,7 @@ public enum Messages
     PlayerGamemode,
     gameMode,
     EnableNoVineGrowth,
-    DisableNoVineGrowth
+    DisableNoVineGrowth,
+    EnableNoSnowForm,
+    DisableNoSnowForm
 }
