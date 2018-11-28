@@ -132,5 +132,7 @@ public enum Messages
     EnableNoVineGrowth,
     DisableNoVineGrowth,
     EnableNoSnowForm,
-    DisableNoSnowForm
+    DisableNoSnowForm,
+    EnableNoIceForm,
+    DisableNoIceForm
 }
