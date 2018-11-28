@@ -128,5 +128,7 @@ public enum Messages
     PlayerGamemodeSet,
     PlayerGamemodeUnSet,
     PlayerGamemode,
-    gameMode
+    gameMode,
+    EnableNoVineGrowth,
+    DisableNoVineGrowth
 }
