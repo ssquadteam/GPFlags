@@ -213,6 +213,12 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnableNoIceForm, "Ice will no longer form in this area", null);
         this.addDefault(defaults, Messages.DisableNoIceForm, "Ice will now continue to form in this area", null);
 
+        this.addDefault(defaults, Messages.EnabledNoFireSpread, "Fire will no longer spread in this area", null);
+        this.addDefault(defaults, Messages.DisabledNoFireSpread, "Fire will now continue to spread in this area", null);
+
+        this.addDefault(defaults, Messages.EnableNoFireDamage, "Fire will no longer damage blocks in this area", null);
+        this.addDefault(defaults, Messages.DisableNoFireDamage, "Fire will now continue to damage blocks in this area", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		

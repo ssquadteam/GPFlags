@@ -134,5 +134,9 @@ public enum Messages
     EnableNoSnowForm,
     DisableNoSnowForm,
     EnableNoIceForm,
-    DisableNoIceForm
+    DisableNoIceForm,
+    EnabledNoFireSpread,
+    DisabledNoFireSpread,
+    EnableNoFireDamage,
+    DisableNoFireDamage
 }

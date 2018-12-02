@@ -178,6 +178,8 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoVineGrowth(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoSnowForm(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoIceForm(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
 
             //try to hook into mcMMO
             try
