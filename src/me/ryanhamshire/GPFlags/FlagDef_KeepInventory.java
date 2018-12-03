@@ -7,7 +7,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 public class FlagDef_KeepInventory extends FlagDefinition
 {
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         Player player = event.getEntity();

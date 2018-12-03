@@ -31,7 +31,7 @@ public abstract class FlagDefinition implements Listener
     abstract MessageSpecifier GetSetMessage(String parameters);
     
     abstract MessageSpecifier GetUnSetMessage();
-    
+
     Flag GetFlagInstanceAtLocation(Location location, Player player)
     {
         Flag flag = null;
