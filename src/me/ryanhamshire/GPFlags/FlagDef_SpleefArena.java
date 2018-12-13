@@ -11,6 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -63,8 +64,22 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         SpleefData data = new SpleefData(flag.getParametersArray());
         if (data.IsBlock(block)) {
             event.setCancelled(true);  //break the block
-            block.getDrops().clear();  //but don't drop anything
         }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        if (e.isCancelled()) return;
+        Block block = e.getBlock();
+        Location location = block.getLocation();
+
+        Flag flag = this.GetFlagInstanceAtLocation(location, null);
+        if (flag == null) return;
+        SpleefData data = new SpleefData(flag.getParametersArray());
+        if (data.IsBlock(block)) {
+            e.setDropItems(false);  //don't drop anything
+        }
+
     }
 
     public FlagDef_SpleefArena(FlagManager manager, GPFlags plugin) {
