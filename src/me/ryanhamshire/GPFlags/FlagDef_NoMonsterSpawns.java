@@ -40,7 +40,8 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition
         if(entity instanceof Monster) return true;
         
         EntityType type = entity.getType();
-        if(type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER || type == EntityType.PHANTOM) return true;
+        if(type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER ||
+                type == EntityType.PHANTOM || type == EntityType.SLIME) return true;
         
         if(type == EntityType.RABBIT)
         {
