@@ -49,7 +49,7 @@ public class GPFlags extends JavaPlugin
 	//adds a server log entry
 	static synchronized void AddLogEntry(String entry)
 	{
-		log.info("GPFlags: " + entry);
+		log.info("[GPFlags] " + entry);
 	}
 	
 	public void onEnable()
