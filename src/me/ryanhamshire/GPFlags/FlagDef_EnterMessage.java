@@ -1,6 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
-import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -27,8 +27,9 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition
         {
             message = message.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName());
         }
-        
-        GPFlags.sendMessage(player, TextMode.Info, message);
+
+        String prefix = ChatColor.translateAlternateColorCodes('&', new FlagsDataStore().getMessage(Messages.EnterExitPrefix));
+        GPFlags.sendMessage(player, TextMode.Info,prefix +  message);
         
         return true;
     }
@@ -46,7 +47,8 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         String message = flag.parameters;
         message = message.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName());
-        GPFlags.sendMessage(player, TextMode.Info, message);
+        String prefix = ChatColor.translateAlternateColorCodes('&', new FlagsDataStore().getMessage(Messages.EnterExitPrefix));
+        GPFlags.sendMessage(player, TextMode.Info, prefix + message);
     }
     
     @Override

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.mojang.brigadier.Message;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -75,7 +76,8 @@ public class FlagsDataStore
 		
 		this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message: {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedExitMessage, "Players exiting this land claim will not receive any message.", null);
-        
+        this.addDefault(defaults, Messages.EnterExitPrefix, "", "This prefix will be added to all enter/exit message flags");
+
         this.addDefault(defaults, Messages.SetRespawnLocation, "Players who die in this land claim will now respawn at the specified location.", null);
         this.addDefault(defaults, Messages.UnSetRespawnLocation, "Players who die in this land claim will now respawn per the usual rules.", null);
         

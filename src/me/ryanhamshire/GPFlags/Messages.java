@@ -21,6 +21,7 @@ public enum Messages
     RemovedEnterMessage,
     AddedExitMessage,
     RemovedExitMessage,
+    EnterExitPrefix,
     LocationRequired,
     WorldNotFound,
     SetRespawnLocation,

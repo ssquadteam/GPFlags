@@ -1,5 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -24,8 +25,9 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition
         {
             message = message.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName());
         }
-        
-        GPFlags.sendMessage(player, TextMode.Info, message);
+
+        String prefix = ChatColor.translateAlternateColorCodes('&', new FlagsDataStore().getMessage(Messages.EnterExitPrefix));
+        GPFlags.sendMessage(player, TextMode.Info, prefix + message);
         
         return true;
     }
