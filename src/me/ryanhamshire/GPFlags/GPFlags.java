@@ -180,13 +180,14 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoIceForm(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
 
             //try to hook into mcMMO
             try
             {
                 this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
                 this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMODeathPenalty(this.flagManager, this));
+                // Experimental
+                this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
             }
             //if failed, we just won't have those flags available
             catch(NoClassDefFoundError exception){ }
