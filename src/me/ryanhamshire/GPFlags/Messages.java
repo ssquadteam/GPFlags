@@ -89,6 +89,8 @@ public enum Messages
     DisableNoEnderPearl,
     EnableNoMcMMOSkills,
     DisableNoMcMMOSkills,
+    EnabledNoMcMMOXP,
+    DisabledNoMcMMOXP,
     EnableNoLeafDecay,
     DisableNoLeafDecay,
     EnableNoMcMMODeathPenalty,

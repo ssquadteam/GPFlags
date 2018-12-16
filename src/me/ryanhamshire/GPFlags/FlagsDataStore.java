@@ -150,6 +150,9 @@ public class FlagsDataStore
 
         this.addDefault(defaults, Messages.EnableNoMcMMOSkills, "Now blocking McMMO skill use in this area.", null);
         this.addDefault(defaults, Messages.DisableNoMcMMOSkills, "Stopped blocking McMMO skill use in this area.", null);
+
+        this.addDefault(defaults, Messages.EnabledNoMcMMOXP, "Now blocking McMMO XP gain in this area.", null);
+        this.addDefault(defaults, Messages.DisabledNoMcMMOXP, "Stopped blocking McMMO XP gain in this area.", null);
         
         this.addDefault(defaults, Messages.EnableNoLeafDecay, "Now blocking leaf decay in this area.", null);
         this.addDefault(defaults, Messages.DisableNoLeafDecay, "Stopped blocking leaf decay in this area.", null);
