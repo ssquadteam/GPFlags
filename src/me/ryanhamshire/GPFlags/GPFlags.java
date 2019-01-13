@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 
+import com.mojang.brigadier.Message;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -246,7 +247,12 @@ public class GPFlags extends JavaPlugin
 		if (sender instanceof Player) 
 		{
 			player = (Player) sender;
-		}
+		} else {
+		    if (!cmd.getLabel().contains("server")) {
+		        getLogger().info(ChatColor.RED + "This command can only be issued by a player");
+		        return true;
+            }
+        }
 		
 		if(cmd.getName().equalsIgnoreCase("GPFReload"))
 		{

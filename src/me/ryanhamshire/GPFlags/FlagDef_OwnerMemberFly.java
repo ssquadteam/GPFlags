@@ -50,7 +50,6 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if(claim.allowAccess(player) == null) {
             player.setAllowFlight(true);
             GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
-
             return true;
         }
         return true;
