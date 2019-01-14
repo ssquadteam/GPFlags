@@ -60,6 +60,9 @@ public class GPFlags extends JavaPlugin
 	    this.loadConfig();
         Metrics metrics = new Metrics(this);
         AddLogEntry("Boot finished.");
+        if (getDescription().getVersion().contains("Beta")) {
+            AddLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
+        }
 	}
 	
 	private void loadConfig()

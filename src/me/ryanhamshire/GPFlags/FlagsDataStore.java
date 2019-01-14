@@ -146,6 +146,12 @@ public class FlagsDataStore
         
         this.addDefault(defaults, Messages.EnableNoEnderPearl, "Now blocking ender pearl teleportation to/from this area.", null);
         this.addDefault(defaults, Messages.DisableNoEnderPearl, "Stopped blocking ender pearl teleportation to/from this area.", null);
+        this.addDefault(defaults, Messages.NoEnderPearlInClaim, "{p}, you can not use enderpearls in {o}'s claim",
+                "o: owner of claim" + "p: event player");
+        this.addDefault(defaults, Messages.NoEnderPearlToClaim, "{p}, you can not use enderpearls to teleprot to {o}'s claim",
+                "o: owner of claim" + "p: event player");
+        this.addDefault(defaults, Messages.NoEnderPearlInWorld, "{p}, you can not use enderpearls in this world",
+                "p: event player");
 
         this.addDefault(defaults, Messages.EnableNoMcMMOSkills, "Now blocking McMMO skill use in this area.", null);
         this.addDefault(defaults, Messages.DisableNoMcMMOSkills, "Stopped blocking McMMO skill use in this area.", null);
