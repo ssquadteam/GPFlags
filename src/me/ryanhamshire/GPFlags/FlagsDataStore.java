@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.mojang.brigadier.Message;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -147,9 +148,9 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnableNoEnderPearl, "Now blocking ender pearl teleportation to/from this area.", null);
         this.addDefault(defaults, Messages.DisableNoEnderPearl, "Stopped blocking ender pearl teleportation to/from this area.", null);
         this.addDefault(defaults, Messages.NoEnderPearlInClaim, "{p}, you can not use enderpearls in {o}'s claim",
-                "o: owner of claim" + "p: event player");
+                "o: owner of claim" + " p: event player");
         this.addDefault(defaults, Messages.NoEnderPearlToClaim, "{p}, you can not use enderpearls to teleprot to {o}'s claim",
-                "o: owner of claim" + "p: event player");
+                "o: owner of claim" + " p: event player");
         this.addDefault(defaults, Messages.NoEnderPearlInWorld, "{p}, you can not use enderpearls in this world",
                 "p: event player");
 
@@ -228,6 +229,9 @@ public class FlagsDataStore
 
         this.addDefault(defaults, Messages.EnableNoFireDamage, "Fire will no longer damage blocks in this area", null);
         this.addDefault(defaults, Messages.DisableNoFireDamage, "Fire will now continue to damage blocks in this area", null);
+
+        this.addDefault(defaults, Messages.EnabledNoFallDamage, "Player will no longer take fall damage in this claim", null);
+        this.addDefault(defaults, Messages.DisabledNoFallDamage, "Players will now continue to take fall damage in this claim", null);
 
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));

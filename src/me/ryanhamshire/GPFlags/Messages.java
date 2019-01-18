@@ -143,5 +143,7 @@ public enum Messages
     EnabledNoFireSpread,
     DisabledNoFireSpread,
     EnableNoFireDamage,
-    DisableNoFireDamage
+    DisableNoFireDamage,
+    EnabledNoFallDamage,
+    DisabledNoFallDamage
 }
