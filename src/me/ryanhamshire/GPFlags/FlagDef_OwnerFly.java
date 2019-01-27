@@ -1,5 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
+import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.GameMode;
@@ -20,12 +21,15 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         if(lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        if(flag == null) {
+        Flag ownerMember = new FlagDef_OwnerMemberFly(this.flagManager, this.plugin).GetFlagInstanceAtLocation(to, player);
+
+        if(flag == null && ownerMember == null) {
+
             GameMode mode = player.getGameMode();
-            if(mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
+            if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
                 Block block = player.getLocation().getBlock();
-                while(block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
+                while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
 
@@ -34,18 +38,34 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
 
-            if(player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
+            if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
+                    !player.hasPermission("gpflags.bypass.fly")) {
+                player.setAllowFlight(false);
+                GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            }
+            return true;
+
+        }
+
+        if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
+        if (claim == null) return true;
+        if(!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
+            GameMode mode = player.getGameMode();
+            if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
+                    !player.hasPermission("gpflags.bypass.fly")) {
+                player.setAllowFlight(false);
+                GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            }
+            if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
                     !player.hasPermission("gpflags.bypass.fly")) {
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             return true;
         }
-
-        if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
-
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        if(!playerData.lastClaim.getOwnerName().equalsIgnoreCase(player.getName())) return true;
 
         player.setAllowFlight(true);
         GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
