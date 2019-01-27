@@ -30,9 +30,8 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
-
-                player.teleport(block.getRelative(BlockFace.UP).getLocation());
                 player.setAllowFlight(false);
+                Util.hash.put(player, true);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
             }
@@ -43,10 +42,10 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
             }
-
-
         }
+
         if (flag == null) return true;
+        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
@@ -60,6 +59,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
+                Util.hash.put(player, true);
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
@@ -69,11 +69,9 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
         }
-
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         return true;
-
     }
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

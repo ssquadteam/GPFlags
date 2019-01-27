@@ -11,6 +11,8 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener
@@ -32,8 +34,8 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
-
-                player.teleport(block.getRelative(BlockFace.UP).getLocation());
+                //hash.put(player, true);
+                Util.hash.put(player, true);
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
@@ -69,7 +71,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
 
         player.setAllowFlight(true);
         GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
-
         return true;
     }
 
@@ -84,6 +85,19 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             if(below == Material.AIR) {
                 player.setFlying(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onFall(EntityDamageEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        Player p = ((Player) e.getEntity());
+        DamageCause cause = e.getCause();
+        if (cause != DamageCause.FALL) return;
+        Boolean val = Util.hash.get(p);
+        if (val != null && val) {
+            e.setCancelled(true);
+            Util.hash.remove(p);
         }
     }
 
