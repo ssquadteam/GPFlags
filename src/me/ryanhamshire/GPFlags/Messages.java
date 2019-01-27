@@ -145,5 +145,6 @@ public enum Messages
     EnableNoFireDamage,
     DisableNoFireDamage,
     EnabledNoFallDamage,
-    DisabledNoFallDamage
+    DisabledNoFallDamage,
+    NoOwnerFlag
 }

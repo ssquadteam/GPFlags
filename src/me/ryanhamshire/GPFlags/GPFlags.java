@@ -602,7 +602,26 @@ public class GPFlags extends JavaPlugin
             {
                 params[i - 1] = args[i];
             }
-            
+
+            //TODO stop owner/ownermember fly flags from joining
+            String send = "You can't do that";
+            Collection<Flag> flags;
+            flags = this.flagManager.GetFlags(claim.getID().toString());
+            for (Flag flag : flags) {
+                if (args[0].equalsIgnoreCase("OwnerFly")) {
+                    if (flag.flagDefinition.getName().equalsIgnoreCase("OwnerMemberFly")) {
+                        GPFlags.sendMessage(player, TextMode.Warn, Messages.NoOwnerFlag);
+                        return true;
+                    }
+                }
+                if (args[0].equalsIgnoreCase("OwnerMemberFly")) {
+                    if (flag.flagDefinition.getName().equalsIgnoreCase("OwnerFly")) {
+                        GPFlags.sendMessage(player, TextMode.Warn, Messages.NoOwnerFlag);
+                        return true;
+                    }
+                }
+            }
+
             SetFlagResult result = this.flagManager.SetFlag(claimID.toString(), def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);

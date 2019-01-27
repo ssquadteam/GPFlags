@@ -233,6 +233,8 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnabledNoFallDamage, "Player will no longer take fall damage in this claim", null);
         this.addDefault(defaults, Messages.DisabledNoFallDamage, "Players will now continue to take fall damage in this claim", null);
 
+        this.addDefault(defaults, Messages.NoOwnerFlag, "You can not set both OwnerFly and OwnerMemberFly flags in one claim", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		
