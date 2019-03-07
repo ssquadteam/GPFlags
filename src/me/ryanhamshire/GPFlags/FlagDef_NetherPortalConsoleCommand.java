@@ -1,16 +1,14 @@
 package me.ryanhamshire.GPFlags;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition
-{
+public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
@@ -18,16 +16,9 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition
         
         if(cause == null || cause != TeleportCause.NETHER_PORTAL) return;
         
-        Location from = event.getFrom();
-        if(from.getBlock().getType() != Material.NETHER_PORTAL)
-        {
-            event.setCancelled(true);
-            return;
-        }
-        
         Player player = event.getPlayer();
         
-        Flag flag = this.GetFlagInstanceAtLocation(from, player);
+        Flag flag = this.GetFlagInstanceAtLocation(event.getFrom(), player);
         if(flag == null) return;
         
         event.setCancelled(true);

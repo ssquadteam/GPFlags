@@ -1,12 +1,11 @@
 package me.ryanhamshire.GPFlags;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
-import com.mojang.brigadier.Message;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 //singleton class which manages all GriefPrevention data (except for config options)
 public class FlagsDataStore
