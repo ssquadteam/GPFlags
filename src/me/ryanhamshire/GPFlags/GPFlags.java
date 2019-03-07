@@ -1,16 +1,14 @@
 package me.ryanhamshire.GPFlags;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Logger;
-
-
-import com.mojang.brigadier.Message;
+import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
+import me.ryanhamshire.GPFlags.util.VersionControl;
+import me.ryanhamshire.GPFlags.util.Current;
+import me.ryanhamshire.GPFlags.util.Legacy;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -21,15 +19,18 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.java.JavaPlugin;
 
-
-import com.google.common.io.Files;
-
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class GPFlags extends JavaPlugin
 {
+    private static VersionControl vc;
+
 	//for convenience, a reference to the instance of this plugin
 	static GPFlags instance;
 	
@@ -48,22 +49,45 @@ public class GPFlags extends JavaPlugin
     private boolean registeredFlagDefinitions = false;
 	
 	//adds a server log entry
-	static synchronized void AddLogEntry(String entry)
-	{
-		log.info("[GPFlags] " + entry);
+	static synchronized void AddLogEntry(String entry) {
+		log.info(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] ") + entry);
 	}
 	
-	public void onEnable()
-	{ 		
-	    instance = this;
-        
-	    this.loadConfig();
+	public void onEnable() {
+        int ver = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
+
+        /*
+        try {
+            if (ver >= 13) {
+                //api = (API) Class.forName(API.class.getPackage().getName() + ".Current").newInstance();
+                api = new Current();
+                AddLogEntry(ChatColor.AQUA + "1.13+ Version Loaded");
+            } else {
+                //api = (API) Class.forName(API.class.getPackage().getName() + ".Legacy").newInstance();
+                api = new Legacy();
+                AddLogEntry(ChatColor.AQUA + "Legacy Version Loaded");
+            }
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            AddLogEntry(ChatColor.RED + "NO VERSION FOUND");
+        }
+        */
+        if (ver >= 13) {
+            vc = new Current();
+            AddLogEntry(ChatColor.GREEN + "1.13+ Version Loaded");
+        } else {
+            vc = new Legacy();
+            AddLogEntry(ChatColor.GREEN + "Legacy Version Loaded");
+        }
+
+        instance = this;
+
+        this.loadConfig();
         Metrics metrics = new Metrics(this);
         AddLogEntry("Boot finished.");
         if (getDescription().getVersion().contains("Beta")) {
             AddLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
         }
-	}
+    }
 	
 	private void loadConfig()
 	{
@@ -743,4 +767,9 @@ public class GPFlags extends JavaPlugin
     {
         return this.flagManager.onTabComplete(sender, command, alias, args);
     }
+
+    public static VersionControl getVersionControl() {
+        return vc;
+    }
+
 }

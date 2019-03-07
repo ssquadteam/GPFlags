@@ -1,5 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
+import me.ryanhamshire.GPFlags.util.VersionControl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -15,6 +16,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 public class FlagDef_NoMonsterSpawns extends FlagDefinition
 {
     private final String ALLOW_TARGET_TAG = "GPF_AllowTarget";
+    private VersionControl vc = GPFlags.getVersionControl();
     
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event)
@@ -38,12 +40,10 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition
     private boolean isMonster(Entity entity)
     {
         if(entity instanceof Monster) return true;
+
+        if(vc.isMonster(entity)) return true;
         
-        EntityType type = entity.getType();
-        if(type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER ||
-                type == EntityType.PHANTOM || type == EntityType.SLIME) return true;
-        
-        if(type == EntityType.RABBIT)
+        if(entity.getType() == EntityType.RABBIT)
         {
             Rabbit rabbit = (Rabbit)entity;
             if(rabbit.getRabbitType() == Rabbit.Type.THE_KILLER_BUNNY) return true;
