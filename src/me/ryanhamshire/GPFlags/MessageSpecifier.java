@@ -1,6 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
-class MessageSpecifier
+public class MessageSpecifier
 {
     Messages messageID;
     String [] messageParams;

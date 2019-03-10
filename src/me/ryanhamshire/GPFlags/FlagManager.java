@@ -23,89 +23,77 @@ import org.bukkit.util.StringUtil;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 
-public class FlagManager implements TabCompleter
-{
+public class FlagManager implements TabCompleter {
     private ConcurrentHashMap<String, FlagDefinition> definitions;
     private ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>> flags;
     
     static final String DEFAULT_FLAG_ID = "-2";
     
-    FlagManager()
-    {
+    public FlagManager() {
         this.definitions = new ConcurrentHashMap<String, FlagDefinition>();
         this.flags = new ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>>();
     }
     
-    void RegisterFlagDefinition(FlagDefinition def)
-    {
+    public void RegisterFlagDefinition(FlagDefinition def) {
         String name = def.getName();
         this.definitions.put(name.toLowerCase(),  def);
     }
     
-    FlagDefinition GetFlagDefinitionByName(String name)
+    public FlagDefinition GetFlagDefinitionByName(String name)
     {
         return this.definitions.get(name.toLowerCase());
     }
     
-    Collection<FlagDefinition> GetFlagDefinitions()
-    {
+    public Collection<FlagDefinition> GetFlagDefinitions() {
         Collection<FlagDefinition> definitions = new ArrayList<FlagDefinition>(this.definitions.values());
         return definitions;
     }
     
-    SetFlagResult SetFlag(String id, FlagDefinition def, boolean isActive, String... args)
-    {
+    public SetFlagResult SetFlag(String id, FlagDefinition def, boolean isActive, String... args) {
         String parameters = "";
-        for(String arg : args)
-        {
+        for(String arg : args) {
             parameters += arg + " ";
         }
         parameters = parameters.trim();
         
         SetFlagResult result;
-        if(isActive)
-        {
+        if(isActive) {
             result = def.ValidateParameters(parameters);
             if(!result.success) return result;
         }
-        else
-        {
+        else {
             result = new SetFlagResult(true, def.GetUnSetMessage());
         }
         
         Flag flag = new Flag(def, parameters);
         flag.setSet(isActive);
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
-        if(claimFlags == null)
-        {
+        if(claimFlags == null) {
             claimFlags = new ConcurrentHashMap<String, Flag>();
             this.flags.put(id, claimFlags);
         }
         
         String key = def.getName().toLowerCase();
-        if(!claimFlags.containsKey(key) && isActive)
-        {
+        if(!claimFlags.containsKey(key) && isActive) {
             def.incrementInstances();
         }
         claimFlags.put(key, flag);
         return result;
     }
 
-    Flag GetFlag(String id, FlagDefinition flagDef)
+    public Flag GetFlag(String id, FlagDefinition flagDef)
     {
         return this.GetFlag(id,  flagDef.getName());
     }
     
-    Flag GetFlag(String id, String flag)
-    {
+    public Flag GetFlag(String id, String flag) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null) return null;
         Flag claimFlag = claimFlags.get(flag.toLowerCase());
         return claimFlag;
     }
 
-    Collection<Flag> GetFlags(String id)
-    {
+    public Collection<Flag> GetFlags(String id) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null)
         {
@@ -117,8 +105,7 @@ public class FlagManager implements TabCompleter
         }
     }
 
-    SetFlagResult UnSetFlag(String id, FlagDefinition def)
-    {
+    public SetFlagResult UnSetFlag(String id, FlagDefinition def) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null || !claimFlags.containsKey(def.getName().toLowerCase()))
         {
@@ -131,28 +118,23 @@ public class FlagManager implements TabCompleter
         }
     }
     
-    List<MessageSpecifier> Load(String input) throws InvalidConfigurationException
-    {
+    List<MessageSpecifier> Load(String input) throws InvalidConfigurationException {
         this.flags.clear();
         YamlConfiguration yaml = new YamlConfiguration();
         yaml.loadFromString(input);
 
         ArrayList<MessageSpecifier> errors = new ArrayList<MessageSpecifier>();
         Set<String> claimIDs = yaml.getKeys(false);
-        for(String claimID : claimIDs)
-        {
+        for(String claimID : claimIDs) {
             Set<String> flagNames = yaml.getConfigurationSection(claimID).getKeys(false);
-            for(String flagName : flagNames)
-            {
+            for(String flagName : flagNames) {
                 String paramsDefault = yaml.getString(claimID + "." + flagName);
                 String params = yaml.getString(claimID + "." + flagName + ".params", paramsDefault);
                 boolean set = yaml.getBoolean(claimID + "." + flagName + ".value", true);
                 FlagDefinition def = this.GetFlagDefinitionByName(flagName);
-                if(def != null)
-                {
+                if(def != null) {
                     SetFlagResult result = this.SetFlag(claimID, def, set, params);
-                    if(!result.success)
-                    {
+                    if(!result.success) {
                         errors.add(result.message);
                     }
                 }
@@ -162,8 +144,7 @@ public class FlagManager implements TabCompleter
         return errors;
     }
     
-    void Save()
-    {
+    public void Save() {
         try
         {
             this.Save(FlagsDataStore.flagsFilePath);
@@ -175,8 +156,7 @@ public class FlagManager implements TabCompleter
         }
     }
     
-    String FlagsToString()
-    {
+    public String FlagsToString() {
         YamlConfiguration yaml = new YamlConfiguration();
         
         Set<String> claimIDs = this.flags.keySet();
@@ -198,8 +178,7 @@ public class FlagManager implements TabCompleter
         return yaml.saveToString();
     }
     
-    void Save(String filepath) throws UnsupportedEncodingException, IOException
-    {
+    public void Save(String filepath) throws UnsupportedEncodingException, IOException {
         String fileContent = this.FlagsToString();
         File file = new File(filepath);
         file.getParentFile().mkdirs();
@@ -207,8 +186,7 @@ public class FlagManager implements TabCompleter
         Files.write(fileContent.getBytes("UTF-8"), file);
     }
     
-    List<MessageSpecifier> Load(File file) throws IOException, InvalidConfigurationException
-    {
+    public List<MessageSpecifier> Load(File file) throws IOException, InvalidConfigurationException {
         if(!file.exists()) return this.Load("");
         
         List<String> lines = Files.readLines(file, Charset.forName("UTF-8"));
@@ -221,13 +199,11 @@ public class FlagManager implements TabCompleter
         return this.Load(builder.toString());
     }
 
-    void clear()
-    {
+    public void clear() {
         this.flags.clear();
     }
 
-    public void removeExceptClaimIDs(HashSet<String> validClaimIDs)
-    {
+    void removeExceptClaimIDs(HashSet<String> validClaimIDs) {
         HashSet<String> toRemove = new HashSet<String>();
         for(String key : this.flags.keySet())
         {
@@ -282,4 +258,5 @@ public class FlagManager implements TabCompleter
         Collections.sort(matches, String.CASE_INSENSITIVE_ORDER);
         return matches;
     }
+
 }

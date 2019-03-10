@@ -1,6 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
-class SetFlagResult
+public class SetFlagResult
 {
     boolean success;
     MessageSpecifier message;
