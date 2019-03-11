@@ -16,7 +16,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if(flag == null) return true;
 
         if(from == null || flag == this.GetFlagInstanceAtLocation(from, player)) return true;
-        if(flag.parameters.contains(player.getName()))
+        if (flag.parameters.toUpperCase().contains(player.getName().toUpperCase()))
         {
             GPFlags.sendMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
             return false;
