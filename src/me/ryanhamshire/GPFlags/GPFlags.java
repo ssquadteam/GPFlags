@@ -1,6 +1,8 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
+import com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl;
+import com.sun.org.apache.xerces.internal.xs.StringList;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GPFlags.util.Current;
@@ -11,6 +13,7 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,10 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class GPFlags extends JavaPlugin
@@ -138,17 +138,19 @@ public class GPFlags extends JavaPlugin
             settings.pvpExitClaimMessage = inConfig.getString("World Flags." + worldName + ".ExitMessage", "PvP is disabled in this area, you are now safe");
             outConfig.set("World Flags." + worldName + ".ExitMessage", settings.pvpExitClaimMessage);
 
+            // Adds default biomes to be ignored in the ChangeBiome flag
+            settings.biomeBlackList = inConfig.getList("World Flags." + worldName + ".Biomes.Blacklist", getVersionControl().getDefaultBiomes());
+            outConfig.set("World Flags." + worldName + ".Biomes.Blacklist", settings.biomeBlackList);
+
             outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + this.getDescription().getVersion() +
                     "\nServer Version: " + getServer().getVersion() + "\n\n");
         }
         
-        try
-        {
+        try {
             outConfig.save(FlagsDataStore.configFilePath);
             AddLogEntry("Finished loading configuration.");
         }
-        catch(IOException exception)
-        {
+        catch(IOException exception) {
             AddLogEntry("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
         
@@ -199,7 +201,6 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, this));
 
-            // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, this, this.worldSettingsManager));
@@ -210,6 +211,9 @@ public class GPFlags extends JavaPlugin
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
 
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFallDamage(this.flagManager, this));
+
+            // Experimental
+            this.flagManager.RegisterFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
 
             //try to hook into mcMMO
             try
@@ -603,20 +607,17 @@ public class GPFlags extends JavaPlugin
             
             String flagName = args[0];
             FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
-            if(def == null)
-            {
+            if(def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
             }
             
-            if(!this.playerHasPermissionForFlag(def, player))
-            {
+            if(!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
                 return true;
             }
             
-            if(claim.allowEdit(player) != null)
-            {
+            if(claim.allowEdit(player) != null) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
             }
@@ -628,7 +629,6 @@ public class GPFlags extends JavaPlugin
             }
 
             //TODO stop owner/ownermember fly flags from joining
-            String send = "You can't do that";
             Collection<Flag> flags;
             flags = this.flagManager.GetFlags(claim.getID().toString());
             for (Flag flag : flags) {
@@ -644,6 +644,25 @@ public class GPFlags extends JavaPlugin
                         return true;
                     }
                 }
+            }
+
+            // TODO SET BIOME
+            if (flagName.equalsIgnoreCase("ChangeBiome")) {
+                FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
+                Biome biome;
+                try {
+                    biome = Biome.valueOf(params[0].toUpperCase().replace(" ", "_"));
+                } catch (Exception e) {
+                    player.sendMessage(ChatColor.RED + "Invalid biome");
+                    return true;
+                }
+                if (worldSettingsManager.Get(player.getWorld()).biomeBlackList.contains(biome.toString())) {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
+                    return true;
+                }
+                flagD.changeBiome(claim, params[0]);
+
             }
 
             SetFlagResult result = this.flagManager.SetFlag(claimID.toString(), def, true, params);
@@ -677,6 +696,12 @@ public class GPFlags extends JavaPlugin
             {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
+            }
+
+            // TODO RESET BIOME
+            if (flagName.equalsIgnoreCase("ChangeBiome")) {
+                FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
+                flagD.resetBiome(claim.getID());
             }
             
             SetFlagResult result = this.flagManager.UnSetFlag(claimID.toString(), def);

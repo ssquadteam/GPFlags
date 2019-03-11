@@ -1,5 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
+import com.mojang.brigadier.Message;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -233,6 +234,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.DisabledNoFallDamage, "Players will now continue to take fall damage in this claim", null);
 
         this.addDefault(defaults, Messages.NoOwnerFlag, "You can not set both OwnerFly and OwnerMemberFly flags in one claim", null);
+
+        // Experimental
+        this.addDefault(defaults, Messages.ChangeBiomeSet, "The biome in this claim has been set to {0}", "0: Biome");
+        this.addDefault(defaults, Messages.ChangeBiomeUnset, "The biome in this claim has been restored", null);
 
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));

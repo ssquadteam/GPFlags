@@ -146,5 +146,9 @@ public enum Messages
     DisableNoFireDamage,
     EnabledNoFallDamage,
     DisabledNoFallDamage,
-    NoOwnerFlag
+    NoOwnerFlag,
+
+    //EXPERIMENTAL
+    ChangeBiomeSet,
+    ChangeBiomeUnset
 }

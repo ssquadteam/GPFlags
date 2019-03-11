@@ -1,27 +1,23 @@
 package me.ryanhamshire.GPFlags;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.google.common.collect.ImmutableList;
+import com.google.common.io.Files;
 import org.apache.commons.lang.Validate;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.io.Files;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FlagManager implements TabCompleter {
     private ConcurrentHashMap<String, FlagDefinition> definitions;
@@ -227,7 +223,8 @@ public class FlagManager implements TabCompleter {
         }
         
     }
-    
+
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException
     {
@@ -254,7 +251,25 @@ public class FlagManager implements TabCompleter {
                 matches.add(name);
             }
         }
-        
+
+        WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
+
+
+        if (args[0].equalsIgnoreCase("ChangeBiome")) {
+            if (args.length != 2) return null;
+            if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
+            ArrayList<String> biomes = new ArrayList<String>();
+            for (Biome biome : Biome.values()) {
+                if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
+                    if (!(settings.biomeBlackList.contains(biome.toString()))) {
+                        biomes.add(biome.toString());
+                    }
+
+                }
+            }
+            Collections.sort(biomes, String.CASE_INSENSITIVE_ORDER);
+            return biomes;
+        }
         Collections.sort(matches, String.CASE_INSENSITIVE_ORDER);
         return matches;
     }
