@@ -56,8 +56,7 @@ public class FlagManager implements TabCompleter {
         if(isActive) {
             result = def.ValidateParameters(parameters);
             if(!result.success) return result;
-        }
-        else {
+        } else {
             result = new SetFlagResult(true, def.GetUnSetMessage());
         }
         
@@ -91,24 +90,18 @@ public class FlagManager implements TabCompleter {
 
     public Collection<Flag> GetFlags(String id) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
-        if(claimFlags == null)
-        {
+        if(claimFlags == null) {
             return new ArrayList<Flag>();
-        }
-        else
-        {
+        } else {
             return new ArrayList<Flag>(claimFlags.values());
         }
     }
 
     public SetFlagResult UnSetFlag(String id, FlagDefinition def) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
-        if(claimFlags == null || !claimFlags.containsKey(def.getName().toLowerCase()))
-        {
+        if(claimFlags == null || !claimFlags.containsKey(def.getName().toLowerCase())) {
             return this.SetFlag(id, def, false);
-        }
-        else
-        {
+        } else {
             claimFlags.remove(def.getName().toLowerCase());
             return new SetFlagResult(true, def.GetUnSetMessage());
         }
@@ -141,12 +134,10 @@ public class FlagManager implements TabCompleter {
     }
     
     public void Save() {
-        try
-        {
+        try {
             this.Save(FlagsDataStore.flagsFilePath);
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             GPFlags.AddLogEntry("Failed to save flag data.  Details:");
             e.printStackTrace();
         }
@@ -156,13 +147,11 @@ public class FlagManager implements TabCompleter {
         YamlConfiguration yaml = new YamlConfiguration();
         
         Set<String> claimIDs = this.flags.keySet();
-        for(String claimID : claimIDs)
-        {
+        for(String claimID : claimIDs) {
             String claimPath = claimID.toString();
             ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
             Set<String> flagNames = claimFlags.keySet();
-            for(String flagName : flagNames)
-            {
+            for(String flagName : flagNames) {
                 Flag flag = claimFlags.get(flagName);
                 String paramsPath = claimPath + "." + flagName + ".params";
                 yaml.set(paramsPath, flag.parameters);
@@ -187,8 +176,7 @@ public class FlagManager implements TabCompleter {
         
         List<String> lines = Files.readLines(file, Charset.forName("UTF-8"));
         StringBuilder builder = new StringBuilder();
-        for(String line : lines)
-        {
+        for(String line : lines) {
             builder.append(line).append('\n');
         }
         
@@ -201,13 +189,10 @@ public class FlagManager implements TabCompleter {
 
     void removeExceptClaimIDs(HashSet<String> validClaimIDs) {
         HashSet<String> toRemove = new HashSet<String>();
-        for(String key : this.flags.keySet())
-        {
+        for(String key : this.flags.keySet()) {
             //if not a valid claim ID (maybe that claim was deleted)
-            if(!validClaimIDs.contains(key))
-            {
-                try
-                {
+            if(!validClaimIDs.contains(key)) {
+                try {
                     int numericalValue = Integer.parseInt(key);
                     
                     //if not a special value like default claims ID, remove
@@ -216,12 +201,9 @@ public class FlagManager implements TabCompleter {
                 catch(NumberFormatException e){ } //non-numbers represent server or world flags, so ignore those
             }
         }
-        
-        for(String key : toRemove)
-        {
+        for(String key : toRemove) {
             this.flags.remove(key);
         }
-        
     }
 
 
@@ -231,30 +213,26 @@ public class FlagManager implements TabCompleter {
         Validate.notNull(sender, "Sender cannot be null");
         Validate.notNull(args, "Arguments cannot be null");
         Validate.notNull(alias, "Alias cannot be null");
-        if (args.length == 0)
-        {
+        if (args.length == 0) {
                 return ImmutableList.of();
         }
         
         StringBuilder builder = new StringBuilder();
-        for(String arg : args)
-        {
+        for(String arg : args) {
             builder.append(arg + " ");
         }
         
         String arg = builder.toString().trim();
         ArrayList<String> matches = new ArrayList<String>();
-        for (String name : this.definitions.keySet())
-        {
-            if (StringUtil.startsWithIgnoreCase(name, arg))
-            {
+        for (String name : this.definitions.keySet()) {
+            if (StringUtil.startsWithIgnoreCase(name, arg)) {
                 matches.add(name);
             }
         }
 
         WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
 
-
+        // TabCompleter for Biomes in ChangeBiome flag
         if (args[0].equalsIgnoreCase("ChangeBiome")) {
             if (args.length != 2) return null;
             if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
@@ -263,8 +241,9 @@ public class FlagManager implements TabCompleter {
                 if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
                     if (!(settings.biomeBlackList.contains(biome.toString()))) {
                         biomes.add(biome.toString());
+                    } else if (sender.hasPermission("gpflags.bypass")) {
+                        biomes.add(biome.toString());
                     }
-
                 }
             }
             Collections.sort(biomes, String.CASE_INSENSITIVE_ORDER);
