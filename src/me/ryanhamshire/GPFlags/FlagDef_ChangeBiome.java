@@ -3,7 +3,6 @@ package me.ryanhamshire.GPFlags;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -23,7 +22,6 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     }
 
     public void changeBiome(Claim claim, String biome) {
-        Bukkit.broadcastMessage("Claim ID: " + claim);
         Location greater = claim.getGreaterBoundaryCorner();
         Location lesser = claim.getLesserBoundaryCorner();
 
@@ -133,10 +131,8 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     }
 
     @Override
-    SetFlagResult ValidateParameters(String parameters)
-    {
-        if(parameters.isEmpty())
-        {
+    SetFlagResult ValidateParameters(String parameters) {
+        if(parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.MessageRequired));
         }
 
