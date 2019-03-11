@@ -657,11 +657,13 @@ public class GPFlags extends JavaPlugin
                     return true;
                 }
                 if (worldSettingsManager.Get(player.getWorld()).biomeBlackList.contains(biome.toString())) {
-                    player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
-                    return true;
+                    if (!(player.hasPermission("gpflags.bypass"))) {
+                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
+                        return true;
+                    }
                 }
-                flagD.changeBiome(claim, params[0]);
+                flagD.changeBiome(claim, biome.toString());
 
             }
 
