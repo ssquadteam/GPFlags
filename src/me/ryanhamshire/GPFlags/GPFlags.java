@@ -55,21 +55,7 @@ public class GPFlags extends JavaPlugin {
     public void onEnable() {
         int ver = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
-        /*
-        try {
-            if (ver >= 13) {
-                //api = (API) Class.forName(API.class.getPackage().getName() + ".Current").newInstance();
-                api = new Current();
-                AddLogEntry(ChatColor.AQUA + "1.13+ Version Loaded");
-            } else {
-                //api = (API) Class.forName(API.class.getPackage().getName() + ".Legacy").newInstance();
-                api = new Legacy();
-                AddLogEntry(ChatColor.AQUA + "Legacy Version Loaded");
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            AddLogEntry(ChatColor.RED + "NO VERSION FOUND");
-        }
-        */
+        // Check if server is running MC 1.13+ (API Changes)
         if (ver >= 13) {
             vc = new Current();
             AddLogEntry(ChatColor.GREEN + "1.13+ Version Loaded");
@@ -194,7 +180,6 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerFly(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, this));
-
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, this, this.worldSettingsManager));
@@ -203,7 +188,6 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoIceForm(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
-
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFallDamage(this.flagManager, this));
 
             // Experimental
@@ -253,9 +237,7 @@ public class GPFlags extends JavaPlugin {
                 validIDs.add(subclaim.getID().toString());
             }
         }
-
         this.flagManager.removeExceptClaimIDs(validIDs);
-
         AddLogEntry("Finished loading data.");
     }
 
