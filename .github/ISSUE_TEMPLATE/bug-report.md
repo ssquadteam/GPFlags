@@ -25,8 +25,8 @@ about: Create a report to help us improve
 
 ### Server Information
 * **Server version/platform:**        <!-- /version -->
-* **GriefPrevention Version:**        <!-- /version Skript -->
-* **GriefPreventionFlags Version:**   <!-- /version Skript -->
+* **GriefPrevention Version:**        <!-- /version GriefPrevention -->
+* **GriefPreventionFlags Version:**   <!-- /version GriefPreventionFlags -->
 
 ### Additional Info
 <!--- Add any other information about the problem here --->
