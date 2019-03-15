@@ -32,7 +32,7 @@ public abstract class FlagDefinition implements Listener
     
     abstract MessageSpecifier GetUnSetMessage();
 
-    Flag GetFlagInstanceAtLocation(Location location, Player player)
+    public Flag GetFlagInstanceAtLocation(Location location, Player player)
     {
         Flag flag = null;
         if(GriefPrevention.instance.claimsEnabledForWorld(location.getWorld()))

@@ -14,7 +14,6 @@ import org.bukkit.util.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,8 +25,8 @@ public class FlagManager implements TabCompleter {
     static final String DEFAULT_FLAG_ID = "-2";
     
     public FlagManager() {
-        this.definitions = new ConcurrentHashMap<String, FlagDefinition>();
-        this.flags = new ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>>();
+        this.definitions = new ConcurrentHashMap<>();
+        this.flags = new ConcurrentHashMap<>();
     }
     
     public void RegisterFlagDefinition(FlagDefinition def) {
@@ -41,30 +40,29 @@ public class FlagManager implements TabCompleter {
     }
     
     public Collection<FlagDefinition> GetFlagDefinitions() {
-        Collection<FlagDefinition> definitions = new ArrayList<FlagDefinition>(this.definitions.values());
-        return definitions;
+        return new ArrayList<>(this.definitions.values());
     }
     
     public SetFlagResult SetFlag(String id, FlagDefinition def, boolean isActive, String... args) {
-        String parameters = "";
+        StringBuilder parameters = new StringBuilder();
         for(String arg : args) {
-            parameters += arg + " ";
+            parameters.append(arg).append(" ");
         }
-        parameters = parameters.trim();
+        parameters = new StringBuilder(parameters.toString().trim());
         
         SetFlagResult result;
         if(isActive) {
-            result = def.ValidateParameters(parameters);
+            result = def.ValidateParameters(parameters.toString());
             if(!result.success) return result;
         } else {
             result = new SetFlagResult(true, def.GetUnSetMessage());
         }
         
-        Flag flag = new Flag(def, parameters);
+        Flag flag = new Flag(def, parameters.toString());
         flag.setSet(isActive);
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null) {
-            claimFlags = new ConcurrentHashMap<String, Flag>();
+            claimFlags = new ConcurrentHashMap<>();
             this.flags.put(id, claimFlags);
         }
         
@@ -84,16 +82,15 @@ public class FlagManager implements TabCompleter {
     public Flag GetFlag(String id, String flag) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null) return null;
-        Flag claimFlag = claimFlags.get(flag.toLowerCase());
-        return claimFlag;
+        return claimFlags.get(flag.toLowerCase());
     }
 
     public Collection<Flag> GetFlags(String id) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
         if(claimFlags == null) {
-            return new ArrayList<Flag>();
+            return new ArrayList<>();
         } else {
-            return new ArrayList<Flag>(claimFlags.values());
+            return new ArrayList<>(claimFlags.values());
         }
     }
 
@@ -112,7 +109,7 @@ public class FlagManager implements TabCompleter {
         YamlConfiguration yaml = new YamlConfiguration();
         yaml.loadFromString(input);
 
-        ArrayList<MessageSpecifier> errors = new ArrayList<MessageSpecifier>();
+        ArrayList<MessageSpecifier> errors = new ArrayList<>();
         Set<String> claimIDs = yaml.getKeys(false);
         for(String claimID : claimIDs) {
             Set<String> flagNames = yaml.getConfigurationSection(claimID).getKeys(false);
@@ -148,14 +145,13 @@ public class FlagManager implements TabCompleter {
         
         Set<String> claimIDs = this.flags.keySet();
         for(String claimID : claimIDs) {
-            String claimPath = claimID.toString();
             ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
             Set<String> flagNames = claimFlags.keySet();
             for(String flagName : flagNames) {
                 Flag flag = claimFlags.get(flagName);
-                String paramsPath = claimPath + "." + flagName + ".params";
+                String paramsPath = claimID + "." + flagName + ".params";
                 yaml.set(paramsPath, flag.parameters);
-                String valuePath = claimPath + "." + flagName + ".value";
+                String valuePath = claimID + "." + flagName + ".value";
                 yaml.set(valuePath, flag.getSet());
             }
         }
@@ -163,7 +159,7 @@ public class FlagManager implements TabCompleter {
         return yaml.saveToString();
     }
     
-    public void Save(String filepath) throws UnsupportedEncodingException, IOException {
+    public void Save(String filepath) throws IOException {
         String fileContent = this.FlagsToString();
         File file = new File(filepath);
         file.getParentFile().mkdirs();
@@ -188,7 +184,7 @@ public class FlagManager implements TabCompleter {
     }
 
     void removeExceptClaimIDs(HashSet<String> validClaimIDs) {
-        HashSet<String> toRemove = new HashSet<String>();
+        HashSet<String> toRemove = new HashSet<>();
         for(String key : this.flags.keySet()) {
             //if not a valid claim ID (maybe that claim was deleted)
             if(!validClaimIDs.contains(key)) {
@@ -198,7 +194,7 @@ public class FlagManager implements TabCompleter {
                     //if not a special value like default claims ID, remove
                     if(numericalValue >= 0) toRemove.add(key);
                 }
-                catch(NumberFormatException e){ } //non-numbers represent server or world flags, so ignore those
+                catch(NumberFormatException ignore){ } //non-numbers represent server or world flags, so ignore those
             }
         }
         for(String key : toRemove) {
@@ -219,7 +215,7 @@ public class FlagManager implements TabCompleter {
         
         StringBuilder builder = new StringBuilder();
         for(String arg : args) {
-            builder.append(arg + " ");
+            builder.append(arg).append(" ");
         }
         
         String arg = builder.toString().trim();

@@ -37,13 +37,13 @@ public class GPFlags extends JavaPlugin {
     private static Logger log = Logger.getLogger("Minecraft");
 
     //this handles customizable messages
-    FlagsDataStore flagsDataStore;
+    public FlagsDataStore flagsDataStore;
 
     //this handles flags
-    FlagManager flagManager = new FlagManager();
+    public FlagManager flagManager = new FlagManager();
 
     //this handles worldwide settings (aka global flags)
-    WorldSettingsManager worldSettingsManager = new WorldSettingsManager();
+    public WorldSettingsManager worldSettingsManager = new WorldSettingsManager();
 
     private boolean registeredFlagDefinitions = false;
 
