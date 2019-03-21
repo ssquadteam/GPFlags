@@ -247,7 +247,7 @@ public class GPFlags extends JavaPlugin {
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
-            if (!cmd.getLabel().contains("server")) {
+            if (!cmd.getLabel().contains("server") && !cmd.getName().equalsIgnoreCase("GPFReload")) {
                 getLogger().info(ChatColor.RED + "This command can only be issued by a player");
                 return true;
             }
