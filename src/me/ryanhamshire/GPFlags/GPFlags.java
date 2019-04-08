@@ -195,13 +195,15 @@ public class GPFlags extends JavaPlugin {
 
             //try to hook into mcMMO
             try {
-                this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
-                this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMODeathPenalty(this.flagManager, this));
-                // Experimental
-                this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
+                if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
+                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
+                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMODeathPenalty(this.flagManager, this));
+                    // Experimental
+                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
+                }
             }
             //if failed, we just won't have those flags available
-            catch (NoClassDefFoundError exception) {
+            catch (NoClassDefFoundError ignore) {
             }
         } else {
             ((FlagDef_PlayerGamemode) this.flagManager.GetFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
