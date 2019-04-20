@@ -15,7 +15,9 @@ public class FlagDef_PlayerWeather extends PlayerMovementFlagDefinition implemen
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         if(flag == null) {
-            player.resetPlayerWeather();
+            if (this.GetFlagInstanceAtLocation(lastLocation, player) != null) {
+                player.resetPlayerWeather();
+            }
             return true;
         }
 

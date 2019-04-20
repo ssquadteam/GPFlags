@@ -14,8 +14,11 @@ public class FlagDef_PlayerTime extends PlayerMovementFlagDefinition implements 
         if(lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
+
         if(flag == null) {
-            player.resetPlayerTime();
+            if (this.GetFlagInstanceAtLocation(lastLocation, player) != null) {
+                player.resetPlayerTime();
+            }
             return true;
         }
         if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
