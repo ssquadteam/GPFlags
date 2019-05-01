@@ -233,6 +233,9 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnabledNoFallDamage, "Player will no longer take fall damage in this claim", null);
         this.addDefault(defaults, Messages.DisabledNoFallDamage, "Players will now continue to take fall damage in this claim", null);
 
+        this.addDefault(defaults, Messages.EnabledNoExplosionDamage, "Players will no longer take damage caused by explosions in this claim", null);
+        this.addDefault(defaults, Messages.DisabledNoExplosionDamage, "Players will now continue to take damage caused by explosions in this claim", null);
+
         this.addDefault(defaults, Messages.NoOwnerFlag, "You can not set both OwnerFly and OwnerMemberFly flags in one claim", null);
 
         // Experimental

@@ -189,6 +189,11 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoFallDamage(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand_Owner(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand_Members(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand_Owner(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand_Members(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoExplosionDamage(this.flagManager, this));
 
             // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
