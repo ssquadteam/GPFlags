@@ -6,39 +6,42 @@ import org.bukkit.event.EventPriority;
 
 import com.gmail.nossr50.events.hardcore.McMMOPlayerDeathPenaltyEvent;
 
-public class FlagDef_NoMcMMODeathPenalty extends FlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+public class FlagDef_NoMcMMODeathPenalty extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerDisarm(McMMOPlayerDeathPenaltyEvent event)
-    {
+    public void onPlayerDisarm(McMMOPlayerDeathPenaltyEvent event) {
         Player player = event.getPlayer();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if(flag != null)
-        {
+        if (flag != null) {
             event.setCancelled(true);
         }
     }
-    
-    public FlagDef_NoMcMMODeathPenalty(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_NoMcMMODeathPenalty(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "NoMcMMODeathPenalty";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoMcMMODeathPenalty);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableNoMcMMODeathPenalty);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

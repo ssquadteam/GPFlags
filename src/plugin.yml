@@ -8,6 +8,7 @@ website: https://www.spigotmc.org/resources/griefprevention-flags.55773/
 version: 5.2.0
 api-version: 1.13
 commands:
+   allflags:
    setclaimflag:
       description: Sets a flag on a GriefPrevention land claim.
       usage: /SetClaimFlag <flag> <optional parameters>

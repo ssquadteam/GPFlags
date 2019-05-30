@@ -6,6 +6,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoFireDamage extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -48,6 +51,11 @@ public class FlagDef_NoFireDamage extends FlagDefinition {
     MessageSpecifier GetUnSetMessage()
     {
         return new MessageSpecifier(Messages.DisableNoFireDamage);
+    }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
 
 }

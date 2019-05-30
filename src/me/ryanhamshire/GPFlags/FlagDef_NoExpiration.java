@@ -6,6 +6,9 @@ import org.bukkit.event.EventPriority;
 
 import me.ryanhamshire.GriefPrevention.events.ClaimExpirationEvent;
 
+import java.util.Collections;
+import java.util.List;
+
 public class FlagDef_NoExpiration extends FlagDefinition
 {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -19,7 +22,7 @@ public class FlagDef_NoExpiration extends FlagDefinition
         }
     }
     
-    public FlagDef_NoExpiration(FlagManager manager, GPFlags plugin)
+    FlagDef_NoExpiration(FlagManager manager, GPFlags plugin)
     {
         super(manager, plugin);
     }
@@ -41,4 +44,10 @@ public class FlagDef_NoExpiration extends FlagDefinition
     {
         return new MessageSpecifier(Messages.DisableNoExpiration);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Collections.singletonList(FlagType.CLAIM);
+    }
+
 }

@@ -6,6 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockFormEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoIceForm extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -42,4 +45,10 @@ public class FlagDef_NoIceForm extends FlagDefinition {
     {
         return new MessageSpecifier(Messages.DisableNoIceForm);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

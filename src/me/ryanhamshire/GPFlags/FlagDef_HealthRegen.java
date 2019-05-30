@@ -2,36 +2,33 @@ package me.ryanhamshire.GPFlags;
 
 import org.bukkit.entity.Player;
 
-public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
+
     @Override
-    long getPlayerCheckFrequency_Ticks()
-    {
+    long getPlayerCheckFrequency_Ticks() {
         return 100L;
     }
 
     @Override
-    void processPlayer(Player player)
-    {
-        if(player.getHealth() >= player.getMaxHealth() || player.isDead() == true) return;
-        
+    void processPlayer(Player player) {
+        if (player.getHealth() >= player.getMaxHealth() || player.isDead()) return;
+
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if(flag == null) return;
-        
+        if (flag == null) return;
+
         int healAmount = 2;
-        if(flag.parameters != null && !flag.parameters.isEmpty())
-        {
-            try
-            {
+        if (flag.parameters != null && !flag.parameters.isEmpty()) {
+            try {
                 healAmount = Integer.parseInt(flag.parameters);
-            }
-            catch(NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 GPFlags.AddLogEntry("Problem with health regen amount @ " + player.getLocation().getBlock().getLocation().toString());
             }
         }
-        
-        int newHealth = healAmount + (int)player.getHealth();
+
+        int newHealth = healAmount + (int) player.getHealth();
         player.setHealth(Math.min(player.getMaxHealth(), newHealth));
     }
     
@@ -47,49 +44,47 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition
         player.setHealth(player.getHealth() + 1);
         player.setSaturation(player.getSaturation() + 1);
     }*/
-    
-    public FlagDef_HealthRegen(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_HealthRegen(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "HealthRegen";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableHealthRegen);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableHealthRegen);
     }
-    
+
     @Override
-    SetFlagResult ValidateParameters(String parameters)
-    {
-        if(parameters.isEmpty()) return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
-        
+    SetFlagResult ValidateParameters(String parameters) {
+        if (parameters.isEmpty())
+            return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
+
         int amount;
-        try
-        {
+        try {
             amount = Integer.parseInt(parameters);
-            if(amount <= 0)
-            {
+            if (amount <= 0) {
                 return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
             }
-        }
-        catch(NumberFormatException e)
-        {
+        } catch (NumberFormatException e) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
         }
 
         return new SetFlagResult(true, this.GetSetMessage(parameters));
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

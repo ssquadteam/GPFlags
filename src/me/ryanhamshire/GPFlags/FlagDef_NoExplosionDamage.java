@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoExplosionDamage extends FlagDefinition {
 
     @EventHandler
@@ -36,6 +39,11 @@ public class FlagDef_NoExplosionDamage extends FlagDefinition {
     @Override
     MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisabledNoExplosionDamage);
+    }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
 
 }

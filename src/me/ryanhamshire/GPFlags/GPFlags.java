@@ -1,12 +1,10 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
-import com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl;
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
-import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GPFlags.util.Current;
 import me.ryanhamshire.GPFlags.util.Legacy;
+import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
@@ -24,7 +22,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class GPFlags extends JavaPlugin {
@@ -251,6 +252,14 @@ public class GPFlags extends JavaPlugin {
     //handles slash commands
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         Player player = null;
+        if (cmd.getName().equalsIgnoreCase("allflags")) {
+            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        flag.getName() + " &7" + flag.getFlagType()));
+            }
+            return true;
+
+        }
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
@@ -277,6 +286,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
                 return true;
             }
 
@@ -332,6 +346,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInServer);
                 return true;
             }
 
@@ -393,6 +412,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInWorld);
                 return true;
             }
 
@@ -527,6 +551,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
                 return true;
             }
 

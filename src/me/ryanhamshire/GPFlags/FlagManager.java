@@ -220,9 +220,26 @@ public class FlagManager implements TabCompleter {
         
         String arg = builder.toString().trim();
         ArrayList<String> matches = new ArrayList<String>();
+        String cmd = command.getName();
         for (String name : this.definitions.keySet()) {
             if (StringUtil.startsWithIgnoreCase(name, arg)) {
-                matches.add(name);
+                if (cmd.equalsIgnoreCase("setclaimflag") || cmd.equalsIgnoreCase("setdefaultclaimflag")
+                        || cmd.equalsIgnoreCase("unsetclaimflag") || cmd.equalsIgnoreCase("unsetdefaultclaimflag")) {
+                    if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                        matches.add(name);
+                    }
+                }
+                if (cmd.equalsIgnoreCase("setworldflag") || cmd.equalsIgnoreCase("unsetworldflag")) {
+                    if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
+                        matches.add(name);
+                    }
+                }
+                if (cmd.equalsIgnoreCase("setserverflag") || cmd.equalsIgnoreCase("unsetserverflag")) {
+                    if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
+                        matches.add(name);
+                    }
+                }
+
             }
         }
 

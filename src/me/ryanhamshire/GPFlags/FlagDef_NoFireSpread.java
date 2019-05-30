@@ -6,6 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockSpreadEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoFireSpread extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -20,7 +23,7 @@ public class FlagDef_NoFireSpread extends FlagDefinition {
         e.setCancelled(true);
     }
 
-    public FlagDef_NoFireSpread(FlagManager manager, GPFlags plugin)
+    FlagDef_NoFireSpread(FlagManager manager, GPFlags plugin)
     {
         super(manager, plugin);
     }
@@ -42,4 +45,10 @@ public class FlagDef_NoFireSpread extends FlagDefinition {
     {
         return new MessageSpecifier(Messages.DisabledNoFireSpread);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

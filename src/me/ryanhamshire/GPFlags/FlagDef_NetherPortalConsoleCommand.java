@@ -7,6 +7,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -14,7 +17,7 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
     {
         TeleportCause cause = event.getCause();
         
-        if(cause == null || cause != TeleportCause.NETHER_PORTAL) return;
+        if(cause != TeleportCause.NETHER_PORTAL) return;
         
         Player player = event.getPlayer();
         
@@ -30,7 +33,7 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
         }
     }
     
-    public FlagDef_NetherPortalConsoleCommand(FlagManager manager, GPFlags plugin)
+    FlagDef_NetherPortalConsoleCommand(FlagManager manager, GPFlags plugin)
     {
         super(manager, plugin);
     }
@@ -63,4 +66,10 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
     {
         return new MessageSpecifier(Messages.DisableNetherPortalConsoleCommand);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD);
+    }
+
 }

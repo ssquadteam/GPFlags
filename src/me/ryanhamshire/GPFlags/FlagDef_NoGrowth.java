@@ -6,6 +6,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoGrowth extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -30,7 +33,7 @@ public class FlagDef_NoGrowth extends FlagDefinition {
         event.setCancelled(true);
     }
 
-    public FlagDef_NoGrowth(FlagManager manager, GPFlags plugin)
+    FlagDef_NoGrowth(FlagManager manager, GPFlags plugin)
     {
         super(manager, plugin);
     }
@@ -52,4 +55,10 @@ public class FlagDef_NoGrowth extends FlagDefinition {
     {
         return new MessageSpecifier(Messages.DisableNoGrowth);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }
