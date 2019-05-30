@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings("WeakerAccess")
 public class GPFlags extends JavaPlugin {
     private static VersionControl vc;
 
@@ -68,7 +69,10 @@ public class GPFlags extends JavaPlugin {
         instance = this;
 
         this.loadConfig();
+
+        @SuppressWarnings("unused")
         Metrics metrics = new Metrics(this);
+
         AddLogEntry("Boot finished.");
         if (getDescription().getVersion().contains("Beta")) {
             AddLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
@@ -84,7 +88,7 @@ public class GPFlags extends JavaPlugin {
         FileConfiguration outConfig = new YamlConfiguration();
 
         List<World> worlds = this.getServer().getWorlds();
-        ArrayList<String> worldSettingsKeys = new ArrayList<String>();
+        ArrayList<String> worldSettingsKeys = new ArrayList<>();
         for (World world : worlds) {
             worldSettingsKeys.add(world.getName());
         }
@@ -250,16 +254,9 @@ public class GPFlags extends JavaPlugin {
     }
 
     //handles slash commands
+    @SuppressWarnings("NullableProblems")
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         Player player = null;
-        if (cmd.getName().equalsIgnoreCase("allflags")) {
-            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        flag.getName() + " &7" + flag.getFlagType()));
-            }
-            return true;
-
-        }
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
@@ -267,6 +264,12 @@ public class GPFlags extends JavaPlugin {
                 getLogger().info(ChatColor.RED + "This command can only be issued by a player");
                 return true;
             }
+        }
+        if (cmd.getName().equalsIgnoreCase("allflags")) {
+            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
+                GPFlags.sendMessage(player, flag.getName() + " &7" + flag.getFlagType());
+            }
+            return true;
         }
 
         if (cmd.getName().equalsIgnoreCase("GPFReload")) {
@@ -666,6 +669,10 @@ public class GPFlags extends JavaPlugin {
         sendMessage(player, color, specifier.messageID, specifier.messageParams);
     }
 
+    //sends a formatted message to a player
+    static void sendMessage(Player player, String message) {
+        sendMessage(player, ChatColor.translateAlternateColorCodes('&', message));
+    }
     //sends a color-coded message to a player
     static void sendMessage(Player player, ChatColor color, Messages messageID, String... args) {
         sendMessage(player, color, messageID, 0, args);
