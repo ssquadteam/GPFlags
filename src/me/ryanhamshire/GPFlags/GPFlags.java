@@ -257,6 +257,13 @@ public class GPFlags extends JavaPlugin {
     @SuppressWarnings("NullableProblems")
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         Player player = null;
+        if (cmd.getName().equalsIgnoreCase("allflags")) {
+            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        flag.getName() + " &7" + flag.getFlagType()));
+            }
+            return true;
+        }
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
@@ -265,13 +272,6 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
         }
-        if (cmd.getName().equalsIgnoreCase("allflags")) {
-            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
-                GPFlags.sendMessage(player, flag.getName() + " &7" + flag.getFlagType());
-            }
-            return true;
-        }
-
         if (cmd.getName().equalsIgnoreCase("GPFReload")) {
             this.loadConfig();
             GPFlags.sendMessage(player, TextMode.Success, Messages.ReloadComplete);
