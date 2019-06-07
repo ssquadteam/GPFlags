@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,7 +42,7 @@ public abstract class PlayerMovementFlagDefinition extends TimedPlayerFlagDefini
         }
     }
     
-    protected void undoMovement(Player player, Location lastLocation)
+    private void undoMovement(Player player, Location lastLocation)
     {
         if(lastLocation != null)
         {
@@ -54,5 +56,10 @@ public abstract class PlayerMovementFlagDefinition extends TimedPlayerFlagDefini
         {
             player.teleport(player.getWorld().getSpawnLocation());
         }
+    }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Collections.singletonList(FlagType.CLAIM);
     }
 }

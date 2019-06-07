@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoFallDamage extends FlagDefinition {
 
     @EventHandler
@@ -17,7 +20,7 @@ public class FlagDef_NoFallDamage extends FlagDefinition {
         e.setCancelled(true);
     }
 
-    public FlagDef_NoFallDamage(FlagManager manager, GPFlags plugin) {
+    FlagDef_NoFallDamage(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
@@ -34,6 +37,11 @@ public class FlagDef_NoFallDamage extends FlagDefinition {
     @Override
     MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisabledNoFallDamage);
+    }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
 
 }

@@ -219,12 +219,10 @@ public class FlagManager implements TabCompleter {
         }
         
         String arg = builder.toString().trim();
-        ArrayList<String> matches = new ArrayList<>();
+        ArrayList<String> matches = new ArrayList<String>();
         for (String name : this.definitions.keySet()) {
-            if (sender.hasPermission("gpflags." + name)) {
-                if (StringUtil.startsWithIgnoreCase(name, arg)) {
-                    matches.add(name);
-                }
+            if (StringUtil.startsWithIgnoreCase(name, arg)) {
+                matches.add(name);
             }
         }
 

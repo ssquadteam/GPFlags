@@ -1,6 +1,8 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,7 +22,8 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import me.ryanhamshire.GriefPrevention.events.PreventBlockBreakEvent;
 
 public class FlagDef_SpleefArena extends FlagDefinition {
-    ConcurrentHashMap<UUID, Location> respawnMap = new ConcurrentHashMap<UUID, Location>();
+
+    ConcurrentHashMap<UUID, Location> respawnMap = new ConcurrentHashMap<>();
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR)
@@ -193,6 +196,11 @@ public class FlagDef_SpleefArena extends FlagDefinition {
 
             return b.getType() == blockMat;
         }
-
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Collections.singletonList(FlagType.CLAIM);
+    }
+
 }

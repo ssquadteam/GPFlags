@@ -1,12 +1,10 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
-import com.sun.org.apache.xerces.internal.impl.xs.util.StringListImpl;
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
-import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GPFlags.util.Current;
 import me.ryanhamshire.GPFlags.util.Legacy;
+import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
@@ -24,9 +22,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Logger;
 
+@SuppressWarnings("WeakerAccess")
 public class GPFlags extends JavaPlugin {
     private static VersionControl vc;
 
@@ -67,7 +69,10 @@ public class GPFlags extends JavaPlugin {
         instance = this;
 
         this.loadConfig();
+
+        @SuppressWarnings("unused")
         Metrics metrics = new Metrics(this);
+
         AddLogEntry("Boot finished.");
         if (getDescription().getVersion().contains("Beta")) {
             AddLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
@@ -83,7 +88,7 @@ public class GPFlags extends JavaPlugin {
         FileConfiguration outConfig = new YamlConfiguration();
 
         List<World> worlds = this.getServer().getWorlds();
-        ArrayList<String> worldSettingsKeys = new ArrayList<String>();
+        ArrayList<String> worldSettingsKeys = new ArrayList<>();
         for (World world : worlds) {
             worldSettingsKeys.add(world.getName());
         }
@@ -197,6 +202,7 @@ public class GPFlags extends JavaPlugin {
 
             // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, this));
 
             //try to hook into mcMMO
             try {
@@ -249,8 +255,16 @@ public class GPFlags extends JavaPlugin {
     }
 
     //handles slash commands
+    @SuppressWarnings("NullableProblems")
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         Player player = null;
+        if (cmd.getName().equalsIgnoreCase("allflags")) {
+            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        flag.getName() + " &7" + flag.getFlagType()));
+            }
+            return true;
+        }
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
@@ -259,7 +273,6 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
         }
-
         if (cmd.getName().equalsIgnoreCase("GPFReload")) {
             this.loadConfig();
             GPFlags.sendMessage(player, TextMode.Success, Messages.ReloadComplete);
@@ -277,6 +290,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
                 return true;
             }
 
@@ -332,6 +350,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInServer);
                 return true;
             }
 
@@ -393,6 +416,11 @@ public class GPFlags extends JavaPlugin {
 
             if (!this.playerHasPermissionForFlag(def, player)) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+                return true;
+            }
+
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInWorld);
                 return true;
             }
 
@@ -530,6 +558,11 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
 
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
+                return true;
+            }
+
             if (claim.allowEdit(player) != null) {
                 GPFlags.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
@@ -637,6 +670,10 @@ public class GPFlags extends JavaPlugin {
         sendMessage(player, color, specifier.messageID, specifier.messageParams);
     }
 
+    //sends a formatted message to a player
+    static void sendMessage(Player player, String message) {
+        sendMessage(player, ChatColor.translateAlternateColorCodes('&', message));
+    }
     //sends a color-coded message to a player
     static void sendMessage(Player player, ChatColor color, Messages messageID, String... args) {
         sendMessage(player, color, messageID, 0, args);

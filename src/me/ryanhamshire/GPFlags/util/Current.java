@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags.util;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.data.Openable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 
@@ -18,6 +20,11 @@ public class Current implements VersionControl {
         biomes.add("MUSHROOM_FIELDS");
         biomes.add("MUSHROOM_FIELD_SHORE");
         return biomes;
+    }
+
+    @Override
+    public boolean isOpenable(Block block) {
+        return block.getBlockData() instanceof Openable;
     }
 
 }

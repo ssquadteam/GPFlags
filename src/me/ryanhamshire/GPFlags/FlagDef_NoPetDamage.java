@@ -6,44 +6,47 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-public class FlagDef_NoPetDamage extends FlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+public class FlagDef_NoPetDamage extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityDamage(EntityDamageEvent event)
-    {
+    public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
-        if(!(entity instanceof Tameable)) return;
-        
-        Tameable tameable = (Tameable)entity;
-        if(!tameable.isTamed() || tameable.getOwner() == null) return;
-        
+        if (!(entity instanceof Tameable)) return;
+
+        Tameable tameable = (Tameable) entity;
+        if (!tameable.isTamed() || tameable.getOwner() == null) return;
+
         Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
-        if(flag != null)
-        {
+        if (flag != null) {
             event.setCancelled(true);
         }
     }
-    
-    public FlagDef_NoPetDamage(FlagManager manager, GPFlags plugin)
-    {
+
+    public FlagDef_NoPetDamage(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "NoPetDamage";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoPetDamage);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableNoPetDamage);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

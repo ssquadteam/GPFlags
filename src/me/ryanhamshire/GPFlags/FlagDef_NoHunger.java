@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,113 +11,98 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-public class FlagDef_NoHunger extends TimedPlayerFlagDefinition
-{
-    ConcurrentHashMap<UUID, Integer> lastFoodMap = new ConcurrentHashMap<UUID, Integer>();
-    
+public class FlagDef_NoHunger extends TimedPlayerFlagDefinition {
+
+    private ConcurrentHashMap<UUID, Integer> lastFoodMap = new ConcurrentHashMap<>();
+
     @Override
-    long getPlayerCheckFrequency_Ticks()
-    {
+    long getPlayerCheckFrequency_Ticks() {
         return 100L;
     }
 
     @Override
-    void processPlayer(Player player)
-    {
-        if(player.getFoodLevel() >= 20) return;
-        
+    void processPlayer(Player player) {
+        if (player.getFoodLevel() >= 20) return;
+
         UUID playerID = player.getUniqueId();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if(flag != null)
-        {
+        if (flag != null) {
             Integer lastFoodLevel = this.lastFoodMap.get(playerID);
-            if(lastFoodLevel != null && player.getFoodLevel() < lastFoodLevel)
-            {
+            if (lastFoodLevel != null && player.getFoodLevel() < lastFoodLevel) {
                 player.setFoodLevel(lastFoodLevel);
             }
-            
+
             int healAmount = 0;
-            if(flag.parameters != null && !flag.parameters.isEmpty())
-            {
-                try
-                {
+            if (flag.parameters != null && !flag.parameters.isEmpty()) {
+                try {
                     healAmount = Integer.parseInt(flag.parameters);
-                }
-                catch(NumberFormatException e)
-                {
+                } catch (NumberFormatException e) {
                     GPFlags.AddLogEntry("Problem with hunger level regen amount @ " + player.getLocation().getBlock().getLocation().toString());
                 }
             }
-            
+
             int newFoodLevel = healAmount + player.getFoodLevel();
             player.setFoodLevel((Math.min(20, newFoodLevel)));
             player.setSaturation(player.getFoodLevel());
         }
-        
+
         this.lastFoodMap.put(playerID, player.getFoodLevel());
     }
-    
+
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerDamage(EntityDamageEvent event)
-    {
-        if(event.getCause() != DamageCause.STARVATION) return;
-        if(event.getEntityType() != EntityType.PLAYER) return;
-        Player player = (Player)event.getEntity();
+    public void onPlayerDamage(EntityDamageEvent event) {
+        if (event.getCause() != DamageCause.STARVATION) return;
+        if (event.getEntityType() != EntityType.PLAYER) return;
+        Player player = (Player) event.getEntity();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if(flag == null) return;
-        
+        if (flag == null) return;
+
         event.setCancelled(true);
         player.setFoodLevel(player.getFoodLevel() + 1);
         player.setSaturation(player.getFoodLevel());
     }
-    
-    public FlagDef_NoHunger(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_NoHunger(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "NoHunger";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoHunger, parameters);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableNoHunger);
     }
-    
+
     @Override
-    SetFlagResult ValidateParameters(String parameters)
-    {
-        if(!parameters.isEmpty())
-        {
+    SetFlagResult ValidateParameters(String parameters) {
+        if (!parameters.isEmpty()) {
             int amount;
-            try
-            {
+            try {
                 amount = Integer.parseInt(parameters);
-                if(amount < 0)
-                {
+                if (amount < 0) {
                     return new SetFlagResult(false, new MessageSpecifier(Messages.FoodRegenInvalid));
                 }
-            }
-            catch(NumberFormatException e)
-            {
+            } catch (NumberFormatException e) {
                 return new SetFlagResult(false, new MessageSpecifier(Messages.FoodRegenInvalid));
             }
-        }
-        else
-        {
+        } else {
             return new SetFlagResult(false, new MessageSpecifier(Messages.FoodRegenInvalid));
         }
 
         return new SetFlagResult(true, this.GetSetMessage(parameters));
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

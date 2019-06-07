@@ -5,39 +5,43 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
-public class FlagDef_NoItemDrop extends FlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+public class FlagDef_NoItemDrop extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerDropItem(PlayerDropItemEvent event)
-    {
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        
+
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if(flag == null) return;
-        
+        if (flag == null) return;
+
         event.setCancelled(true);
     }
-    
-    public FlagDef_NoItemDrop(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_NoItemDrop(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "NoItemDrop";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoItemDrop);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableNoItemDrop);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

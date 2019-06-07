@@ -14,52 +14,56 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.projectiles.ProjectileSource;
 
-public class FlagDef_InfiniteArrows extends FlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+public class FlagDef_InfiniteArrows extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.LOW)
-    public void onProjectileHit(ProjectileHitEvent event)
-    {
-        if(event.getEntityType() != EntityType.ARROW && event.getEntityType() != EntityType.SNOWBALL) return;
-        
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (event.getEntityType() != EntityType.ARROW && event.getEntityType() != EntityType.SNOWBALL) return;
+
         Projectile arrow = event.getEntity();
-        
+
         ProjectileSource source = arrow.getShooter();
-        if(source == null || !(source instanceof Player)) return;
-        
-        Player player = (Player)source;
-        if(player.getGameMode() == GameMode.CREATIVE) return;
-        
+        if (source == null || !(source instanceof Player)) return;
+
+        Player player = (Player) source;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
+
         Flag flag = this.GetFlagInstanceAtLocation(arrow.getLocation(), player);
-        if(flag == null) return;
-        
+        if (flag == null) return;
+
         PlayerInventory inventory = player.getInventory();
         ItemMeta meta = inventory.getItemInMainHand().getItemMeta();
-        if(meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
-        
+        if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
+
         arrow.remove();
         inventory.addItem(new ItemStack(Material.ARROW));
     }
-    
-    public FlagDef_InfiniteArrows(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_InfiniteArrows(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "InfiniteArrows";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableInfiniteArrows);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableInfiniteArrows);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

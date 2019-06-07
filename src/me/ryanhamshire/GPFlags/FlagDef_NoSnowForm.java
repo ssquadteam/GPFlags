@@ -6,6 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockFormEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FlagDef_NoSnowForm extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -20,7 +23,7 @@ public class FlagDef_NoSnowForm extends FlagDefinition {
         event.setCancelled(true);
     }
 
-    public FlagDef_NoSnowForm(FlagManager manager, GPFlags plugin)
+    FlagDef_NoSnowForm(FlagManager manager, GPFlags plugin)
     {
         super(manager, plugin);
     }
@@ -42,4 +45,10 @@ public class FlagDef_NoSnowForm extends FlagDefinition {
     {
         return new MessageSpecifier(Messages.DisableNoSnowForm);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }

@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
-public enum Messages
-{
+public enum Messages {
+
     NoFlagsInThisClaim,
     ThatFlagNotSet,
     InvalidFlagDefName,
@@ -11,7 +11,7 @@ public enum Messages
     FlagsDefault,
     DefaultFlagSet,
     DefaultFlagUnSet,
-    DisableMonsterSpawns, 
+    DisableMonsterSpawns,
     EnableMonsterSpawns,
     ReloadComplete,
     AddEnablePvP,
@@ -152,5 +152,13 @@ public enum Messages
 
     //EXPERIMENTAL
     ChangeBiomeSet,
-    ChangeBiomeUnset
+    ChangeBiomeUnset,
+
+    NoFlagInClaim,
+    NoFlagInWorld,
+    NoFlagInServer,
+
+    EnableNoOpenDoor,
+    DisableNoOpenDoor,
+    NoOpenDoorMessage
 }

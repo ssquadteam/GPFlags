@@ -11,6 +11,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FlagDef_ChangeBiome extends FlagDefinition {
@@ -149,4 +150,8 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         return new MessageSpecifier(Messages.ChangeBiomeUnset); // TODO CHANGE
     }
 
+    @Override
+    List<FlagType> getFlagType() {
+        return Collections.singletonList(FlagType.CLAIM);
+    }
 }

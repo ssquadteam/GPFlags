@@ -1,7 +1,9 @@
 package me.ryanhamshire.GPFlags.util;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.material.Openable;
 
 import java.util.ArrayList;
 
@@ -18,6 +20,11 @@ public class Legacy implements VersionControl {
         biomes.add("MUSHROOM_ISLAND");
         biomes.add("MUSHROOM_ISLAND_SHORE");
         return biomes;
+    }
+
+    @Override
+    public boolean isOpenable(Block block) {
+        return block.getState().getData() instanceof Openable;
     }
 
 }

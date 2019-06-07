@@ -5,39 +5,43 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.LeavesDecayEvent;
 
-public class FlagDef_NoLeafDecay extends FlagDefinition
-{
+import java.util.Arrays;
+import java.util.List;
+
+public class FlagDef_NoLeafDecay extends FlagDefinition {
+
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onLeafDecay(LeavesDecayEvent event)
-    {
+    public void onLeafDecay(LeavesDecayEvent event) {
         Block block = event.getBlock();
-        
+
         Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
-        if(flag == null) return;
-        
+        if (flag == null) return;
+
         event.setCancelled(true);
     }
-    
-    public FlagDef_NoLeafDecay(FlagManager manager, GPFlags plugin)
-    {
+
+    FlagDef_NoLeafDecay(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @Override
-    String getName()
-    {
+    String getName() {
         return "NoLeafDecay";
     }
 
     @Override
-    MessageSpecifier GetSetMessage(String parameters)
-    {
+    MessageSpecifier GetSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoLeafDecay);
     }
 
     @Override
-    MessageSpecifier GetUnSetMessage()
-    {
+    MessageSpecifier GetUnSetMessage() {
         return new MessageSpecifier(Messages.DisableNoLeafDecay);
     }
+
+    @Override
+    List<FlagType> getFlagType() {
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+    }
+
 }
