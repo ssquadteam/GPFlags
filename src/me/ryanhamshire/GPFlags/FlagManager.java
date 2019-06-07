@@ -204,49 +204,66 @@ public class FlagManager implements TabCompleter {
 
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException
-    {
-        Validate.notNull(sender, "Sender cannot be null");
-        Validate.notNull(args, "Arguments cannot be null");
-        Validate.notNull(alias, "Alias cannot be null");
-        if (args.length == 0) {
-                return ImmutableList.of();
-        }
-        
-        StringBuilder builder = new StringBuilder();
-        for(String arg : args) {
-            builder.append(arg).append(" ");
-        }
-        
-        String arg = builder.toString().trim();
-        ArrayList<String> matches = new ArrayList<String>();
-        for (String name : this.definitions.keySet()) {
-            if (StringUtil.startsWithIgnoreCase(name, arg)) {
-                matches.add(name);
-            }
-        }
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException
+	{
+		Validate.notNull(sender, "Sender cannot be null");
+		Validate.notNull(args, "Arguments cannot be null");
+		Validate.notNull(alias, "Alias cannot be null");
+		if (args.length == 0) {
+			return ImmutableList.of();
+		}
 
-        WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
+		StringBuilder builder = new StringBuilder();
+		for(String arg : args) {
+			builder.append(arg).append(" ");
+		}
 
-        // TabCompleter for Biomes in ChangeBiome flag
-        if (args[0].equalsIgnoreCase("ChangeBiome")) {
-            if (args.length != 2) return null;
-            if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
-            ArrayList<String> biomes = new ArrayList<String>();
-            for (Biome biome : Biome.values()) {
-                if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
-                    if (!(settings.biomeBlackList.contains(biome.toString()))) {
-                        biomes.add(biome.toString());
-                    } else if (sender.hasPermission("gpflags.bypass")) {
-                        biomes.add(biome.toString());
-                    }
-                }
-            }
-            Collections.sort(biomes, String.CASE_INSENSITIVE_ORDER);
-            return biomes;
-        }
-        Collections.sort(matches, String.CASE_INSENSITIVE_ORDER);
-        return matches;
-    }
+		String arg = builder.toString().trim();
+		ArrayList<String> matches = new ArrayList<String>();
+		String cmd = command.getName();
+		for (String name : this.definitions.keySet()) {
+			if (StringUtil.startsWithIgnoreCase(name, arg)) {
+				if (cmd.equalsIgnoreCase("setclaimflag") || cmd.equalsIgnoreCase("setdefaultclaimflag")
+						|| cmd.equalsIgnoreCase("unsetclaimflag") || cmd.equalsIgnoreCase("unsetdefaultclaimflag")) {
+					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+						matches.add(name);
+					}
+				}
+				if (cmd.equalsIgnoreCase("setworldflag") || cmd.equalsIgnoreCase("unsetworldflag")) {
+					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
+						matches.add(name);
+					}
+				}
+				if (cmd.equalsIgnoreCase("setserverflag") || cmd.equalsIgnoreCase("unsetserverflag")) {
+					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
+						matches.add(name);
+					}
+				}
+
+			}
+		}
+
+		WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
+
+		// TabCompleter for Biomes in ChangeBiome flag
+		if (args[0].equalsIgnoreCase("ChangeBiome")) {
+			if (args.length != 2) return null;
+			if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
+			ArrayList<String> biomes = new ArrayList<String>();
+			for (Biome biome : Biome.values()) {
+				if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
+					if (!(settings.biomeBlackList.contains(biome.toString()))) {
+						biomes.add(biome.toString());
+					} else if (sender.hasPermission("gpflags.bypass")) {
+						biomes.add(biome.toString());
+					}
+				}
+			}
+			Collections.sort(biomes, String.CASE_INSENSITIVE_ORDER);
+			return biomes;
+		}
+		Collections.sort(matches, String.CASE_INSENSITIVE_ORDER);
+		return matches;
+	}
 
 }
