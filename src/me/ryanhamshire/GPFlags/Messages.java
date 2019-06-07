@@ -156,5 +156,9 @@ public enum Messages {
 
     NoFlagInClaim,
     NoFlagInWorld,
-    NoFlagInServer
+    NoFlagInServer,
+
+    EnableNoOpenDoor,
+    DisableNoOpenDoor,
+    NoOpenDoorMessage
 }

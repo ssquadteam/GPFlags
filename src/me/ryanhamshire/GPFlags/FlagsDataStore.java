@@ -246,6 +246,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.NoFlagInWorld, "This flag can not be set for a whole world", null);
         this.addDefault(defaults, Messages.NoFlagInServer, "This flag can not be set for the whole server", null);
 
+        this.addDefault(defaults, Messages.EnableNoOpenDoor, "Doors can no longer be opened in this area", null);
+        this.addDefault(defaults, Messages.DisableNoOpenDoor, "Doors can now be opened in this area", null);
+        this.addDefault(defaults, Messages.NoOpenDoorMessage, "You do not have permission to open doors in this area", null);
+
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 		
