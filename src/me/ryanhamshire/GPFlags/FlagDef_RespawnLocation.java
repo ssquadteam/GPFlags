@@ -93,7 +93,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
 
     @Override
     List<FlagType> getFlagType() {
-        return Arrays.asList(FlagType.WORLD, FlagType.SERVER);
+        return Arrays.asList(FlagType.CLAIM);
     }
 
 }
