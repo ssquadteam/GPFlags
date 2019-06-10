@@ -31,9 +31,31 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
 				PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
 				Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
 
+				String[] params = null;
+				if (!flag.parameters.isEmpty()) {
+					params = flag.parameters.split(",");
+				}
+
 				if (claim.allowAccess(player) != null) {
-					e.setCancelled(true);
-					GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage);
+					if (params != null) {
+						for (String param : params) {
+							if (param.equalsIgnoreCase("doors") && vc.isDoor(block)) {
+								e.setCancelled(true);
+								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+							}
+							if (param.equalsIgnoreCase("trapdoors") && vc.isTrapDoor(block)) {
+								e.setCancelled(true);
+								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+							}
+							if (param.equalsIgnoreCase("gates") && vc.isGate(block)) {
+								e.setCancelled(true);
+								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+							}
+						}
+					} else {
+						e.setCancelled(true);
+						GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, "doors");
+					}
 				}
 			}
 		}
@@ -50,7 +72,11 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
 
 	@Override
 	MessageSpecifier GetSetMessage(String parameters) {
-		return new MessageSpecifier(Messages.EnableNoOpenDoor);
+		if (parameters.isEmpty()) {
+			return new MessageSpecifier(Messages.EnableNoOpenDoor);
+		} else {
+			return new MessageSpecifier(Messages.EnableNoOpenDoor, parameters);
+		}
 	}
 
 	@Override

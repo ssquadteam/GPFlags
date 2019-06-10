@@ -249,7 +249,7 @@ public class FlagManager implements TabCompleter {
 		if (args[0].equalsIgnoreCase("ChangeBiome")) {
 			if (args.length != 2) return null;
 			if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
-			ArrayList<String> biomes = new ArrayList<String>();
+			ArrayList<String> biomes = new ArrayList<>();
 			for (Biome biome : Biome.values()) {
 				if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
 					if (!(settings.biomeBlackList.contains(biome.toString()))) {
@@ -259,10 +259,22 @@ public class FlagManager implements TabCompleter {
 					}
 				}
 			}
-			Collections.sort(biomes, String.CASE_INSENSITIVE_ORDER);
+			biomes.sort(String.CASE_INSENSITIVE_ORDER);
 			return biomes;
 		}
-		Collections.sort(matches, String.CASE_INSENSITIVE_ORDER);
+		if (args[0].equalsIgnoreCase("noOpenDoors")) {
+			if (args.length != 2) return null;
+			List<String> doortype = Arrays.asList("doors", "trapdoors", "gates");
+			ArrayList<String> types = new ArrayList<>();
+			for (String type : doortype) {
+				if (StringUtil.startsWithIgnoreCase(type, args[1])) {
+					types.add(type);
+				}
+			}
+			types.sort(String.CASE_INSENSITIVE_ORDER);
+			return types;
+		}
+		matches.sort(String.CASE_INSENSITIVE_ORDER);
 		return matches;
 	}
 

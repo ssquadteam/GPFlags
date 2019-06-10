@@ -13,4 +13,10 @@ public interface VersionControl {
 
     boolean isOpenable(Block block);
 
+    boolean isGate(Block block);
+
+    boolean isDoor(Block block);
+
+    boolean isTrapDoor(Block block);
+
 }
