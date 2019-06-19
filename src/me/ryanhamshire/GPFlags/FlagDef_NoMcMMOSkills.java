@@ -1,13 +1,13 @@
 package me.ryanhamshire.GPFlags;
 
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
-import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +26,11 @@ public class FlagDef_NoMcMMOSkills extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerSecondaryAbility(SecondaryAbilityEvent event) {
+        this.handleEvent(event.getPlayer(), event);
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onPlayerSecondaryAbility(SubSkillEvent event) {
         this.handleEvent(event.getPlayer(), event);
     }
 
