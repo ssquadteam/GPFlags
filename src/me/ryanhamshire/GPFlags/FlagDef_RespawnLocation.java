@@ -1,11 +1,5 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,6 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class FlagDef_RespawnLocation extends FlagDefinition {
 
@@ -36,7 +35,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
         this.respawnMap.put(player.getUniqueId(), respawnLocation);
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         Location respawnLocation = this.respawnMap.get(player.getUniqueId());
@@ -93,7 +92,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
 
     @Override
     List<FlagType> getFlagType() {
-        return Arrays.asList(FlagType.CLAIM);
+        return Collections.singletonList(FlagType.CLAIM);
     }
 
 }
