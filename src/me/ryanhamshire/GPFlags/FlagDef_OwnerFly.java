@@ -15,17 +15,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener
-{
+public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener {
+
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
-    {
-        if(lastLocation == null) return true;
+    public boolean allowMovement(Player player, Location lastLocation) {
+        if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         Flag ownerMember = new FlagDef_OwnerMemberFly(this.flagManager, this.plugin).GetFlagInstanceAtLocation(to, player);
 
-        if(flag == null && ownerMember == null) {
+        if (flag == null && ownerMember == null) {
 
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
@@ -49,12 +48,12 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
 
         }
 
-        if(flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
         if (claim == null) return true;
-        if(!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
+        if (!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
@@ -79,10 +78,11 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         Player player = event.getPlayer();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
-        if(flag != null) {
+        if (flag != null && claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             player.setAllowFlight(true);
-            if(below == Material.AIR) {
+            if (below == Material.AIR) {
                 player.setFlying(true);
             }
         }
@@ -101,7 +101,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         }
     }
 
-    public FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
+    FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 

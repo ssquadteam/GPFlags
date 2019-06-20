@@ -13,8 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener
-{
+public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener {
     @Override
     public boolean allowMovement(Player player, Location lastLocation) {
         if (lastLocation == null) return true;
@@ -78,16 +77,17 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         Player player = event.getPlayer();
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
-        if(flag != null) {
+        if (flag != null && claim.allowAccess(player) == null) {
             player.setAllowFlight(true);
-            if(below == Material.AIR) {
+            if (below == Material.AIR) {
                 player.setFlying(true);
             }
         }
     }
 
-    public FlagDef_OwnerMemberFly(FlagManager manager, GPFlags plugin) {
+    FlagDef_OwnerMemberFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
