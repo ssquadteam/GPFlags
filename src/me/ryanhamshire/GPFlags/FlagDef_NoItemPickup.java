@@ -3,7 +3,7 @@ package me.ryanhamshire.GPFlags;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,16 +11,18 @@ import java.util.List;
 public class FlagDef_NoItemPickup extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        Player player = event.getPlayer();
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = ((Player) event.getEntity());
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
+            Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+            if (flag == null) return;
 
-        event.setCancelled(true);
+            event.setCancelled(true);
+        }
     }
 
-    public FlagDef_NoItemPickup(FlagManager manager, GPFlags plugin) {
+    FlagDef_NoItemPickup(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
@@ -43,4 +45,5 @@ public class FlagDef_NoItemPickup extends FlagDefinition {
     List<FlagType> getFlagType() {
         return Arrays.asList(FlagType.CLAIM, FlagType.SERVER, FlagType.WORLD);
     }
+
 }
