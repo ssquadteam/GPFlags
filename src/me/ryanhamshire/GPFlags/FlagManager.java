@@ -204,8 +204,7 @@ public class FlagManager implements TabCompleter {
 
 
     @Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException
-	{
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException {
 		Validate.notNull(sender, "Sender cannot be null");
 		Validate.notNull(args, "Arguments cannot be null");
 		Validate.notNull(alias, "Alias cannot be null");
@@ -214,7 +213,7 @@ public class FlagManager implements TabCompleter {
 		}
 
 		StringBuilder builder = new StringBuilder();
-		for(String arg : args) {
+		for (String arg : args) {
 			builder.append(arg).append(" ");
 		}
 
@@ -226,41 +225,47 @@ public class FlagManager implements TabCompleter {
 				if (cmd.equalsIgnoreCase("setclaimflag") || cmd.equalsIgnoreCase("setdefaultclaimflag")
 						|| cmd.equalsIgnoreCase("unsetclaimflag") || cmd.equalsIgnoreCase("unsetdefaultclaimflag")) {
 					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
-						matches.add(name);
+						if (sender.hasPermission("gpflags." + name))
+							matches.add(name);
 					}
 				}
 				if (cmd.equalsIgnoreCase("setworldflag") || cmd.equalsIgnoreCase("unsetworldflag")) {
 					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
-						matches.add(name);
+						if (sender.hasPermission("gpflags." + name))
+							matches.add(name);
 					}
 				}
 				if (cmd.equalsIgnoreCase("setserverflag") || cmd.equalsIgnoreCase("unsetserverflag")) {
 					if (GPFlags.instance.flagManager.GetFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
-						matches.add(name);
+						if (sender.hasPermission("gpflags." + name))
+							matches.add(name);
 					}
 				}
 
 			}
 		}
 
-		WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
+		if (sender instanceof Player) {
+			WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
 
-		// TabCompleter for Biomes in ChangeBiome flag
-		if (args[0].equalsIgnoreCase("ChangeBiome")) {
-			if (args.length != 2) return null;
-			if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
-			ArrayList<String> biomes = new ArrayList<>();
-			for (Biome biome : Biome.values()) {
-				if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
-					if (!(settings.biomeBlackList.contains(biome.toString()))) {
-						biomes.add(biome.toString());
-					} else if (sender.hasPermission("gpflags.bypass")) {
-						biomes.add(biome.toString());
+
+			// TabCompleter for Biomes in ChangeBiome flag
+			if (args[0].equalsIgnoreCase("ChangeBiome")) {
+				if (args.length != 2) return null;
+				if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
+				ArrayList<String> biomes = new ArrayList<>();
+				for (Biome biome : Biome.values()) {
+					if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
+						if (!(settings.biomeBlackList.contains(biome.toString()))) {
+							biomes.add(biome.toString());
+						} else if (sender.hasPermission("gpflags.bypass")) {
+							biomes.add(biome.toString());
+						}
 					}
 				}
+				biomes.sort(String.CASE_INSENSITIVE_ORDER);
+				return biomes;
 			}
-			biomes.sort(String.CASE_INSENSITIVE_ORDER);
-			return biomes;
 		}
 		if (args[0].equalsIgnoreCase("noOpenDoors")) {
 			if (args.length != 2) return null;
