@@ -160,5 +160,8 @@ public enum Messages {
 
     EnableNoOpenDoor,
     DisableNoOpenDoor,
-    NoOpenDoorMessage
+    NoOpenDoorMessage,
+    EnabledNoVehicle,
+    DisabledNoVehicle,
+    NoPlaceVehicle
 }

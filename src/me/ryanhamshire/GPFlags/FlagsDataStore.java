@@ -238,7 +238,6 @@ public class FlagsDataStore
 
         this.addDefault(defaults, Messages.NoOwnerFlag, "You can not set both OwnerFly and OwnerMemberFly flags in one claim", null);
 
-        // Experimental
         this.addDefault(defaults, Messages.ChangeBiomeSet, "The biome in this claim has been set to {0}", "0: Biome");
         this.addDefault(defaults, Messages.ChangeBiomeUnset, "The biome in this claim has been restored", null);
 
@@ -249,6 +248,10 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnableNoOpenDoor, "Doors can no longer be opened in this area", null);
         this.addDefault(defaults, Messages.DisableNoOpenDoor, "Doors can now be opened in this area", null);
         this.addDefault(defaults, Messages.NoOpenDoorMessage, "You do not have permission to open {0} in this area", "0: DoorType");
+
+        this.addDefault(defaults, Messages.EnabledNoVehicle, "Vehicles can no longer be placed in this area", null);
+        this.addDefault(defaults, Messages.DisabledNoVehicle, "Vehicles can now be placed in this area", null);
+        this.addDefault(defaults, Messages.NoPlaceVehicle, "You can not place vehicles in this area", null);
 
         //load the config file
 		FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));

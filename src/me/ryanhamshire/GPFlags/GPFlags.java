@@ -200,9 +200,9 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand_Members(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoExplosionDamage(this.flagManager, this));
 
-            // Experimental
             this.flagManager.RegisterFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoVehicle(this.flagManager, this));
 
             //try to hook into mcMMO
             try {
