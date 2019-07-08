@@ -1,15 +1,16 @@
 package me.ryanhamshire.GPFlags;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 class SendPlayerMessageTask implements Runnable 
 {
-	private Player player;
+	private CommandSender player;
 	private ChatColor color;
 	private String message;
 	
-	public SendPlayerMessageTask(Player player, ChatColor color, String message)
+	public SendPlayerMessageTask(CommandSender player, ChatColor color, String message)
 	{
 		this.player = player;
 		this.color = color;

@@ -51,7 +51,7 @@ public class GPFlags extends JavaPlugin {
 
     //adds a server log entry
     static synchronized void AddLogEntry(String entry) {
-        log.info(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] ") + entry);
+        log.info(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
     }
 
     public void onEnable() {
@@ -268,7 +268,8 @@ public class GPFlags extends JavaPlugin {
         if (sender instanceof Player) {
             player = (Player) sender;
         } else {
-            if (!cmd.getLabel().contains("server") && !cmd.getName().equalsIgnoreCase("GPFReload")) {
+            if (!cmd.getLabel().contains("server") && !cmd.getName().equalsIgnoreCase("GPFReload") &&
+                    !cmd.getName().equalsIgnoreCase("SetClaimFlagPlayer")) {
                 getLogger().info(ChatColor.RED + "This command can only be issued by a player");
                 return true;
             }
@@ -395,6 +396,49 @@ public class GPFlags extends JavaPlugin {
                 this.flagManager.Save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
+            }
+
+            return true;
+        }
+
+        // Set a claimFlag for a player from console
+        if (cmd.getName().equalsIgnoreCase("SetClaimFlagPlayer")) {
+            if (args.length < 2) return false;
+            player = Bukkit.getPlayer(args[0]);
+            if (player == null) {
+                sendMessage(sender, "&c" + args[0] + " &7is not online");
+                return false;
+            }
+            PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+            if (claim == null || claim.allowEdit(player) != null) {
+                sendMessage(sender, "&cThis player is not standing in a claim they own");
+                return false;
+            }
+
+            String flagName = args[1];
+            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            if (def == null) {
+                sendMessage(sender, "&c" + args[1] + "&7 is not a valid flag");
+                return false;
+            }
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
+                return true;
+            }
+
+            String[] params = new String[args.length - 2];
+            for (int i = 2; i < args.length; i++) {
+                params[i - 2] = args[i];
+            }
+
+            SetFlagResult result = this.flagManager.SetFlag(claim.getID().toString(), def, true, params);
+            ChatColor color = result.success ? TextMode.Success : TextMode.Err;
+            GPFlags.sendMessage(sender, color, result.message.messageID, result.message.messageParams);
+            if (result.success) {
+                this.flagManager.Save();
+                sendMessage(sender, "&7Flag &b" + def.getName() + " &7successfully set in &b" + player.getName() + "&7's claim.");
+                return true;
             }
 
             return true;
@@ -529,7 +573,6 @@ public class GPFlags extends JavaPlugin {
         }
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
 
         if (claim == null) {
@@ -666,27 +709,27 @@ public class GPFlags extends JavaPlugin {
         this.flagsDataStore.close();
     }
 
-    private static void sendMessage(Player player, ChatColor color, MessageSpecifier specifier) {
+    private static void sendMessage(CommandSender player, ChatColor color, MessageSpecifier specifier) {
         sendMessage(player, color, specifier.messageID, specifier.messageParams);
     }
 
     //sends a formatted message to a player
-    static void sendMessage(Player player, String message) {
-        sendMessage(player, ChatColor.translateAlternateColorCodes('&', message));
+    static void sendMessage(CommandSender player, String message) {
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
     //sends a color-coded message to a player
-    static void sendMessage(Player player, ChatColor color, Messages messageID, String... args) {
+    static void sendMessage(CommandSender player, ChatColor color, Messages messageID, String... args) {
         sendMessage(player, color, messageID, 0, args);
     }
 
     //sends a color-coded message to a player
-    static void sendMessage(Player player, ChatColor color, Messages messageID, long delayInTicks, String... args) {
+    static void sendMessage(CommandSender player, ChatColor color, Messages messageID, long delayInTicks, String... args) {
         String message = GPFlags.instance.flagsDataStore.getMessage(messageID, args);
         sendMessage(player, color, message, delayInTicks);
     }
 
     //sends a color-coded message to a player
-    static void sendMessage(Player player, ChatColor color, String message) {
+    static void sendMessage(CommandSender player, ChatColor color, String message) {
         if (message == null || message.length() == 0) return;
 
         if (player == null) {
@@ -696,7 +739,7 @@ public class GPFlags extends JavaPlugin {
         }
     }
 
-    static void sendMessage(Player player, ChatColor color, String message, long delayInTicks) {
+    static void sendMessage(CommandSender player, ChatColor color, String message, long delayInTicks) {
         SendPlayerMessageTask task = new SendPlayerMessageTask(player, color, message);
         if (delayInTicks > 0) {
             GPFlags.instance.getServer().getScheduler().runTaskLater(GPFlags.instance, task, delayInTicks);

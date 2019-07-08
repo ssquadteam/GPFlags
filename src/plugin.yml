@@ -18,6 +18,11 @@ commands:
       usage: /SetClaimFlag <flag> <optional parameters>
       aliases: [setflag, placeflag, putflag, claimflag, placeclaimflag, putclaimflag]
       permission: gpflags.setflag
+   setclaimflagplayer:
+      description: Sets a flag on a GriefPrevention land claim for a player from console.
+      usage: /SetClaimFlagPlayer <player> <flag> <optional parameters>
+      aliases: [setflagplayer, placeflagplayer, putflagplayer, claimflagplayer, placeclaimflagplayer, putclaimflagplayer]
+      permission: gpflags.setflagplayer
    unsetclaimflag:
       description: Un-sets (removes) a flag on a GriefPrevention land claim.
       usage: /UnSetClaimFlag <flag>
