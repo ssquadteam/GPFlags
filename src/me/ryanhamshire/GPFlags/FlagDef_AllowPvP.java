@@ -2,15 +2,23 @@ package me.ryanhamshire.GPFlags;
 
 import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRiptideEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -77,7 +85,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         //ignore potions not thrown by players
         ThrownPotion potion = event.getPotion();
         ProjectileSource projectileSource = potion.getShooter();
-        if (projectileSource == null || !(projectileSource instanceof Player)) return;
+        if (!(projectileSource instanceof Player)) return;
         Player thrower = (Player) projectileSource;
 
         //ignore positive potions
@@ -127,7 +135,6 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
         //handle it just like we would an entity damge by entity event, except don't send player messages to avoid double messages
         //in cases like attacking with a flame sword or flame arrow, which would ALSO trigger the direct damage event handler
-        @SuppressWarnings("deprecation")
         EntityDamageByEntityEvent eventWrapper = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(),
                 DamageCause.FIRE_TICK, event.getDuration());
         this.handleEntityDamageEvent(eventWrapper, false);
@@ -144,9 +151,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             }
         }
 
-        // no damager, we don't care
         Entity damager = event.getDamager();
-        if (damager == null) return;
 
         //if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.Get(damager.getWorld());
@@ -164,7 +169,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         //if in a flagged-for-pvp area, allow
         Flag flag = this.GetFlagInstanceAtLocation(damager.getLocation(), null);
-        if (flag != null) return;
+        Flag flag2 = this.GetFlagInstanceAtLocation(event.getEntity().getLocation(), null);
+        if (flag != null && flag2 != null) return;
 
         //if damaged entity is not a player, ignore, this is a PVP flag
         if (event.getEntityType() != EntityType.PLAYER) return;
@@ -173,9 +179,22 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         //otherwise disallow
         event.setCancelled(true);
-        if (projectile != null) projectile.remove();
+
+        // give the shooter back their projectile
+        if (projectile != null) {
+            MetadataValue meta = projectile.getMetadata("item-stack").get(0);
+            if (meta != null) {
+                ItemStack item = ((ItemStack) meta.value());
+                assert item != null;
+                if (item.getType() != Material.AIR) {
+                    item.setAmount(1);
+                    ((Player) damager).getInventory().addItem(item);
+                }
+            }
+            projectile.remove();
+        }
         if (sendErrorMessagesToPlayers && damager instanceof Player)
-            GPFlags.sendMessage((Player) damager, TextMode.Err, settings.pvpDeniedMessage);
+            GPFlags.sendMessage(damager, TextMode.Err, settings.pvpDeniedMessage);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -183,12 +202,56 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         this.handleEntityDamageEvent(event, true);
     }
 
-    public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin, WorldSettingsManager settingsManager) {
+    @EventHandler
+    private void onTrident(PlayerRiptideEvent event) {
+        Bukkit.broadcastMessage("RIPTIDE event");
+    }
+
+    @EventHandler
+    private void onShootBow(EntityShootBowEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = ((Player) event.getEntity());
+            ItemStack projectile;
+            ItemStack bow = event.getBow();
+            assert bow != null;
+            if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
+                if (bow.getItemMeta() != null) {
+                    projectile = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles().get(0);
+                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, projectile.clone()));
+                    return;
+                }
+            }
+            if (isProjectile(player.getInventory().getItemInOffHand())) {
+                projectile = player.getInventory().getItemInOffHand();
+                event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, projectile.clone()));
+                return;
+            }
+            for (ItemStack item : player.getInventory()) {
+                if (item != null && isProjectile(item)) {
+                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, item.clone()));
+                    return;
+                }
+            }
+        }
+    }
+
+    private boolean isProjectile(ItemStack item) {
+        switch (item.getType()) {
+            case ARROW:
+            case SPECTRAL_ARROW:
+            case TIPPED_ARROW:
+            case FIREWORK_ROCKET:
+                return true;
+        }
+        return false;
+    }
+
+    FlagDef_AllowPvP(FlagManager manager, GPFlags plugin, WorldSettingsManager settingsManager) {
         super(manager, plugin);
         this.settingsManager = settingsManager;
     }
 
-    public void updateSettings(WorldSettingsManager settingsManager) {
+    void updateSettings(WorldSettingsManager settingsManager) {
         this.settingsManager = settingsManager;
     }
 
