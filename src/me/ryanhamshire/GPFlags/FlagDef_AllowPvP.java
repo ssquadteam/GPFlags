@@ -203,11 +203,6 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     }
 
     @EventHandler
-    private void onTrident(PlayerRiptideEvent event) {
-        Bukkit.broadcastMessage("RIPTIDE event");
-    }
-
-    @EventHandler
     private void onShootBow(EntityShootBowEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = ((Player) event.getEntity());
