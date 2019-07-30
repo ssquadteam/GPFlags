@@ -18,6 +18,7 @@ public class FlagDef_KeepInventory extends FlagDefinition {
         if (flag == null) return;
 
         event.setKeepInventory(true);
+        event.getDrops().clear();
     }
 
     public FlagDef_KeepInventory(FlagManager manager, GPFlags plugin) {
