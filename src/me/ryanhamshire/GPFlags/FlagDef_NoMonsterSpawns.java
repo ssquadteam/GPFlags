@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -65,6 +66,19 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
         event.setCancelled(true);
         entity.remove();
+    }
+
+    @EventHandler
+    private void onMobDamage(EntityDamageByEntityEvent event) {
+        Entity target = event.getEntity();
+        Entity damager = event.getDamager();
+        if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
+
+        Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
+        if (flag == null) return;
+
+        event.setCancelled(true);
+        damager.remove();
     }
 
     public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
