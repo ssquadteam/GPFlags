@@ -163,5 +163,9 @@ public enum Messages {
     NoOpenDoorMessage,
     EnabledNoVehicle,
     DisabledNoVehicle,
-    NoPlaceVehicle
+    NoPlaceVehicle,
+
+    EnabledNoMobSpawnsType,
+    DisabledNoMobSpawnsType,
+    MobTypeRequired
 }
