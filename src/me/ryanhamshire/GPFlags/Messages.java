@@ -167,5 +167,7 @@ public enum Messages {
 
     EnabledNoMobSpawnsType,
     DisabledNoMobSpawnsType,
-    MobTypeRequired
+    MobTypeRequired,
+    EnabledNoItemDamage,
+    DisabledNoItemDamage
 }

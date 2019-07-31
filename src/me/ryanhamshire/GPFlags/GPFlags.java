@@ -205,6 +205,7 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoVehicle(this.flagManager, this));
 
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, this));
+            this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, this));
 
             //try to hook into mcMMO
             try {
