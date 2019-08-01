@@ -18,7 +18,7 @@ import java.util.List;
 
 public class FlagDef_NoMobDamage extends FlagDefinition {
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
 

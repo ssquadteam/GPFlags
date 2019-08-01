@@ -1,11 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
 import me.ryanhamshire.GPFlags.util.VersionControl;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Monster;
-import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -72,6 +68,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     private void onMobDamage(EntityDamageByEntityEvent event) {
         Entity target = event.getEntity();
         Entity damager = event.getDamager();
+        if (damager instanceof Player) return;
         if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
