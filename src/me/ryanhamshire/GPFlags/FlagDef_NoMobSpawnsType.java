@@ -88,7 +88,7 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 
 	@Override
 	MessageSpecifier GetSetMessage(String parameters) {
-		return new MessageSpecifier(Messages.EnabledNoMobSpawnsType, parameters);
+		return new MessageSpecifier(Messages.EnabledNoMobSpawnsType, parameters.replace(";", ", "));
 	}
 
 	@Override
