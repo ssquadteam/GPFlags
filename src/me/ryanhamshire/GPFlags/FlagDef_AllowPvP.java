@@ -2,7 +2,6 @@ package me.ryanhamshire.GPFlags;
 
 import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
@@ -14,7 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRiptideEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -182,13 +180,15 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         // give the shooter back their projectile
         if (projectile != null) {
-            MetadataValue meta = projectile.getMetadata("item-stack").get(0);
-            if (meta != null) {
-                ItemStack item = ((ItemStack) meta.value());
-                assert item != null;
-                if (item.getType() != Material.AIR) {
-                    item.setAmount(1);
-                    ((Player) damager).getInventory().addItem(item);
+            if (projectile.hasMetadata("item-stack")) {
+                MetadataValue meta = projectile.getMetadata("item-stack").get(0);
+                if (meta != null) {
+                    ItemStack item = ((ItemStack) meta.value());
+                    assert item != null;
+                    if (item.getType() != Material.AIR) {
+                        item.setAmount(1);
+                        ((Player) damager).getInventory().addItem(item);
+                    }
                 }
             }
             projectile.remove();
