@@ -256,6 +256,7 @@ public class FlagsDataStore
         this.addDefault(defaults, Messages.EnabledNoMobSpawnsType, "The spawning of {0} has been disabled in this area", "0: Mob Types");
         this.addDefault(defaults, Messages.DisabledNoMobSpawnsType, "The flag mobs will now be able to spawn again in this area", null);
         this.addDefault(defaults, Messages.MobTypeRequired, "A mob type is required", null);
+        this.addDefault(defaults, Messages.MobTypePerm, "You do not have permission to deny the spawning of {0}", "0: Mob Type");
 
         this.addDefault(defaults, Messages.EnabledNoItemDamage, "Items will no longer take damage in this area", null);
         this.addDefault(defaults, Messages.DisabledNoItemDamage, "Items will continue to take damage in this area", null);

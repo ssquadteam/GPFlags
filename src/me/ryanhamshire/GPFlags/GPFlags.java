@@ -619,7 +619,7 @@ public class GPFlags extends JavaPlugin {
                 params[i - 1] = args[i];
             }
 
-            //TODO stop owner/ownermember fly flags from joining
+            // stop owner/ownermember fly flags from joining
             Collection<Flag> flags;
             flags = this.flagManager.GetFlags(claim.getID().toString());
             for (Flag flag : flags) {
@@ -637,7 +637,7 @@ public class GPFlags extends JavaPlugin {
                 }
             }
 
-            // TODO SET BIOME
+            // SET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
                 FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
                 Biome biome;
@@ -655,7 +655,18 @@ public class GPFlags extends JavaPlugin {
                     }
                 }
                 flagD.changeBiome(claim, biome.toString());
+            }
 
+            // Permissions for mob type
+            if (flagName.equalsIgnoreCase("NoMobSpawnsType")) {
+                if (!player.hasPermission("gpflags.nomobspawnstype.*")) {
+                    for (String type : params[0].split(";")) {
+                        if (!player.hasPermission("gpflags.nomobspawnstype." + type)) {
+                            GPFlags.sendMessage(player, TextMode.Err, Messages.MobTypePerm, type);
+                            return true;
+                        }
+                    }
+                }
             }
 
             SetFlagResult result = this.flagManager.SetFlag(claimID.toString(), def, true, params);
