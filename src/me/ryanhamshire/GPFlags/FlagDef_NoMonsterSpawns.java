@@ -69,6 +69,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
         Entity target = event.getEntity();
         Entity damager = event.getDamager();
         if (damager instanceof Player) return;
+        if (!(target instanceof Player)) return;
         if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
