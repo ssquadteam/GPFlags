@@ -2,6 +2,7 @@ package me.ryanhamshire.GPFlags;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -43,23 +44,25 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 	@EventHandler
 	private void onMobTarget(EntityTargetEvent event) {
 		Entity target = event.getTarget();
-		if (target == null) return;
+		Entity damager = event.getEntity();
 
-		Entity entity = event.getEntity();
-		if (entity.hasMetadata(this.ALLOW_TARGET_TAG)) return;
+		if (target == null) return;
+		if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
 		Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
 		if (flag == null) return;
 
 		event.setCancelled(true);
-		entity.remove();
+		damager.remove();
 	}
 
 	@EventHandler
 	private void onMobDamage(EntityDamageByEntityEvent event) {
 		Entity target = event.getEntity();
 		Entity damager = event.getDamager();
+
 		if (damager instanceof Player) return;
+		if (!(damager instanceof LivingEntity)) return;
 		if (!(target instanceof Player)) return;
 		if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
