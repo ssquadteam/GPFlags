@@ -170,5 +170,8 @@ public enum Messages {
     MobTypeRequired,
     MobTypePerm,
     EnabledNoItemDamage,
-    DisabledNoItemDamage
+    DisabledNoItemDamage,
+    EnabledRaidMemberOnly,
+    DisabledRaidMemberOnly,
+    RaidMemberOnlyDeny
 }

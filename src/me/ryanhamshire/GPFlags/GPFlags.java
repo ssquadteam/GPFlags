@@ -51,7 +51,7 @@ public class GPFlags extends JavaPlugin {
 
     //adds a server log entry
     static synchronized void AddLogEntry(String entry) {
-        log.info(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
+    	Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
     }
 
     public void onEnable() {
@@ -207,7 +207,17 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, this));
             this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, this));
 
-            //try to hook into mcMMO
+            try {
+            	Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
+            	this.flagManager.RegisterFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, this));
+			} catch (ClassNotFoundException e) {
+            	if (Util.isRunningMinecraft(1, 14)) {
+					AddLogEntry("&cRaidEvent classes not found:");
+					AddLogEntry("&7  - Update to latest Spigot build for raid flag to work");
+				}
+			}
+
+			//try to hook into mcMMO
             try {
                 if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
                     this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
