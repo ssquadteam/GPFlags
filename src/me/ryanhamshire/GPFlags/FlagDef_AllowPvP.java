@@ -4,6 +4,7 @@ import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -209,6 +211,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             ItemStack projectile;
             ItemStack bow = event.getBow();
             assert bow != null;
+            ItemMeta meta = bow.getItemMeta();
+            if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
             if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
                 if (bow.getItemMeta() != null) {
                     projectile = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles().get(0);
