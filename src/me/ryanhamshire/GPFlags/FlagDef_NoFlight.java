@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,6 +29,12 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
+        Flag ownerFly = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerMember = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (ownerFly != null && claim.ownerID.toString().equalsIgnoreCase(player.getUniqueId().toString())) return;
+        if (ownerMember != null && claim.allowAccess(player) == null) return;
+
         GPFlags.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
         player.setFlying(false);
         GameMode mode = player.getGameMode();
@@ -36,7 +44,10 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
                 block = block.getRelative(BlockFace.DOWN);
             }
 
-            player.teleport(block.getRelative(BlockFace.UP).getLocation());
+            player.setAllowFlight(false);
+            if (player.getLocation().getY() - block.getY() >= 4) {
+                GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+            }
         }
     }
 
@@ -46,15 +57,16 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         if (player.isFlying()) return;
         if (player.hasPermission("gpflags.bypass")) return;
 
+        Flag ownerFly = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerMember = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        if (ownerFly != null || ownerMember != null) return;
+
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         GPFlags.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
         event.setCancelled(true);
-        Location underLocation = player.getLocation().add(0, -1, 0);
-        Material underType = underLocation.getBlock().getType();
-        if (!underType.isSolid()) player.teleport(underLocation);
-        player.setFallDistance(player.getFallDistance() + 1);
+        player.setAllowFlight(false);
     }
 
     FlagDef_NoFlight(FlagManager manager, GPFlags plugin) {

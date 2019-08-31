@@ -1,4 +1,4 @@
-package me.ryanhamshire.GPFlags;
+package me.ryanhamshire.GPFlags.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -7,8 +7,6 @@ import java.util.HashMap;
 
 @SuppressWarnings("WeakerAccess")
 public class Util {
-
-    public static HashMap<Player, Boolean> hash = new HashMap<>();
 
     /** Check if server is running a minimum Minecraft version
      * @param major Major version to check (Most likely just going to be 1)
@@ -27,11 +25,11 @@ public class Util {
      */
     public static boolean isRunningMinecraft(int major, int minor, int revision) {
         String[] version = Bukkit.getServer().getBukkitVersion().split("-")[0].split("\\.");
-        int maj = Integer.valueOf(version[0]);
-        int min = Integer.valueOf(version[1]);
+        int maj = Integer.parseInt(version[0]);
+        int min = Integer.parseInt(version[1]);
         int rev;
         try {
-            rev = Integer.valueOf(version[2]);
+            rev = Integer.parseInt(version[2]);
         } catch (Exception ignore) {
             rev = 0;
         }

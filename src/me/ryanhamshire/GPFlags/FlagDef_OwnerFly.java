@@ -22,8 +22,9 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        Flag ownerMember = new FlagDef_OwnerMemberFly(this.flagManager, this.plugin).GetFlagInstanceAtLocation(to, player);
+        Flag ownerMember = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(to, player);
 
+        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         if (flag == null && ownerMember == null) {
 
             GameMode mode = player.getGameMode();
@@ -33,10 +34,12 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
-                //hash.put(player, true);
-                Util.hash.put(player, true);
                 player.setAllowFlight(false);
+                if (player.getLocation().getY() - block.getY() >= 4) {
+                    GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                }
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                return true;
             }
 
             if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
@@ -45,10 +48,9 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             return true;
-
         }
 
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
@@ -85,19 +87,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             if (below == Material.AIR) {
                 player.setFlying(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onFall(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
-        Player p = ((Player) e.getEntity());
-        DamageCause cause = e.getCause();
-        if (cause != DamageCause.FALL) return;
-        Boolean val = Util.hash.get(p);
-        if (val != null && val) {
-            e.setCancelled(true);
-            Util.hash.remove(p);
         }
     }
 

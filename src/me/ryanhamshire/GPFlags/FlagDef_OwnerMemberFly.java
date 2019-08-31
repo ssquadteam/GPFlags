@@ -14,12 +14,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener {
+
     @Override
     public boolean allowMovement(Player player, Location lastLocation) {
         if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        Flag ownerFly = new FlagDef_OwnerFly(super.flagManager, super.plugin).GetFlagInstanceAtLocation(to, player);
+        Flag ownerFly = GPFlags.instance.flagManager.GetFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(to, player);
+
+        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         if (flag == null && ownerFly == null) {
 
             GameMode mode = player.getGameMode();
@@ -30,7 +33,9 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                     block = block.getRelative(BlockFace.DOWN);
                 }
                 player.setAllowFlight(false);
-                Util.hash.put(player, true);
+                if (player.getLocation().getY() - block.getY() >= 4) {
+                    GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                }
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
             }
@@ -39,12 +44,11 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                     !player.hasPermission("gpflags.bypass.fly")) {
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
-                return true;
             }
+            return true;
         }
 
         if (flag == null) return true;
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
@@ -58,7 +62,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
-                Util.hash.put(player, true);
+                GPFlags.instance.getPlayerListener().addFallingPlayer(player);
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }

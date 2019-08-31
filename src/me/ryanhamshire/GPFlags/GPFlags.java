@@ -1,9 +1,11 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
+import me.ryanhamshire.GPFlags.listener.PlayerListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GPFlags.util.Current;
 import me.ryanhamshire.GPFlags.util.Legacy;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -48,6 +50,7 @@ public class GPFlags extends JavaPlugin {
     public WorldSettingsManager worldSettingsManager = new WorldSettingsManager();
 
     private boolean registeredFlagDefinitions = false;
+    private PlayerListener playerListener;
 
     //adds a server log entry
     static synchronized void AddLogEntry(String entry) {
@@ -55,6 +58,9 @@ public class GPFlags extends JavaPlugin {
     }
 
     public void onEnable() {
+    	this.playerListener = new PlayerListener();
+    	Bukkit.getPluginManager().registerEvents(playerListener, this);
+
         int ver = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
         // Check if server is running MC 1.13+ (API Changes)
@@ -791,5 +797,9 @@ public class GPFlags extends JavaPlugin {
     public static VersionControl getVersionControl() {
         return vc;
     }
+
+    public PlayerListener getPlayerListener() {
+    	return this.playerListener;
+	}
 
 }
