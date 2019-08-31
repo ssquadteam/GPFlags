@@ -1,16 +1,16 @@
 package me.ryanhamshire.GPFlags.util;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.Door;
-import org.bukkit.material.Gate;
-import org.bukkit.material.Openable;
-import org.bukkit.material.TrapDoor;
+import org.bukkit.material.*;
 
 import java.util.ArrayList;
 
+/**
+ * <b>Internal use only</b>
+ */
+@SuppressWarnings("deprecation")
 public class Legacy implements VersionControl {
 
     public boolean isMonster(Entity entity) {

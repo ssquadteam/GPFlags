@@ -12,7 +12,7 @@ public class PlayerListener implements Listener {
 	private HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
 
 	@EventHandler
-	public void onFall(EntityDamageEvent e) {
+	private void onFall(EntityDamageEvent e) {
 		if (!(e.getEntity() instanceof Player)) return;
 		Player p = ((Player) e.getEntity());
 		EntityDamageEvent.DamageCause cause = e.getCause();
@@ -24,6 +24,9 @@ public class PlayerListener implements Listener {
 		}
 	}
 
+	/** Add a player to prevent fall damage under certain conditions
+	 * @param player Player to add
+	 */
 	public void addFallingPlayer(Player player) {
 		this.fallingPlayers.put(player, true);
 	}

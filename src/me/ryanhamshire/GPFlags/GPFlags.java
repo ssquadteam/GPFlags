@@ -1,6 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
+import me.ryanhamshire.GPFlags.flags.*;
 import me.ryanhamshire.GPFlags.listener.PlayerListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GPFlags.util.Current;
@@ -35,7 +36,7 @@ public class GPFlags extends JavaPlugin {
     private static VersionControl vc;
 
     //for convenience, a reference to the instance of this plugin
-    static GPFlags instance;
+    public static GPFlags instance;
 
     //for logging to the console and log file
     private static Logger log = Logger.getLogger("Minecraft");
@@ -53,7 +54,7 @@ public class GPFlags extends JavaPlugin {
     private PlayerListener playerListener;
 
     //adds a server log entry
-    static synchronized void AddLogEntry(String entry) {
+    public static synchronized void addLogEntry(String entry) {
     	Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
     }
 
@@ -61,15 +62,15 @@ public class GPFlags extends JavaPlugin {
     	this.playerListener = new PlayerListener();
     	Bukkit.getPluginManager().registerEvents(playerListener, this);
 
-        int ver = Integer.valueOf(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
+        int ver = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
         // Check if server is running MC 1.13+ (API Changes)
         if (ver >= 13) {
             vc = new Current();
-            AddLogEntry(ChatColor.GREEN + "1.13+ Version Loaded");
+            addLogEntry(ChatColor.GREEN + "1.13+ Version Loaded");
         } else {
             vc = new Legacy();
-            AddLogEntry(ChatColor.GREEN + "Legacy Version Loaded");
+            addLogEntry(ChatColor.GREEN + "Legacy Version Loaded");
         }
 
         instance = this;
@@ -79,9 +80,9 @@ public class GPFlags extends JavaPlugin {
         @SuppressWarnings("unused")
         Metrics metrics = new Metrics(this);
 
-        AddLogEntry("Boot finished.");
+        addLogEntry("Boot finished.");
         if (getDescription().getVersion().contains("Beta")) {
-            AddLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
+            addLogEntry(ChatColor.YELLOW + "You are running a Beta version, things may not operate as expected");
         }
     }
 
@@ -141,122 +142,122 @@ public class GPFlags extends JavaPlugin {
 
         try {
             outConfig.save(FlagsDataStore.configFilePath);
-            AddLogEntry("Finished loading configuration.");
+            addLogEntry("Finished loading configuration.");
         } catch (IOException exception) {
-            AddLogEntry("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
+            addLogEntry("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
 
         //register flag definitions
         if (!this.registeredFlagDefinitions) {
             this.registeredFlagDefinitions = true;
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, this));
             FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, this, this.worldSettingsManager);
-            allowPvPDef.FirstTimeSetup();
-            this.flagManager.RegisterFlagDefinition(allowPvPDef);
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterMessage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitMessage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterPlayerCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitPlayerCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_RespawnLocation(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_KeepInventory(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_InfiniteArrows(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_KeepLevel(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NetherPortalPlayerCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NetherPortalConsoleCommand(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoCombatLoot(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoMobSpawns(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoPlayerDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnter(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoMobDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFluidFlow(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_HealthRegen(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoHunger(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFlight(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_TrappedDestination(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoLootProtection(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnderPearl(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoExpiration(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoLeafDecay(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoPetDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoWeatherChange(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemPickup(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoChorusFruit(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_SpleefArena(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDrop(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoGrowth(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerFly(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, this, this.worldSettingsManager));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoVineGrowth(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoSnowForm(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoIceForm(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoFallDamage(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand_Owner(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_EnterCommand_Members(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand_Owner(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ExitCommand_Members(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoExplosionDamage(this.flagManager, this));
+            allowPvPDef.firstTimeSetup();
+            this.flagManager.registerFlagDefinition(allowPvPDef);
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitMessage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterPlayerCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitPlayerCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_RespawnLocation(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_KeepInventory(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_InfiniteArrows(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_KeepLevel(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NetherPortalPlayerCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NetherPortalConsoleCommand(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoCombatLoot(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawns(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoPlayerDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoEnter(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoMobDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoFluidFlow(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_HealthRegen(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoHunger(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoFlight(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_TrappedDestination(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoLootProtection(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoEnderPearl(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoExpiration(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoLeafDecay(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoPetDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoWeatherChange(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoItemPickup(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoChorusFruit(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_SpleefArena(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoItemDrop(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoGrowth(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_OwnerFly(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_PlayerTime(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, this, this.worldSettingsManager));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoVineGrowth(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoSnowForm(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoIceForm(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoFireSpread(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoFireDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoFallDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand_Owner(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand_Members(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitCommand_Owner(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitCommand_Members(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoExplosionDamage(this.flagManager, this));
 
-            this.flagManager.RegisterFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoVehicle(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoVehicle(this.flagManager, this));
 
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, this));
-            this.flagManager.RegisterFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, this));
 
             try {
             	Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
-            	this.flagManager.RegisterFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, this));
+            	this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, this));
 			} catch (ClassNotFoundException e) {
             	if (Util.isRunningMinecraft(1, 14)) {
-					AddLogEntry("&cRaidEvent classes not found:");
-					AddLogEntry("&7  - Update to latest Spigot build for raid flag to work");
+					addLogEntry("&cRaidEvent classes not found:");
+					addLogEntry("&7  - Update to latest Spigot build for raid flag to work");
 				}
 			}
 
 			//try to hook into mcMMO
             try {
                 if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
-                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
-                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMODeathPenalty(this.flagManager, this));
+                    this.flagManager.registerFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
+                    this.flagManager.registerFlagDefinition(new FlagDef_NoMcMMODeathPenalty(this.flagManager, this));
                     // Experimental
-                    this.flagManager.RegisterFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
+                    this.flagManager.registerFlagDefinition(new FlagDef_NoMcMMOXP(this.flagManager, this));
                 }
             }
             //if failed, we just won't have those flags available
             catch (NoClassDefFoundError ignore) {
             }
         } else {
-            ((FlagDef_PlayerGamemode) this.flagManager.GetFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
-            ((FlagDef_AllowPvP) this.flagManager.GetFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
+            ((FlagDef_PlayerGamemode) this.flagManager.getFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
+            ((FlagDef_AllowPvP) this.flagManager.getFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
         }
 
         try {
             this.flagsDataStore = new FlagsDataStore();
 
             File flagsFile = new File(FlagsDataStore.flagsFilePath);
-            List<MessageSpecifier> errors = this.flagManager.Load(flagsFile);
+            List<MessageSpecifier> errors = this.flagManager.load(flagsFile);
             if (errors.size() > 0) {
                 File errorFile = new File(FlagsDataStore.flagsErrorFilePath);
                 Files.copy(flagsFile, errorFile);
                 for (MessageSpecifier error : errors) {
-                    GPFlags.AddLogEntry("Load Error: " + this.flagsDataStore.getMessage(error.messageID, error.messageParams));
+                    GPFlags.addLogEntry("Load Error: " + this.flagsDataStore.getMessage(error.messageID, error.messageParams));
                 }
-                GPFlags.AddLogEntry("Problems encountered reading the flags data file! " +
+                GPFlags.addLogEntry("Problems encountered reading the flags data file! " +
                         "Please share this log and your 'flagsError.yml' file with the developer.");
             }
         } catch (Exception e) {
-            GPFlags.AddLogEntry("Unable to initialize the file system data store.  Details:");
-            GPFlags.AddLogEntry(e.getMessage());
+            GPFlags.addLogEntry("Unable to initialize the file system data store.  Details:");
+            GPFlags.addLogEntry(e.getMessage());
             e.printStackTrace();
         }
 
@@ -270,7 +271,7 @@ public class GPFlags extends JavaPlugin {
             }
         }
         this.flagManager.removeExceptClaimIDs(validIDs);
-        AddLogEntry("Finished loading data.");
+        addLogEntry("Finished loading data.");
     }
 
     //handles slash commands
@@ -278,7 +279,7 @@ public class GPFlags extends JavaPlugin {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         Player player = null;
         if (cmd.getName().equalsIgnoreCase("allflags")) {
-            for (FlagDefinition flag : this.flagManager.GetFlagDefinitions()) {
+            for (FlagDefinition flag : this.flagManager.getFlagDefinitions()) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         flag.getName() + " &7" + flag.getFlagType()));
             }
@@ -302,7 +303,7 @@ public class GPFlags extends JavaPlugin {
 
             String flagName = args[0];
 
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -323,11 +324,11 @@ public class GPFlags extends JavaPlugin {
                 params[i - 1] = args[i];
             }
 
-            SetFlagResult result = this.flagManager.SetFlag(FlagManager.DEFAULT_FLAG_ID, def, true, params);
+            SetFlagResult result = this.flagManager.setFlag(FlagManager.DEFAULT_FLAG_ID, def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.DefaultFlagSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -337,7 +338,7 @@ public class GPFlags extends JavaPlugin {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -348,11 +349,11 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
 
-            SetFlagResult result = this.flagManager.UnSetFlag(FlagManager.DEFAULT_FLAG_ID, def);
+            SetFlagResult result = this.flagManager.unSetFlag(FlagManager.DEFAULT_FLAG_ID, def);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.DefaultFlagUnSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -362,7 +363,7 @@ public class GPFlags extends JavaPlugin {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -383,11 +384,11 @@ public class GPFlags extends JavaPlugin {
                 params[i - 1] = args[i];
             }
 
-            SetFlagResult result = this.flagManager.SetFlag("everywhere", def, true, params);
+            SetFlagResult result = this.flagManager.setFlag("everywhere", def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.ServerFlagSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -397,7 +398,7 @@ public class GPFlags extends JavaPlugin {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -408,11 +409,11 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
 
-            SetFlagResult result = this.flagManager.UnSetFlag("everywhere", def);
+            SetFlagResult result = this.flagManager.unSetFlag("everywhere", def);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.ServerFlagUnSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -436,7 +437,7 @@ public class GPFlags extends JavaPlugin {
             }
 
             String flagName = args[1];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 sendMessage(sender, "&c" + args[1] + "&7 is not a valid flag");
                 return false;
@@ -451,11 +452,11 @@ public class GPFlags extends JavaPlugin {
                 params[i - 2] = args[i];
             }
 
-            SetFlagResult result = this.flagManager.SetFlag(claim.getID().toString(), def, true, params);
+            SetFlagResult result = this.flagManager.setFlag(claim.getID().toString(), def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             GPFlags.sendMessage(sender, color, result.message.messageID, result.message.messageParams);
             if (result.success) {
-                this.flagManager.Save();
+                this.flagManager.save();
                 sendMessage(sender, "&7Flag &b" + def.getName() + " &7successfully set in &b" + player.getName() + "&7's claim.");
                 return true;
             }
@@ -464,14 +465,14 @@ public class GPFlags extends JavaPlugin {
         }
 
         if (player == null) {
-            GPFlags.AddLogEntry("You must be logged into the game to use that command.");
+            GPFlags.addLogEntry("You must be logged into the game to use that command.");
         }
 
         if (cmd.getName().equalsIgnoreCase("SetWorldFlag") && player != null) {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -492,11 +493,11 @@ public class GPFlags extends JavaPlugin {
                 params[i - 1] = args[i];
             }
 
-            SetFlagResult result = this.flagManager.SetFlag(player.getWorld().getName(), def, true, params);
+            SetFlagResult result = this.flagManager.setFlag(player.getWorld().getName(), def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.WorldFlagSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -506,7 +507,7 @@ public class GPFlags extends JavaPlugin {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -517,11 +518,11 @@ public class GPFlags extends JavaPlugin {
                 return true;
             }
 
-            SetFlagResult result = this.flagManager.UnSetFlag(player.getWorld().getName(), def);
+            SetFlagResult result = this.flagManager.unSetFlag(player.getWorld().getName(), def);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             if (result.success) {
                 GPFlags.sendMessage(player, color, Messages.WorldFlagUnSet);
-                this.flagManager.Save();
+                this.flagManager.save();
             } else {
                 GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
             }
@@ -538,21 +539,21 @@ public class GPFlags extends JavaPlugin {
             StringBuilder builder2 = new StringBuilder();
             StringBuilder builder3 = new StringBuilder();
             if (claim != null) {
-                flags = this.flagManager.GetFlags(claim.getID().toString());
+                flags = this.flagManager.getFlags(claim.getID().toString());
                 for (Flag flag : flags) {
                     flagsFound = true;
                     builder1.append((flag.getSet() ? "+" : "-") + flag.flagDefinition.getName()).append(" ");
                 }
 
                 if (claim.parent != null) {
-                    flags = this.flagManager.GetFlags(claim.parent.getID().toString());
+                    flags = this.flagManager.getFlags(claim.parent.getID().toString());
                     for (Flag flag : flags) {
                         flagsFound = true;
                         builder2.append((flag.getSet() ? "+" : "-") + flag.flagDefinition.getName()).append(" ");
                     }
                 }
 
-                flags = this.flagManager.GetFlags(FlagManager.DEFAULT_FLAG_ID);
+                flags = this.flagManager.getFlags(FlagManager.DEFAULT_FLAG_ID);
                 for (Flag flag2 : flags) {
                     flagsFound = true;
                     builder3.append((flag2.getSet() ? "+" : "-") + flag2.flagDefinition.getName()).append(" ");
@@ -560,14 +561,14 @@ public class GPFlags extends JavaPlugin {
             }
 
             StringBuilder builder4 = new StringBuilder();
-            flags = this.flagManager.GetFlags(player.getWorld().getName());
+            flags = this.flagManager.getFlags(player.getWorld().getName());
             for (Flag flag3 : flags) {
                 flagsFound = true;
                 builder4.append((flag3.getSet() ? "+" : "-") + flag3.flagDefinition.getName()).append(" ");
             }
 
             StringBuilder builder5 = new StringBuilder();
-            flags = this.flagManager.GetFlags("everywhere");
+            flags = this.flagManager.getFlags("everywhere");
             for (Flag flag4 : flags) {
                 flagsFound = true;
                 builder5.append((flag4.getSet() ? "+" : "-") + flag4.flagDefinition.getName()).append(" ");
@@ -609,7 +610,7 @@ public class GPFlags extends JavaPlugin {
             if (args.length < 1) return false;
 
             String flagName = args[0];
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -637,7 +638,7 @@ public class GPFlags extends JavaPlugin {
 
             // stop owner/ownermember fly flags from joining
             Collection<Flag> flags;
-            flags = this.flagManager.GetFlags(claim.getID().toString());
+            flags = this.flagManager.getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 if (args[0].equalsIgnoreCase("OwnerFly")) {
                     if (flag.flagDefinition.getName().equalsIgnoreCase("OwnerMemberFly")) {
@@ -685,10 +686,10 @@ public class GPFlags extends JavaPlugin {
                 }
             }
 
-            SetFlagResult result = this.flagManager.SetFlag(claimID.toString(), def, true, params);
+            SetFlagResult result = this.flagManager.setFlag(claimID.toString(), def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
-            if (result.success) this.flagManager.Save();
+            if (result.success) this.flagManager.save();
 
             return true;
         } else if (cmd.getName().equalsIgnoreCase("UnSetClaimFlag") && player != null) {
@@ -696,7 +697,7 @@ public class GPFlags extends JavaPlugin {
 
             String flagName = args[0];
 
-            FlagDefinition def = this.flagManager.GetFlagDefinitionByName(flagName);
+            FlagDefinition def = this.flagManager.getFlagDefinitionByName(flagName);
             if (def == null) {
                 GPFlags.sendMessage(player, TextMode.Err, this.getFlagDefsMessage(player));
                 return true;
@@ -718,10 +719,10 @@ public class GPFlags extends JavaPlugin {
                 flagD.resetBiome(claim.getID());
             }
 
-            SetFlagResult result = this.flagManager.UnSetFlag(claimID.toString(), def);
+            SetFlagResult result = this.flagManager.unSetFlag(claimID.toString(), def);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             GPFlags.sendMessage(player, color, result.message.messageID, result.message.messageParams);
-            if (result.success) this.flagManager.Save();
+            if (result.success) this.flagManager.save();
 
             return true;
         }
@@ -748,7 +749,7 @@ public class GPFlags extends JavaPlugin {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
     //sends a color-coded message to a player
-    static void sendMessage(CommandSender player, ChatColor color, Messages messageID, String... args) {
+    public static void sendMessage(CommandSender player, ChatColor color, Messages messageID, String... args) {
         sendMessage(player, color, messageID, 0, args);
     }
 
@@ -759,11 +760,11 @@ public class GPFlags extends JavaPlugin {
     }
 
     //sends a color-coded message to a player
-    static void sendMessage(CommandSender player, ChatColor color, String message) {
+    public static void sendMessage(CommandSender player, ChatColor color, String message) {
         if (message == null || message.length() == 0) return;
 
         if (player == null) {
-            GPFlags.AddLogEntry(color + message);
+            GPFlags.addLogEntry(color + message);
         } else {
             player.sendMessage(color + message);
         }
@@ -780,7 +781,7 @@ public class GPFlags extends JavaPlugin {
 
     private MessageSpecifier getFlagDefsMessage(Permissible player) {
         StringBuilder flagDefsList = new StringBuilder();
-        Collection<FlagDefinition> defs = this.flagManager.GetFlagDefinitions();
+        Collection<FlagDefinition> defs = this.flagManager.getFlagDefinitions();
         for (FlagDefinition def : defs) {
             if (this.playerHasPermissionForFlag(def, player)) {
                 flagDefsList.append(def.getName() + " ");

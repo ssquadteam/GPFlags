@@ -1,0 +1,69 @@
+package me.ryanhamshire.GPFlags.flags;
+
+import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition  {
+
+    @Override
+    public boolean allowMovement(Player player, Location lastLocation)
+    {
+        Location to = player.getLocation();
+        if(lastLocation == null) return true;
+        Flag flag = this.GetFlagInstanceAtLocation(lastLocation, player);
+        if(flag == null) return true;
+
+        if(flag == this.GetFlagInstanceAtLocation(to, player)) return true;
+
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());
+        if (claim.allowAccess(player) == null) return true;
+        String [] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
+        for(String commandLine : commandLines)
+        {
+            GPFlags.addLogEntry("Exit command: " + commandLine);
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
+        }
+
+        return true;
+    }
+
+    public FlagDef_ExitCommand_Members(FlagManager manager, GPFlags plugin)
+    {
+        super(manager, plugin);
+    }
+
+    @Override
+    public String getName()
+    {
+        return "ExitCommand-Members";
+    }
+
+    @Override
+    public SetFlagResult ValidateParameters(String parameters)
+    {
+        if(parameters.isEmpty())
+        {
+            return new SetFlagResult(false, new MessageSpecifier(Messages.ConsoleCommandRequired));
+        }
+
+        return new SetFlagResult(true, this.getSetMessage(parameters));
+    }
+
+    @Override
+    public MessageSpecifier getSetMessage(String parameters)
+    {
+        return new MessageSpecifier(Messages.AddedExitCommand, parameters);
+    }
+
+    @Override
+    public MessageSpecifier getUnSetMessage()
+    {
+        return new MessageSpecifier(Messages.RemovedExitCommand);
+    }
+}

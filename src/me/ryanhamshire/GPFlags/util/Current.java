@@ -10,6 +10,9 @@ import org.bukkit.entity.EntityType;
 
 import java.util.ArrayList;
 
+/**
+ * <b>Internal use only</b>
+ */
 public class Current implements VersionControl {
 
     public boolean isMonster(Entity entity) {
@@ -30,6 +33,7 @@ public class Current implements VersionControl {
         return block.getBlockData() instanceof Openable;
     }
 
+    @Override
     public boolean isGate(Block block) {
         return block.getBlockData() instanceof Gate;
     }
