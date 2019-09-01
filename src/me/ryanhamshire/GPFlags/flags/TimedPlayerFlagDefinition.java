@@ -9,68 +9,63 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-public abstract class TimedPlayerFlagDefinition extends FlagDefinition implements Listener, Runnable
-{
+/**
+ * Base flag definition for time based flags
+ * <p>When creating flags which require a timer extend from this class</p>
+ */
+public abstract class TimedPlayerFlagDefinition extends FlagDefinition implements Listener, Runnable {
+
     private static long tickOffset = 0L;
-    private ConcurrentLinkedQueue<ConcurrentLinkedQueue<Player>> playerQueueQueue = new ConcurrentLinkedQueue<ConcurrentLinkedQueue<Player>>();
+    private ConcurrentLinkedQueue<ConcurrentLinkedQueue<Player>> playerQueueQueue = new ConcurrentLinkedQueue<>();
     private long taskIntervalTicks;
-    
-    TimedPlayerFlagDefinition(FlagManager manager, GPFlags plugin)
-    {
+
+    public TimedPlayerFlagDefinition(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
-    abstract long getPlayerCheckFrequency_Ticks();
-    abstract void processPlayer(Player player);
-    
-    public void firstTimeSetup()
-    {
+
+    public abstract long getPlayerCheckFrequency_Ticks();
+
+    public abstract void processPlayer(Player player);
+
+    public void firstTimeSetup() {
         super.firstTimeSetup();
 
         this.taskIntervalTicks = this.getPlayerCheckFrequency_Ticks() / Bukkit.getServer().getMaxPlayers();
-        if(this.taskIntervalTicks < 1) this.taskIntervalTicks = 1;
+        if (this.taskIntervalTicks < 1) this.taskIntervalTicks = 1;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, this, TimedPlayerFlagDefinition.tickOffset++, Math.max(this.taskIntervalTicks, 1));
     }
-    
+
     @Override
-    public void run()
-    {
+    public void run() {
         ConcurrentLinkedQueue<Player> playerQueue = this.playerQueueQueue.poll();
-        if(playerQueue == null)
-        {
+        if (playerQueue == null) {
             long iterationsToProcessAllPlayers = this.getPlayerCheckFrequency_Ticks() / this.taskIntervalTicks;
-            if(iterationsToProcessAllPlayers < 1) iterationsToProcessAllPlayers = 1;
-            for(int i = 0; i < iterationsToProcessAllPlayers; i++)
-            {
+            if (iterationsToProcessAllPlayers < 1) iterationsToProcessAllPlayers = 1;
+            for (int i = 0; i < iterationsToProcessAllPlayers; i++) {
                 this.playerQueueQueue.add(new ConcurrentLinkedQueue<Player>());
             }
-            
+
             @SuppressWarnings("unchecked")
-            Collection<Player> players = (Collection<Player>)Bukkit.getServer().getOnlinePlayers();
-            for(Player player : players)
-            {
+            Collection<Player> players = (Collection<Player>) Bukkit.getServer().getOnlinePlayers();
+            for (Player player : players) {
                 ConcurrentLinkedQueue<Player> queueToFill = this.playerQueueQueue.poll();
                 queueToFill.add(player);
                 this.playerQueueQueue.add(queueToFill);
             }
-            
+
             playerQueue = this.playerQueueQueue.poll();
         }
-        
+
         Player player;
-        while((player = playerQueue.poll()) != null)
-        {
-            try
-            {
+        while ((player = playerQueue.poll()) != null) {
+            try {
                 this.processPlayer(player);
-            }
-            catch(Exception e)
-            {
-                if(player.isOnline())
-                {
+            } catch (Exception e) {
+                if (player.isOnline()) {
                     e.printStackTrace();
                 }
             }
         }
     }
+
 }

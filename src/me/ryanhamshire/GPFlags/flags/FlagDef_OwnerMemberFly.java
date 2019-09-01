@@ -21,7 +21,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        Flag ownerFly = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(to, player);
+        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(to, player);
 
         if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         if (flag == null && ownerFly == null) {
@@ -35,7 +35,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 }
                 player.setAllowFlight(false);
                 if (player.getLocation().getY() - block.getY() >= 4) {
-                    GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                    GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
@@ -63,7 +63,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
-                GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }

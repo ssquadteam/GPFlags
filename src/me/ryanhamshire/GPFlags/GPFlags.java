@@ -31,24 +31,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * <b>Main GriefPrevention Flags class</b>
+ */
 @SuppressWarnings("WeakerAccess")
 public class GPFlags extends JavaPlugin {
     private static VersionControl vc;
 
     //for convenience, a reference to the instance of this plugin
-    public static GPFlags instance;
+    private static GPFlags instance;
 
     //for logging to the console and log file
     private static Logger log = Logger.getLogger("Minecraft");
 
     //this handles customizable messages
-    public FlagsDataStore flagsDataStore;
+    private FlagsDataStore flagsDataStore;
 
     //this handles flags
-    public FlagManager flagManager = new FlagManager();
+    private FlagManager flagManager = new FlagManager();
 
     //this handles worldwide settings (aka global flags)
-    public WorldSettingsManager worldSettingsManager = new WorldSettingsManager();
+    private WorldSettingsManager worldSettingsManager = new WorldSettingsManager();
 
     private boolean registeredFlagDefinitions = false;
     private PlayerListener playerListener;
@@ -103,7 +106,7 @@ public class GPFlags extends JavaPlugin {
         //worldSettingsKeys.add(this.worldSettingsManager.OtherWorldsKey);
 
         for (String worldName : worldSettingsKeys) {
-            WorldSettings settings = this.worldSettingsManager.Create(worldName);
+            WorldSettings settings = this.worldSettingsManager.create(worldName);
 
             settings.worldGamemodeDefault = inConfig.getString("World Flags." + worldName + ".Default Gamemode", "survival");
             if (!settings.worldGamemodeDefault.equalsIgnoreCase("survival") && !settings.worldGamemodeDefault.equalsIgnoreCase("creative") &&
@@ -664,7 +667,7 @@ public class GPFlags extends JavaPlugin {
                     player.sendMessage(ChatColor.RED + "Invalid biome");
                     return true;
                 }
-                if (worldSettingsManager.Get(player.getWorld()).biomeBlackList.contains(biome.toString())) {
+                if (worldSettingsManager.get(player.getWorld()).biomeBlackList.contains(biome.toString())) {
                     if (!(player.hasPermission("gpflags.bypass"))) {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
@@ -770,7 +773,13 @@ public class GPFlags extends JavaPlugin {
         }
     }
 
-    static void sendMessage(CommandSender player, ChatColor color, String message, long delayInTicks) {
+    /** Send a delayed message
+     * @param player Player to send message to
+     * @param color Color of the message, can use {@link TextMode}
+     * @param message Message to send
+     * @param delayInTicks Delay for message to send
+     */
+    public static void sendMessage(CommandSender player, ChatColor color, String message, long delayInTicks) {
         SendPlayerMessageTask task = new SendPlayerMessageTask(player, color, message);
         if (delayInTicks > 0) {
             GPFlags.instance.getServer().getScheduler().runTaskLater(GPFlags.instance, task, delayInTicks);
@@ -791,14 +800,49 @@ public class GPFlags extends JavaPlugin {
         return new MessageSpecifier(Messages.InvalidFlagDefName, flagDefsList.toString());
     }
 
+    @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException {
         return this.flagManager.onTabComplete(sender, command, alias, args);
     }
 
-    public static VersionControl getVersionControl() {
+    /** Get an instance of this plugin
+     * @return Instance of this plugin
+     */
+    public static GPFlags getInstance() {
+        return instance;
+    }
+
+    /** Get an instance of the flags data store
+     * @return Instance of the flags data store
+     */
+    public FlagsDataStore getFlagsDataStore() {
+        return this.flagsDataStore;
+    }
+
+    /** Get an instance of the flag manager
+     * @return Instance of the flag manager
+     */
+    public FlagManager getFlagManager() {
+        return this.flagManager;
+    }
+
+    /** Get an instance of the world settings manager
+     * @return Instance of the world settings manager
+     */
+    public WorldSettingsManager getWorldSettingsManager() {
+        return this.worldSettingsManager;
+    }
+
+    /** Get an instance of the version control class
+     * @return Instance of the version control class
+     */
+    public VersionControl getVersionControl() {
         return vc;
     }
 
+    /** Get an instance of the player listener class
+     * @return Instance of the player listener class
+     */
     public PlayerListener getPlayerListener() {
     	return this.playerListener;
 	}

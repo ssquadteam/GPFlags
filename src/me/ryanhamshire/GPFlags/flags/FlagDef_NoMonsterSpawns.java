@@ -17,7 +17,7 @@ import java.util.List;
 public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
     private final String ALLOW_TARGET_TAG = "GPF_AllowTarget";
-    private VersionControl vc = GPFlags.getVersionControl();
+    private VersionControl vc = GPFlags.getInstance().getVersionControl();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
@@ -26,7 +26,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
         SpawnReason reason = event.getSpawnReason();
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            entity.setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.instance, new Boolean(true)));
+            entity.setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), new Boolean(true)));
             return;
         }
 

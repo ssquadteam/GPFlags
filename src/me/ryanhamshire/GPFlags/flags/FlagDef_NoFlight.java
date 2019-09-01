@@ -17,20 +17,20 @@ import java.util.List;
 public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
 
     @Override
-    long getPlayerCheckFrequency_Ticks() {
+    public long getPlayerCheckFrequency_Ticks() {
         return 30L;
     }
 
     @Override
-    void processPlayer(Player player) {
+    public void processPlayer(Player player) {
         if (!player.isFlying()) return;
         if (player.hasPermission("gpflags.bypass")) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
-        Flag ownerFly = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        Flag ownerMember = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (ownerFly != null && claim.ownerID.toString().equalsIgnoreCase(player.getUniqueId().toString())) return;
         if (ownerMember != null && claim.allowAccess(player) == null) return;
@@ -46,7 +46,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
 
             player.setAllowFlight(false);
             if (player.getLocation().getY() - block.getY() >= 4) {
-                GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
             }
         }
     }
@@ -57,8 +57,8 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         if (player.isFlying()) return;
         if (player.hasPermission("gpflags.bypass")) return;
 
-        Flag ownerFly = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        Flag ownerMember = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
         if (ownerFly != null || ownerMember != null) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);

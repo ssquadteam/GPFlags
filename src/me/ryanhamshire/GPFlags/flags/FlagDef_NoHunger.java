@@ -17,12 +17,12 @@ public class FlagDef_NoHunger extends TimedPlayerFlagDefinition {
     private ConcurrentHashMap<UUID, Integer> lastFoodMap = new ConcurrentHashMap<>();
 
     @Override
-    long getPlayerCheckFrequency_Ticks() {
+    public long getPlayerCheckFrequency_Ticks() {
         return 100L;
     }
 
     @Override
-    void processPlayer(Player player) {
+    public void processPlayer(Player player) {
         if (player.getFoodLevel() >= 20) return;
 
         UUID playerID = player.getUniqueId();

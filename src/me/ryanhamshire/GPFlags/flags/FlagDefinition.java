@@ -15,6 +15,7 @@ import java.util.List;
 
 /**
  * Base flag definition
+ * <p>When creating a new flag, extend from this class</p>
  */
 public abstract class FlagDefinition implements Listener {
 
@@ -93,9 +94,21 @@ public abstract class FlagDefinition implements Listener {
         Bukkit.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 
+    /**
+     * Flag types <br>Defines the types of claims a flag can be set in
+     */
     public enum FlagType {
+        /**
+         * Flag can be set in a claim
+         */
         CLAIM("&aCLAIM"),
+        /**
+         * Flag can be set for an entire world
+         */
         WORLD("&6WORLD"),
+        /**
+         * Flag can bet set for the entire server
+         */
         SERVER("&3SERVER");
 
         String name;

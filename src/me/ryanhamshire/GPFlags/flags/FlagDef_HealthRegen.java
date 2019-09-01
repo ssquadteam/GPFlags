@@ -10,12 +10,12 @@ import java.util.List;
 public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
 
     @Override
-    long getPlayerCheckFrequency_Ticks() {
+    public long getPlayerCheckFrequency_Ticks() {
         return 100L;
     }
 
     @Override
-    void processPlayer(Player player) {
+    public void processPlayer(Player player) {
         if (player.getHealth() >= player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() || player.isDead()) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);

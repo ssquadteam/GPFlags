@@ -4,6 +4,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.World;
 
+/**
+ * Manager for world settings
+ */
 public class WorldSettingsManager {
 
     private ConcurrentHashMap<String, WorldSettings> nameToSettingsMap = new ConcurrentHashMap<String, WorldSettings>();
@@ -13,25 +16,25 @@ public class WorldSettingsManager {
         this.nameToSettingsMap.put(this.OtherWorldsKey, new WorldSettings());
     }
 
-    void Set(World world, WorldSettings settings) {
-        this.Set(world.getName(), settings);
+    void set(World world, WorldSettings settings) {
+        this.set(world.getName(), settings);
     }
 
-    public void Set(String key, WorldSettings settings) {
+    public void set(String key, WorldSettings settings) {
         this.nameToSettingsMap.put(key, settings);
     }
 
-    public WorldSettings Get(World world) {
-        return this.Get(world.getName());
+    public WorldSettings get(World world) {
+        return this.get(world.getName());
     }
 
-    WorldSettings Get(String key) {
+    WorldSettings get(String key) {
         WorldSettings settings = this.nameToSettingsMap.get(key);
         if (settings != null) return settings;
         return this.nameToSettingsMap.get(this.OtherWorldsKey);
     }
 
-    public WorldSettings Create(String worldName) {
+    public WorldSettings create(String worldName) {
         WorldSettings settings = new WorldSettings();
         this.nameToSettingsMap.remove(worldName);
         this.nameToSettingsMap.put(worldName, settings);

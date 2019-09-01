@@ -10,52 +10,46 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public abstract class PlayerMovementFlagDefinition extends TimedPlayerFlagDefinition implements Runnable
-{
-    private ConcurrentHashMap<UUID, Location> lastLocationMap = new ConcurrentHashMap<UUID, Location>();
-    
-    PlayerMovementFlagDefinition(FlagManager manager, GPFlags plugin)
-    {
+/**
+ * Base flag definition for movement based flags
+ * <p>When creating a flag that requires checks for players moving in/out of claims, extend from this class</p>
+ */
+@SuppressWarnings("WeakerAccess")
+public abstract class PlayerMovementFlagDefinition extends TimedPlayerFlagDefinition implements Runnable {
+
+    private ConcurrentHashMap<UUID, Location> lastLocationMap = new ConcurrentHashMap<>();
+
+    public PlayerMovementFlagDefinition(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
-    abstract boolean allowMovement(Player player, Location lastLocation);
-    
+
+    public abstract boolean allowMovement(Player player, Location lastLocation);
+
     @Override
-    long getPlayerCheckFrequency_Ticks()
-    {
+    public long getPlayerCheckFrequency_Ticks() {
         return 20L;
     }
-    
+
     @Override
-    void processPlayer(Player player)
-    {
+    public void processPlayer(Player player) {
         UUID playerID = player.getUniqueId();
         Location lastLocation = this.lastLocationMap.get(playerID);
         Location location = player.getLocation();
-        if(lastLocation != null && location.getBlockX() == lastLocation.getBlockX() && location.getBlockY() == lastLocation.getBlockY() && location.getBlockZ() == lastLocation.getBlockZ()) return;
-        if(!this.allowMovement(player, lastLocation))
-        {
+        if (lastLocation != null && location.getBlockX() == lastLocation.getBlockX() && location.getBlockY() == lastLocation.getBlockY() && location.getBlockZ() == lastLocation.getBlockZ())
+            return;
+        if (!this.allowMovement(player, lastLocation)) {
             this.undoMovement(player, lastLocation);
-        }
-        else
-        {
+        } else {
             this.lastLocationMap.put(playerID, location);
         }
     }
-    
-    private void undoMovement(Player player, Location lastLocation)
-    {
-        if(lastLocation != null)
-        {
+
+    public void undoMovement(Player player, Location lastLocation) {
+        if (lastLocation != null) {
             player.teleport(lastLocation);
-        }
-        else if(player.getBedSpawnLocation() != null)
-        {
+        } else if (player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());
-        }
-        else
-        {
+        } else {
             player.teleport(player.getWorld().getSpawnLocation());
         }
     }
@@ -64,4 +58,5 @@ public abstract class PlayerMovementFlagDefinition extends TimedPlayerFlagDefini
     public List<FlagType> getFlagType() {
         return Collections.singletonList(FlagType.CLAIM);
     }
+
 }

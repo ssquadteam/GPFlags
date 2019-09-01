@@ -21,7 +21,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        Flag ownerMember = GPFlags.instance.flagManager.getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(to, player);
+        Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(to, player);
 
         if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
         if (flag == null && ownerMember == null) {
@@ -35,7 +35,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 }
                 player.setAllowFlight(false);
                 if (player.getLocation().getY() - block.getY() >= 4) {
-                    GPFlags.instance.getPlayerListener().addFallingPlayer(player);
+                    GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;

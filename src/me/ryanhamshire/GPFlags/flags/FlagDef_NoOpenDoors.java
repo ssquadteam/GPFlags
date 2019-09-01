@@ -16,7 +16,7 @@ import java.util.List;
 
 public class FlagDef_NoOpenDoors extends FlagDefinition {
 
-	private VersionControl vc = GPFlags.getVersionControl();
+	private VersionControl vc = GPFlags.getInstance().getVersionControl();
 
 	@EventHandler
 	public void onDoorOpen(PlayerInteractEvent e) {

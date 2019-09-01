@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * Data holder for flags
+ */
 //singleton class which manages all GriefPrevention data (except for config options)
 public class FlagsDataStore {
 

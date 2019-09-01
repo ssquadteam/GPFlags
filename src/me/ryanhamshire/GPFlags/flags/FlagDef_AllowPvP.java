@@ -36,7 +36,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         if (lastLocation == null) return true;
         Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        WorldSettings settings = this.settingsManager.Get(player.getWorld());
+        WorldSettings settings = this.settingsManager.get(player.getWorld());
         if (flag == null) {
             if (this.GetFlagInstanceAtLocation(lastLocation, player) != null) {
                 if (!settings.pvpRequiresClaimFlag) return true;
@@ -68,7 +68,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         hasJoined = true;
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), null);
         if (flag == null) return;
-        WorldSettings settings = this.settingsManager.Get(player.getWorld());
+        WorldSettings settings = this.settingsManager.get(player.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
         if (!settings.pvpEnterClaimMessageEnabled) return;
         GPFlags.sendMessage(player, TextMode.Warn, settings.pvpEnterClaimMessage);
@@ -103,7 +103,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         if (!hasNegativeEffect) return;
 
         //if not in a no-pvp world, we don't care
-        WorldSettings settings = this.settingsManager.Get(potion.getWorld());
+        WorldSettings settings = this.settingsManager.get(potion.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
 
         //ignore potions not effecting players or pets
@@ -156,7 +156,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         Entity damager = event.getDamager();
 
         //if not in a no-pvp world, we don't care
-        WorldSettings settings = this.settingsManager.Get(damager.getWorld());
+        WorldSettings settings = this.settingsManager.get(damager.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
 
         Projectile projectile = null;
@@ -218,18 +218,18 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
                 if (bow.getItemMeta() != null) {
                     projectile = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles().get(0);
-                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, projectile.clone()));
+                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.getInstance(), projectile.clone()));
                     return;
                 }
             }
             if (isProjectile(player.getInventory().getItemInOffHand())) {
                 projectile = player.getInventory().getItemInOffHand();
-                event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, projectile.clone()));
+                event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.getInstance(), projectile.clone()));
                 return;
             }
             for (ItemStack item : player.getInventory()) {
                 if (item != null && isProjectile(item)) {
-                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.instance, item.clone()));
+                    event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.getInstance(), item.clone()));
                     return;
                 }
             }

@@ -20,6 +20,9 @@ package me.ryanhamshire.GPFlags;
 
 import org.bukkit.ChatColor;
 
+/**
+ * Text color modifiers
+ */
 //just a few constants for chat color codes
 public class TextMode {
 

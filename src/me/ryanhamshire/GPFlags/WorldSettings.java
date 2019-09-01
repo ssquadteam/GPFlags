@@ -1,6 +1,5 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WorldSettings {

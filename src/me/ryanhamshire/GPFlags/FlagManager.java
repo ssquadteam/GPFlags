@@ -20,6 +20,9 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Manager for flags
+ */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class FlagManager implements TabCompleter {
 
@@ -292,19 +295,19 @@ public class FlagManager implements TabCompleter {
 			if (StringUtil.startsWithIgnoreCase(name, arg)) {
 				if (cmd.equalsIgnoreCase("setclaimflag") || cmd.equalsIgnoreCase("setdefaultclaimflag")
 						|| cmd.equalsIgnoreCase("unsetclaimflag") || cmd.equalsIgnoreCase("unsetdefaultclaimflag")) {
-					if (GPFlags.instance.flagManager.getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+					if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
 						if (sender.hasPermission("gpflags." + name))
 							matches.add(name);
 					}
 				}
 				if (cmd.equalsIgnoreCase("setworldflag") || cmd.equalsIgnoreCase("unsetworldflag")) {
-					if (GPFlags.instance.flagManager.getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
+					if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
 						if (sender.hasPermission("gpflags." + name))
 							matches.add(name);
 					}
 				}
 				if (cmd.equalsIgnoreCase("setserverflag") || cmd.equalsIgnoreCase("unsetserverflag")) {
-					if (GPFlags.instance.flagManager.getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
+					if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
 						if (sender.hasPermission("gpflags." + name))
 							matches.add(name);
 					}
@@ -314,7 +317,7 @@ public class FlagManager implements TabCompleter {
 		}
 
 		if (sender instanceof Player) {
-			WorldSettings settings = GPFlags.instance.worldSettingsManager.Get(((Player) sender).getWorld());
+			WorldSettings settings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
 
 
 			// TabCompleter for Biomes in ChangeBiome flag

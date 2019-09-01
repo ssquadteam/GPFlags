@@ -1,5 +1,8 @@
 package me.ryanhamshire.GPFlags;
 
+/**
+ * Plugin messages
+ */
 public enum Messages {
 
     NoFlagsInThisClaim,
