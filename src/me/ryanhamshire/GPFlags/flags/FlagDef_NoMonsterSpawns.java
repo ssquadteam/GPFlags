@@ -69,6 +69,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     private void onMobDamage(EntityDamageByEntityEvent event) {
         Entity target = event.getEntity();
         Entity damager = event.getDamager();
+        if (!isMonster(damager)) return;
         if (damager instanceof Player) return;
         if (!(damager instanceof LivingEntity)) return;
         if (!(target instanceof Player)) return;
