@@ -23,9 +23,16 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(to, player);
 
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
-        if (flag == null && ownerMember == null) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
 
+        if (flag == null && ownerMember == null) {
+            if (claim != null) {
+                Flag noFlight = GPFlags.getInstance().getFlagManager().getFlag(claim, GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("NoFlight"));
+                if (noFlight != null && !noFlight.getSet()) {
+                    return true;
+                }
+            }
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
                     !player.hasPermission("gpflags.bypass.fly")) {
@@ -40,7 +47,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
             }
-
             if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
                     !player.hasPermission("gpflags.bypass.fly")) {
                 player.setAllowFlight(false);
@@ -48,11 +54,8 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             }
             return true;
         }
+        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
 
-
-
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
         if (claim == null) return true;
         if (!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             GameMode mode = player.getGameMode();
