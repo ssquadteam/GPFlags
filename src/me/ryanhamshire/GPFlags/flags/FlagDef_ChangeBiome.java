@@ -37,23 +37,24 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         changeBiome(greater, lesser, biome);
     }
 
-    public void changeBiome(CommandSender sender, Claim claim, String biome) {
+    public boolean changeBiome(CommandSender sender, Claim claim, String biome) {
         Biome b;
         try {
             b = Biome.valueOf(biome);
         } catch (Exception e) {
             sender.sendMessage(ChatColor.RED + "Invalid biome");
-            return;
+            return false;
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
         if (GPFlags.getInstance().getWorldSettingsManager().get(world).biomeBlackList.contains(biome)) {
             if (!(sender.hasPermission("gpflags.bypass"))) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
                         "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
-                return;
+                return false;
             }
         }
         changeBiome(claim, b);
+        return true;
     }
 
     public void resetBiome(Long claimID) {

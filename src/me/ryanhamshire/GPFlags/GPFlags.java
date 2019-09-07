@@ -14,7 +14,6 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -455,6 +454,13 @@ public class GPFlags extends JavaPlugin {
                 params[i - 2] = args[i];
             }
 
+            // SET BIOME
+            if (flagName.equalsIgnoreCase("ChangeBiome")) {
+                FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) this.flagManager.getFlagDefinitionByName("changebiome"));
+                String biome = params[0].toUpperCase().replace(" ", "_");
+                if (!flagD.changeBiome(sender, claim, biome)) return true;
+            }
+
             SetFlagResult result = this.flagManager.setFlag(claim.getID().toString(), def, true, params);
             ChatColor color = result.success ? TextMode.Success : TextMode.Err;
             GPFlags.sendMessage(sender, color, result.message.messageID, result.message.messageParams);
@@ -659,9 +665,9 @@ public class GPFlags extends JavaPlugin {
 
             // SET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
-                FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
+                FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) this.flagManager.getFlagDefinitionByName("changebiome"));
                 String biome = params[0].toUpperCase().replace(" ", "_");
-                flagD.changeBiome(sender, claim, biome);
+                if (!flagD.changeBiome(sender, claim, biome)) return true;
             }
 
             // Permissions for mob type
@@ -705,7 +711,7 @@ public class GPFlags extends JavaPlugin {
 
             // TODO RESET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
-                FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
+                FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) this.flagManager.getFlagDefinitionByName("changebiome"));
                 flagD.resetBiome(claim.getID());
             }
 

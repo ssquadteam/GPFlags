@@ -12,6 +12,6 @@ public class WorldSettings {
     public String pvpExitClaimMessage = null;
     public String worldGamemodeDefault = null;
 
-    List biomeBlackList = null;
+    public List biomeBlackList = null;
 
 }
