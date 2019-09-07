@@ -660,21 +660,8 @@ public class GPFlags extends JavaPlugin {
             // SET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
                 FlagDef_ChangeBiome flagD = new FlagDef_ChangeBiome(flagManager, this);
-                Biome biome;
-                try {
-                    biome = Biome.valueOf(params[0].toUpperCase().replace(" ", "_"));
-                } catch (Exception e) {
-                    player.sendMessage(ChatColor.RED + "Invalid biome");
-                    return true;
-                }
-                if (worldSettingsManager.get(player.getWorld()).biomeBlackList.contains(biome.toString())) {
-                    if (!(player.hasPermission("gpflags.bypass"))) {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                                "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
-                        return true;
-                    }
-                }
-                flagD.changeBiome(claim, biome.toString());
+                String biome = params[0].toUpperCase().replace(" ", "_");
+                flagD.changeBiome(sender, claim, biome);
             }
 
             // Permissions for mob type
