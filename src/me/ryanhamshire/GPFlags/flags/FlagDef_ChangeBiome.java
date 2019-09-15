@@ -4,14 +4,14 @@ import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.EventHandler;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,15 +19,26 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     @SuppressWarnings("deprecation")
     private void changeBiome(Location greater, Location lesser, Biome biome) {
+        List<Chunk> chunks = new ArrayList<>();
+        Block block;
         int lX = (int) lesser.getX();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
         int gZ = (int) greater.getZ();
         for (int x = lX; x < gX; x++) {
             for (int z = lZ; z < gZ; z++) {
-                greater.getWorld().getBlockAt(x, 60, z).setBiome(biome);
-                greater.getWorld().refreshChunk(x >> 4, z >> 4);
+                block = greater.getWorld().getBlockAt(x, 60, z);
+                block.setBiome(biome);
+                if (!chunks.contains(block.getChunk())) {
+                    chunks.add(block.getChunk());
+                }
             }
+        }
+        for (Chunk chunk : chunks) {
+            if (!chunk.isLoaded()) continue;
+            int x = chunk.getX();
+            int z = chunk.getZ();
+            greater.getWorld().refreshChunk(x, z);
         }
     }
 
