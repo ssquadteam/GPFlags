@@ -69,8 +69,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     }
 
     public void resetBiome(Long claimID) {
-        Claim claim = GriefPrevention.instance.dataStore.getClaim(claimID);
+        resetBiome(GriefPrevention.instance.dataStore.getClaim(claimID));
+    }
 
+    public void resetBiome(Claim claim) {
         // Restore biome by matching with biome of block 2 north of claim
         Biome biome = claim.getLesserBoundaryCorner().getBlock().getRelative(BlockFace.NORTH, 2).getBiome();
 
@@ -85,14 +87,9 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         if (e.getClaim().getOwnerName() == null) return; //don't restore a sub-claim
         Claim claim = e.getClaim();
 
-        // Restore biome by matching with biome of block 2 north of claim
-        Biome biome = claim.getLesserBoundaryCorner().getBlock().getRelative(BlockFace.NORTH, 2).getBiome();
+        if (GPFlags.getInstance().getFlagManager().getFlag(claim, this) == null) return; // Return if flag is non existent
 
-        Location greater = claim.getGreaterBoundaryCorner();
-        Location lesser = claim.getLesserBoundaryCorner();
-
-        changeBiome(greater, lesser, biome);
-
+        resetBiome(claim);
     }
 
     public FlagDef_ChangeBiome(FlagManager manager, GPFlags plugin) {
