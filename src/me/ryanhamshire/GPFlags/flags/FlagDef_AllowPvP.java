@@ -195,7 +195,9 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                     }
                 }
             }
-            projectile.remove();
+            if (!(projectile instanceof Trident)) {
+                projectile.remove();
+            }
         }
         if (sendErrorMessagesToPlayers && damager instanceof Player)
             GPFlags.sendMessage(damager, TextMode.Err, settings.pvpDeniedMessage);
