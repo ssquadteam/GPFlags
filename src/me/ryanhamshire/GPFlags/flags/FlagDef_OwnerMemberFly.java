@@ -35,7 +35,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
             }
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
-                    !player.hasPermission("gpflags.bypass.fly")) {
+                    !player.hasPermission("gpflags.bypass.fly") && !player.hasPermission("gpflags.bypass")) {
                 Block block = player.getLocation().getBlock();
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
@@ -48,7 +48,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 return true;
             }
             if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
-                    !player.hasPermission("gpflags.bypass.fly")) {
+                    !player.hasPermission("gpflags.bypass.fly") && !player.hasPermission("gpflags.bypass")) {
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
@@ -65,13 +65,13 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         } else {
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
-                    !player.hasPermission("gpflags.bypass.fly")) {
+                    !player.hasPermission("gpflags.bypass.fly") && !player.hasPermission("gpflags.bypass")) {
                 GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
-                    !player.hasPermission("gpflags.bypass.fly")) {
+                    !player.hasPermission("gpflags.bypass.fly") && !player.hasPermission("gpflags.bypass")) {
                 player.setAllowFlight(false);
                 GPFlags.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }

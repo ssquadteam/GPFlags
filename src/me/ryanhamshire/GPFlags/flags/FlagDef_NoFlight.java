@@ -24,7 +24,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
     @Override
     public void processPlayer(Player player) {
         if (!player.isFlying()) return;
-        if (player.hasPermission("gpflags.bypass")) return;
+        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.fly")) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
@@ -55,7 +55,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
         Player player = event.getPlayer();
         if (player.isFlying()) return;
-        if (player.hasPermission("gpflags.bypass")) return;
+        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.fly")) return;
 
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
