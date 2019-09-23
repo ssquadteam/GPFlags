@@ -4,6 +4,7 @@
 ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ShaneBeee/GriefPreventionFlags.svg?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/ShaneBeee/GriefPreventionFlags/total.svg?style=for-the-badge)
 [![Discord](https://img.shields.io/discord/425192525091831808.svg?style=for-the-badge)](https://discordapp.com/invite/km3UF8Q)
+[![Build Status](https://travis-ci.org/ShaneBeee/GriefPreventionFlags.svg?branch=master)](https://travis-ci.org/ShaneBeee/GriefPreventionFlags)
 
 Bringing back an old favorite of GriefPrevention users... Admin Flags
 
