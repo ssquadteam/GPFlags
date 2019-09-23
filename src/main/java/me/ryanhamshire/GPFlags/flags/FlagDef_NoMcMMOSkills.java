@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
+//import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import me.ryanhamshire.GPFlags.*;
@@ -25,10 +25,10 @@ public class FlagDef_NoMcMMOSkills extends FlagDefinition {
         this.handleEvent(event.getPlayer(), event);
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerSecondaryAbility(SecondaryAbilityEvent event) {
-        this.handleEvent(event.getPlayer(), event);
-    }
+    //@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    //public void onPlayerSecondaryAbility(SecondaryAbilityEvent event) {
+       // this.handleEvent(event.getPlayer(), event);
+    //}
 
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerSecondaryAbility(SubSkillEvent event) {
