@@ -11,10 +11,9 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition
 {
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
+    public boolean allowMovement(Player player, Location lastLocation, Location to)
     {
         if(lastLocation == null) return true;
-        Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         if(flag == null) return true;
 

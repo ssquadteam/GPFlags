@@ -13,10 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition
 {
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
+    public boolean allowMovement(Player player, Location lastLocation, Location to)
     {
         if(lastLocation == null) return true;
-        Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         if(flag == null) return true;
         

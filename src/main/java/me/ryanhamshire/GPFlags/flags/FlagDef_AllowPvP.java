@@ -32,9 +32,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     private WorldSettingsManager settingsManager;
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (lastLocation == null) return true;
-        Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         WorldSettings settings = this.settingsManager.get(player.getWorld());
         if (flag == null) {

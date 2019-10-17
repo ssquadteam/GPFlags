@@ -11,11 +11,10 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 public class FlagDef_NoEnter extends PlayerMovementFlagDefinition
 {
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
+    public boolean allowMovement(Player player, Location lastLocation, Location to)
     {
         if(player.hasPermission("gpflags.bypass")) return true;
-        
-        Location to = player.getLocation();
+
         Location from = lastLocation;
         
         Flag flag = this.GetFlagInstanceAtLocation(to, player);

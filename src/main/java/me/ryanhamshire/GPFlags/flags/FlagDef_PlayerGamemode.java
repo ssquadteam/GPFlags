@@ -15,12 +15,11 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
     private WorldSettingsManager settingsManager;
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
+    public boolean allowMovement(Player player, Location lastLocation, Location to)
     {
         WorldSettings settings = this.settingsManager.get(player.getWorld());
 
         if(lastLocation == null) return true;
-        Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         if(flag == null) {
             if(this.GetFlagInstanceAtLocation(lastLocation, player) == null) return true;

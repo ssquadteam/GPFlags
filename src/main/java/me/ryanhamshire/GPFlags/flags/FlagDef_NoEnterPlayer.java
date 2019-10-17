@@ -10,10 +10,9 @@ import org.bukkit.entity.Player;
 public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (player.hasPermission("gpflags.bypass")) return true;
 
-        Location to = player.getLocation();
         Location from = lastLocation;
 
         Flag flag = this.GetFlagInstanceAtLocation(to, player);

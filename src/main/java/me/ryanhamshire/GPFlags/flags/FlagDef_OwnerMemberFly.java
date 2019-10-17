@@ -17,9 +17,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener {
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (lastLocation == null) return true;
-        Location to = player.getLocation();
         Flag flag = this.GetFlagInstanceAtLocation(to, player);
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(to, player);
 

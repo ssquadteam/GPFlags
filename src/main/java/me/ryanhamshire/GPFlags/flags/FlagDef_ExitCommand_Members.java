@@ -11,9 +11,8 @@ import org.bukkit.entity.Player;
 public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition  {
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation)
+    public boolean allowMovement(Player player, Location lastLocation, Location to)
     {
-        Location to = player.getLocation();
         if(lastLocation == null) return true;
         Flag flag = this.GetFlagInstanceAtLocation(lastLocation, player);
         if(flag == null) return true;
