@@ -6,7 +6,7 @@
 
     <groupId>tk.shanebee</groupId>
     <artifactId>GriefPreventionFlags</artifactId>
-    <version>5.6.4</version>
+    <version>5.7.0-Beta1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -36,6 +36,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.md-5</groupId>
+                    <artifactId>bungeecord-chat</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.github.TechFortress</groupId>
@@ -51,6 +57,8 @@
         </dependency>
     </dependencies>
 
+
+
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <finalName>${project.name}-${project.version}</finalName>
@@ -64,5 +72,18 @@
                 </includes>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <links>
+                        <link>https://hub.spigotmc.org/javadocs/spigot/</link>
+                        <link>http://shanebeestudios.tk/docs/plugins/GriefPrevention/</link>
+                    </links>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>
