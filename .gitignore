@@ -1,3 +1,4 @@
 /GriefPreventionFlags.iml
-/JavaDocs/
 /.idea/
+/target/
+/dependency-reduced-pom.xml
