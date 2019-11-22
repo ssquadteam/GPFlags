@@ -29,7 +29,7 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     public abstract boolean allowMovement(Player player, Location from, Location to);
 
     @EventHandler
-    void onMove(PlayerClaimBorderEvent event) {
+    public void onMove(PlayerClaimBorderEvent event) {
         Player player = event.getPlayer();
         Location lastLocation = event.getLocFrom();
         if (!this.allowMovement(player, lastLocation, event.getLocTo())) {
