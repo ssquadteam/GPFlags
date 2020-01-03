@@ -7,10 +7,12 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.HashMap;
 
@@ -45,8 +47,23 @@ public class PlayerListener implements Listener {
         if (event.getTo() == null) return;
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
-        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ()) return;
         Player player = event.getPlayer();
+        processMovement(locTo, locFrom, player, event);
+    }
+
+    @EventHandler
+    private void onTeleport(PlayerTeleportEvent event) {
+        if (event.isCancelled()) return;
+        if (event.getTo() == null) return;
+        Location locTo = event.getTo();
+        Location locFrom = event.getFrom();
+        Player player = event.getPlayer();
+        processMovement(locTo, locFrom, player, event);
+    }
+
+    private void processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
+        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ()) return;
+
         Claim claimTo = dataStore.getClaimAt(locTo, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom, false, null);
         if (claimTo == null && claimFrom == null) return;
