@@ -271,6 +271,7 @@ public class FlagManager implements TabCompleter {
         for(String key : toRemove) {
             this.flags.remove(key);
         }
+        save();
     }
 
 
