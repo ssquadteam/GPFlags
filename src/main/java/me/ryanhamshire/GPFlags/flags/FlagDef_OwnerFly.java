@@ -32,7 +32,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                     return true;
                 }
             }
-            if (!canFly(player)) {
+            if (player.isFlying() && !canFly(player)) {
                 Block block = player.getLocation().getBlock();
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
