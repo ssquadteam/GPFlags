@@ -1,11 +1,14 @@
 package me.ryanhamshire.GPFlags.listener;
 
 import me.ryanhamshire.GPFlags.event.PlayerClaimBorderEvent;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -71,6 +74,19 @@ public class PlayerListener implements Listener {
         PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom, locTo);
         Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
         event.setCancelled(playerClaimBorderEvent.isCancelled());
+    }
+
+    @EventHandler
+    // Disable flight when a player deletes their claim
+    private void onDeleteClaim(ClaimDeletedEvent event) {
+	    Claim claim = event.getClaim();
+        World world = claim.getGreaterBoundaryCorner().getWorld();
+        assert world != null;
+	    for (Player player : world.getPlayers()) {
+	        if (claim.contains(player.getLocation(), false, true)) {
+                Util.disableFlight(player);
+            }
+        }
     }
 
 }
