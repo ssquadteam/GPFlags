@@ -24,11 +24,11 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!this.isMonster(entity)) return;
+        if (!vc.isMonster(entity)) return;
 
         SpawnReason reason = event.getSpawnReason();
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            entity.setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), new Boolean(true)));
+            entity.setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
             return;
         }
 
@@ -38,26 +38,13 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
         event.setCancelled(true);
     }
 
-    private boolean isMonster(Entity entity) {
-        if (entity instanceof Monster) return true;
-
-        if (vc.isMonster(entity)) return true;
-
-        if (entity.getType() == EntityType.RABBIT) {
-            Rabbit rabbit = (Rabbit) entity;
-            if (rabbit.getRabbitType() == Rabbit.Type.THE_KILLER_BUNNY) return true;
-        }
-
-        return false;
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         Entity target = event.getTarget();
         if (target == null) return;
 
         Entity entity = event.getEntity();
-        if (!this.isMonster(entity)) return;
+        if (!vc.isMonster(entity)) return;
         if (entity.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
         Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
@@ -71,7 +58,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     private void onMobDamage(EntityDamageByEntityEvent event) {
         Entity target = event.getEntity();
         Entity damager = event.getDamager();
-        if (!isMonster(damager)) return;
+        if (!vc.isMonster(damager)) return;
         if (damager instanceof Player) return;
         if (!(damager instanceof LivingEntity)) return;
         if (!(target instanceof Player)) return;
