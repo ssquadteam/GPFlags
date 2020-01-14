@@ -8,6 +8,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.entity.EntityPotionEffectEvent.Cause;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -80,6 +82,17 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
         event.setCancelled(true);
         damager.remove();
+    }
+
+    @EventHandler
+    private void onPoison(EntityPotionEffectEvent event) {
+        if (event.getCause() != Cause.ATTACK) return;
+        Entity entity = event.getEntity();
+        if (entity instanceof Player) {
+            Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
+            if (flag == null) return;
+            event.setCancelled(true);
+        }
     }
 
     public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
