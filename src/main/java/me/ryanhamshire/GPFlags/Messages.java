@@ -50,6 +50,8 @@ public enum Messages {
     ConsoleCommandRequired,
     EnableNoPlayerDamage,
     DisableNoPlayerDamage,
+    EnableNoPlayerDamageByMonster,
+    DisableNoPlayerDamageByMonster,
     EnabledNoEnter,
     DisabledNoEnter,
     DisableMobDamage,

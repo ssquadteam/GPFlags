@@ -171,6 +171,7 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.registerFlagDefinition(new FlagDef_NoCombatLoot(this.flagManager, this));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawns(this.flagManager, this));
             this.flagManager.registerFlagDefinition(new FlagDef_NoPlayerDamage(this.flagManager, this));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoPlayerDamageByMonster(this.flagManager, this));
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnter(this.flagManager, this));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobDamage(this.flagManager, this));
             this.flagManager.registerFlagDefinition(new FlagDef_NoFluidFlow(this.flagManager, this));
