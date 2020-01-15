@@ -3,6 +3,7 @@ package me.ryanhamshire.GPFlags.util;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.material.*;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class Legacy implements VersionControl {
 
     public boolean isMonster(Entity entity) {
         EntityType type = entity.getType();
-        return (type == EntityType.GHAST || type == EntityType.MAGMA_CUBE ||
+        return (entity instanceof Monster || type == EntityType.GHAST || type == EntityType.MAGMA_CUBE ||
                 type == EntityType.SHULKER || type == EntityType.SLIME);
     }
 

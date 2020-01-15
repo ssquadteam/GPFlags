@@ -7,6 +7,7 @@ import org.bukkit.block.data.type.Gate;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,7 @@ public class Current implements VersionControl {
 
     public boolean isMonster(Entity entity) {
         EntityType type = entity.getType();
-        return (type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER
+        return (entity instanceof Monster || type == EntityType.GHAST || type == EntityType.MAGMA_CUBE || type == EntityType.SHULKER
                 || type == EntityType.PHANTOM || type == EntityType.SLIME);
     }
 
