@@ -6,9 +6,11 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -85,6 +87,22 @@ public class PlayerListener implements Listener {
 	    for (Player player : world.getPlayers()) {
 	        if (claim.contains(player.getLocation(), false, true)) {
                 Util.disableFlight(player);
+            }
+        }
+    }
+
+    @EventHandler
+    // Call the claim border event when a player resizes a claim and they are now outside of the claim
+    private void onChangeClaim(ClaimModifiedEvent event) {
+	    Claim claim = event.getClaim();
+        CommandSender modifier = event.getModifier();
+	    if (modifier instanceof Player) {
+	        Player player = ((Player) modifier);
+	        Location loc = player.getLocation();
+	        Claim claimAtLoc = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
+	        if (claimAtLoc == null) {
+	            PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claim, null, claim.getLesserBoundaryCorner(), loc);
+	            Bukkit.getPluginManager().callEvent(borderEvent);
             }
         }
     }
