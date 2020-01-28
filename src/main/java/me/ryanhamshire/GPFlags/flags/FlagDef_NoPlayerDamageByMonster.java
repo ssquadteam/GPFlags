@@ -34,6 +34,7 @@ public class FlagDef_NoPlayerDamageByMonster extends FlagDefinition {
         Entity damager = event.getDamager();
         if (!vc.isMonster(damager) && !(damager instanceof Projectile)) return;
         Entity victim = event.getEntity();
+        if (!(victim instanceof Player)) return;
         Flag flag = this.GetFlagInstanceAtLocation(victim.getLocation(), null);
         if (flag == null) return;
         if (damager instanceof Projectile) {
