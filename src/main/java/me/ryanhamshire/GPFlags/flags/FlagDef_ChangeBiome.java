@@ -20,17 +20,20 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     @SuppressWarnings("deprecation")
     private void changeBiome(Location greater, Location lesser, Biome biome) {
         List<Chunk> chunks = new ArrayList<>();
-        Block block;
         int lX = (int) lesser.getX();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
         int gZ = (int) greater.getZ();
+        World world = lesser.getWorld();
+        assert world != null;
         for (int x = lX; x < gX; x++) {
             for (int z = lZ; z < gZ; z++) {
-                block = greater.getWorld().getBlockAt(x, 60, z);
-                block.setBiome(biome);
-                if (!chunks.contains(block.getChunk())) {
-                    chunks.add(block.getChunk());
+                for (int y = 0; y <= 255; y++) {
+                    world.setBiome(x, y, z, biome);
+                }
+                Chunk chunk = world.getBlockAt(x, 0, z).getChunk();
+                if (!chunks.contains(chunk)) {
+                    chunks.add(chunk);
                 }
             }
         }
@@ -38,7 +41,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
             if (!chunk.isLoaded()) continue;
             int x = chunk.getX();
             int z = chunk.getZ();
-            greater.getWorld().refreshChunk(x, z);
+            world.refreshChunk(x, z);
         }
     }
 
@@ -74,7 +77,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     public void resetBiome(Claim claim) {
         // Restore biome by matching with biome of block 2 north of claim
-        Biome biome = claim.getLesserBoundaryCorner().getBlock().getRelative(BlockFace.NORTH, 2).getBiome();
+        Biome biome = claim.getLesserBoundaryCorner().getBlock().getRelative(BlockFace.NORTH, 6).getBiome();
 
         Location greater = claim.getGreaterBoundaryCorner();
         Location lesser = claim.getLesserBoundaryCorner();
