@@ -673,7 +673,7 @@ public class GPFlags extends JavaPlugin {
 
             // Permissions for mob type
             if (flagName.equalsIgnoreCase("NoMobSpawnsType")) {
-                if (!player.hasPermission("gpflags.nomobspawnstype.*")) {
+                if (!player.hasPermission("gpflags.nomobspawnstype.*") && !player.hasPermission("gpflags.admin.*")) {
                     for (String type : params[0].split(";")) {
                         if (!player.hasPermission("gpflags.nomobspawnstype." + type)) {
                             GPFlags.sendMessage(player, TextMode.Err, Messages.MobTypePerm, type);
