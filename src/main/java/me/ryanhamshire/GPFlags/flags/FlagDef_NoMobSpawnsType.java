@@ -23,23 +23,18 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 		Flag flag = this.GetFlagInstanceAtLocation(event.getLocation(), null);
 		if (flag == null) return;
 
-		String[] entityTypes = flag.parameters.split(";");
-
 		EntityType type = event.getEntityType();
 		if (type == EntityType.PLAYER) return;
 		if (type == EntityType.ARMOR_STAND) return;
 
-		CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
-		if (reason == CreatureSpawnEvent.SpawnReason.SPAWNER || reason == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
-			event.getEntity().setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
-			return;
-		}
-
-		for (String entityType : entityTypes) {
-			if (event.getEntityType().toString().equalsIgnoreCase(entityType)) {
-				event.setCancelled(true);
-			}
-		}
+		if (isNotAllowed(type, flag)) {
+            CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
+            if (reason == CreatureSpawnEvent.SpawnReason.SPAWNER || reason == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) {
+                event.getEntity().setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
+                return;
+            }
+            event.setCancelled(true);
+        }
 	}
 
 	@EventHandler
@@ -48,13 +43,14 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 		Entity damager = event.getEntity();
 
 		if (target == null) return;
-		if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
 		Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
 		if (flag == null) return;
-
-		event.setCancelled(true);
-		damager.remove();
+		if (isNotAllowed(damager.getType(), flag)) {
+            if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
+            event.setCancelled(true);
+            damager.remove();
+        }
 	}
 
 	@EventHandler
@@ -65,13 +61,14 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 		if (damager instanceof Player) return;
 		if (!(damager instanceof LivingEntity)) return;
 		if (!(target instanceof Player)) return;
-		if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
 
 		Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
 		if (flag == null) return;
-
-		event.setCancelled(true);
-		damager.remove();
+        if (isNotAllowed(damager.getType(), flag)) {
+            if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
+            event.setCancelled(true);
+            damager.remove();
+        }
 	}
 
 	public FlagDef_NoMobSpawnsType(FlagManager manager, GPFlags plugin) {
@@ -105,5 +102,12 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 	public List<FlagType> getFlagType() {
 		return Arrays.asList(FlagType.WORLD, FlagType.CLAIM, FlagType.SERVER);
 	}
+
+	private boolean isNotAllowed(EntityType type, Flag flag) {
+        for (String t : flag.parameters.split(";")) {
+            if (t.equalsIgnoreCase(type.toString())) return true;
+        }
+        return false;
+    }
 
 }
