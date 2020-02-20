@@ -85,13 +85,12 @@ public class PlayerListener implements Listener {
     private void onDeleteClaim(ClaimDeletedEvent event) {
 	    Claim claim = event.getClaim();
         World world = claim.getGreaterBoundaryCorner().getWorld();
+        Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
+        Flag flagOwnerMemberFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
         assert world != null;
-	    for (Player player : world.getPlayers()) {
-	        if (claim.contains(player.getLocation(), false, true)) {
-
-                Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
-                Flag flagOwnerMemberFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
-                if (flagOwnerFly != null || flagOwnerMemberFly != null) {
+        if (flagOwnerFly != null || flagOwnerMemberFly != null) {
+            for (Player player : world.getPlayers()) {
+                if (claim.contains(player.getLocation(), false, true)) {
                     Util.disableFlight(player);
                 }
             }
