@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags.listener;
 
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.event.PlayerClaimBorderEvent;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -86,7 +88,12 @@ public class PlayerListener implements Listener {
         assert world != null;
 	    for (Player player : world.getPlayers()) {
 	        if (claim.contains(player.getLocation(), false, true)) {
-                Util.disableFlight(player);
+
+                Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
+                Flag flagOwnerMemberFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
+                if (flagOwnerFly != null || flagOwnerMemberFly != null) {
+                    Util.disableFlight(player);
+                }
             }
         }
     }
