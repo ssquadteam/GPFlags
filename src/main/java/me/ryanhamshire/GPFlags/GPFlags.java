@@ -457,6 +457,7 @@ public class GPFlags extends JavaPlugin {
 
             // SET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
+                if (args.length < 3) return false;
                 FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) this.flagManager.getFlagDefinitionByName("changebiome"));
                 String biome = params[0].toUpperCase().replace(" ", "_");
                 if (!flagD.changeBiome(sender, claim, biome)) return true;
@@ -666,6 +667,7 @@ public class GPFlags extends JavaPlugin {
 
             // SET BIOME
             if (flagName.equalsIgnoreCase("ChangeBiome")) {
+                if (args.length < 2) return false;
                 FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) this.flagManager.getFlagDefinitionByName("changebiome"));
                 String biome = params[0].toUpperCase().replace(" ", "_");
                 if (!flagD.changeBiome(sender, claim, biome)) return true;
