@@ -149,25 +149,7 @@ public class GPFlags extends JavaPlugin {
             addLogEntry("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
 
-        try {
-            this.flagsDataStore = new FlagsDataStore();
-
-            File flagsFile = new File(FlagsDataStore.flagsFilePath);
-            List<MessageSpecifier> errors = this.flagManager.load(flagsFile);
-            if (errors.size() > 0) {
-                File errorFile = new File(FlagsDataStore.flagsErrorFilePath);
-                Files.copy(flagsFile, errorFile);
-                for (MessageSpecifier error : errors) {
-                    GPFlags.addLogEntry("Load Error: " + this.flagsDataStore.getMessage(error.messageID, error.messageParams));
-                }
-                GPFlags.addLogEntry("Problems encountered reading the flags data file! " +
-                        "Please share this log and your 'flagsError.yml' file with the developer.");
-            }
-        } catch (Exception e) {
-            GPFlags.addLogEntry("Unable to initialize the file system data store.  Details:");
-            GPFlags.addLogEntry(e.getMessage());
-            e.printStackTrace();
-        }
+        this.flagsDataStore = new FlagsDataStore();
 
         //register flag definitions
         if (!this.registeredFlagDefinitions) {
@@ -262,6 +244,24 @@ public class GPFlags extends JavaPlugin {
         } else {
             ((FlagDef_PlayerGamemode) this.flagManager.getFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
             ((FlagDef_AllowPvP) this.flagManager.getFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
+        }
+
+        try {
+            File flagsFile = new File(FlagsDataStore.flagsFilePath);
+            List<MessageSpecifier> errors = this.flagManager.load(flagsFile);
+            if (errors.size() > 0) {
+                File errorFile = new File(FlagsDataStore.flagsErrorFilePath);
+                Files.copy(flagsFile, errorFile);
+                for (MessageSpecifier error : errors) {
+                    GPFlags.addLogEntry("Load Error: " + this.flagsDataStore.getMessage(error.messageID, error.messageParams));
+                }
+                GPFlags.addLogEntry("Problems encountered reading the flags data file! " +
+                        "Please share this log and your 'flagsError.yml' file with the developer.");
+            }
+        } catch (Exception e) {
+            GPFlags.addLogEntry("Unable to initialize the file system data store.  Details:");
+            GPFlags.addLogEntry(e.getMessage());
+            e.printStackTrace();
         }
 
         //drop any flags which no longer correspond to existing land claims (maybe they were deleted)
