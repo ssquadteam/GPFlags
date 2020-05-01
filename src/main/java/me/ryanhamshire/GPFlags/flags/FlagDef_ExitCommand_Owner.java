@@ -23,7 +23,7 @@ public class FlagDef_ExitCommand_Owner extends PlayerMovementFlagDefinition {
         String [] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for(String commandLine : commandLines)
         {
-            GPFlags.addLogEntry("Exit command: " + commandLine);
+            GPFlags.logFlagCommands("Exit command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
 

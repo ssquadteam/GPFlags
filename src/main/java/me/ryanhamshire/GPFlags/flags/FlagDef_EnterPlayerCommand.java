@@ -23,7 +23,7 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition
         String [] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for(String commandLine : commandLines)
         {
-            GPFlags.addLogEntry("Entrance command: " + commandLine);
+            GPFlags.logFlagCommands("Entrance command: " + commandLine);
             Bukkit.getServer().dispatchCommand(player, commandLine);
         }
 

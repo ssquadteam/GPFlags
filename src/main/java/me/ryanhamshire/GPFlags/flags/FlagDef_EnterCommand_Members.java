@@ -27,7 +27,7 @@ public class FlagDef_EnterCommand_Members extends PlayerMovementFlagDefinition {
         String [] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for(String commandLine : commandLines)
         {
-            GPFlags.addLogEntry("Entrance command: " + commandLine);
+            GPFlags.logFlagCommands("Entrance command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
 
@@ -50,7 +50,7 @@ public class FlagDef_EnterCommand_Members extends PlayerMovementFlagDefinition {
         String [] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
 
         for(String commandLine : commandLines) {
-            GPFlags.addLogEntry("Entrance command: " + commandLine);
+            GPFlags.logFlagCommands("Entrance command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
     }
