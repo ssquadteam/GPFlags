@@ -18,8 +18,10 @@ import java.util.List;
 
 public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
+    private WorldSettingsManager settingsManager;
+
     private final String ALLOW_TARGET_TAG = "GPF_AllowTarget";
-    private VersionControl vc = GPFlags.getInstance().getVersionControl();
+    private final VersionControl vc = GPFlags.getInstance().getVersionControl();
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
@@ -27,7 +29,9 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
         if (!vc.isMonster(entity)) return;
 
         SpawnReason reason = event.getSpawnReason();
-        if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
+
+        WorldSettings settings = this.settingsManager.get(event.getEntity().getWorld());
+        if (settings.noMonsterSpawnIgnoreSpawners && (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG)) {
             entity.setMetadata(this.ALLOW_TARGET_TAG, new FixedMetadataValue(GPFlags.getInstance(), Boolean.TRUE));
             return;
         }
@@ -84,6 +88,11 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
     public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+        this.settingsManager = plugin.getWorldSettingsManager();
+    }
+
+    public void updateSettings(WorldSettingsManager settingsManager) {
+        this.settingsManager = settingsManager;
     }
 
     @Override

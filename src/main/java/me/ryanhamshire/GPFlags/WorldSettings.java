@@ -11,6 +11,7 @@ public class WorldSettings {
     public boolean pvpExitClaimMessageEnabled = false;
     public String pvpExitClaimMessage = null;
     public String worldGamemodeDefault = null;
+    public boolean noMonsterSpawnIgnoreSpawners = false;
 
     public List biomeBlackList = null;
 

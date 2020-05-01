@@ -138,6 +138,9 @@ public class GPFlags extends JavaPlugin {
             settings.biomeBlackList = inConfig.getList("World Flags." + worldName + ".Biomes.Blacklist", getVersionControl().getDefaultBiomes());
             outConfig.set("World Flags." + worldName + ".Biomes.Blacklist", settings.biomeBlackList);
 
+            settings.noMonsterSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", true);
+            outConfig.set("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", settings.noMonsterSpawnIgnoreSpawners);
+
             outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + this.getDescription().getVersion() +
                     "\nServer Version: " + getServer().getVersion() + "\n\n");
         }
@@ -244,6 +247,7 @@ public class GPFlags extends JavaPlugin {
         } else {
             ((FlagDef_PlayerGamemode) this.flagManager.getFlagDefinitionByName("PlayerGamemode")).updateSettings(this.worldSettingsManager);
             ((FlagDef_AllowPvP) this.flagManager.getFlagDefinitionByName("AllowPvP")).updateSettings(this.worldSettingsManager);
+            ((FlagDef_NoMonsterSpawns) this.flagManager.getFlagDefinitionByName("NoMonsterSpawns")).updateSettings(this.worldSettingsManager);
         }
 
         try {
