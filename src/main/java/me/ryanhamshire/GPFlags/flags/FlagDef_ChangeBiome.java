@@ -1,54 +1,84 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class FlagDef_ChangeBiome extends FlagDefinition {
 
-    @SuppressWarnings("deprecation")
-    private void changeBiome(Location greater, Location lesser, Biome biome) {
-        List<Chunk> chunks = new ArrayList<>();
+    private int changeBiome(Location greater, Location lesser, Biome biome) {
         int lX = (int) lesser.getX();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
         int gZ = (int) greater.getZ();
         World world = lesser.getWorld();
         assert world != null;
+        int i = 0;
         for (int x = lX; x < gX; x++) {
-            for (int z = lZ; z < gZ; z++) {
-                for (int y = 0; y <= 255; y++) {
-                    world.setBiome(x, y, z, biome);
+            int finalX = x;
+            BukkitRunnable runnable = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (int z = lZ; z < gZ; z++) {
+                        for (int y = 0; y <= 255; y++) {
+                            world.setBiome(finalX, y, z, biome);
+                        }
+                    }
                 }
-                Chunk chunk = world.getBlockAt(x, 0, z).getChunk();
-                if (!chunks.contains(chunk)) {
-                    chunks.add(chunk);
-                }
-            }
+            };
+            runnable.runTaskLater(GPFlags.getInstance(), i++);
         }
-        for (Chunk chunk : chunks) {
-            if (!chunk.isLoaded()) continue;
-            int x = chunk.getX();
-            int z = chunk.getZ();
-            world.refreshChunk(x, z);
-        }
+        return i;
     }
 
     private void changeBiome(Claim claim, Biome biome) {
         Location greater = claim.getGreaterBoundaryCorner();
         Location lesser = claim.getLesserBoundaryCorner();
-        changeBiome(greater, lesser, biome);
+        int i = changeBiome(greater, lesser, biome);
+        BukkitRunnable runnable = new BukkitRunnable() {
+            @Override
+            public void run() {
+                refreshChunks(claim);
+            }
+        };
+        runnable.runTaskLater(GPFlags.getInstance(), i);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void refreshChunks(Claim claim) {
+        int view = Bukkit.getServer().getViewDistance();
+        Player player = Bukkit.getPlayer(claim.getOwnerName());
+        if (player != null && player.isOnline()) {
+            Location loc = player.getLocation();
+            if (claim.contains(loc, true, true)) {
+                int X = loc.getChunk().getX();
+                int Z = loc.getChunk().getZ();
+                for (int x = X - view; x <= (X + view); x++) {
+                    for (int z = Z - view; z <= (Z + view); z++) {
+                        player.getWorld().refreshChunk(x, z);
+                    }
+                }
+            }
+        }
     }
 
     public boolean changeBiome(CommandSender sender, Claim claim, String biome) {
@@ -60,6 +90,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
             return false;
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
+        assert world != null;
         if (GPFlags.getInstance().getWorldSettingsManager().get(world).biomeBlackList.contains(biome)) {
             if (!(sender.hasPermission("gpflags.bypass"))) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
@@ -78,11 +109,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     public void resetBiome(Claim claim) {
         // Restore biome by matching with biome of block 2 north of claim
         Biome biome = claim.getLesserBoundaryCorner().getBlock().getRelative(BlockFace.NORTH, 6).getBiome();
-
-        Location greater = claim.getGreaterBoundaryCorner();
-        Location lesser = claim.getLesserBoundaryCorner();
-
-        changeBiome(greater, lesser, biome);
+        changeBiome(claim, biome);
     }
 
     @EventHandler
