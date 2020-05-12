@@ -13,20 +13,26 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
 public class PlayerListener implements Listener {
 
-	private HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
-	private DataStore dataStore = GriefPrevention.instance.dataStore;
+	private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
+	private final DataStore dataStore = GriefPrevention.instance.dataStore;
 
 	@EventHandler
 	private void onFall(EntityDamageEvent e) {
@@ -58,7 +64,7 @@ public class PlayerListener implements Listener {
         processMovement(locTo, locFrom, player, event);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     private void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         if (event.getTo() == null) return;
@@ -68,16 +74,53 @@ public class PlayerListener implements Listener {
         processMovement(locTo, locFrom, player, event);
     }
 
-    private void processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
-        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ()) return;
+    @EventHandler
+    private void onVehicleMove(VehicleMoveEvent event) {
+        Location locTo = event.getTo();
+	    Location locFrom = event.getFrom();
+        Vehicle vehicle = event.getVehicle();
+        for (Entity entity : vehicle.getPassengers()) {
+            if (entity instanceof Player) {
+                Player player = ((Player) entity);
+                if (!processMovement(locTo, locFrom, player, null)) {
+                    player.teleport(locFrom);
+                    BukkitRunnable runnable = new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            vehicle.teleport(locFrom);
+                        }
+                    };
+                    runnable.runTaskLater(GPFlags.getInstance(), 20);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    private void onMount(VehicleEnterEvent event) {
+	    Entity entity = event.getEntered();
+	    Vehicle vehicle = event.getVehicle();
+	    if (entity instanceof Player) {
+	        Player player = ((Player) entity);
+	        Location from = player.getLocation();
+	        Location to = vehicle.getLocation();
+	        processMovement(to, from, player, event);
+        }
+    }
+
+    private boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
+        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ()) return true;
 
         Claim claimTo = dataStore.getClaimAt(locTo, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom, false, null);
-        if (claimTo == null && claimFrom == null) return;
-        if (claimTo == claimFrom) return;
+        if (claimTo == null && claimFrom == null) return true;
+        if (claimTo == claimFrom) return true;
         PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom, locTo);
         Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
-        event.setCancelled(playerClaimBorderEvent.isCancelled());
+        if (event != null) {
+            event.setCancelled(playerClaimBorderEvent.isCancelled());
+        }
+        return !playerClaimBorderEvent.isCancelled();
     }
 
     @EventHandler
