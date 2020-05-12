@@ -26,7 +26,14 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         super(manager, plugin);
     }
 
-    public abstract boolean allowMovement(Player player, Location from, Location to);
+    @Deprecated
+    public boolean allowMovement(Player player, Location from, Location to) {
+        return true;
+    }
+
+    public boolean allowMovement(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {
+        return true;
+    }
 
     @EventHandler
     public void onMove(PlayerClaimBorderEvent event) {
@@ -34,6 +41,9 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         Location lastLocation = event.getLocFrom();
         if (!this.allowMovement(player, lastLocation, event.getLocTo())) {
             //this.undoMovement(player, lastLocation);
+            event.setCancelled(true);
+        }
+        if (!this.allowMovement(player, lastLocation, event.getLocTo(), event.getClaimFrom(), event.getClaimTo())) {
             event.setCancelled(true);
         }
     }
