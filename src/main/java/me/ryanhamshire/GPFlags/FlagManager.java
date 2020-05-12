@@ -17,7 +17,12 @@ import org.bukkit.util.StringUtil;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,8 +31,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class FlagManager implements TabCompleter {
 
-    private ConcurrentHashMap<String, FlagDefinition> definitions;
-    private ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>> flags;
+    private final ConcurrentHashMap<String, FlagDefinition> definitions;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>> flags;
     
     public static final String DEFAULT_FLAG_ID = "-2";
     
@@ -97,6 +102,7 @@ public class FlagManager implements TabCompleter {
 	 * @return Instance of flag
 	 */
     public Flag getFlag(Claim claim, FlagDefinition flagDef) {
+        if (claim == null || flagDef == null) return null;
     	return getFlag(claim.getID().toString(), flagDef);
 	}
 
@@ -105,8 +111,8 @@ public class FlagManager implements TabCompleter {
 	 * @param flagDef Flag definition to get
 	 * @return Instance of flag
 	 */
-    public Flag getFlag(String claimID, FlagDefinition flagDef)
-    {
+    public Flag getFlag(String claimID, FlagDefinition flagDef) {
+        if (claimID == null || flagDef == null) return null;
         return this.getFlag(claimID,  flagDef.getName());
     }
 
@@ -116,6 +122,7 @@ public class FlagManager implements TabCompleter {
 	 * @return Instance of flag
 	 */
     public Flag getFlag(Claim claim, String flag) {
+        if (claim == null || flag == null) return null;
     	return getFlag(claim.getID().toString(), flag);
 	}
 
@@ -125,6 +132,7 @@ public class FlagManager implements TabCompleter {
 	 * @return Instance of flag
 	 */
     public Flag getFlag(String claimID, String flag) {
+        if (claimID == null || flag == null) return null;
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
         if(claimFlags == null) return null;
         return claimFlags.get(flag.toLowerCase());
@@ -135,6 +143,7 @@ public class FlagManager implements TabCompleter {
 	 * @return All flags in this claim
 	 */
     public Collection<Flag> getFlags(Claim claim) {
+        if (claim == null) return null;
     	return getFlags(claim.getID().toString());
 	}
 
@@ -143,6 +152,7 @@ public class FlagManager implements TabCompleter {
 	 * @return All flags in this claim
 	 */
     public Collection<Flag> getFlags(String claimID) {
+        if (claimID == null) return null;
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
         if(claimFlags == null) {
             return new ArrayList<>();
