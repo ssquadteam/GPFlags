@@ -1,9 +1,13 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,13 +21,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener {
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return true;
-        Flag flag = this.GetFlagInstanceAtLocation(to, player);
-        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(to, player);
-
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, this);
+        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
 
         if (flag == null && ownerFly == null) {
             if (claim != null) {
