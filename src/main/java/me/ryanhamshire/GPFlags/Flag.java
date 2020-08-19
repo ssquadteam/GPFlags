@@ -42,4 +42,11 @@ public class Flag {
         this.set = value;
     }
 
+    /** Get the flag definition of this flag
+     * @return Flag definition of this flag
+     */
+    public FlagDefinition getFlagDefinition() {
+        return flagDefinition;
+    }
+
 }
