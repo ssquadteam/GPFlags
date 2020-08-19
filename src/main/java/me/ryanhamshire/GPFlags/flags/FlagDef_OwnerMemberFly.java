@@ -23,7 +23,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return true;
-        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, this);
+        Flag flag = GetFlagInstanceAtLocation(to, player);
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
 
         if (flag == null && ownerFly == null) {
