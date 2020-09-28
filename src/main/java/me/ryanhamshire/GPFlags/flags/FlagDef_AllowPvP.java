@@ -213,7 +213,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             Player player = ((Player) event.getEntity());
             ItemStack projectile;
             ItemStack bow = event.getBow();
-            assert bow != null;
+            if (bow == null) return;
             ItemMeta meta = bow.getItemMeta();
             if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
             if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
