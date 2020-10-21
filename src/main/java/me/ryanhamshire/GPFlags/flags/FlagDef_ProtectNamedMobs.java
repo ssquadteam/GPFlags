@@ -1,6 +1,10 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -15,6 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_ProtectNamedMobs extends FlagDefinition {
+
+    public FlagDef_ProtectNamedMobs(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -34,10 +42,6 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(entity.getLocation(), false, null);
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         event.setCancelled(true);
-    }
-
-    public FlagDef_ProtectNamedMobs(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override

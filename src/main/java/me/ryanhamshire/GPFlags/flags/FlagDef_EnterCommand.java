@@ -1,16 +1,25 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 
 public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
+
+    public FlagDef_EnterCommand(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
@@ -28,10 +37,6 @@ public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
         }
 
         return true;
-    }
-
-    public FlagDef_EnterCommand(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @EventHandler

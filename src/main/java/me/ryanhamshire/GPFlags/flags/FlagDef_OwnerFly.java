@@ -20,6 +20,10 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener {
 
+    public FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
+
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return true;
@@ -90,10 +94,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 player.setFlying(true);
             }
         }
-    }
-
-    public FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override

@@ -46,7 +46,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
+
     private WorldSettingsManager settingsManager;
+
+    public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin, WorldSettingsManager settingsManager) {
+        super(manager, plugin);
+        this.settingsManager = settingsManager;
+    }
 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
@@ -282,11 +288,6 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         return false;
     }
 
-    public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin, WorldSettingsManager settingsManager) {
-        super(manager, plugin);
-        this.settingsManager = settingsManager;
-    }
-
     public void updateSettings(WorldSettingsManager settingsManager) {
         this.settingsManager = settingsManager;
     }
@@ -297,7 +298,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.AddEnablePvP);
     }
 
@@ -310,4 +311,5 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     public List<FlagType> getFlagType() {
         return Collections.singletonList(FlagType.CLAIM);
     }
+
 }

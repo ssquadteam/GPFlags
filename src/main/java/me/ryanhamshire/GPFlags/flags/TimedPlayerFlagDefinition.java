@@ -1,13 +1,13 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import java.util.Collection;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Base flag definition for time based flags

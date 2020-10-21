@@ -1,12 +1,15 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
+import me.ryanhamshire.GriefPrevention.events.PreventBlockBreakEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -17,16 +20,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
-import me.ryanhamshire.GriefPrevention.events.PreventBlockBreakEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class FlagDef_SpleefArena extends FlagDefinition {
 
-    ConcurrentHashMap<UUID, Location> respawnMap = new ConcurrentHashMap<>();
+    public FlagDef_SpleefArena(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
-    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
@@ -84,10 +87,6 @@ public class FlagDef_SpleefArena extends FlagDefinition {
             e.setDropItems(false);  //don't drop anything
         }
 
-    }
-
-    public FlagDef_SpleefArena(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override
@@ -154,7 +153,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.SetSpleefArena);
     }
 

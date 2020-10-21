@@ -1,6 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,6 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_NetherPortalPlayerCommand extends FlagDefinition {
+
+    public FlagDef_NetherPortalPlayerCommand(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -25,10 +34,6 @@ public class FlagDef_NetherPortalPlayerCommand extends FlagDefinition {
 
         event.setCancelled(true);
         player.performCommand(flag.parameters);
-    }
-
-    public FlagDef_NetherPortalPlayerCommand(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override
@@ -46,7 +51,7 @@ public class FlagDef_NetherPortalPlayerCommand extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNetherPortalPlayerCommand);
     }
 

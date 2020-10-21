@@ -1,6 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,7 +22,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class FlagDef_RespawnLocation extends FlagDefinition {
 
-    private ConcurrentHashMap<UUID, Location> respawnMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Location> respawnMap = new ConcurrentHashMap<>();
+
+    public FlagDef_RespawnLocation(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
@@ -44,10 +53,6 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
             event.setRespawnLocation(respawnLocation);
             this.respawnMap.remove(player.getUniqueId());
         }
-    }
-
-    public FlagDef_RespawnLocation(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override
@@ -82,7 +87,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.SetRespawnLocation);
     }
 

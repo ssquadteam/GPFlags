@@ -1,6 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.GameMode;
@@ -15,6 +20,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
+
+    public FlagDef_NoFlight(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @Override
     public long getPlayerCheckFrequency_Ticks() {
@@ -69,17 +78,13 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         player.setAllowFlight(false);
     }
 
-    public FlagDef_NoFlight(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-    }
-
     @Override
     public String getName() {
         return "NoFlight";
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoFlight);
     }
 

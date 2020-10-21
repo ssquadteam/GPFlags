@@ -32,30 +32,32 @@ import java.util.HashMap;
 
 public class PlayerListener implements Listener {
 
-	private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
-	private final DataStore dataStore = GriefPrevention.instance.dataStore;
+    private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
+    private final DataStore dataStore = GriefPrevention.instance.dataStore;
 
-	@EventHandler
-	private void onFall(EntityDamageEvent e) {
-		if (!(e.getEntity() instanceof Player)) return;
-		Player p = ((Player) e.getEntity());
-		EntityDamageEvent.DamageCause cause = e.getCause();
-		if (cause != EntityDamageEvent.DamageCause.FALL) return;
-		Boolean val = fallingPlayers.get(p);
-		if (val != null && val) {
-			e.setCancelled(true);
-			fallingPlayers.remove(p);
-		}
-	}
+    @EventHandler
+    private void onFall(EntityDamageEvent e) {
+        if (!(e.getEntity() instanceof Player)) return;
+        Player p = ((Player) e.getEntity());
+        EntityDamageEvent.DamageCause cause = e.getCause();
+        if (cause != EntityDamageEvent.DamageCause.FALL) return;
+        Boolean val = fallingPlayers.get(p);
+        if (val != null && val) {
+            e.setCancelled(true);
+            fallingPlayers.remove(p);
+        }
+    }
 
-	/** Add a player to prevent fall damage under certain conditions
-	 * @param player Player to add
-	 */
-	public void addFallingPlayer(Player player) {
-		this.fallingPlayers.put(player, true);
-	}
+    /**
+     * Add a player to prevent fall damage under certain conditions
+     *
+     * @param player Player to add
+     */
+    public void addFallingPlayer(Player player) {
+        this.fallingPlayers.put(player, true);
+    }
 
-	@EventHandler
+    @EventHandler
     private void onMove(PlayerMoveEvent event) {
         if (event.isCancelled()) return;
         if (event.getTo() == null) return;
@@ -78,7 +80,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     private void onVehicleMove(VehicleMoveEvent event) {
         Location locTo = event.getTo();
-	    Location locFrom = event.getFrom();
+        Location locFrom = event.getFrom();
         Vehicle vehicle = event.getVehicle();
         for (Entity entity : vehicle.getPassengers()) {
             if (entity instanceof Player) {
@@ -99,18 +101,19 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     private void onMount(VehicleEnterEvent event) {
-	    Entity entity = event.getEntered();
-	    Vehicle vehicle = event.getVehicle();
-	    if (entity instanceof Player) {
-	        Player player = ((Player) entity);
-	        Location from = player.getLocation();
-	        Location to = vehicle.getLocation();
-	        processMovement(to, from, player, event);
+        Entity entity = event.getEntered();
+        Vehicle vehicle = event.getVehicle();
+        if (entity instanceof Player) {
+            Player player = ((Player) entity);
+            Location from = player.getLocation();
+            Location to = vehicle.getLocation();
+            processMovement(to, from, player, event);
         }
     }
 
     private boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
-        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ()) return true;
+        if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
+            return true;
 
         Claim claimTo = dataStore.getClaimAt(locTo, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom, false, null);
@@ -127,7 +130,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     // Disable flight when a player deletes their claim
     private void onDeleteClaim(ClaimDeletedEvent event) {
-	    Claim claim = event.getClaim();
+        Claim claim = event.getClaim();
         World world = claim.getGreaterBoundaryCorner().getWorld();
         Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
         Flag flagOwnerMemberFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
@@ -144,22 +147,22 @@ public class PlayerListener implements Listener {
     @EventHandler
     // Call the claim border event when a player resizes a claim and they are now outside of the claim
     private void onChangeClaim(ClaimModifiedEvent event) {
-	    Claim claim = event.getClaim();
+        Claim claim = event.getClaim();
         CommandSender modifier = event.getModifier();
-	    if (modifier instanceof Player) {
-	        Player player = ((Player) modifier);
-	        Location loc = player.getLocation();
-	        Claim claimAtLoc = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
-	        if (claimAtLoc == null) {
-	            PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claim, null, claim.getLesserBoundaryCorner(), loc);
-	            Bukkit.getPluginManager().callEvent(borderEvent);
+        if (modifier instanceof Player) {
+            Player player = ((Player) modifier);
+            Location loc = player.getLocation();
+            Claim claimAtLoc = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
+            if (claimAtLoc == null) {
+                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claim, null, claim.getLesserBoundaryCorner(), loc);
+                Bukkit.getPluginManager().callEvent(borderEvent);
             }
         }
     }
 
     @EventHandler
     private void onRespawnEvent(PlayerRespawnEvent event) {
-	    Location loc = event.getRespawnLocation();
+        Location loc = event.getRespawnLocation();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
         if (claim != null) {
             Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");

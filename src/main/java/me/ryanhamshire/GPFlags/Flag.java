@@ -19,7 +19,9 @@ public class Flag {
         this.parameters = this.parameters.replace('&', (char) 0x00A7);
     }
 
-    /** Get parameters for this flag
+    /**
+     * Get parameters for this flag
+     *
      * @return Parameters for this flag
      */
     public String[] getParametersArray() {
@@ -28,21 +30,27 @@ public class Flag {
         return this.parametersArray;
     }
 
-    /** Gets whether or not this flag is currently active
+    /**
+     * Gets whether or not this flag is currently active
+     *
      * @return Activity of flag
      */
     public boolean getSet() {
         return this.set;
     }
 
-    /** Sets whether or not this flag is currently active
+    /**
+     * Sets whether or not this flag is currently active
+     *
      * @param value Wether or not the flag is active
      */
     public void setSet(boolean value) {
         this.set = value;
     }
 
-    /** Get the flag definition of this flag
+    /**
+     * Get the flag definition of this flag
+     *
      * @return Flag definition of this flag
      */
     public FlagDefinition getFlagDefinition() {

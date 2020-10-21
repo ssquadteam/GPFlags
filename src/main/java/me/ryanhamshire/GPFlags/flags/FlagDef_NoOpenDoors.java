@@ -1,6 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.VersionControl;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -16,78 +21,79 @@ import java.util.List;
 
 public class FlagDef_NoOpenDoors extends FlagDefinition {
 
-	private VersionControl vc = GPFlags.getInstance().getVersionControl();
+    private final VersionControl vc;
 
-	@EventHandler
-	public void onDoorOpen(PlayerInteractEvent e) {
-		Player player = e.getPlayer();
-		if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			Block block = e.getClickedBlock();
-			assert block != null;
-			Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), player);
-			if (flag == null) return;
+    public FlagDef_NoOpenDoors(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+        vc = plugin.getVersionControl();
+    }
 
-			if (vc.isOpenable(block)) {
+    @EventHandler
+    public void onDoorOpen(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Block block = e.getClickedBlock();
+            assert block != null;
+            Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), player);
+            if (flag == null) return;
 
-				PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-				Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
+            if (vc.isOpenable(block)) {
 
-				String[] params = null;
-				if (!flag.parameters.isEmpty()) {
-					params = flag.parameters.split(",");
-				}
+                PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
 
-				if (claim.allowAccess(player) != null) {
-					if (params != null) {
-						for (String param : params) {
-							if (param.equalsIgnoreCase("doors") && vc.isDoor(block)) {
-								e.setCancelled(true);
-								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
-							}
-							if (param.equalsIgnoreCase("trapdoors") && vc.isTrapDoor(block)) {
-								e.setCancelled(true);
-								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
-							}
-							if (param.equalsIgnoreCase("gates") && vc.isGate(block)) {
-								e.setCancelled(true);
-								GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
-							}
-						}
-					} else {
-						e.setCancelled(true);
-						GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, "doors");
-					}
-				}
-			}
-		}
-	}
+                String[] params = null;
+                if (!flag.parameters.isEmpty()) {
+                    params = flag.parameters.split(",");
+                }
 
-	public FlagDef_NoOpenDoors(FlagManager manager, GPFlags plugin) {
-		super(manager, plugin);
-	}
+                if (claim.allowAccess(player) != null) {
+                    if (params != null) {
+                        for (String param : params) {
+                            if (param.equalsIgnoreCase("doors") && vc.isDoor(block)) {
+                                e.setCancelled(true);
+                                GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                            }
+                            if (param.equalsIgnoreCase("trapdoors") && vc.isTrapDoor(block)) {
+                                e.setCancelled(true);
+                                GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                            }
+                            if (param.equalsIgnoreCase("gates") && vc.isGate(block)) {
+                                e.setCancelled(true);
+                                GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                            }
+                        }
+                    } else {
+                        e.setCancelled(true);
+                        GPFlags.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, "doors");
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public String getName() {
-		return "NoOpenDoors";
-	}
+    @Override
+    public String getName() {
+        return "NoOpenDoors";
+    }
 
-	@Override
-	public MessageSpecifier getSetMessage(String parameters) {
-		if (parameters.isEmpty()) {
-			return new MessageSpecifier(Messages.EnableNoOpenDoor);
-		} else {
-			return new MessageSpecifier(Messages.EnableNoOpenDoor, parameters);
-		}
-	}
+    @Override
+    public MessageSpecifier getSetMessage(String parameters) {
+        if (parameters.isEmpty()) {
+            return new MessageSpecifier(Messages.EnableNoOpenDoor);
+        } else {
+            return new MessageSpecifier(Messages.EnableNoOpenDoor, parameters);
+        }
+    }
 
-	@Override
-	public MessageSpecifier getUnSetMessage() {
-		return new MessageSpecifier(Messages.DisableNoOpenDoor);
-	}
+    @Override
+    public MessageSpecifier getUnSetMessage() {
+        return new MessageSpecifier(Messages.DisableNoOpenDoor);
+    }
 
-	@Override
-	public List<FlagType> getFlagType() {
-		return Collections.singletonList(FlagType.CLAIM);
-	}
+    @Override
+    public List<FlagType> getFlagType() {
+        return Collections.singletonList(FlagType.CLAIM);
+    }
 
 }

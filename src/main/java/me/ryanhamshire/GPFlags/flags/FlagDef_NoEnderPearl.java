@@ -1,6 +1,12 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.FlagsDataStore;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.entity.Player;
@@ -13,6 +19,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class FlagDef_NoEnderPearl extends FlagDefinition {
+
+    public FlagDef_NoEnderPearl(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -50,17 +60,13 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
 
     }
 
-    public FlagDef_NoEnderPearl(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-    }
-
     @Override
     public String getName() {
         return "NoEnderPearl";
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoEnderPearl);
     }
 

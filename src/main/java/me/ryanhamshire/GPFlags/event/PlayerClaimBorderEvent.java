@@ -26,28 +26,36 @@ public class PlayerClaimBorderEvent extends PlayerEvent implements Cancellable {
         this.locTo = to;
     }
 
-    /** Get the claim the player exited
+    /**
+     * Get the claim the player exited
+     *
      * @return Claim the player exited (can be null)
      */
     public Claim getClaimFrom() {
         return claimFrom;
     }
 
-    /** Get the claim the player entered
+    /**
+     * Get the claim the player entered
+     *
      * @return Claim the player entered (can be null)
      */
     public Claim getClaimTo() {
         return claimTo;
     }
 
-    /** Get the location the player moved from
+    /**
+     * Get the location the player moved from
+     *
      * @return Location the player moved from
      */
     public Location getLocFrom() {
         return locFrom;
     }
 
-    /** Get the location the player moved to
+    /**
+     * Get the location the player moved to
+     *
      * @return Location the player moved to
      */
     public Location getLocTo() {

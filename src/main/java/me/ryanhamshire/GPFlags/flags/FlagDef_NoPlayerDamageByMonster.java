@@ -22,7 +22,7 @@ import java.util.List;
 
 public class FlagDef_NoPlayerDamageByMonster extends FlagDefinition {
 
-    private VersionControl vc;
+    private final VersionControl vc;
 
     public FlagDef_NoPlayerDamageByMonster(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);

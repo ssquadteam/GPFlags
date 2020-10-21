@@ -1,7 +1,72 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
-import me.ryanhamshire.GPFlags.flags.*;
+import me.ryanhamshire.GPFlags.flags.FlagDef_AllowPvP;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ChangeBiome;
+import me.ryanhamshire.GPFlags.flags.FlagDef_CommandBlackList;
+import me.ryanhamshire.GPFlags.flags.FlagDef_CommandWhiteList;
+import me.ryanhamshire.GPFlags.flags.FlagDef_EnterCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_EnterCommand_Members;
+import me.ryanhamshire.GPFlags.flags.FlagDef_EnterCommand_Owner;
+import me.ryanhamshire.GPFlags.flags.FlagDef_EnterMessage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_EnterPlayerCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ExitCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ExitCommand_Members;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ExitCommand_Owner;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ExitMessage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ExitPlayerCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_HealthRegen;
+import me.ryanhamshire.GPFlags.flags.FlagDef_InfiniteArrows;
+import me.ryanhamshire.GPFlags.flags.FlagDef_KeepInventory;
+import me.ryanhamshire.GPFlags.flags.FlagDef_KeepLevel;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NetherPortalConsoleCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NetherPortalPlayerCommand;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoChorusFruit;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoCombatLoot;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnderPearl;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnter;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnterPlayer;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoExpiration;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoExplosionDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoFallDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoFireDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoFireSpread;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoFlight;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoFluidFlow;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoGrowth;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoHunger;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoIceForm;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoItemDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoItemDrop;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoItemPickup;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoLeafDecay;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoLootProtection;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMcMMODeathPenalty;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMcMMOSkills;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMcMMOXP;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobSpawns;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobSpawnsType;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMonsterSpawns;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoOpenDoors;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoPetDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoPlayerDamage;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoPlayerDamageByMonster;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoSnowForm;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoVehicle;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoVineGrowth;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoWeatherChange;
+import me.ryanhamshire.GPFlags.flags.FlagDef_OwnerFly;
+import me.ryanhamshire.GPFlags.flags.FlagDef_OwnerMemberFly;
+import me.ryanhamshire.GPFlags.flags.FlagDef_PlayerGamemode;
+import me.ryanhamshire.GPFlags.flags.FlagDef_PlayerTime;
+import me.ryanhamshire.GPFlags.flags.FlagDef_PlayerWeather;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ProtectNamedMobs;
+import me.ryanhamshire.GPFlags.flags.FlagDef_RaidMemberOnly;
+import me.ryanhamshire.GPFlags.flags.FlagDef_RespawnLocation;
+import me.ryanhamshire.GPFlags.flags.FlagDef_SpleefArena;
+import me.ryanhamshire.GPFlags.flags.FlagDef_TrappedDestination;
+import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.listener.PlayerListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GPFlags.util.Current;
@@ -28,7 +93,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * <b>Main GriefPrevention Flags class</b>
@@ -56,7 +120,7 @@ public class GPFlags extends JavaPlugin {
 
     //adds a server log entry
     public static synchronized void addLogEntry(String entry) {
-    	Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
+        Bukkit.getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&bGPFlags&7] " + entry));
     }
 
     public static void logFlagCommands(String log) {
@@ -66,8 +130,8 @@ public class GPFlags extends JavaPlugin {
     }
 
     public void onEnable() {
-    	this.playerListener = new PlayerListener();
-    	Bukkit.getPluginManager().registerEvents(playerListener, this);
+        this.playerListener = new PlayerListener();
+        Bukkit.getPluginManager().registerEvents(playerListener, this);
 
         int ver = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3].split("_")[1]);
 
@@ -232,16 +296,16 @@ public class GPFlags extends JavaPlugin {
             this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, this));
 
             try {
-            	Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
-            	this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, this));
-			} catch (ClassNotFoundException e) {
-            	if (Util.isRunningMinecraft(1, 14)) {
-					addLogEntry("&cRaidEvent classes not found:");
-					addLogEntry("&7  - Update to latest Spigot build for raid flag to work");
-				}
-			}
+                Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
+                this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, this));
+            } catch (ClassNotFoundException e) {
+                if (Util.isRunningMinecraft(1, 14)) {
+                    addLogEntry("&cRaidEvent classes not found:");
+                    addLogEntry("&7  - Update to latest Spigot build for raid flag to work");
+                }
+            }
 
-			//try to hook into mcMMO
+            //try to hook into mcMMO
             try {
                 if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
                     this.flagManager.registerFlagDefinition(new FlagDef_NoMcMMOSkills(this.flagManager, this));
@@ -760,6 +824,7 @@ public class GPFlags extends JavaPlugin {
     static void sendMessage(CommandSender player, String message) {
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
     }
+
     //sends a color-coded message to a player
     public static void sendMessage(CommandSender player, ChatColor color, Messages messageID, String... args) {
         sendMessage(player, color, messageID, 0, args);
@@ -782,10 +847,12 @@ public class GPFlags extends JavaPlugin {
         }
     }
 
-    /** Send a delayed message
-     * @param player Player to send message to
-     * @param color Color of the message, can use {@link TextMode}
-     * @param message Message to send
+    /**
+     * Send a delayed message
+     *
+     * @param player       Player to send message to
+     * @param color        Color of the message, can use {@link TextMode}
+     * @param message      Message to send
      * @param delayInTicks Delay for message to send
      */
     public static void sendMessage(CommandSender player, ChatColor color, String message, long delayInTicks) {
@@ -814,46 +881,58 @@ public class GPFlags extends JavaPlugin {
         return this.flagManager.onTabComplete(sender, command, alias, args);
     }
 
-    /** Get an instance of this plugin
+    /**
+     * Get an instance of this plugin
+     *
      * @return Instance of this plugin
      */
     public static GPFlags getInstance() {
         return instance;
     }
 
-    /** Get an instance of the flags data store
+    /**
+     * Get an instance of the flags data store
+     *
      * @return Instance of the flags data store
      */
     public FlagsDataStore getFlagsDataStore() {
         return this.flagsDataStore;
     }
 
-    /** Get an instance of the flag manager
+    /**
+     * Get an instance of the flag manager
+     *
      * @return Instance of the flag manager
      */
     public FlagManager getFlagManager() {
         return this.flagManager;
     }
 
-    /** Get an instance of the world settings manager
+    /**
+     * Get an instance of the world settings manager
+     *
      * @return Instance of the world settings manager
      */
     public WorldSettingsManager getWorldSettingsManager() {
         return this.worldSettingsManager;
     }
 
-    /** Get an instance of the version control class
+    /**
+     * Get an instance of the version control class
+     *
      * @return Instance of the version control class
      */
     public VersionControl getVersionControl() {
         return vc;
     }
 
-    /** Get an instance of the player listener class
+    /**
+     * Get an instance of the player listener class
+     *
      * @return Instance of the player listener class
      */
     public PlayerListener getPlayerListener() {
-    	return this.playerListener;
-	}
+        return this.playerListener;
+    }
 
 }

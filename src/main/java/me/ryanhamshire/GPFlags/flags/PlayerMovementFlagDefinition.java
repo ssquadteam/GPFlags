@@ -1,10 +1,5 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.event.PlayerClaimBorderEvent;
@@ -13,7 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Base flag definition for movement based flags

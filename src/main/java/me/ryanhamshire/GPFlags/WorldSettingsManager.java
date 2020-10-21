@@ -1,8 +1,8 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.bukkit.World;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manager for world settings

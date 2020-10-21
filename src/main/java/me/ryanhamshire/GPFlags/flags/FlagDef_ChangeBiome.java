@@ -25,6 +25,10 @@ import java.util.List;
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class FlagDef_ChangeBiome extends FlagDefinition {
 
+    public FlagDef_ChangeBiome(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
+
     private int changeBiome(Location greater, Location lesser, Biome biome) {
         int lX = (int) lesser.getX();
         int lZ = (int) lesser.getZ();
@@ -117,13 +121,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         if (e.getClaim().getOwnerName() == null) return; //don't restore a sub-claim
         Claim claim = e.getClaim();
 
-        if (GPFlags.getInstance().getFlagManager().getFlag(claim, this) == null) return; // Return if flag is non existent
+        if (GPFlags.getInstance().getFlagManager().getFlag(claim, this) == null)
+            return; // Return if flag is non existent
 
         resetBiome(claim);
-    }
-
-    public FlagDef_ChangeBiome(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override
@@ -141,7 +142,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.ChangeBiomeSet, parameters); // TODO CHANGE
     }
 
@@ -154,4 +155,5 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     public List<FlagType> getFlagType() {
         return Collections.singletonList(FlagType.CLAIM);
     }
+
 }

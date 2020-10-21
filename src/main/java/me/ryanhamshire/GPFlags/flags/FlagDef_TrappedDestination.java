@@ -1,17 +1,26 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GriefPrevention.events.SaveTrappedPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 
-import me.ryanhamshire.GriefPrevention.events.SaveTrappedPlayerEvent;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_TrappedDestination extends FlagDefinition {
+
+    public FlagDef_TrappedDestination(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
+
     @EventHandler
     public void onPlayerDeath(SaveTrappedPlayerEvent event) {
         Flag flag = this.GetFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
@@ -22,10 +31,6 @@ public class FlagDef_TrappedDestination extends FlagDefinition {
         Location location = new Location(world, Integer.valueOf(params[1]), Integer.valueOf(params[2]), Integer.valueOf(params[3]));
 
         event.setDestination(location);
-    }
-
-    public FlagDef_TrappedDestination(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
     }
 
     @Override
@@ -58,7 +63,7 @@ public class FlagDef_TrappedDestination extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableTrappedDestination);
     }
 

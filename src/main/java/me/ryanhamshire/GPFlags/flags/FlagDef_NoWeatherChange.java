@@ -1,6 +1,10 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
 import org.bukkit.World;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
@@ -12,6 +16,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_NoWeatherChange extends FlagDefinition {
+
+    public FlagDef_NoWeatherChange(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onWeatherChange(WeatherChangeEvent event) {
@@ -30,17 +38,13 @@ public class FlagDef_NoWeatherChange extends FlagDefinition {
         event.setCancelled(true);
     }
 
-    public FlagDef_NoWeatherChange(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-    }
-
     @Override
     public String getName() {
         return "NoWeatherChange";
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoWeatherChange);
     }
 

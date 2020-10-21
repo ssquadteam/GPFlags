@@ -1,6 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,6 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FlagDef_CommandBlackList extends CommandListFlagDefinition {
+
+    public FlagDef_CommandBlackList(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
@@ -25,17 +34,13 @@ public class FlagDef_CommandBlackList extends CommandListFlagDefinition {
         }
     }
 
-    public FlagDef_CommandBlackList(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-    }
-
     @Override
     public String getName() {
         return "CommandBlackList";
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableCommandBlackList);
     }
 
@@ -48,4 +53,5 @@ public class FlagDef_CommandBlackList extends CommandListFlagDefinition {
     public List<FlagType> getFlagType() {
         return Arrays.asList(FlagType.CLAIM, FlagType.SERVER, FlagType.WORLD);
     }
+
 }

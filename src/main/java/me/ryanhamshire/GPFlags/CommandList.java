@@ -1,18 +1,18 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class CommandList {
 
-    private ConcurrentHashMap<String, Boolean> seenCommands = new ConcurrentHashMap<String, Boolean>();
-    private ArrayList<String> commandsFromConfig = new ArrayList<String>();
+    private final ConcurrentHashMap<String, Boolean> seenCommands = new ConcurrentHashMap<>();
+    private final ArrayList<String> commandsFromConfig = new ArrayList<>();
 
     public CommandList(String commandNamesList) {
         String[] commandNames = commandNamesList.split(";");

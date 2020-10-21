@@ -1,6 +1,10 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -10,6 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class FlagDef_NoChorusFruit extends FlagDefinition {
+
+    public FlagDef_NoChorusFruit(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
@@ -26,17 +34,13 @@ public class FlagDef_NoChorusFruit extends FlagDefinition {
         }
     }
 
-    public FlagDef_NoChorusFruit(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-    }
-
     @Override
     public String getName() {
         return "NoChorusFruit";
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.EnableNoChorusFruit);
     }
 

@@ -1,15 +1,18 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
 
 import java.util.List;
 
@@ -19,7 +22,7 @@ import java.util.List;
  */
 public abstract class FlagDefinition implements Listener {
 
-    private FlagManager flagManager;
+    private final FlagManager flagManager;
     private int instances = 0;
     protected GPFlags plugin;
 
@@ -113,7 +116,7 @@ public abstract class FlagDefinition implements Listener {
 
         String name;
 
-        FlagType(String string){
+        FlagType(String string) {
             this.name = string;
         }
 

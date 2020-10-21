@@ -1,8 +1,16 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.WorldSettings;
+import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import me.ryanhamshire.GPFlags.util.VersionControl;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -19,9 +27,13 @@ import java.util.List;
 public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
     private WorldSettingsManager settingsManager;
-
     private final String ALLOW_TARGET_TAG = "GPF_AllowTarget";
     private final VersionControl vc = GPFlags.getInstance().getVersionControl();
+
+    public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+        this.settingsManager = plugin.getWorldSettingsManager();
+    }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
@@ -86,11 +98,6 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
         }
     }
 
-    public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
-        super(manager, plugin);
-        this.settingsManager = plugin.getWorldSettingsManager();
-    }
-
     public void updateSettings(WorldSettingsManager settingsManager) {
         this.settingsManager = settingsManager;
     }
@@ -101,7 +108,7 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     }
 
     @Override
-	public MessageSpecifier getSetMessage(String parameters) {
+    public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.DisableMonsterSpawns);
     }
 
