@@ -1,20 +1,37 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.WorldSettings;
+import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Tameable;
+import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.Trident;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityCombustByEntityEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.LingeringPotionSplashEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -83,13 +100,29 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPotionSplash(PotionSplashEvent event) {
-        //ignore potions not thrown by players
-        ThrownPotion potion = event.getPotion();
+        handlePotionEvent(event);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onPotionSplash(LingeringPotionSplashEvent event) {
+        handlePotionEvent(event);
+    }
+
+    private void handlePotionEvent(ProjectileHitEvent event) {
+        ThrownPotion potion;
+        if (event instanceof PotionSplashEvent) {
+            potion = ((PotionSplashEvent) event).getPotion();
+        } else if (event instanceof LingeringPotionSplashEvent) {
+            potion = ((LingeringPotionSplashEvent) event).getEntity();
+        } else {
+            return;
+        }
+        // ignore potions not thrown by players
         ProjectileSource projectileSource = potion.getShooter();
         if (!(projectileSource instanceof Player)) return;
         Player thrower = (Player) projectileSource;
 
-        //ignore positive potions
+        // ignore positive potions
         Collection<PotionEffect> effects = potion.getEffects();
         boolean hasNegativeEffect = false;
         for (PotionEffect effect : effects) {
@@ -101,33 +134,34 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         if (!hasNegativeEffect) return;
 
-        //if not in a no-pvp world, we don't care
+        // if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.get(potion.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
 
-        //ignore potions not effecting players or pets
-        boolean hasProtectableTarget = false;
-        for (LivingEntity effected : event.getAffectedEntities()) {
-            if (effected instanceof Player && effected != thrower) {
-                hasProtectableTarget = true;
-                break;
-            } else if (effected instanceof Tameable) {
-                Tameable pet = (Tameable) effected;
-                if (pet.isTamed() && pet.getOwner() != null) {
+        // ignore potions not effecting players or pets
+        if (event instanceof PotionSplashEvent) {
+            boolean hasProtectableTarget = false;
+            for (LivingEntity effected : ((PotionSplashEvent) event).getAffectedEntities()) {
+                if (effected instanceof Player && effected != thrower) {
                     hasProtectableTarget = true;
                     break;
+                } else if (effected instanceof Tameable) {
+                    Tameable pet = (Tameable) effected;
+                    if (pet.isTamed() && pet.getOwner() != null) {
+                        hasProtectableTarget = true;
+                        break;
+                    }
                 }
             }
+            if (!hasProtectableTarget) return;
         }
 
-        if (!hasProtectableTarget) return;
-
-        //if in a flagged-for-pvp area, allow
+        // if in a flagged-for-pvp area, allow
         Flag flag = this.GetFlagInstanceAtLocation(thrower.getLocation(), thrower);
         if (flag != null) return;
 
-        //otherwise disallow
-        event.setCancelled(true);
+        // otherwise disallow
+        ((Cancellable) event).setCancelled(true);
         GPFlags.sendMessage(thrower, TextMode.Err, settings.pvpDeniedMessage);
     }
 
@@ -166,7 +200,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             }
         }
 
-        if (damager.getType() != EntityType.PLAYER && damager.getType() != EntityType.AREA_EFFECT_CLOUD) return;
+        if (damager.getType() != EntityType.PLAYER) return;
 
         //if in a flagged-for-pvp area, allow
         Flag flag = this.GetFlagInstanceAtLocation(damager.getLocation(), null);
