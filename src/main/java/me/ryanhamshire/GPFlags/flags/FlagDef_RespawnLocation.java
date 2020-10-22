@@ -56,7 +56,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         String[] params = parameters.split(" ");
 
         if (params.length < 4) {

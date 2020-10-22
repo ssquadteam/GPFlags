@@ -64,7 +64,7 @@ public class FlagDef_PlayerTime extends PlayerMovementFlagDefinition implements 
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.PlayerTimeRequired));
         }

@@ -90,7 +90,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         String[] params = parameters.split(" ");
         String supportMaterialName;
         String blockMaterialName;

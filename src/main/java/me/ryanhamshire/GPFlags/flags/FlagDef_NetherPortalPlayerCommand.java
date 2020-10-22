@@ -37,7 +37,7 @@ public class FlagDef_NetherPortalPlayerCommand extends FlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.CommandRequired));
         }

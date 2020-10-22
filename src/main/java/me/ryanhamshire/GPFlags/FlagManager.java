@@ -1,24 +1,15 @@
 package me.ryanhamshire.GPFlags;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GriefPrevention.Claim;
-import org.apache.commons.lang.Validate;
-import org.bukkit.block.Biome;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Manager for flags
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
-public class FlagManager implements TabCompleter {
+public class FlagManager {
 
     private final ConcurrentHashMap<String, FlagDefinition> definitions;
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, Flag>> flags;
@@ -70,7 +61,38 @@ public class FlagManager implements TabCompleter {
         return new ArrayList<>(this.definitions.values());
     }
 
-    public SetFlagResult setFlag(String id, FlagDefinition def, boolean isActive, String... args) {
+    /**
+     * Get a collection of names of all registered flag definitions
+     *
+     * @return Names of all registered flag definitions
+     */
+    public Collection<String> getFlagDefinitionNames() {
+        return new ArrayList<>(this.definitions.keySet());
+    }
+
+    /**
+     * Set a flag for a claim
+     *
+     * @param claim    {@link Claim} which this flag will be attached to
+     * @param def      Flag definition to set
+     * @param isActive Whether the flag will be active or not
+     * @param args     Message parameters
+     * @return Result of setting flag
+     */
+    public SetFlagResult setFlag(Claim claim, FlagDefinition def, boolean isActive, String... args) {
+        return setFlag(claim.getID().toString(), def, isActive, args);
+    }
+
+    /**
+     * Set a flag for a claim
+     *
+     * @param claimId  ID of {@link Claim} which this flag will be attached to
+     * @param def      Flag definition to set
+     * @param isActive Whether the flag will be active or not
+     * @param args     Message parameters
+     * @return Result of setting flag
+     */
+    public SetFlagResult setFlag(String claimId, FlagDefinition def, boolean isActive, String... args) {
         StringBuilder parameters = new StringBuilder();
         for (String arg : args) {
             parameters.append(arg).append(" ");
@@ -79,7 +101,7 @@ public class FlagManager implements TabCompleter {
 
         SetFlagResult result;
         if (isActive) {
-            result = def.ValidateParameters(parameters.toString());
+            result = def.validateParameters(parameters.toString());
             if (!result.success) return result;
         } else {
             result = new SetFlagResult(true, def.getUnSetMessage());
@@ -87,10 +109,10 @@ public class FlagManager implements TabCompleter {
 
         Flag flag = new Flag(def, parameters.toString());
         flag.setSet(isActive);
-        ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(id);
+        ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimId);
         if (claimFlags == null) {
             claimFlags = new ConcurrentHashMap<>();
-            this.flags.put(id, claimFlags);
+            this.flags.put(claimId, claimFlags);
         }
 
         String key = def.getName().toLowerCase();
@@ -228,7 +250,6 @@ public class FlagManager implements TabCompleter {
                 }
             }
         }
-
         return errors;
     }
 
@@ -302,87 +323,6 @@ public class FlagManager implements TabCompleter {
             this.flags.remove(key);
         }
         save();
-    }
-
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) throws IllegalArgumentException {
-        Validate.notNull(sender, "Sender cannot be null");
-        Validate.notNull(args, "Arguments cannot be null");
-        Validate.notNull(alias, "Alias cannot be null");
-        if (args.length == 0) {
-            return ImmutableList.of();
-        }
-
-        StringBuilder builder = new StringBuilder();
-        for (String arg : args) {
-            builder.append(arg).append(" ");
-        }
-
-        String arg = builder.toString().trim();
-        ArrayList<String> matches = new ArrayList<String>();
-        String cmd = command.getName();
-        for (String name : this.definitions.keySet()) {
-            if (StringUtil.startsWithIgnoreCase(name, arg)) {
-                if (cmd.equalsIgnoreCase("setclaimflag") || cmd.equalsIgnoreCase("setdefaultclaimflag")
-                        || cmd.equalsIgnoreCase("unsetclaimflag") || cmd.equalsIgnoreCase("unsetdefaultclaimflag")) {
-                    if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
-                        if (sender.hasPermission("gpflags." + name))
-                            matches.add(name);
-                    }
-                }
-                if (cmd.equalsIgnoreCase("setworldflag") || cmd.equalsIgnoreCase("unsetworldflag")) {
-                    if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.WORLD)) {
-                        if (sender.hasPermission("gpflags." + name))
-                            matches.add(name);
-                    }
-                }
-                if (cmd.equalsIgnoreCase("setserverflag") || cmd.equalsIgnoreCase("unsetserverflag")) {
-                    if (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName(name).getFlagType().contains(FlagDefinition.FlagType.SERVER)) {
-                        if (sender.hasPermission("gpflags." + name))
-                            matches.add(name);
-                    }
-                }
-
-            }
-        }
-
-        if (sender instanceof Player) {
-            WorldSettings settings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
-
-
-            // TabCompleter for Biomes in ChangeBiome flag
-            if (args[0].equalsIgnoreCase("ChangeBiome")) {
-                if (args.length != 2) return null;
-                if (!(command.getName().equalsIgnoreCase("setclaimflag"))) return null;
-                ArrayList<String> biomes = new ArrayList<>();
-                for (Biome biome : Biome.values()) {
-                    if (StringUtil.startsWithIgnoreCase(biome.toString(), args[1])) {
-                        if (!(settings.biomeBlackList.contains(biome.toString()))) {
-                            biomes.add(biome.toString());
-                        } else if (sender.hasPermission("gpflags.bypass")) {
-                            biomes.add(biome.toString());
-                        }
-                    }
-                }
-                biomes.sort(String.CASE_INSENSITIVE_ORDER);
-                return biomes;
-            }
-        }
-        if (args[0].equalsIgnoreCase("noOpenDoors")) {
-            if (args.length != 2) return null;
-            List<String> doortype = Arrays.asList("doors", "trapdoors", "gates");
-            ArrayList<String> types = new ArrayList<>();
-            for (String type : doortype) {
-                if (StringUtil.startsWithIgnoreCase(type, args[1])) {
-                    types.add(type);
-                }
-            }
-            types.sort(String.CASE_INSENSITIVE_ORDER);
-            return types;
-        }
-        matches.sort(String.CASE_INSENSITIVE_ORDER);
-        return matches;
     }
 
 }

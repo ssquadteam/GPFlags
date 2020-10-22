@@ -63,7 +63,7 @@ public class FlagDef_EnterCommand_Members extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.ConsoleCommandRequired));
         }

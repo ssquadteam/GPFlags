@@ -74,7 +74,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.PlayerGamemodeRequired));
         }

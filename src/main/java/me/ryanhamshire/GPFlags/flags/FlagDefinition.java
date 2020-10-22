@@ -13,6 +13,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -33,7 +35,12 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract String getName();
 
+    @Deprecated
     public SetFlagResult ValidateParameters(String parameters) {
+        return validateParameters(parameters);
+    }
+
+    public SetFlagResult validateParameters(String parameters) {
         return new SetFlagResult(true, this.getSetMessage(parameters));
     }
 
@@ -43,7 +50,27 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract List<FlagType> getFlagType();
 
-    public Flag GetFlagInstanceAtLocation(Location location, Player player) {
+    /**
+     * Get an instance of a flag at a location
+     *
+     * @param location Location for checking for flag
+     * @param player Player for checking cached claims
+     * @return Instance of flag at location if set, otherwise null
+     * @deprecated use {@link #getFlagInstanceAtLocation(Location, Player)} instead
+     */
+    @Deprecated // Deprecated on Oct 21/2020
+    public Flag GetFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
+        return getFlagInstanceAtLocation(location, player);
+    }
+
+    /**
+     * Get an instance of a flag at a location
+     *
+     * @param location Location for checking for flag
+     * @param player Player for checking cached claims
+     * @return Instance of flag at location if set, otherwise null
+     */
+    public Flag getFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
         Flag flag = null;
         if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
             Claim cachedClaim = null;

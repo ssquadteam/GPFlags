@@ -88,7 +88,7 @@ public class FlagDef_NoHunger extends TimedPlayerFlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (!parameters.isEmpty()) {
             int amount;
             try {

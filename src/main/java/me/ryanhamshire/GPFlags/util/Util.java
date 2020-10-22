@@ -41,7 +41,7 @@ public class Util {
         } catch (Exception ignore) {
             rev = 0;
         }
-        return maj >= major && min >= minor && rev >= revision;
+        return maj > major || min > minor || (min == minor && rev >= revision);
     }
 
 

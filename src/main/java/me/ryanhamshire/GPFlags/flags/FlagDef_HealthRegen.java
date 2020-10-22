@@ -60,7 +60,7 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
     }
 
     @Override
-    public SetFlagResult ValidateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters) {
         if (parameters.isEmpty())
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
 
