@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,8 +64,10 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (claim == null) return true;
 
         if (claim.allowAccess(player) == null) {
-            player.setAllowFlight(true);
-            GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+                player.setAllowFlight(true);
+                GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+            }, 1);
             return true;
         } else {
             GameMode mode = player.getGameMode();

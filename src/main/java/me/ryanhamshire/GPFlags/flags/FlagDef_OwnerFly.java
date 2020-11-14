@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -27,7 +29,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return true;
-        Flag flag = GetFlagInstanceAtLocation(to, player);
+        Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
 
         if (flag == null && ownerMember == null) {
@@ -55,7 +57,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             }
             return true;
         }
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
 
         if (claim == null) return true;
         if (!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
@@ -70,8 +72,10 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             return true;
         }
 
-        player.setAllowFlight(true);
-        GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+            player.setAllowFlight(true);
+            GPFlags.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+        }, 1);
         return true;
     }
 
@@ -81,10 +85,10 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 player.hasPermission("gpflags.bypass.fly") || player.hasPermission("gpflags.bypass");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 

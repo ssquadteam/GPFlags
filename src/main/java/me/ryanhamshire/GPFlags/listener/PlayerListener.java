@@ -67,7 +67,7 @@ public class PlayerListener implements Listener {
         processMovement(locTo, locFrom, player, event);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     private void onTeleport(PlayerTeleportEvent event) {
         if (event.isCancelled()) return;
         if (event.getTo() == null) return;
