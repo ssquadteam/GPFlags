@@ -21,10 +21,12 @@ public class FlagDef_ExitCommand extends PlayerMovementFlagDefinition {
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (lastLocation == null) return true;
-        Flag flag = this.GetFlagInstanceAtLocation(lastLocation, player);
+        Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
         if (flag == null) return true;
 
-        if (flag == this.GetFlagInstanceAtLocation(to, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(to, player)) return true;
+
+        if (player.hasPermission("gpflags.bypass.exitcommand")) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
