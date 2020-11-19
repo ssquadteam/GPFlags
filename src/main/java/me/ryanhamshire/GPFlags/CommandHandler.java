@@ -191,6 +191,47 @@ public class CommandHandler {
             return true;
         }
 
+        if (cmd.getName().equalsIgnoreCase("UnsetClaimFlagPlayer")) {
+            if (args.length < 2) return false;
+            player = Bukkit.getPlayer(args[0]);
+            if (player == null) {
+                GPFlags.sendMessage(sender, "&c" + args[0] + " &7is not online");
+                return false;
+            }
+            PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+            if (claim == null || claim.allowEdit(player) != null) {
+                GPFlags.sendMessage(sender, "&cThis player is not standing in a claim they own");
+                return false;
+            }
+
+            String flagName = args[1];
+            FlagDefinition def = plugin.getFlagManager().getFlagDefinitionByName(flagName);
+            if (def == null) {
+                GPFlags.sendMessage(sender, String.format("&c%s&7 is not a valid flag", flagName));
+                return false;
+            }
+            if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
+                GPFlags.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
+                return true;
+            }
+
+            SetFlagResult result = plugin.getFlagManager().unSetFlag(claim, def);
+            ChatColor color = result.success ? TextMode.Success : TextMode.Err;
+            GPFlags.sendMessage(sender, color, result.message.messageID, result.message.messageParams);
+            String message;
+            if (result.success) {
+                plugin.getFlagManager().save();
+                message = String.format("&7Flag &b%s &7successfully unset in &b%s&7's claim.", def.getName(), player.getName());
+
+            } else {
+                message = String.format("&cFlag &b%s &cfailed to unset in &b%s&c's claim.", def.getName(), player.getName());
+            }
+            GPFlags.sendMessage(sender, message);
+
+            return true;
+        }
+
         // Set a claimFlag for a player from console
         if (cmd.getName().equalsIgnoreCase("SetClaimFlagPlayer")) {
             if (args.length < 2) return false;
