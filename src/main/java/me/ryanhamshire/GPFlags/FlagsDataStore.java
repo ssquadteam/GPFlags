@@ -273,6 +273,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnabledProtectNamedMobs, "Named mobs will no longer take damage in this area", null);
         this.addDefault(defaults, Messages.DisabledProtectNamedMobs, "Named mobs will continue to take damage in this area", null);
 
+        this.addDefault(defaults, Messages.EnableNoElytra, "Players will no longer be able to glide in this area", null);
+        this.addDefault(defaults, Messages.DisableNoElytra, "Players will now be able to glide in this area", null);
+
         //load the config file
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 

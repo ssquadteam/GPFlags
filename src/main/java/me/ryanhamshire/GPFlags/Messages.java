@@ -154,6 +154,8 @@ public enum Messages {
     EnabledNoExplosionDamage,
     DisabledNoExplosionDamage,
     NoOwnerFlag,
+    EnableNoElytra,
+    DisableNoElytra,
 
     //EXPERIMENTAL
     ChangeBiomeSet,

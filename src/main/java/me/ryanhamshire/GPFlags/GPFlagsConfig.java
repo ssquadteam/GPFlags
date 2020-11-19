@@ -23,6 +23,7 @@ import me.ryanhamshire.GPFlags.flags.FlagDef_NetherPortalConsoleCommand;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NetherPortalPlayerCommand;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoChorusFruit;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoCombatLoot;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoElytra;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnderPearl;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnter;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnterPlayer;
@@ -227,6 +228,7 @@ public class GPFlagsConfig {
 
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));
 
             try {
                 Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
