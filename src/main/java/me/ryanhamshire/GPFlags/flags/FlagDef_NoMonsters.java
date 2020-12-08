@@ -6,7 +6,6 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.WorldSettings;
-import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import me.ryanhamshire.GPFlags.util.VersionControl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,13 +24,11 @@ import java.util.List;
 
 public class FlagDef_NoMonsters extends FlagDefinition {
 
-    private final WorldSettingsManager settingsManager;
     private final String ALLOW_TARGET_TAG = "GPF_AllowTarget";
     private final VersionControl vc = GPFlags.getInstance().getVersionControl();
 
     public FlagDef_NoMonsters(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
-        this.settingsManager = plugin.getWorldSettingsManager();
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

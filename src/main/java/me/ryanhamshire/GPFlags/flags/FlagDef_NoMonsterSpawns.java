@@ -6,7 +6,6 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.WorldSettings;
-import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import me.ryanhamshire.GPFlags.util.VersionControl;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -19,12 +18,10 @@ import java.util.List;
 
 public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
-    private WorldSettingsManager settingsManager;
     private final VersionControl vc = GPFlags.getInstance().getVersionControl();
 
     public FlagDef_NoMonsterSpawns(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
-        this.settingsManager = plugin.getWorldSettingsManager();
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
@@ -53,10 +50,6 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
         return new MessageSpecifier(Messages.DisableMonsterSpawns);
-    }
-
-    public void updateSettings(WorldSettingsManager settingsManager) {
-        this.settingsManager = settingsManager;
     }
 
     @Override

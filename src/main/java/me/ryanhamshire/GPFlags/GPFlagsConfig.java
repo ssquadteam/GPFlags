@@ -106,8 +106,6 @@ public class GPFlagsConfig {
         for (World world : worlds) {
             worldSettingsKeys.add(world.getName());
         }
-        // As a test I am removing this, I don't even know why its in here, since GPFlags supports multiverse worlds
-        //worldSettingsKeys.add(this.worldSettingsManager.OtherWorldsKey);
 
         for (String worldName : worldSettingsKeys) {
             WorldSettings settings = plugin.getWorldSettingsManager().create(worldName);
@@ -166,7 +164,7 @@ public class GPFlagsConfig {
             plugin.registeredFlagDefinitions = true;
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsters(this.flagManager, plugin));
-            FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, plugin, plugin.getWorldSettingsManager());
+            FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, plugin);
             allowPvPDef.firstTimeSetup();
             this.flagManager.registerFlagDefinition(allowPvPDef);
             this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, plugin));
@@ -210,7 +208,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerTime(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, plugin, plugin.getWorldSettingsManager()));
+            this.flagManager.registerFlagDefinition(new FlagDef_PlayerGamemode(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoVineGrowth(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoSnowForm(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoIceForm(this.flagManager, plugin));
@@ -255,9 +253,8 @@ public class GPFlagsConfig {
             catch (NoClassDefFoundError ignore) {
             }
         } else {
-            ((FlagDef_PlayerGamemode) this.flagManager.getFlagDefinitionByName("PlayerGamemode")).updateSettings(plugin.getWorldSettingsManager());
-            ((FlagDef_AllowPvP) this.flagManager.getFlagDefinitionByName("AllowPvP")).updateSettings(plugin.getWorldSettingsManager());
-            ((FlagDef_NoMonsterSpawns) this.flagManager.getFlagDefinitionByName("NoMonsterSpawns")).updateSettings(plugin.getWorldSettingsManager());
+            // Update world settings for flags (probably on a reload)
+            this.flagManager.getFlagDefinitions().forEach(flagDefinition -> flagDefinition.updateSettings(plugin.getWorldSettingsManager()));
         }
 
         try {

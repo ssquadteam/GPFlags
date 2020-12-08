@@ -5,6 +5,7 @@ import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
@@ -25,12 +26,14 @@ import java.util.List;
 public abstract class FlagDefinition implements Listener {
 
     private final FlagManager flagManager;
+    WorldSettingsManager settingsManager;
     private int instances = 0;
     protected GPFlags plugin;
 
     public FlagDefinition(FlagManager manager, GPFlags plugin) {
         this.flagManager = manager;
         this.plugin = plugin;
+        this.settingsManager = plugin.getWorldSettingsManager();
     }
 
     public abstract String getName();
@@ -122,6 +125,10 @@ public abstract class FlagDefinition implements Listener {
 
     public void firstTimeSetup() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this.plugin);
+    }
+
+    public void updateSettings(WorldSettingsManager settingsManager) {
+        this.settingsManager = settingsManager;
     }
 
     /**

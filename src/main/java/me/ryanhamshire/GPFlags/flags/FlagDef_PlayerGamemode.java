@@ -9,7 +9,6 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.WorldSettings;
-import me.ryanhamshire.GPFlags.WorldSettingsManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,21 +21,18 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition implements Listener {
 
-    public FlagDef_PlayerGamemode(FlagManager manager, GPFlags plugin, WorldSettingsManager settingsManager) {
+    public FlagDef_PlayerGamemode(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
-        this.settingsManager = settingsManager;
     }
-
-    private WorldSettingsManager settingsManager;
 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
         WorldSettings settings = this.settingsManager.get(player.getWorld());
 
         if (lastLocation == null) return true;
-        Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) {
-            if (this.GetFlagInstanceAtLocation(lastLocation, player) == null) return true;
+            if (this.getFlagInstanceAtLocation(lastLocation, player) == null) return true;
 
             String gameMode = settings.worldGamemodeDefault;
             player.setGameMode(GameMode.valueOf(gameMode.toUpperCase()));
@@ -54,7 +50,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
             }
             return true;
         }
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
         String gameMode = flag.parameters;
         String playerGameMode = player.getGameMode().toString();
         if (gameMode.equalsIgnoreCase(playerGameMode)) return true;
@@ -66,7 +62,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag != null) {
             String gameMode = flag.parameters;
             player.setGameMode(GameMode.valueOf(gameMode.toUpperCase()));
@@ -83,10 +79,6 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
             return new SetFlagResult(false, new MessageSpecifier(Messages.PlayerGamemodeRequired));
         }
         return new SetFlagResult(true, this.getSetMessage(parameters));
-    }
-
-    public void updateSettings(WorldSettingsManager settingsManager) {
-        this.settingsManager = settingsManager;
     }
 
     @Override
