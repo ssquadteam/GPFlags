@@ -49,6 +49,7 @@ import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobDamage;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobSpawns;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoMobSpawnsType;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoMonsterSpawns;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoMonsters;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoOpenDoors;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoPetDamage;
 import me.ryanhamshire.GPFlags.flags.FlagDef_NoPlayerDamage;
@@ -164,6 +165,7 @@ public class GPFlagsConfig {
         if (!plugin.registeredFlagDefinitions) {
             plugin.registeredFlagDefinitions = true;
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoMonsters(this.flagManager, plugin));
             FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, plugin, plugin.getWorldSettingsManager());
             allowPvPDef.firstTimeSetup();
             this.flagManager.registerFlagDefinition(allowPvPDef);

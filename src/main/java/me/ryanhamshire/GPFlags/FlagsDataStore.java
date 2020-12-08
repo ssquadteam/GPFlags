@@ -57,6 +57,8 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.DisableMonsterSpawns, "Disabled monster spawns in this land claim.", null);
         this.addDefault(defaults, Messages.EnableMonsterSpawns, "Re-enabled monster spawns in this land claim.", null);
+        this.addDefault(defaults, Messages.DisableMonsters, "Disabled monsters in this land claim.", null);
+        this.addDefault(defaults, Messages.EnableMonsters, "Re-enabled monsters in this land claim.", null);
 
         this.addDefault(defaults, Messages.DisableMobSpawns, "Now blocking living entity (mob) spawns in this land claim.", null);
         this.addDefault(defaults, Messages.EnableMobSpawns, "Stopped blocking living entity (mob) spawns in this land claim.", null);

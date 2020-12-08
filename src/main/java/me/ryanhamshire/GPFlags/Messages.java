@@ -16,6 +16,8 @@ public enum Messages {
     DefaultFlagUnSet,
     DisableMonsterSpawns,
     EnableMonsterSpawns,
+    DisableMonsters,
+    EnableMonsters,
     ReloadComplete,
     AddEnablePvP,
     RemoveEnabledPvP,
