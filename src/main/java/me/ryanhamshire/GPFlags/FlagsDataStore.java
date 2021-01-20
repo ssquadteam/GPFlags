@@ -277,7 +277,10 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnableNoElytra, "Players will no longer be able to glide in this area", null);
         this.addDefault(defaults, Messages.DisableNoElytra, "Players will now be able to glide in this area", null);
-
+        
+        this.addDefault(defaults, Messages.EnableViewContainers, "Players can now view (not manipulate) any container on your claim", null);
+        this.addDefault(defaults, Messages.DisableViewContainers, "Players can no longer view containers on your claim", null);
+        
         //load the config file
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 
