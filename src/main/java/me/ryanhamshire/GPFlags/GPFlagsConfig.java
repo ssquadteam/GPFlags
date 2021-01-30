@@ -80,6 +80,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -88,6 +89,8 @@ public class GPFlagsConfig {
     
     private final GPFlags plugin;
     private final FlagManager flagManager;
+
+    public static boolean LOG_ENTER_EXIT_COMMANDS = true;
 
     public GPFlagsConfig(GPFlags plugin) {
         this.plugin = plugin;
@@ -111,8 +114,8 @@ public class GPFlagsConfig {
         for (String worldName : worldSettingsKeys) {
             WorldSettings settings = plugin.getWorldSettingsManager().create(worldName);
 
-            GPFlags.LOG_ENTER_EXIT_COMMANDS = inConfig.getBoolean("Settings.Log Enter/Exit Messages To Console", true);
-            outConfig.set("Settings.Log Enter/Exit Messages To Console", GPFlags.LOG_ENTER_EXIT_COMMANDS);
+            LOG_ENTER_EXIT_COMMANDS = inConfig.getBoolean("Settings.Log Enter/Exit Messages To Console", true);
+            outConfig.set("Settings.Log Enter/Exit Messages To Console", LOG_ENTER_EXIT_COMMANDS);
 
             settings.worldGamemodeDefault = inConfig.getString("World Flags." + worldName + ".Default Gamemode", "survival");
             String worldGMDefault = settings.worldGamemodeDefault;
@@ -143,7 +146,7 @@ public class GPFlagsConfig {
             outConfig.set("World Flags." + worldName + ".ExitMessage", settings.pvpExitClaimMessage);
 
             // Adds default biomes to be ignored in the ChangeBiome flag
-            settings.biomeBlackList = inConfig.getList("World Flags." + worldName + ".Biomes.Blacklist", plugin.getVersionControl().getDefaultBiomes());
+            settings.biomeBlackList = inConfig.getList("World Flags." + worldName + ".Biomes.Blacklist", Arrays.asList("MUSHROOM_FIELDS", "MUSHROOM_FIELD_SHORE"));
             outConfig.set("World Flags." + worldName + ".Biomes.Blacklist", settings.biomeBlackList);
 
             settings.noMonsterSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", true);
@@ -155,9 +158,9 @@ public class GPFlagsConfig {
 
         try {
             outConfig.save(FlagsDataStore.configFilePath);
-            GPFlags.addLogEntry("Finished loading configuration.");
+            Util.log("Finished loading configuration.");
         } catch (IOException exception) {
-            GPFlags.addLogEntry("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
+            Util.log("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
 
         //register flag definitions
@@ -236,8 +239,8 @@ public class GPFlagsConfig {
                 this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, plugin));
             } catch (ClassNotFoundException e) {
                 if (Util.isRunningMinecraft(1, 14)) {
-                    GPFlags.addLogEntry("&cRaidEvent classes not found:");
-                    GPFlags.addLogEntry("&7  - Update to latest Spigot build for raid flag to work");
+                    Util.log("&cRaidEvent classes not found:");
+                    Util.log("&7  - Update to latest Spigot build for raid flag to work");
                 }
             }
 
@@ -266,14 +269,14 @@ public class GPFlagsConfig {
                 //noinspection UnstableApiUsage
                 Files.copy(flagsFile, errorFile);
                 for (MessageSpecifier error : errors) {
-                    GPFlags.addLogEntry("Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
+                    Util.log("Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
                 }
-                GPFlags.addLogEntry("Problems encountered reading the flags data file! " +
+                Util.log("Problems encountered reading the flags data file! " +
                         "Please share this log and your 'flagsError.yml' file with the developer.");
             }
         } catch (Exception e) {
-            GPFlags.addLogEntry("Unable to initialize the file system data store.  Details:");
-            GPFlags.addLogEntry(e.getMessage());
+            Util.log("Unable to initialize the file system data store.  Details:");
+            Util.log(e.getMessage());
             e.printStackTrace();
         }
 
@@ -287,7 +290,7 @@ public class GPFlagsConfig {
             }
         }
         this.flagManager.removeExceptClaimIDs(validIDs);
-        GPFlags.addLogEntry("Finished loading data.");
+        Util.log("Finished loading data.");
     }
     
 }
