@@ -28,15 +28,8 @@ import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 
-/**
- * Allow players to view (but not manipulate) containers (chests, dispensers, hoppers etc) within a claim.
- * Example use case: Player casino's to verify odds.
- * 
- * @author Lewys Davies (Lew_)
- */
 public class FlagDef_ViewContainers extends FlagDefinition {
     
-    // WeakHashSet
     private final static Set<Inventory> viewing = Collections.newSetFromMap(new WeakHashMap<Inventory, Boolean>()); 
     
     public FlagDef_ViewContainers(FlagManager manager, GPFlags plugin) {
@@ -45,24 +38,25 @@ public class FlagDef_ViewContainers extends FlagDefinition {
     
     @EventHandler
     public void onInvOpen(PlayerInteractEvent event) {
-        if(event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(event.getClickedBlock() == null) return; // Just in case
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         
         Block block = event.getClickedBlock();
+        if (block == null) return;
+        
         BlockState state = block.getState();
-        if(!(state instanceof Container)) return;
+        if (!(state instanceof Container)) return;
         
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
         
         Player player = event.getPlayer();
-        
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
-        if(claim == null) return;
         
-        if(claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
-            return; // Player Already has Inventory Access to this claim
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
+        if (claim == null) return;
+        
+        if (claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
+            return;
         }
         
         Container cont = (Container) state;
@@ -77,8 +71,8 @@ public class FlagDef_ViewContainers extends FlagDefinition {
     
     @EventHandler
     public void onInvClick(InventoryClickEvent event) {
-        if(event.isCancelled()) return;
-        if(viewing.contains(event.getInventory())) event.setCancelled(true);
+        if (event.isCancelled()) return;
+        if (viewing.contains(event.getInventory())) event.setCancelled(true);
     }
     
     @EventHandler
