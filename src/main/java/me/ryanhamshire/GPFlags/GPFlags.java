@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -67,9 +69,9 @@ public class GPFlags extends JavaPlugin {
     }
 
     public void onDisable() {
-        FlagDef_ViewContainers.getViewingInventories().forEach(inv -> {
+        new HashSet<>(FlagDef_ViewContainers.getViewingInventories()).forEach(inv -> {
             inv.setContents(new ItemStack[inv.getSize()]);
-            inv.getViewers().forEach(HumanEntity::closeInventory);
+            new ArrayList<>(inv.getViewers()).forEach(HumanEntity::closeInventory);
         });
         if (flagsDataStore != null) {
             flagsDataStore.close();
