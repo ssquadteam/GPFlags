@@ -1,17 +1,22 @@
 package me.ryanhamshire.GPFlags;
 
-import me.ryanhamshire.GPFlags.listener.PlayerListener;
-import me.ryanhamshire.GPFlags.metrics.Metrics;
-import me.ryanhamshire.GPFlags.util.Util;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
+import me.ryanhamshire.GPFlags.listener.PlayerListener;
+import me.ryanhamshire.GPFlags.metrics.Metrics;
+import me.ryanhamshire.GPFlags.util.Util;
 
 /**
  * <b>Main GriefPrevention Flags class</b>
@@ -66,6 +71,10 @@ public class GPFlags extends JavaPlugin {
             flagsDataStore.close();
             flagsDataStore = null;
         }
+        FlagDef_ViewContainers.getViewingInventories().forEach(inv -> {
+            inv.setContents(new ItemStack[inv.getSize()]);
+            inv.getViewers().forEach(HumanEntity::closeInventory);
+        });
         instance = null;
         playerListener = null;
         oldCommandHandler = null;

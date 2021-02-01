@@ -99,4 +99,8 @@ public class FlagDef_ViewContainers extends FlagDefinition {
     public List<FlagType> getFlagType() {
         return Arrays.asList(FlagType.CLAIM);
     }
+    
+    public static Set<Inventory> getViewingInventories() {
+        return Collections.unmodifiableSet(viewing);
+    }
 }
