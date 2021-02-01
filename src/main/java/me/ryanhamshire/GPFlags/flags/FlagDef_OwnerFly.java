@@ -20,6 +20,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener {
 
@@ -87,14 +88,24 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onJoin(PlayerJoinEvent event) {
+    private void onJoin(PlayerJoinEvent event) {
+        handleFlight(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    private void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> handleFlight(player), 1);
+    }
+
+    private void handleFlight(Player player) {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
         if (flag != null && claim != null && claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             player.setAllowFlight(true);
+            Util.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             if (below == Material.AIR) {
                 player.setFlying(true);
             }
