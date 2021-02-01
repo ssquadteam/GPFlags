@@ -69,7 +69,7 @@ public class GPFlags extends JavaPlugin {
     }
 
     public void onDisable() {
-        new HashSet<>(FlagDef_ViewContainers.getViewingInventories()).forEach(inv -> {
+        FlagDef_ViewContainers.getViewingInventories().forEach(inv -> {
             inv.setContents(new ItemStack[inv.getSize()]);
             new ArrayList<>(inv.getViewers()).forEach(HumanEntity::closeInventory);
         });
