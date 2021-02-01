@@ -67,14 +67,14 @@ public class GPFlags extends JavaPlugin {
     }
 
     public void onDisable() {
-        if (flagsDataStore != null) {
-            flagsDataStore.close();
-            flagsDataStore = null;
-        }
         FlagDef_ViewContainers.getViewingInventories().forEach(inv -> {
             inv.setContents(new ItemStack[inv.getSize()]);
             inv.getViewers().forEach(HumanEntity::closeInventory);
         });
+        if (flagsDataStore != null) {
+            flagsDataStore.close();
+            flagsDataStore = null;
+        }
         instance = null;
         playerListener = null;
         oldCommandHandler = null;
