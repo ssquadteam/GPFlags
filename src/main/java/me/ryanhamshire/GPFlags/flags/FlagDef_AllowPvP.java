@@ -1,16 +1,12 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.Flag;
-import me.ryanhamshire.GPFlags.FlagManager;
-import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.MessageSpecifier;
-import me.ryanhamshire.GPFlags.Messages;
-import me.ryanhamshire.GPFlags.TextMode;
-import me.ryanhamshire.GPFlags.WorldSettings;
-import me.ryanhamshire.GPFlags.util.Util;
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.EntityEventHandler;
-import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.WeakHashMap;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -41,16 +37,27 @@ import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import me.ryanhamshire.GPFlags.Flag;
+import me.ryanhamshire.GPFlags.FlagManager;
+import me.ryanhamshire.GPFlags.GPFlags;
+import me.ryanhamshire.GPFlags.MessageSpecifier;
+import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.WorldSettings;
+import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.EntityEventHandler;
+import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 
 public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
-
+    
+    // For EntityShootBow event being called multiple times when using the enchantment Multishot
+    private Set<Player> justFiredCrossbow = Collections.newSetFromMap(new WeakHashMap<Player, Boolean>());
+    
     public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-
+    
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return true;
@@ -230,6 +237,9 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                         ((Player) damager).getInventory().addItem(item);
                     }
                 }
+                // Remove metadata in case the projectile is to damage multiple entities
+                // i.e. firework aoe
+                projectile.removeMetadata("item-stack", GPFlags.getInstance());
             }
             if (!(projectile instanceof Trident)) {
                 projectile.remove();
@@ -243,7 +253,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         this.handleEntityDamageEvent(event, true);
     }
-
+    
     @EventHandler
     private void onShootBow(EntityShootBowEvent event) {
         if (event.getEntity() instanceof Player) {
@@ -255,7 +265,20 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
             if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
                 if (bow.getItemMeta() != null) {
-                    projectile = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles().get(0);
+                    List<ItemStack> projs = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles();
+                    projectile = projs.get(0);
+                    
+                    // EntityShootBowEvent is still fired for each projectile
+                    // Only add the metadata to the first projectile launched within a short time
+                    if(projs.size() > 1) {
+                        if(justFiredCrossbow.contains(player)) return;
+                        justFiredCrossbow.add(player);
+                        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+                            justFiredCrossbow.remove(player);
+                        }, 5); // players have to fully charge their crossbow to fire more than one projectile.
+                               // We can give this time to account for lag
+                    }
+                    
                     event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.getInstance(), projectile.clone()));
                     return;
                 }
@@ -304,5 +327,4 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     public List<FlagType> getFlagType() {
         return Collections.singletonList(FlagType.CLAIM);
     }
-
 }
