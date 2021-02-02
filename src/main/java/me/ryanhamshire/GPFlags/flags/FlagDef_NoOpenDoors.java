@@ -53,20 +53,20 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
                         for (String param : params) {
                             if (param.equalsIgnoreCase("doors") && block.getBlockData() instanceof Door) {
                                 e.setCancelled(true);
-                                Util.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                                Util.sendClaimMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
                             }
                             if (param.equalsIgnoreCase("trapdoors") && block.getBlockData() instanceof TrapDoor) {
                                 e.setCancelled(true);
-                                Util.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                                Util.sendClaimMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
                             }
                             if (param.equalsIgnoreCase("gates") && block.getBlockData() instanceof Gate) {
                                 e.setCancelled(true);
-                                Util.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
+                                Util.sendClaimMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, param);
                             }
                         }
                     } else {
                         e.setCancelled(true);
-                        Util.sendMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, "doors");
+                        Util.sendClaimMessage(player, TextMode.Err, Messages.NoOpenDoorMessage, "doors");
                     }
                 }
             }

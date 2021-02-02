@@ -31,7 +31,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
 
         Player player = event.getPlayer();
 
-        Flag flag = this.GetFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
+        Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), true, null);
@@ -39,15 +39,15 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
                 String owner = claim.getOwnerName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
-                Util.sendMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
+                Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
                 return;
             }
             String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInWorld);
-            Util.sendMessage(player, TextMode.Warn, msg.replace("{p}", player.getName()));
+            Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{p}", player.getName()));
             return;
         }
 
-        flag = this.GetFlagInstanceAtLocation(event.getTo(), event.getPlayer());
+        flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), true, null);
@@ -55,7 +55,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
                 String owner = claim.getOwnerName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
-                Util.sendMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
+                Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
             }
         }
 

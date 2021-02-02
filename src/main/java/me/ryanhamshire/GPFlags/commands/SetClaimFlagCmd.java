@@ -61,6 +61,12 @@ class SetClaimFlagCmd extends BaseCmd {
 
             PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+
+            if (claim == null) {
+                Util.sendMessage(sender, TextMode.Err, Messages.StandInAClaim);
+                return true;
+            }
+
             if (claim.allowEdit(player) != null) {
                 Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;

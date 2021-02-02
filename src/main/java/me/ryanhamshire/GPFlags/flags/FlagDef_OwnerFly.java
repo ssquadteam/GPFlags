@@ -50,12 +50,12 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
                 if (to.getY() - block.getY() >= 4) {
                     GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
-                Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
                 return true;
             }
             if (player.getAllowFlight() && !canFly(player)) {
                 player.setAllowFlight(false);
-                Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             return true;
         }
@@ -65,22 +65,23 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         if (!claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             if (!canFly(player)) {
                 player.setAllowFlight(false);
-                Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             if (!canFly(player)) {
                 player.setAllowFlight(false);
-                Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             return true;
         }
 
         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
             player.setAllowFlight(true);
-            Util.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+            Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
         }, 1);
         return true;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canFly(Player player) {
         GameMode mode = player.getGameMode();
         return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE ||
@@ -105,7 +106,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
 
         if (flag != null && claim != null && claim.getOwnerName().equalsIgnoreCase(player.getName())) {
             player.setAllowFlight(true);
-            Util.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+            Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             if (below == Material.AIR) {
                 player.setFlying(true);
             }
