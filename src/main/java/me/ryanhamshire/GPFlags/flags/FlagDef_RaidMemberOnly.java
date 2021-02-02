@@ -33,7 +33,7 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
         if (claim.allowAccess(player) != null) {
             event.setCancelled(true);
             player.removePotionEffect(PotionEffectType.BAD_OMEN);
-            Util.sendMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
+            Util.sendClaimMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
         }
     }
 
