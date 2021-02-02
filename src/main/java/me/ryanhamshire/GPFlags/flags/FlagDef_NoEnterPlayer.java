@@ -21,18 +21,18 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (player.hasPermission("gpflags.bypass")) return true;
 
-        Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
 
-        if (lastLocation == null || flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (lastLocation == null || flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
         if (flag.parameters.toUpperCase().contains(player.getName().toUpperCase()) && claim.allowAccess(player) != null) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
+            Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
             return false;
         }
         return true;

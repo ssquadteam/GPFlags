@@ -26,12 +26,12 @@ public class FlagDef_CommandWhiteList extends CommandListFlagDefinition {
         Player player = event.getPlayer();
         if (player.hasPermission("gpflags.bypass")) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         if (!this.commandInList(flag.parameters, event.getMessage())) {
             event.setCancelled(true);
-            Util.sendMessage(player, TextMode.Err, Messages.CommandBlockedHere);
+            Util.sendClaimMessage(player, TextMode.Err, Messages.CommandBlockedHere);
         }
     }
 

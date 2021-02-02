@@ -45,7 +45,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         if (ownerFly != null && claim.ownerID.toString().equalsIgnoreCase(player.getUniqueId().toString())) return;
         if (ownerMember != null && claim.allowAccess(player) == null) return;
 
-        Util.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
+        Util.sendClaimMessage(player, TextMode.Err, Messages.CantFlyHere);
         player.setFlying(false);
         GameMode mode = player.getGameMode();
         if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR) {
@@ -74,7 +74,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
-        Util.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
+        Util.sendClaimMessage(player, TextMode.Err, Messages.CantFlyHere);
         event.setCancelled(true);
         player.setAllowFlight(false);
     }
