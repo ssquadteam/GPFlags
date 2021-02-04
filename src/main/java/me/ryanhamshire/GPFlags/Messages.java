@@ -163,7 +163,9 @@ public enum Messages {
     DisableNoElytra,
     EnableViewContainers,
     DisableViewContainers,
-
+    EnableReadLecterns,
+    DisableReadLecterns,
+    
     //EXPERIMENTAL
     ChangeBiomeSet,
     ChangeBiomeUnset,

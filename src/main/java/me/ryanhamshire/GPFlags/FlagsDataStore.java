@@ -285,6 +285,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableViewContainers, "Players can now view (not manipulate) any container on your claim", null);
         this.addDefault(defaults, Messages.DisableViewContainers, "Players can no longer view containers on your claim", null);
         
+        this.addDefault(defaults, Messages.EnableReadLecterns, "Players can now read (not manipulate) lecturns on your claim", null);
+        this.addDefault(defaults, Messages.DisableReadLecterns, "Players can no longer read lecturns on your claim", null);
+        
         //load the config file
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
 

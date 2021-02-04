@@ -65,6 +65,7 @@ import me.ryanhamshire.GPFlags.flags.FlagDef_PlayerTime;
 import me.ryanhamshire.GPFlags.flags.FlagDef_PlayerWeather;
 import me.ryanhamshire.GPFlags.flags.FlagDef_ProtectNamedMobs;
 import me.ryanhamshire.GPFlags.flags.FlagDef_RaidMemberOnly;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ReadLecterns;
 import me.ryanhamshire.GPFlags.flags.FlagDef_RespawnLocation;
 import me.ryanhamshire.GPFlags.flags.FlagDef_SpleefArena;
 import me.ryanhamshire.GPFlags.flags.FlagDef_TrappedDestination;
@@ -237,6 +238,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));
             
             this.flagManager.registerFlagDefinition(new FlagDef_ViewContainers(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_ReadLecterns(this.flagManager, plugin));
 
             try {
                 Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
