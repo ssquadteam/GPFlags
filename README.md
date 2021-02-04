@@ -1,11 +1,4 @@
 # GriefPreventionFlags
-![GitHub release](https://img.shields.io/github/release/ShaneBeee/GriefPreventionFlags.svg?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues-raw/ShaneBeee/GriefPreventionFlags.svg?style=for-the-badge)
-![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/ShaneBeee/GriefPreventionFlags.svg?style=for-the-badge)
-![GitHub All Releases](https://img.shields.io/github/downloads/ShaneBeee/GriefPreventionFlags/total.svg?style=for-the-badge)
-[![Discord](https://img.shields.io/discord/425192525091831808.svg?style=for-the-badge)](https://discordapp.com/invite/km3UF8Q)
-[![Build Status](https://travis-ci.org/ShaneBeee/GriefPreventionFlags.svg?branch=master)](https://travis-ci.org/ShaneBeee/GriefPreventionFlags)
-
 Bringing back an old favorite of GriefPrevention users... Admin Flags
 
 GriefPrevention Flags is a plugin to allow admins to set flags for GriefPrevention claims. Either a single claim, or a global flag for all claims. It's similar to WorldGuard, but it's more performant, easier to use, and includes many more useful flags than WorldGuard does.  It also doesn't require WorldEdit to run (unlike WorldGuard).  Admins can also empower players to self-serve by giving them access to specific flags, which they can then only use on land claims they own.
