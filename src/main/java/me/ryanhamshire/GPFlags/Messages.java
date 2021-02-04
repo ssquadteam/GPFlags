@@ -161,6 +161,8 @@ public enum Messages {
     NoOwnerFlag,
     EnableNoElytra,
     DisableNoElytra,
+    EnableViewContainers,
+    DisableViewContainers,
 
     //EXPERIMENTAL
     ChangeBiomeSet,
