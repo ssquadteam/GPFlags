@@ -124,7 +124,11 @@ public abstract class FlagDefinition implements Listener {
         }
     }
 
+    private boolean hasRegisteredEvents = false;
+    
     public void firstTimeSetup() {
+        if(hasRegisteredEvents) return;
+        hasRegisteredEvents = true;
         Bukkit.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 

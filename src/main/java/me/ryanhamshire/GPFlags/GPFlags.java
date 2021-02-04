@@ -1,7 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -9,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +21,6 @@ import me.ryanhamshire.GPFlags.util.Util;
 /**
  * <b>Main GriefPrevention Flags class</b>
  */
-@SuppressWarnings("WeakerAccess")
 public class GPFlags extends JavaPlugin {
 
     private static GPFlags instance;

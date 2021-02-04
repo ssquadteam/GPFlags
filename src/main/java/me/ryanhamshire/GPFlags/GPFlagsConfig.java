@@ -168,7 +168,11 @@ public class GPFlagsConfig {
             plugin.registeredFlagDefinitions = true;
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsterSpawns(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMonsters(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_AllowPvP(this.flagManager, plugin));
+            
+            FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, plugin);
+            allowPvPDef.firstTimeSetup();
+            this.flagManager.registerFlagDefinition(allowPvPDef);
+            
             this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand(this.flagManager, plugin));
