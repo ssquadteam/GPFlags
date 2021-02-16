@@ -9,13 +9,14 @@ import java.util.WeakHashMap;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Container;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.BlockInventoryHolder;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
 
 import me.ryanhamshire.GPFlags.Flag;
@@ -44,7 +45,7 @@ public class FlagDef_ViewContainers extends FlagDefinition {
         if (block == null) return;
         
         BlockState state = block.getState();
-        if (!(state instanceof Container)) return;
+        if (!(state instanceof BlockInventoryHolder)) return;
         
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
@@ -59,13 +60,17 @@ public class FlagDef_ViewContainers extends FlagDefinition {
             return;
         }
         
-        Container cont = (Container) state;
-        Inventory original = cont.getInventory();
+        Inventory original = ((BlockInventoryHolder) state).getInventory();
+        Inventory copy;
         
-        Inventory copy = Bukkit.createInventory(original.getHolder(), original.getType());
+        if (original instanceof DoubleChestInventory) {
+            copy = Bukkit.createInventory(original.getHolder(), 54);
+        } else {
+            copy = Bukkit.createInventory(original.getHolder(), original.getType());
+        }
+        
         copy.setContents(original.getContents());
         viewing.add(copy);
-        
         player.openInventory(copy);
     }
     
