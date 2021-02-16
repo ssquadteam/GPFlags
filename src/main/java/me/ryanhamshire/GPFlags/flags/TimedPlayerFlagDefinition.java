@@ -26,13 +26,18 @@ public abstract class TimedPlayerFlagDefinition extends FlagDefinition implement
     public abstract long getPlayerCheckFrequency_Ticks();
 
     public abstract void processPlayer(Player player);
+    
+    private boolean isSetup = false;
 
     public void firstTimeSetup() {
         super.firstTimeSetup();
-
+        
+        if (isSetup) return;
+        
         this.taskIntervalTicks = this.getPlayerCheckFrequency_Ticks() / Bukkit.getServer().getMaxPlayers();
         if (this.taskIntervalTicks < 1) this.taskIntervalTicks = 1;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, this, TimedPlayerFlagDefinition.tickOffset++, Math.max(this.taskIntervalTicks, 1));
+        isSetup = true;
     }
 
     @Override

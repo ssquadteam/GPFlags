@@ -9,12 +9,13 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 import java.util.Arrays;
@@ -33,50 +34,72 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
 
     @Override
     public void processPlayer(Player player) {
-        if (!player.isFlying()) return;
-        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.fly")) return;
-
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
-
-        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (ownerFly != null && claim.ownerID.toString().equalsIgnoreCase(player.getUniqueId().toString())) return;
-        if (ownerMember != null && claim.allowAccess(player) == null) return;
-
-        Util.sendClaimMessage(player, TextMode.Err, Messages.CantFlyHere);
-        player.setFlying(false);
-        GameMode mode = player.getGameMode();
-        if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR) {
-            Block block = player.getLocation().getBlock();
-            while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
-                block = block.getRelative(BlockFace.DOWN);
-            }
-
-            player.setAllowFlight(false);
-            if (player.getLocation().getY() - block.getY() >= 4) {
-                GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
-            }
-        }
+        if(! player.isFlying()) return;
+        handleFlyAttempt(player);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
-        Player player = event.getPlayer();
-        if (player.isFlying()) return;
-        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.fly")) return;
-
-        Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("OwnerMemberFly").GetFlagInstanceAtLocation(player.getLocation(), player);
-        if (ownerFly != null || ownerMember != null) return;
-
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
-
+        event.setCancelled(handleFlyAttempt(event.getPlayer()));
+    }
+    
+    @EventHandler
+    public void onFlyCommand(PlayerCommandPreprocessEvent event) {
+        if (event.isCancelled()) return;
+        
+        String[] args = event.getMessage().split(" ");
+        
+        if (args.length == 1 && args[0].contains("fly")) {
+            event.setCancelled(handleFlyAttempt(event.getPlayer()));
+        }
+    }
+    
+    /**
+     * @param player
+     * @return True if attempt was stopped
+     */
+    private boolean handleFlyAttempt(Player player) {
+        if (player.getGameMode() == GameMode.SPECTATOR) return false;
+        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.fly")) {
+            return false;
+        }
+        
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
+        if (flag == null) {
+            return false;
+        }
+        
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        Flag ownerFly = GPFlags.getInstance().getFlagManager()
+                .getFlagDefinitionByName("OwnerFly")
+                .getFlagInstanceAtLocation(player.getLocation(), player);
+        Flag ownerMember = GPFlags.getInstance().getFlagManager()
+                .getFlagDefinitionByName("OwnerMemberFly")
+                .getFlagInstanceAtLocation(player.getLocation(), player);
+        
+        if (ownerFly != null && claim.ownerID.equals(player.getUniqueId())) {
+            return false;
+        }
+        
+        if (ownerMember != null)  {
+            return false;
+        }
+        
         Util.sendClaimMessage(player, TextMode.Err, Messages.CantFlyHere);
-        event.setCancelled(true);
-        player.setAllowFlight(false);
+        
+        player.setFlying(false);
+        teleportToFloor(player);
+        
+        return true;
+    }
+    
+    private void teleportToFloor(Player player) {
+        Location floor = player.getLocation();
+        while (floor.getY() > 2 && (! floor.getBlock().getType().isSolid()) && floor.getBlock().getType() != Material.WATER) {
+            floor = floor.subtract(0, 0.4, 0);
+        }
+        player.setFallDistance(0);
+        player.teleport(floor.add(0, 0.5, 0));
     }
 
     @Override
@@ -98,5 +121,4 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
     public List<FlagType> getFlagType() {
         return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
-
 }

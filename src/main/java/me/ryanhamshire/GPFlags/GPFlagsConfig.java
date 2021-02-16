@@ -197,7 +197,11 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoHunger(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_NoFlight(this.flagManager, plugin));
+            
+            FlagDef_NoFlight noFlight = new FlagDef_NoFlight(this.flagManager, plugin);
+            noFlight.firstTimeSetup();
+            this.flagManager.registerFlagDefinition(noFlight);
+            
             this.flagManager.registerFlagDefinition(new FlagDef_TrappedDestination(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoLootProtection(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnderPearl(this.flagManager, plugin));
