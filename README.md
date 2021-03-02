@@ -7,6 +7,10 @@ This is a fork from the original author [BigScary](https://github.com/BigScary/G
 This fork will only support Spigot/Paper versions 1.13+
 Download the latest release from [the releases page](https://github.com/lewysDavies/GriefPreventionFlags/releases).
 
+### Wiki
+I will not be maintaining my own wiki as I am simply too busy and this is an old project. Here is the wiki from the old project:
+https://github.com/ShaneBeee/GriefPreventionFlags/wiki
+
 ### Why this fork?
 #### New Features
 - Added the `ViewContainers` claim flag. This allows players to view but not manipulate, any container on a claim.
