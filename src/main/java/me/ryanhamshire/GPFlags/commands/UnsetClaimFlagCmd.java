@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.flags.FlagDef_ChangeBiome;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.ChatColor;
@@ -58,7 +59,7 @@ public class UnsetClaimFlagCmd extends BaseCmd {
             return true;
         }
 
-        if (claim.allowEdit(player) != null) {
+        if (claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
             Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
             return true;
         }
