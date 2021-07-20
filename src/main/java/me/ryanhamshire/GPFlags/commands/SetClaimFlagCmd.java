@@ -28,7 +28,6 @@ class SetClaimFlagCmd extends BaseCmd {
     private final Collection<String> flagDefinitionNames;
 
 
-
     SetClaimFlagCmd(GPFlags plugin) {
         super(plugin);
         command = "SetClaimFlag";
