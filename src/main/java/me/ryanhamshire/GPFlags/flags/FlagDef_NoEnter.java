@@ -32,7 +32,7 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
         if (claim.allowAccess(player) != null) {
-            Util.sendClaimMessage(player, TextMode.Err, flag.parameters);
+            Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterMessage);
             return false;
         }
 
@@ -42,15 +42,6 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
     @Override
     public String getName() {
         return "NoEnter";
-    }
-
-    @Override
-    public SetFlagResult validateParameters(String parameters) {
-        if (parameters.isEmpty()) {
-            return new SetFlagResult(false, new MessageSpecifier(Messages.MessageRequired));
-        }
-
-        return new SetFlagResult(true, this.getSetMessage(parameters));
     }
 
     @Override

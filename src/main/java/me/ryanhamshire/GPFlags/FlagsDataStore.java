@@ -122,6 +122,7 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnabledNoEnter, "Players now require /AccessTrust or higher permission to enter this area.  Players with permission gpflags.bypass are immune to this flag.", null);
         this.addDefault(defaults, Messages.DisabledNoEnter, "Stopped requiring permission to enter this area.", null);
+        this.addDefault(defaults, Messages.NoEnterMessage, "You have been blocked from entering this claim", null);
 
         this.addDefault(defaults, Messages.EnableNoFluidFlow, "Now preventing source fluid blocks from spreading in this land claim.", null);
         this.addDefault(defaults, Messages.DisableNoFluidFlow, "Stopped limiting fluid flow in this land claim.", null);
