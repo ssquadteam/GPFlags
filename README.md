@@ -11,9 +11,10 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 I will not be maintaining my own wiki as I am simply too busy and this is an old project. Here is the wiki from the old project:
 https://github.com/ShaneBeee/GriefPreventionFlags/wiki
 
-### What does this fork?
+### What does this fork change?
 - Added compatibility with GriefPrevention the 16.17.2 snapshots while removing compatibility for 16.17.1 and below. This means you MUST use a [GriefPrevention development build](https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history) with this fork. 
 - Fixed a null pointer exception with global instances of the `NoVehicle` claim flag.
 - Fixed a null pointer exception with the `ReadLecterns` claim flag in admin claims.
 - Fixed a bug where the NoMobDamage claimflag would also prevent players from renaming mobs.
+- Removed the ability for players to set messages with the NoEnter claimflag. 
 - And it includes all changes from [lewysDavies' fork](https://github.com/lewysDavies/GriefPreventionFlags).
