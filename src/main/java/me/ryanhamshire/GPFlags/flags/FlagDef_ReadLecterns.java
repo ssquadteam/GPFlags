@@ -43,6 +43,7 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
         
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
         if (claim == null) return;
+        if (claim.ownerID == null) return;
         
         if (claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
             return;
