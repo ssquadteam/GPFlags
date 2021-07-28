@@ -1,25 +1,19 @@
 # GriefPreventionFlags
 GriefPrevention Flags is a plugin to allow admins to set flags for GriefPrevention claims. Either a single claim, or a global flag for all claims. It's similar to WorldGuard, but it's more performant, easier to use, and includes many more useful flags than WorldGuard does.  It also doesn't require WorldEdit to run (unlike WorldGuard).  Admins can also empower players to self-serve by giving them access to specific flags, which they can then only use on land claims they own.
 
-This is a fork from the original author [BigScary](https://github.com/BigScary/GriefPreventionFlags) and the previous maintainer [ShaneBeee](https://github.com/ShaneBeee/GriefPreventionFlags).
+This is a fork from the original author [BigScary](https://github.com/BigScary/GriefPreventionFlags) and the previous maintainers [ShaneBeee](https://github.com/ShaneBeee/GriefPreventionFlags) and [lewysDavies](https://github.com/lewysDavies/GriefPreventionFlags).
 
 ### Download
-This fork will only support Spigot/Paper versions 1.13+
-Download the latest release from [the releases page](https://github.com/lewysDavies/GriefPreventionFlags/releases).
+This fork will only support Spigot/Paper versions 1.13+.
+Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsxAR).
 
 ### Wiki
 I will not be maintaining my own wiki as I am simply too busy and this is an old project. Here is the wiki from the old project:
 https://github.com/ShaneBeee/GriefPreventionFlags/wiki
 
-### Why this fork?
-#### New Features
-- Added the `ViewContainers` claim flag. This allows players to view but not manipulate, any container on a claim.
-- Added the `ReadLecterns` claim flag. This allows players to read but not manipulate, any lectern with a book on a claim.
-- Overhauled and fixed the `NoFlight` flag.
-#### Bug Fixes
-- Fixed `AllowPvP` not working after a server restart.
-- Fixed `FlagDef_AllowPvP` projectile duplication glitches.
-- Fixed a hardcoded prefix being appended to some messages.
-#### Continued Support
-Have a feature suggestion or need to report a bug/issue? See the [Issues](https://github.com/lewysDavies/GriefPreventionFlags/issues) page.
-This fork will continue to support the latest Spigot/Paper versions along with any new features.
+### What does this fork?
+- Added compatibility with GriefPrevention the 16.17.2 snapshots while removing compatibility for 16.17.1 and below. This means you MUST use a [GriefPrevention development build](https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history) with this fork. 
+- Fixed a null pointer exception with global instances of the `NoVehicle` claim flag.
+- Fixed a null pointer exception with the `ReadLecterns` claim flag in admin claims.
+- Fixed a bug where the NoMobDamage claimflag would also prevent players from renaming mobs.
+- And it includes all changes from [lewysDavies' fork](https://github.com/lewysDavies/GriefPreventionFlags).
