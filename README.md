@@ -5,11 +5,8 @@ This is a fork from the original author [BigScary](https://github.com/BigScary/G
 
 ### Download
 This fork will only support Spigot/Paper versions 1.13+.
-Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsxAR).
+Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsxAR) or compile it yourself from here.
 
-### Wiki
-I will not be maintaining my own wiki as I am simply too busy and this is an old project. Here is the wiki from the old project:
-https://github.com/ShaneBeee/GriefPreventionFlags/wiki
 
 ### What does this fork change?
 - Added compatibility with GriefPrevention the 16.17.2 snapshots while removing compatibility for 16.17.1 and below. This means you MUST use a [GriefPrevention development build](https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history) with this fork. 
