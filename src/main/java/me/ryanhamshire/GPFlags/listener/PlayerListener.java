@@ -59,9 +59,8 @@ public class PlayerListener implements Listener {
         this.fallingPlayers.put(player, true);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     private void onMove(PlayerMoveEvent event) {
-        if (event.isCancelled()) return;
         if (event.getTo() == null) return;
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
@@ -69,9 +68,8 @@ public class PlayerListener implements Listener {
         processMovement(locTo, locFrom, player, event);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onTeleport(PlayerTeleportEvent event) {
-        if (event.isCancelled()) return;
         if (event.getTo() == null) return;
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
@@ -115,10 +113,13 @@ public class PlayerListener implements Listener {
     private boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;
-
-        Claim claimTo = dataStore.getClaimAt(locTo, false, null);
+        Location locTo2 = locTo.clone();
+        int maxWorldHeight = locTo2.getWorld().getMaxHeight();
+        if (locTo2.getY() > maxWorldHeight) {
+            locTo2.setY(maxWorldHeight);
+        }
+        Claim claimTo = dataStore.getClaimAt(locTo2, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom, false, null);
-        if (claimTo == null && claimFrom == null) return true;
         if (claimTo == claimFrom) return true;
         PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom, locTo);
         Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
