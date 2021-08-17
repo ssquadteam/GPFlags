@@ -113,13 +113,18 @@ public class PlayerListener implements Listener {
     private boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;
+        Location locFrom2 = locFrom.clone();
+        int maxWorldHeightFrom = locFrom2.getWorld().getMaxHeight();
+        if (locFrom2.getY() > maxWorldHeightFrom) {
+            locFrom2.setY(maxWorldHeightFrom);
+        }
         Location locTo2 = locTo.clone();
-        int maxWorldHeight = locTo2.getWorld().getMaxHeight();
-        if (locTo2.getY() > maxWorldHeight) {
-            locTo2.setY(maxWorldHeight);
+        int maxWorldHeightTo = locTo2.getWorld().getMaxHeight();
+        if (locTo2.getY() > maxWorldHeightTo) {
+            locTo2.setY(maxWorldHeightTo);
         }
         Claim claimTo = dataStore.getClaimAt(locTo2, false, null);
-        Claim claimFrom = dataStore.getClaimAt(locFrom, false, null);
+        Claim claimFrom = dataStore.getClaimAt(locFrom2, false, null);
         if (claimTo == claimFrom) return true;
         PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom, locTo);
         Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
