@@ -13,5 +13,6 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 - Fixed a null pointer exception with global instances of the `NoVehicle` claim flag.
 - Fixed a null pointer exception with the `ReadLecterns` claim flag in admin claims.
 - Fixed a bug where the `NoMobDamage` claimflag would also prevent players from renaming mobs.
+- Fixed issues where entering/exiting a claim from beyond world build height would allow the player to bypass flags checked on claim entry/exit.
 - Removed the ability for players to set messages with the NoEnter claimflag. 
 - And it includes all changes from [lewysDavies' fork](https://github.com/lewysDavies/GriefPreventionFlags).
