@@ -32,7 +32,6 @@ public class FlagDef_InfiniteArrows extends FlagDefinition {
     public void onShootBow(EntityShootBowEvent event) {
         ItemStack bow = event.getBow();
         if (bow == null) return;
-        if (bow.getType() == Material.CROSSBOW) return;
 
         LivingEntity livingEntity = event.getEntity();
         if (!(livingEntity instanceof Player)) return;
