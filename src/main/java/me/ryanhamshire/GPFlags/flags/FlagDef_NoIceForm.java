@@ -27,8 +27,10 @@ public class FlagDef_NoIceForm extends FlagDefinition {
         Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
-        if (event.getNewState().getType() != Material.ICE) return;
-        event.setCancelled(true);
+        Material newBlock = event.getNewState().getType();
+        if (newBlock == Material.ICE || newBlock == Material.FROSTED_ICE) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
