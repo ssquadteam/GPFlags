@@ -32,7 +32,7 @@ public class FlagDef_InfiniteArrows extends FlagDefinition {
     public void onShootBow(EntityShootBowEvent event) {
         ItemStack bow = event.getBow();
         if (bow == null) return;
-        if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) return;
+        if (bow.getType() == Material.CROSSBOW) return;
 
         LivingEntity livingEntity = event.getEntity();
         if (!(livingEntity instanceof Player)) return;
@@ -46,8 +46,8 @@ public class FlagDef_InfiniteArrows extends FlagDefinition {
         Arrow arrow = (Arrow) projectile;
 
         event.setConsumeItem(false);
+        player.updateInventory();
         arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
-        Bukkit.broadcastMessage("consume it? " + event.shouldConsumeItem());
     }
 
     @Override
