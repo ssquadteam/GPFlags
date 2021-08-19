@@ -38,9 +38,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.TechFortress</groupId>
+            <groupId>com.griefprevention</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>HEAD</version>
+            <version>16.17.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
