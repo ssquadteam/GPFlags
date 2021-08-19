@@ -4,7 +4,7 @@ GriefPrevention Flags is a plugin to allow admins to set flags for GriefPreventi
 This is a fork from the original author [BigScary](https://github.com/BigScary/GriefPreventionFlags) and the previous maintainers [ShaneBeee](https://github.com/ShaneBeee/GriefPreventionFlags) and [lewysDavies](https://github.com/lewysDavies/GriefPreventionFlags).
 
 ### Download
-This fork will only support Spigot/Paper versions 1.13+.
+This fork will only support Spigot/Paper versions 1.17+.
 Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsxAR) or compile it yourself from here.
 
 
