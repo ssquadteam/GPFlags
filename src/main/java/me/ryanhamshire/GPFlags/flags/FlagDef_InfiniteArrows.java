@@ -5,14 +5,14 @@ import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -28,27 +28,26 @@ public class FlagDef_InfiniteArrows extends FlagDefinition {
         super(manager, plugin);
     }
 
-    @EventHandler(priority = EventPriority.LOW)
-    public void onProjectileHit(ProjectileHitEvent event) {
-        if (event.getEntityType() != EntityType.ARROW) return;
+    @EventHandler
+    public void onShootBow(EntityShootBowEvent event) {
+        ItemStack bow = event.getBow();
+        if (bow == null) return;
+        if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) return;
 
-        Projectile arrow = event.getEntity();
+        LivingEntity livingEntity = event.getEntity();
+        if (!(livingEntity instanceof Player)) return;
+        Player player = (Player) livingEntity;
 
-        ProjectileSource source = arrow.getShooter();
-        if (!(source instanceof Player)) return;
-
-        Player player = (Player) source;
-        if (player.getGameMode() == GameMode.CREATIVE) return;
-
-        Flag flag = this.GetFlagInstanceAtLocation(arrow.getLocation(), player);
+        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
-        PlayerInventory inventory = player.getInventory();
-        ItemMeta meta = inventory.getItemInMainHand().getItemMeta();
-        if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
+        Entity projectile = event.getProjectile();
+        if (!(projectile instanceof Arrow)) return;
+        Arrow arrow = (Arrow) projectile;
 
-        arrow.remove();
-        inventory.addItem(new ItemStack(Material.ARROW));
+        event.setConsumeItem(false);
+        arrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+        Bukkit.broadcastMessage("consume it? " + event.shouldConsumeItem());
     }
 
     @Override
