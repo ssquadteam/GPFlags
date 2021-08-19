@@ -10,6 +10,7 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -43,6 +44,11 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
                 @Override
                 public void run() {
                     for (int z = lZ; z < gZ; z++) {
+                        Location loadLoc = new Location(world, finalX, 100, z);
+                        Chunk loadChunk = loadLoc.getChunk();
+                        if (!(loadChunk.isLoaded())) {
+                            loadChunk.load();
+                        }
                         for (int y = 0; y <= 255; y++) {
                             world.setBiome(finalX, y, z, biome);
                         }
