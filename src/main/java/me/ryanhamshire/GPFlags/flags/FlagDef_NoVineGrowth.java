@@ -27,8 +27,10 @@ public class FlagDef_NoVineGrowth extends FlagDefinition {
         Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
-        if (event.getSource().getType() != Material.VINE) return;
-        event.setCancelled(true);
+        Material newType = event.getSource().getType();
+        if (newType == Material.VINE || newType == Material.GLOW_LICHEN || newType == Material.WEEPING_VINES || newType == Material.TWISTING_VINES) {
+            event.setCancelled(true);
+        }
     }
 
     @Override
