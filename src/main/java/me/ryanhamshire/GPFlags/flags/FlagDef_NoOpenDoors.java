@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.block.Block;
@@ -48,7 +49,7 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
                     params = flag.parameters.split(",");
                 }
 
-                if (claim.allowAccess(player) != null) {
+                if (claim.checkPermission(player, ClaimPermission.Access, null) != null) {
                     if (params != null) {
                         for (String param : params) {
                             if (param.equalsIgnoreCase("doors") && block.getBlockData() instanceof Door) {

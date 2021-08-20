@@ -24,7 +24,7 @@ public class FlagDef_NoSnowForm extends FlagDefinition {
     public void onGrowth(BlockFormEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         if (event.getNewState().getType() != Material.SNOW) return;

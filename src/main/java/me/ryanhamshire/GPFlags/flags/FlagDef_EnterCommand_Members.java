@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
@@ -34,7 +35,7 @@ public class FlagDef_EnterCommand_Members extends PlayerMovementFlagDefinition {
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());
-        if (claim.allowAccess(player) == null) return true;
+        if (claim.checkPermission(player, ClaimPermission.Access, null) == null) return true;
         String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for (String commandLine : commandLines) {
             Util.logFlagCommands("Entrance command: " + commandLine);
@@ -47,11 +48,11 @@ public class FlagDef_EnterCommand_Members extends PlayerMovementFlagDefinition {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());
-        if (claim.allowAccess(player) == null) return;
+        if (claim.checkPermission(player, ClaimPermission.Access, null) == null) return;
         String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
 
         for (String commandLine : commandLines) {

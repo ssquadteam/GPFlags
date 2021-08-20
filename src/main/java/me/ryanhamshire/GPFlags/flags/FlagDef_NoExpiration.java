@@ -22,7 +22,7 @@ public class FlagDef_NoExpiration extends FlagDefinition {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onClaimExpiration(ClaimExpirationEvent event) {
         Location location = event.getClaim().getLesserBoundaryCorner();
-        Flag flag = this.GetFlagInstanceAtLocation(location, null);
+        Flag flag = this.getFlagInstanceAtLocation(location, null);
         if (flag != null) {
             event.setCancelled(true);
         }

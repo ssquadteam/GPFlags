@@ -24,7 +24,7 @@ public class FlagDef_NoGrowth extends FlagDefinition {
     public void onGrowth(BlockGrowEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         event.setCancelled(true);
@@ -34,7 +34,7 @@ public class FlagDef_NoGrowth extends FlagDefinition {
     public void onSpread(BlockSpreadEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         event.setCancelled(true);

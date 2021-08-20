@@ -31,7 +31,7 @@ public class FlagDef_NoFluidFlow extends FlagDefinition {
             return;
         }
 
-        Flag flag = this.GetFlagInstanceAtLocation(location, null);
+        Flag flag = this.getFlagInstanceAtLocation(location, null);
         boolean cancel = (flag != null);
 
         this.previousLocation = location;

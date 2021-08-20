@@ -28,7 +28,7 @@ public class FlagDef_InfiniteArrows extends FlagDefinition {
         if (!(livingEntity instanceof Player)) return;
         Player player = (Player) livingEntity;
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         Entity projectile = event.getProjectile();

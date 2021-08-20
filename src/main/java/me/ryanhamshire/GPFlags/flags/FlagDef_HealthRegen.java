@@ -29,7 +29,7 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
         if (player.getHealth() >= player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue() || player.isDead())
             return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         int healAmount = 2;

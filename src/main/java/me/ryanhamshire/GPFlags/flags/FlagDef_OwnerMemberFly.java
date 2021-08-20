@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -66,7 +67,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (flag == null) return true;
         if (claim == null) return true;
 
-        if (claim.allowAccess(player) == null) {
+        if (claim.checkPermission(player, ClaimPermission.Access, null) == null) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                 player.setAllowFlight(true);
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
@@ -105,7 +106,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
-        if (flag != null && claim != null && claim.allowAccess(player) == null) {
+        if (flag != null && claim != null && claim.checkPermission(player, ClaimPermission.Access, null) == null) {
             player.setAllowFlight(true);
             Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             if (below == Material.AIR) {

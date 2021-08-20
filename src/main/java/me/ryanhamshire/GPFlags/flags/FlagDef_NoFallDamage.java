@@ -23,7 +23,7 @@ public class FlagDef_NoFallDamage extends FlagDefinition {
         if (!(e.getEntity() instanceof Player)) return;
         if (e.getCause() != EntityDamageEvent.DamageCause.FALL) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(e.getEntity().getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(e.getEntity().getLocation(), null);
         if (flag == null) return;
 
         e.setCancelled(true);

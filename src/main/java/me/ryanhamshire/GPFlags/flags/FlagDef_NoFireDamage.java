@@ -23,7 +23,7 @@ public class FlagDef_NoFireDamage extends FlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onFireSpread(BlockBurnEvent e) {
         Block fire = e.getBlock();
-        Flag flag = this.GetFlagInstanceAtLocation(fire.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(fire.getLocation(), null);
         if (flag == null) return;
 
         e.setCancelled(true);
@@ -32,7 +32,7 @@ public class FlagDef_NoFireDamage extends FlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockIgnite(BlockIgniteEvent e) {
         Block fire = e.getBlock();
-        Flag flag = this.GetFlagInstanceAtLocation(fire.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(fire.getLocation(), null);
         if (flag == null) return;
         if (e.getCause() == BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL) return;
 

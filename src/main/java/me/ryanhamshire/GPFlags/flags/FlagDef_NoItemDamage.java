@@ -19,7 +19,7 @@ public class FlagDef_NoItemDamage extends FlagDefinition {
 
     @EventHandler
     private void onItemDamage(PlayerItemDamageEvent event) {
-        Flag flag = this.GetFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
         if (flag == null) return;
         event.setCancelled(true);
     }

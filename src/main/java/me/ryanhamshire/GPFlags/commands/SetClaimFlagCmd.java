@@ -66,7 +66,7 @@ class SetClaimFlagCmd extends BaseCmd {
                 return true;
             }
 
-            if (claim.allowEdit(player) != null) {
+            if (claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
                 Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
             }

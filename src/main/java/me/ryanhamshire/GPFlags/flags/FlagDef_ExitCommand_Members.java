@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
@@ -32,7 +33,7 @@ public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition {
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());
-        if (claim.allowAccess(player) == null) return true;
+        if (claim.checkPermission(player, ClaimPermission.Access, null) == null) return true;
         String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for (String commandLine : commandLines) {
             Util.logFlagCommands("Exit command: " + commandLine);

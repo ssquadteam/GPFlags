@@ -26,7 +26,7 @@ public class FlagDef_NoCombatLoot extends FlagDefinition {
 
         if (entity.getType() == EntityType.PLAYER) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
         if (flag == null) return;
 
         event.getDrops().clear();

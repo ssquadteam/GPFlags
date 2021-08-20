@@ -23,7 +23,7 @@ public class FlagDef_NoItemDrop extends FlagDefinition {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         event.setCancelled(true);

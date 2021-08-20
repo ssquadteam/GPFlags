@@ -23,12 +23,12 @@ public class FlagDef_NoChorusFruit extends FlagDefinition {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.getCause() != TeleportCause.CHORUS_FRUIT) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
+        Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
         }
 
-        flag = this.GetFlagInstanceAtLocation(event.getTo(), event.getPlayer());
+        flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
         }

@@ -31,7 +31,7 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
 
         Player player = event.getPlayer();
 
-        Flag flag = this.GetFlagInstanceAtLocation(event.getFrom(), player);
+        Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), player);
         if (flag == null) return;
 
         event.setCancelled(true);

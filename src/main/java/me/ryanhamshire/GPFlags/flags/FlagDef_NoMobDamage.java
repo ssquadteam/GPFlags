@@ -45,7 +45,7 @@ public class FlagDef_NoMobDamage extends FlagDefinition {
         }
 
         if (entity instanceof Animals || entity instanceof WaterMob || entity.getType() == EntityType.VILLAGER || entity.getCustomName() != null) {
-            Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
+            Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
             if (flag == null) return;
 
             // fix for GP discussion https://github.com/TechFortress/GriefPrevention/issues/1481

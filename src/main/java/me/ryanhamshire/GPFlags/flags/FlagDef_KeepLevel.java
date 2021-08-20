@@ -23,7 +23,7 @@ public class FlagDef_KeepLevel extends FlagDefinition {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), null);
         if (flag == null) return;
 
         event.setKeepLevel(true);

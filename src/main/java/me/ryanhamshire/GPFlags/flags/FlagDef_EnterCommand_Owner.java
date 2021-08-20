@@ -45,7 +45,7 @@ public class FlagDef_EnterCommand_Owner extends PlayerMovementFlagDefinition {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         if (!playerData.lastClaim.getOwnerName().equals(player.getName())) return;

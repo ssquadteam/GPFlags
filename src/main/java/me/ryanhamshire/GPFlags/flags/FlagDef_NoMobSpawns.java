@@ -29,7 +29,7 @@ public class FlagDef_NoMobSpawns extends FlagDefinition {
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) return;
 
 
-        Flag flag = this.GetFlagInstanceAtLocation(event.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);
         if (flag == null) return;
 
         event.setCancelled(true);

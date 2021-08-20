@@ -33,7 +33,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
         Player player = event.getEntity();
         Location location = player.getLocation();
 
-        Flag flag = this.GetFlagInstanceAtLocation(location, player);
+        Flag flag = this.getFlagInstanceAtLocation(location, player);
         if (flag == null) return;
 
         String[] params = flag.getParametersArray();

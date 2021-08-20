@@ -28,7 +28,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         Entity entity = event.getEntity();
 
-        Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
         if (flag == null) return;
         if (entity.getType() == EntityType.PLAYER) return;
         if (entity.getCustomName() == null) return;

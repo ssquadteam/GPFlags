@@ -26,7 +26,7 @@ public class FlagDef_NoMcMMOXP extends FlagDefinition {
     }
 
     private void handleEvent(Player player, Cancellable event) {
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag != null) {
             event.setCancelled(true);
         }

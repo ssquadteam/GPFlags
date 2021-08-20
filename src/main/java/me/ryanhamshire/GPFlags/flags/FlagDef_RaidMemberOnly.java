@@ -8,6 +8,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,12 +26,12 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
 
     @EventHandler
     private void onRaidTrigger(RaidTriggerEvent event) {
-        Flag flag = this.GetFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
         if (flag == null) return;
         Player player = event.getPlayer();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (claim == null) return;
-        if (claim.allowAccess(player) != null) {
+        if (claim.checkPermission(player, ClaimPermission.Access, null) != null) {
             event.setCancelled(true);
             player.removePotionEffect(PotionEffectType.BAD_OMEN);
             Util.sendClaimMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);

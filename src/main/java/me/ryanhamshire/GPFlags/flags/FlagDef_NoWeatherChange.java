@@ -32,7 +32,7 @@ public class FlagDef_NoWeatherChange extends FlagDefinition {
     }
 
     private void handleEvent(World world, Cancellable event) {
-        Flag flag = this.GetFlagInstanceAtLocation(world.getSpawnLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(world.getSpawnLocation(), null);
         if (flag == null) return;
 
         event.setCancelled(true);

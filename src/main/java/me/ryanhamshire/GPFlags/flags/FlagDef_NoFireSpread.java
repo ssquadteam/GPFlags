@@ -25,7 +25,7 @@ public class FlagDef_NoFireSpread extends FlagDefinition {
         Block fire = e.getSource();
         if (fire.getType() != Material.FIRE) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(fire.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(fire.getLocation(), null);
         if (flag == null) return;
 
         e.setCancelled(true);

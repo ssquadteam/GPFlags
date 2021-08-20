@@ -23,7 +23,7 @@ public class FlagDef_NoLeafDecay extends FlagDefinition {
     public void onLeafDecay(LeavesDecayEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         event.setCancelled(true);

@@ -24,7 +24,7 @@ public class FlagDef_NoExplosionDamage extends FlagDefinition {
         if (e.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION ||
                 e.getCause() == EntityDamageEvent.DamageCause.BLOCK_EXPLOSION) {
 
-            Flag flag = this.GetFlagInstanceAtLocation(e.getEntity().getLocation(), null);
+            Flag flag = this.getFlagInstanceAtLocation(e.getEntity().getLocation(), null);
             if (flag == null) return;
 
             e.setCancelled(true);

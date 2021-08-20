@@ -35,7 +35,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         Player player = event.getEntity();
         Location location = player.getLocation();
 
-        Flag flag = this.GetFlagInstanceAtLocation(location, player);
+        Flag flag = this.getFlagInstanceAtLocation(location, player);
         if (flag == null) return;
 
         SpleefData data = new SpleefData(flag.getParametersArray());
@@ -65,7 +65,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         Block block = event.getInnerEvent().getBlock();
         Location location = block.getLocation();
 
-        Flag flag = this.GetFlagInstanceAtLocation(location, null);
+        Flag flag = this.getFlagInstanceAtLocation(location, null);
         if (flag == null) return;
 
         SpleefData data = new SpleefData(flag.getParametersArray());
@@ -80,7 +80,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         Block block = e.getBlock();
         Location location = block.getLocation();
 
-        Flag flag = this.GetFlagInstanceAtLocation(location, null);
+        Flag flag = this.getFlagInstanceAtLocation(location, null);
         if (flag == null) return;
         SpleefData data = new SpleefData(flag.getParametersArray());
         if (data.IsBlock(block)) {

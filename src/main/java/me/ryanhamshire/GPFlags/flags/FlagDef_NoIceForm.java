@@ -24,7 +24,7 @@ public class FlagDef_NoIceForm extends FlagDefinition {
     public void onGrowth(BlockFormEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         Material newBlock = event.getNewState().getType();

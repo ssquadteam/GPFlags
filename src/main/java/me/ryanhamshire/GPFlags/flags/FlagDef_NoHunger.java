@@ -36,7 +36,7 @@ public class FlagDef_NoHunger extends TimedPlayerFlagDefinition {
         if (player.getFoodLevel() >= 20) return;
 
         UUID playerID = player.getUniqueId();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag != null) {
             Integer lastFoodLevel = this.lastFoodMap.get(playerID);
             if (lastFoodLevel != null && player.getFoodLevel() < lastFoodLevel) {
@@ -65,7 +65,7 @@ public class FlagDef_NoHunger extends TimedPlayerFlagDefinition {
         if (event.getCause() != DamageCause.STARVATION) return;
         if (event.getEntityType() != EntityType.PLAYER) return;
         Player player = (Player) event.getEntity();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         event.setCancelled(true);

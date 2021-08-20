@@ -23,7 +23,7 @@ public class FlagDef_KeepInventory extends FlagDefinition {
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         event.setKeepInventory(true);

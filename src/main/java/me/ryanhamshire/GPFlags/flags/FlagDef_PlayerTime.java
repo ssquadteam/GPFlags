@@ -21,15 +21,15 @@ public class FlagDef_PlayerTime extends PlayerMovementFlagDefinition implements 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (lastLocation == null) return true;
-        Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
 
         if (flag == null) {
-            if (this.GetFlagInstanceAtLocation(lastLocation, player) != null) {
+            if (this.getFlagInstanceAtLocation(lastLocation, player) != null) {
                 player.resetPlayerTime();
             }
             return true;
         }
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
 
         String time = flag.parameters;
         if (time.equalsIgnoreCase("day")) {
@@ -47,7 +47,7 @@ public class FlagDef_PlayerTime extends PlayerMovementFlagDefinition implements 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
 
         if (flag != null) {
             String time = flag.parameters;

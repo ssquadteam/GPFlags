@@ -26,7 +26,7 @@ public class FlagDef_NoPlayerDamage extends FlagDefinition {
 
         Player player = (Player) event.getEntity();
 
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         event.setCancelled(true);

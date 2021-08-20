@@ -23,7 +23,7 @@ public class FlagDef_TrappedDestination extends FlagDefinition {
 
     @EventHandler
     public void onPlayerDeath(SaveTrappedPlayerEvent event) {
-        Flag flag = this.GetFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
         if (flag == null) return;
 
         String[] params = flag.getParametersArray();

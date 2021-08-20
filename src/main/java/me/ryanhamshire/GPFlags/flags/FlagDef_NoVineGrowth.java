@@ -24,7 +24,7 @@ public class FlagDef_NoVineGrowth extends FlagDefinition {
     public void onGrowth(BlockSpreadEvent event) {
         Block block = event.getBlock();
 
-        Flag flag = this.GetFlagInstanceAtLocation(block.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
 
         Material newType = event.getSource().getType();

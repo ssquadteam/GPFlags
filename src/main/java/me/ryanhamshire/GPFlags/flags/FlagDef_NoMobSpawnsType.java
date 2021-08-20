@@ -29,7 +29,7 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 
     @EventHandler
     private void onMobSpawn(CreatureSpawnEvent event) {
-        Flag flag = this.GetFlagInstanceAtLocation(event.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);
         if (flag == null) return;
 
         EntityType type = event.getEntityType();
@@ -53,7 +53,7 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
 
         if (target == null) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(target.getLocation(), null);
         if (flag == null) return;
         if (isNotAllowed(damager.getType(), flag)) {
             if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;
@@ -71,7 +71,7 @@ public class FlagDef_NoMobSpawnsType extends FlagDefinition {
         if (!(damager instanceof LivingEntity)) return;
         if (!(target instanceof Player)) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(target.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(target.getLocation(), null);
         if (flag == null) return;
         if (isNotAllowed(damager.getType(), flag)) {
             if (damager.hasMetadata(this.ALLOW_TARGET_TAG)) return;

@@ -28,7 +28,7 @@ public class FlagDef_NoPetDamage extends FlagDefinition {
         Tameable tameable = (Tameable) entity;
         if (!tameable.isTamed() || tameable.getOwner() == null) return;
 
-        Flag flag = this.GetFlagInstanceAtLocation(entity.getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
         if (flag != null) {
             event.setCancelled(true);
         }

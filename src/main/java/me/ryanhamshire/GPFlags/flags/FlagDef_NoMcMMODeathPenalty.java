@@ -22,7 +22,7 @@ public class FlagDef_NoMcMMODeathPenalty extends FlagDefinition {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerDisarm(McMMOPlayerDeathPenaltyEvent event) {
         Player player = event.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag != null) {
             event.setCancelled(true);
         }

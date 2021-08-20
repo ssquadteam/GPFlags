@@ -20,7 +20,7 @@ public class FlagDef_NoLootProtection extends FlagDefinition {
     @EventHandler
     public void onPlayerDeath(ProtectDeathDropsEvent event) {
         if (event.getClaim() != null) {
-            Flag flag = this.GetFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
+            Flag flag = this.getFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
             if (flag == null) return;
 
             event.setCancelled(true);

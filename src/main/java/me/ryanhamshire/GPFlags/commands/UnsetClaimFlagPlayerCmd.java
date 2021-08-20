@@ -7,6 +7,7 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
@@ -35,7 +36,7 @@ public class UnsetClaimFlagPlayerCmd extends BaseCmd {
         }
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
-        if (claim == null || claim.allowEdit(player) != null) {
+        if (claim == null || claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
             Util.sendMessage(sender, "&cThis player is not standing in a claim they own");
             return false;
         }

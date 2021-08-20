@@ -22,15 +22,15 @@ public class FlagDef_PlayerWeather extends PlayerMovementFlagDefinition implemen
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to) {
         if (lastLocation == null) return true;
-        Flag flag = this.GetFlagInstanceAtLocation(to, player);
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) {
-            if (this.GetFlagInstanceAtLocation(lastLocation, player) != null) {
+            if (this.getFlagInstanceAtLocation(lastLocation, player) != null) {
                 player.resetPlayerWeather();
             }
             return true;
         }
 
-        if (flag == this.GetFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
 
         String weather = flag.parameters;
         if (weather.equalsIgnoreCase("sun")) {
@@ -44,7 +44,7 @@ public class FlagDef_PlayerWeather extends PlayerMovementFlagDefinition implemen
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Flag flag = this.GetFlagInstanceAtLocation(player.getLocation(), player);
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
 
         if (flag != null) {
             String weather = flag.parameters;
