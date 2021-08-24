@@ -21,4 +21,4 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 - Fixed a bug where `AllowPvP` does not apply after a server restart.
 - Fixed a bug where `AllowPvP` could duplicate arrows.
 - Fixed a bug where `InfiniteArrows` could duplicate arrows. 
-- Removed the ability for players to set messages with the NoEnter claimflag. My reasoning can be found in a pinned message in the [Birdflop Discord](https://discord.gg/MBdsxAR).
+- Removed the ability for players to set messages with `NoEnter`. My reasoning can be found in a pinned message in the [Birdflop Discord](https://discord.gg/MBdsxAR).
