@@ -24,13 +24,12 @@ public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimfrom, Claim claimto) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return true;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
-
-        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
-
+        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
+        if (flag == oldFlag) return true;
         if (player.hasPermission("gpflags.bypass.entercommand")) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
