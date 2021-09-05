@@ -7,6 +7,7 @@ import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
@@ -23,7 +24,7 @@ public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimfrom, Claim claimto) {
         if (lastLocation == null) return true;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
@@ -48,8 +49,13 @@ public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
-
+        Claim lastClaim = playerData.lastClaim;
+        String[] commandLines;
+        if (lastClaim != null) {
+            commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
+        } else {
+            commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
+        }
         for (String commandLine : commandLines) {
             Util.logFlagCommands("Entrance command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
