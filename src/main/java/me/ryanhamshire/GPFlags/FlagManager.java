@@ -184,13 +184,6 @@ public class FlagManager {
         ConcurrentHashMap<String, Flag> defaultFlags = this.flags.get(DEFAULT_FLAG_ID);
         if (defaultFlags != null) {
             if (defaultFlags.containsKey(flagString)) {
-                // If it's a number, we know we are in a claim so return the default claimflag
-                // If it's a world's name, we know we are not in a claim, so return null
-                try {
-                    Integer.parseInt(claimID);
-                } catch (NumberFormatException nfe) {
-                    return null;
-                }
                 return defaultFlags.get(flagString);
             }
         }
