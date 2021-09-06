@@ -59,19 +59,6 @@ public abstract class FlagDefinition implements Listener {
      * @param location Location for checking for flag
      * @param player Player for checking cached claims
      * @return Instance of flag at location if set, otherwise null
-     * @deprecated use {@link #getFlagInstanceAtLocation(Location, Player)} instead
-     */
-    @Deprecated // Deprecated on Oct 21/2020
-    public Flag GetFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
-        return getFlagInstanceAtLocation(location, player);
-    }
-
-    /**
-     * Get an instance of a flag at a location
-     *
-     * @param location Location for checking for flag
-     * @param player Player for checking cached claims
-     * @return Instance of flag at location if set, otherwise null
      */
     public Flag getFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
         Flag flag = null;
