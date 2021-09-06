@@ -1,5 +1,5 @@
 # GriefPreventionFlags
-GriefPrevention Flags is a plugin to allow players to customize their GriefPrevention claims with claimflags.
+GriefPreventionFlags is a plugin to allow players to customize their GriefPrevention claims with claimflags.
 
 This is a fork from the original author [BigScary](https://github.com/BigScary/GriefPreventionFlags) and the previous maintainers [ShaneBeee](https://github.com/ShaneBeee/GriefPreventionFlags) and [lewysDavies](https://github.com/lewysDavies/GriefPreventionFlags).
 
