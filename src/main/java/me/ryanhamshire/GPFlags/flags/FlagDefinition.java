@@ -38,11 +38,6 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract String getName();
 
-    @Deprecated
-    public SetFlagResult ValidateParameters(String parameters) {
-        return validateParameters(parameters);
-    }
-
     public SetFlagResult validateParameters(String parameters) {
         return new SetFlagResult(true, this.getSetMessage(parameters));
     }
