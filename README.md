@@ -15,12 +15,12 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 - Fixed the `NoFlight` claimflag.
 - Fixed a null pointer exception with global instances of the `NoVehicle` claim flag.
 - Fixed a bug where `NoMobDamage` would also prevent players from renaming mobs.
-- Fixed a bug where entering/exiting a claim from beyond world build height would allow the player to bypass PlayerClaimBorderEvent
+- Fixed a bug where entering/exiting a claim from beyond world build height would allow the player to bypass PlayerClaimBorderEvent.
+- Fixed a bug where resizing claims could allow players to bypass PlayerClaimBorderEvent.
 - Fixed a bug where `NoIceForm` would not prevent frostwalker's frosted ice from forming.
 - Fixed a bug where `NoVineGrowth` would allow the growth of glow litchen, weeping vines, and twisting vines.
 - Fixed a bug where `AllowPvP` does not apply after a server restart.
 - Fixed a bug where `AllowPvP` could duplicate arrows.
 - Fixed a bug where `InfiniteArrows` could duplicate arrows. 
 - Fixed a bug where movement-based default flags would trigger at the wrong times. 
-- Fixed a bug where `OwnerFly` or `OwnerMemberFly` could allow players to fly even outside of claims.
 - Removed the ability for players to set messages with `NoEnter`. My reasoning can be found in a pinned message in the [Birdflop Discord](https://discord.gg/MBdsxAR).
