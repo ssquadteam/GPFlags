@@ -154,14 +154,15 @@ public class PlayerListener implements Listener {
     @EventHandler
     // Call the claim border event when a player resizes a claim and they are now outside of the claim
     private void onChangeClaim(ClaimModifiedEvent event) {
-        Claim claim = event.getClaim();
+        Claim claimTo = event.getTo();
+        Claim claimFrom = event.getFrom();
         CommandSender modifier = event.getModifier();
         if (modifier instanceof Player) {
             Player player = ((Player) modifier);
             Location loc = player.getLocation();
-            Claim claimAtLoc = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
-            if (claimAtLoc == null) {
-                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claim, null, claim.getLesserBoundaryCorner(), loc);
+            if ((!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) ||
+                    (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false))) {
+                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
             }
         }
