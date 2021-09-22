@@ -160,9 +160,15 @@ public class PlayerListener implements Listener {
         if (modifier instanceof Player) {
             Player player = ((Player) modifier);
             Location loc = player.getLocation();
-            if ((!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) ||
-                    (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false))) {
+
+            // Resizing a claim to be smaller and falling on the outside
+            if (!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) {
                 PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
+                Bukkit.getPluginManager().callEvent(borderEvent);
+            }
+            // Resizing a claim to be larger and falling on the inside
+            if (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false)) {
+                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
             }
         }
