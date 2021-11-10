@@ -243,7 +243,6 @@ public class Util {
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
         if (receiver != null) {
-            //receiver.sendMessage(getColString(Messages.Prefix + message));
             receiver.sendMessage(getColString(GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix) + message));
         } else {
             log(message);
