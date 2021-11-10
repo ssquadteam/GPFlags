@@ -36,15 +36,6 @@ public class GPFlags extends JavaPlugin {
         long start = System.currentTimeMillis();
         instance = this;
 
-        // Check if server is running MC 1.13+ (API Changes)
-        // If not running 1.13+, stop the plugin
-        if (!Util.isRunningMinecraft(1, 13)) {
-            Util.log("&cGPFlags does not support your server version: " + Util.getMinecraftVersion());
-            Util.log("&cGPFlags is only supported on 1.13+");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
 
