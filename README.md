@@ -8,7 +8,8 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 
 
 ### What does this fork change from the [Spigot release](https://www.spigotmc.org/resources/gpflags.55773/)?
-- Removed support for GriefPrevention 16.17.1 and below. You can download GriefPrevention 16.17.2-SNAPSHOT from [here](https://ci.appveyor.com/api/buildjobs/g11ovt3huylwdu7e/artifacts/target%2FGriefPrevention.jar). 
+- Removed support for GriefPrevention 16.17.1 and below. You can download GriefPrevention 16.17.2-SNAPSHOT from [here](https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history). 
+- Added the ability to change or remove the GPFlags prefix on commands.
 - Added the `ViewContainers` claimflag which allows players to view, but not manipulate, any container on a claim.
 - Added the `ReadLecterns` claimflag which allows players to read but not manipulate any lectern with a book on a claim.
 - Fixed the `ChangeBiome` claimflag.
