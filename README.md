@@ -24,4 +24,4 @@ Download the latest release from the [Birdflop Discord](https://discord.gg/MBdsx
 - Fixed a bug where entering or exiting a claim from beyond world build height would allow the player to bypass PlayerClaimBorderEvent.
 - Fixed a bug where resizing claims could allow players to bypass PlayerClaimBorderEvent.
 - Fixed a bug where movement-based default flags would trigger at the wrong times. 
-- Removed the ability for players to set messages with `NoEnter`. My reasoning can be found in a pinned message in the [Birdflop Discord](https://discord.gg/MBdsxAR).
+- Removed the ability for players to set messages with `NoEnter`.
