@@ -3,6 +3,7 @@ package me.ryanhamshire.GPFlags;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -35,6 +36,22 @@ public class GPFlags extends JavaPlugin {
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
+
+        GriefPrevention gp = (GriefPrevention) getServer().getPluginManager().getPlugin("GriefPrevention");
+        if (gp == null) {
+            Util.log("GriefPrevention not found. Disabling GPFlags.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        System.out.println(gp.getDescription().getAPIVersion());
+        String gpApiVersion = gp.getDescription().getAPIVersion();
+        if (gpApiVersion == null || !gpApiVersion.contains("1.17")) {
+            Util.log("This version of GPFlags only supports development builds of GriefPrevention. Please update " +
+                    "your GriefPrevention plugin. You may need to use development versions of GriefPrevention which " +
+                    "you can download from https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history.");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);

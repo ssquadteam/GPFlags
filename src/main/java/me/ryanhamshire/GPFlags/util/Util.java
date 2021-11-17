@@ -77,6 +77,14 @@ public class Util {
         return Bukkit.getBukkitVersion().split("-")[0];
     }
 
+    /**
+     * Get the prefix stored in messages.yml
+     *
+     * @return prefix stored in messages.yml
+     */
+    private static String getPrefix() {
+        return getColString(GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix));
+    }
 
     /**
      * Disable the flight mode of a player whom cant fly
@@ -243,7 +251,7 @@ public class Util {
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
         if (receiver != null) {
-            receiver.sendMessage(getColString(GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix) + message));
+            receiver.sendMessage(getPrefix() + message);
         } else {
             log(message);
         }
@@ -275,7 +283,7 @@ public class Util {
     }
 
     public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(getColString(Messages.Prefix + message));
+        Bukkit.getConsoleSender().sendMessage(getColString(getPrefix() + message));
     }
 
     public static void log(String format, Object... objects) {
