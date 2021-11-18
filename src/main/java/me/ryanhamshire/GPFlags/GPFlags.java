@@ -43,7 +43,6 @@ public class GPFlags extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        System.out.println(gp.getDescription().getAPIVersion());
         String gpApiVersion = gp.getDescription().getAPIVersion();
         if (gpApiVersion == null || !gpApiVersion.contains("1.17")) {
             Util.log("This version of GPFlags only supports development builds of GriefPrevention. Please update " +
