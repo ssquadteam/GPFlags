@@ -29,7 +29,6 @@ public class GPFlags extends JavaPlugin {
     private FlagsDataStore flagsDataStore;
     private final FlagManager flagManager = new FlagManager();
     private WorldSettingsManager worldSettingsManager;
-    private String gpApiVersion;
 
     boolean registeredFlagDefinitions = false;
     private PlayerListener playerListener;
@@ -37,14 +36,6 @@ public class GPFlags extends JavaPlugin {
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
-
-        GriefPrevention gp = (GriefPrevention) getServer().getPluginManager().getPlugin("GriefPrevention");
-        if (gp == null) {
-            Util.log("GriefPrevention not found. Disabling GPFlags.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        gpApiVersion = gp.getDescription().getAPIVersion();
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -201,10 +192,6 @@ public class GPFlags extends JavaPlugin {
      */
     public PlayerListener getPlayerListener() {
         return this.playerListener;
-    }
-
-    public String getGpApiVersion() {
-        return this.gpApiVersion;
     }
 
 }
