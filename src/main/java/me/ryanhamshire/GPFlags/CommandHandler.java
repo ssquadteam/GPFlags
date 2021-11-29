@@ -487,7 +487,6 @@ public class CommandHandler {
             // Permissions for mob type
             if (flagName.equalsIgnoreCase("NoMobSpawnsType")) {
                 if (!player.hasPermission("gpflags.nomobspawnstype.*") && !player.hasPermission("gpflags.admin.*")) {
-                    if (params == null) return false;
                     for (String type : params[0].split(";")) {
                         if (!player.hasPermission("gpflags.nomobspawnstype." + type)) {
                             Util.sendMessage(player, TextMode.Err, Messages.MobTypePerm, type);
