@@ -77,10 +77,10 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.CommandRequired, "Please specify a command line to execute.", null);
         this.addDefault(defaults, Messages.ConsoleCommandRequired, "Please specify a command line(s) to execute.  You may find the %owner%, %name% and %uuid% placeholders useful.  Separate multiple command lines with a semicolon (;).", null);
         this.addDefault(defaults, Messages.PlayerCommandRequired, "Please specify a player command line(s) to execute.  You may find the %owner%, %name% and %uuid% placeholders useful.  Separate multiple command lines with a semicolon (;).\"", null);
-        this.addDefault(defaults, Messages.AddedEnterMessage, "Players entering this land claim will now receive this message: {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedEnterMessage, "Players entering this land claim will now receive this message:&b {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedEnterMessage, "Players entering this land claim will not receive any message.", null);
 
-        this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message: {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message:&b {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedExitMessage, "Players exiting this land claim will not receive any message.", null);
         this.addDefault(defaults, Messages.EnterExitPrefix, "", "This prefix will be added to all enter/exit message flags");
 
