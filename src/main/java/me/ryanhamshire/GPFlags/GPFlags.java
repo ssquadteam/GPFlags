@@ -29,6 +29,7 @@ public class GPFlags extends JavaPlugin {
     private FlagsDataStore flagsDataStore;
     private final FlagManager flagManager = new FlagManager();
     private WorldSettingsManager worldSettingsManager;
+    private String gpApiVersion;
 
     boolean registeredFlagDefinitions = false;
     private PlayerListener playerListener;
@@ -43,14 +44,7 @@ public class GPFlags extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
-        String gpApiVersion = gp.getDescription().getAPIVersion();
-        if (gpApiVersion == null || !gpApiVersion.contains("1.17")) {
-            Util.log("This version of GPFlags only supports development builds of GriefPrevention. Please update " +
-                    "your GriefPrevention plugin. You may need to use development versions of GriefPrevention which " +
-                    "you can download from https://ci.appveyor.com/project/RoboMWM39862/griefprevention/history.");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+        gpApiVersion = gp.getDescription().getAPIVersion();
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -207,6 +201,10 @@ public class GPFlags extends JavaPlugin {
      */
     public PlayerListener getPlayerListener() {
         return this.playerListener;
+    }
+
+    public String getGpApiVersion() {
+        return this.gpApiVersion;
     }
 
 }

@@ -31,7 +31,7 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
         Player player = event.getPlayer();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (claim == null) return;
-        if (claim.checkPermission(player, ClaimPermission.Access, null) != null) {
+        if (!Util.canAccess(claim, player)) {
             event.setCancelled(true);
             player.removePotionEffect(PotionEffectType.BAD_OMEN);
             Util.sendClaimMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);

@@ -67,7 +67,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (flag == null) return true;
         if (claim == null) return true;
 
-        if (claim.checkPermission(player, ClaimPermission.Access, null) == null) {
+        if (!Util.canAccess(claim, player)) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                 player.setAllowFlight(true);
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
@@ -106,7 +106,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
-        if (flag != null && claim != null && claim.checkPermission(player, ClaimPermission.Access, null) == null) {
+        if (flag != null && claim != null && Util.canAccess(claim, player)) {
             player.setAllowFlight(true);
             Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             if (below == Material.AIR) {

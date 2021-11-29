@@ -203,7 +203,7 @@ public class CommandHandler {
             }
             PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
-            if (claim == null || claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
+            if (claim == null || !Util.canBuild(claim, player)) {
                 Util.sendMessage(sender, "&cThis player is not standing in a claim they own");
                 return false;
             }
@@ -245,7 +245,7 @@ public class CommandHandler {
             }
             PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
-            if (claim == null || claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
+            if (claim == null || !Util.canBuild(claim, player)) {
                 Util.sendMessage(sender, "&cThis player is not standing in a claim they own");
                 return false;
             }
@@ -448,7 +448,7 @@ public class CommandHandler {
                 return true;
             }
 
-            if (claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
+            if (!Util.canBuild(claim, player)) {
                 Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
             }
@@ -556,7 +556,7 @@ public class CommandHandler {
                 return true;
             }
 
-            if (claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
+            if (!Util.canBuild(claim, player)) {
                 Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
                 return true;
             }

@@ -32,7 +32,7 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
-        if (claim.checkPermission(player, ClaimPermission.Access, null) != null) {
+        if (!Util.canAccess(claim, player)) {
             Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterMessage);
             return false;
         }

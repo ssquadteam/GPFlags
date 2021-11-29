@@ -49,7 +49,7 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
                     params = flag.parameters.split(",");
                 }
 
-                if (claim.checkPermission(player, ClaimPermission.Access, null) != null) {
+                if (!Util.canAccess(claim, player)) {
                     if (params != null) {
                         for (String param : params) {
                             if (param.equalsIgnoreCase("doors") && block.getBlockData() instanceof Door) {

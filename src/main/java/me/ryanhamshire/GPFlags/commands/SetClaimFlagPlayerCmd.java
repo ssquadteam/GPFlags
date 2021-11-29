@@ -37,7 +37,7 @@ public class SetClaimFlagPlayerCmd extends BaseCmd {
         }
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
-        if (claim == null || claim.checkPermission(player, ClaimPermission.Edit, null) != null) {
+        if (claim == null || !Util.canBuild(claim, player)) {
             Util.sendMessage(sender, "&cThis player is not standing in a claim they own");
             return false;
         }

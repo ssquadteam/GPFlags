@@ -5,6 +5,8 @@ import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -293,6 +295,22 @@ public class Util {
     public static void logFlagCommands(String log) {
         if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) {
             Util.log(log);
+        }
+    }
+
+    public static boolean canBuild(Claim claim, Player player) {
+        try {
+            return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
+        } catch (java.lang.NoSuchFieldError e) {
+            return claim.allowEdit(player) == null;
+        }
+    }
+
+    public static boolean canAccess(Claim claim, Player player) {
+        try {
+            return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
+        } catch (java.lang.NoSuchFieldError e) {
+            return claim.allowAccess(player) == null;
         }
     }
 
