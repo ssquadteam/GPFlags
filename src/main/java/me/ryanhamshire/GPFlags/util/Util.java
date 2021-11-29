@@ -33,10 +33,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.bukkit.ChatColor.COLOR_CHAR;
+
 @SuppressWarnings("WeakerAccess")
 public class Util {
-
-    private static final Pattern HEX_PATTERN = Pattern.compile("<#([A-Fa-f0-9]){6}>");
 
     /**
      * Check if server is running a minimum Minecraft version
@@ -207,13 +207,26 @@ public class Util {
      */
     public static String getColString(String string) {
         if (isRunningMinecraft(1, 16)) {
-            Matcher matcher = HEX_PATTERN.matcher(string);
+            string = string.replace('&', COLOR_CHAR);
+
+            Pattern hexPattern = Pattern.compile(COLOR_CHAR + "#([A-Fa-f0-9]{6})");
+            Matcher matcher = hexPattern.matcher(string);
             while (matcher.find()) {
-                final ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
+                final String before = string.substring(0, matcher.start());
+                final String after = string.substring(matcher.end());
+                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
+                string = before + hexColor + after;
+                matcher = hexPattern.matcher(string);
+            }
+
+            Pattern hexPattern2 = Pattern.compile("<#([A-Fa-f0-9]){6}>");
+            matcher = hexPattern2.matcher(string);
+            while (matcher.find()) {
+                ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
                 final String before = string.substring(0, matcher.start());
                 final String after = string.substring(matcher.end());
                 string = before + hexColor + after;
-                matcher = HEX_PATTERN.matcher(string);
+                matcher = hexPattern2.matcher(string);
             }
         }
         return ChatColor.translateAlternateColorCodes('&', string);
