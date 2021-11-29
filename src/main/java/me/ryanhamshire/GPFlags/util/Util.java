@@ -253,7 +253,7 @@ public class Util {
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
         if (receiver != null) {
-            receiver.sendMessage(getPrefix() + message);
+            receiver.sendMessage(getColString(getPrefix() + message));
         } else {
             log(message);
         }
