@@ -250,7 +250,7 @@ public class GPFlagsConfig {
             } catch (ClassNotFoundException e) {
                 if (Util.isRunningMinecraft(1, 14)) {
                     Util.log("&cRaidEvent classes not found:");
-                    Util.log("&7  - Update to latest Spigot build for raid flag to work");
+                    Util.log("&7  - Update to latest Minecraft version for raid flag to work");
                 }
             }
 
