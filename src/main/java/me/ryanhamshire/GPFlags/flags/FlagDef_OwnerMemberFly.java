@@ -66,7 +66,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (flag == null) return true;
         if (claim == null) return true;
 
-        if (!Util.canAccess(claim, player)) {
+        if (Util.canAccess(claim, player)) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                 player.setAllowFlight(true);
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);

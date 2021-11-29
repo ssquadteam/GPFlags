@@ -308,7 +308,7 @@ public class Util {
 
     public static boolean canAccess(Claim claim, Player player) {
         try {
-            return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
+            return claim.checkPermission(player, ClaimPermission.Access, null) == null;
         } catch (java.lang.NoSuchFieldError e) {
             return claim.allowAccess(player) == null;
         }
