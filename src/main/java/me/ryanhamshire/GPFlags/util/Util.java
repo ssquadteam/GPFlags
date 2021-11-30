@@ -207,9 +207,9 @@ public class Util {
      */
     public static String getColString(String string) {
         if (isRunningMinecraft(1, 16)) {
-            string = string.replace('&', COLOR_CHAR);
+            string = string.replace(COLOR_CHAR, '&');
 
-            Pattern hexPattern = Pattern.compile(COLOR_CHAR + "#([A-Fa-f0-9]{6})");
+            Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
             Matcher matcher = hexPattern.matcher(string);
             while (matcher.find()) {
                 final String before = string.substring(0, matcher.start());
