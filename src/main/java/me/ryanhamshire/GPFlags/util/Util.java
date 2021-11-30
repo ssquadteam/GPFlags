@@ -314,7 +314,7 @@ public class Util {
     public static boolean canBuild(Claim claim, Player player) {
         try {
             return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
-        } catch (java.lang.NoSuchFieldError e) {
+        } catch (NoSuchFieldError e) {
             return claim.allowEdit(player) == null;
         }
     }
@@ -322,7 +322,7 @@ public class Util {
     public static boolean canAccess(Claim claim, Player player) {
         try {
             return claim.checkPermission(player, ClaimPermission.Access, null) == null;
-        } catch (java.lang.NoSuchFieldError e) {
+        } catch (NoSuchMethodError e) {
             return claim.allowAccess(player) == null;
         }
     }
