@@ -122,7 +122,6 @@ public class CommandHandler implements TabExecutor {
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String alias, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> commands = new ArrayList<>();
-            commands.add("<flag> [<parameters>]");
             COMMANDS.values().forEach(command -> {
                 if (hasPermission(sender, command.command)) {
                     if (!(sender instanceof Player) && command.requirePlayer) {

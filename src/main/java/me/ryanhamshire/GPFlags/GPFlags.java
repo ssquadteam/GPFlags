@@ -51,7 +51,7 @@ public class GPFlags extends JavaPlugin {
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
-        if (getDescription().getVersion().contains("Beta")) {
+        if (getDescription().getVersion().contains("SNAPSHOT")) {
             Util.log("&eYou are running a Beta version, things may not operate as expected");
         }
     }
