@@ -9,7 +9,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
+import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -153,7 +153,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     // Call the claim border event when a player resizes a claim and they are now outside of the claim
-    private void onChangeClaim(ClaimModifiedEvent event) {
+    private void onChangeClaim(ClaimResizeEvent event) {
         Claim claimTo = event.getTo();
         Claim claimFrom = event.getFrom();
         CommandSender modifier = event.getModifier();
