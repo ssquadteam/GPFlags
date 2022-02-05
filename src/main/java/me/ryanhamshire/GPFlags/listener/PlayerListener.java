@@ -34,7 +34,7 @@ import java.util.HashMap;
 public class PlayerListener implements Listener {
 
     private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
-    private final DataStore dataStore = GriefPrevention.instance.dataStore;
+    private static final DataStore dataStore = GriefPrevention.instance.dataStore;
     private final FlagManager FLAG_MANAGER = GPFlags.getInstance().getFlagManager();
 
     @EventHandler
@@ -110,7 +110,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    private boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
+    public static boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;
         Location locFrom2 = locFrom.clone();
