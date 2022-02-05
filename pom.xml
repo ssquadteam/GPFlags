@@ -28,13 +28,17 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>purpur</id>
+            <url>https://repo.purpurmc.org/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <groupId>org.purpurmc.purpur</groupId>
+            <artifactId>purpur-api</artifactId>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -66,7 +70,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>16.0.3</version>
+            <version>22.0.0</version>
         </dependency>
     </dependencies>
 

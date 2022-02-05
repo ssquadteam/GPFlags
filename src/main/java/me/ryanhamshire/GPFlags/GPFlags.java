@@ -3,6 +3,7 @@ package me.ryanhamshire.GPFlags;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -32,13 +33,17 @@ public class GPFlags extends JavaPlugin {
     boolean registeredFlagDefinitions = false;
     private PlayerListener playerListener;
 
+
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
-
+        try {
+            Class.forName("org.purpurmc.purpur.event.entity.RidableMoveEvent");
+            Bukkit.getPluginManager().registerEvents(new RidableMoveListener(), this);
+        } catch (ClassNotFoundException ignored) {}
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
         // Old command handler
