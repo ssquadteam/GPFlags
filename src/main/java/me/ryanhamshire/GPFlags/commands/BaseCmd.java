@@ -117,7 +117,7 @@ abstract class BaseCmd {
                 List<String> doorType = Arrays.asList("doors", "trapdoors", "gates");
                 return StringUtil.copyPartialMatches(args[1], doorType, new ArrayList<>());
         }
-        return Collections.singletonList("[<parameters>]"); // TODO get from flag?!?!
+        return Collections.emptyList(); // TODO get from flag?!?!
     }
 
     static List<String> flagTab(CommandSender sender, String arg) {
