@@ -12,6 +12,7 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 public class ListClaimFlagsCmd extends BaseCmd {
@@ -30,6 +31,9 @@ public class ListClaimFlagsCmd extends BaseCmd {
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
 
+        boolean verbose = false;
+        if (args.length > 0 && args[0].toLowerCase().contains("verbose")) verbose = true;
+
         Collection<Flag> flags;
         boolean flagsFound = false;
         StringBuilder builder1 = new StringBuilder();
@@ -39,21 +43,21 @@ public class ListClaimFlagsCmd extends BaseCmd {
             flags = PLUGIN.getFlagManager().getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 flagsFound = true;
-                builder1.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName()).append(" ");
+                builder1.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName() + (verbose ? "{" + flag.parameters + "}": "")).append(" ");
             }
 
             if (claim.parent != null) {
                 flags = PLUGIN.getFlagManager().getFlags(claim.parent.getID().toString());
                 for (Flag flag : flags) {
                     flagsFound = true;
-                    builder2.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName()).append(" ");
+                    builder2.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName() + (verbose ? "{" + flag.parameters + "}": "")).append(" ");
                 }
             }
 
             flags = PLUGIN.getFlagManager().getFlags(FlagManager.DEFAULT_FLAG_ID);
             for (Flag flag2 : flags) {
                 flagsFound = true;
-                builder3.append((flag2.getSet() ? "+" : "-") + flag2.getFlagDefinition().getName()).append(" ");
+                builder3.append((flag2.getSet() ? "+" : "-") + flag2.getFlagDefinition().getName() + (verbose ? "{" + flag2.parameters + "}": "")).append(" ");
             }
         }
 
@@ -61,14 +65,14 @@ public class ListClaimFlagsCmd extends BaseCmd {
         flags = PLUGIN.getFlagManager().getFlags(player.getWorld().getName());
         for (Flag flag3 : flags) {
             flagsFound = true;
-            builder4.append((flag3.getSet() ? "+" : "-") + flag3.getFlagDefinition().getName()).append(" ");
+            builder4.append((flag3.getSet() ? "+" : "-") + flag3.getFlagDefinition().getName() + (verbose ? "{" + flag3.parameters + "}": "")).append(" ");
         }
 
         StringBuilder builder5 = new StringBuilder();
         flags = PLUGIN.getFlagManager().getFlags("everywhere");
         for (Flag flag4 : flags) {
             flagsFound = true;
-            builder5.append((flag4.getSet() ? "+" : "-") + flag4.getFlagDefinition().getName()).append(" ");
+            builder5.append((flag4.getSet() ? "+" : "-") + flag4.getFlagDefinition().getName() + (verbose ? "{" + flag4.parameters + "}": "")).append(" ");
         }
 
         if (builder1.length() > 0)
