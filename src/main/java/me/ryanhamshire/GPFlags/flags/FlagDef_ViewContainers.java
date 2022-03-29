@@ -56,7 +56,7 @@ public class FlagDef_ViewContainers extends FlagDefinition {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
         if (claim == null) return;
         
-        if (claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
+        if ((claim.ownerID != null && claim.ownerID.equals(player.getUniqueId())) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
             return;
         }
         
