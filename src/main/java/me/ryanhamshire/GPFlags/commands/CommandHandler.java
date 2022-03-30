@@ -148,7 +148,7 @@ public class CommandHandler implements TabExecutor {
 
     // TODO (dec 25) remove "gpflags.(command)" permission, use "gpflags.command.(command)" instead
     private boolean hasPermission(CommandSender sender, String command) {
-        return sender.hasPermission("gpflags." + command) || sender.hasPermission("gpflags.command." + command);
+        return sender.hasPermission("gpflags.command." + command);
     }
 
 }

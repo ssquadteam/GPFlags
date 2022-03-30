@@ -70,14 +70,12 @@ abstract class BaseCmd {
                 player.hasPermission("gpflags.flag." + flagName) ||
 
                 // TODO (dec 25) remove "gpflags.(flag)" permission, use "gpflags.flag.(flag)" instead
-                player.hasPermission("gpflags.allflags") ||
-                player.hasPermission("gpflags." + flagName);
+                player.hasPermission("gpflags.allflags");
     }
 
     static boolean playerHasPermissionForEntity(Permissible player, String entityType) {
         // TODO (dec 25) remove "gpflags.(flag)" permission, use "gpflags.flag.(flag)" instead
-        return player.hasPermission("gpflags.nomobspawnstype." + entityType) ||
-                player.hasPermission("gpflags.flag.nomobspawnstype" + entityType);
+        return player.hasPermission("gpflags.flag.nomobspawnstype." + entityType);
     }
 
     static List<String> paramTab(CommandSender sender, String[] args) {
@@ -117,7 +115,7 @@ abstract class BaseCmd {
                 List<String> doorType = Arrays.asList("doors", "trapdoors", "gates");
                 return StringUtil.copyPartialMatches(args[1], doorType, new ArrayList<>());
         }
-        return Collections.singletonList("[<parameters>]"); // TODO get from flag?!?!
+        return Collections.emptyList(); // TODO get from flag?!?!
     }
 
     static List<String> flagTab(CommandSender sender, String arg) {

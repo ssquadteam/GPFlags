@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+// OLD COMMAND HANDLER
 public class CommandHandler {
 
     private final GPFlags plugin;
