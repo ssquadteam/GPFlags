@@ -53,7 +53,7 @@ public class FlagDef_ViewContainers extends FlagDefinition {
         Player player = event.getPlayer();
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), false, playerData.lastClaim);
         if (claim == null) return;
         
         if ((claim.ownerID != null && claim.ownerID.equals(player.getUniqueId())) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {

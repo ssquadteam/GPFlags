@@ -34,7 +34,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
-            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), true, null);
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), false, null);
             if (claim != null) {
                 String owner = claim.getOwnerName();
 
@@ -50,7 +50,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
             event.setCancelled(true);
-            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), true, null);
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), false, null);
             if (claim != null) {
                 String owner = claim.getOwnerName();
 

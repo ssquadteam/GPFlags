@@ -61,7 +61,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     private void onMove(PlayerMoveEvent event) {
-        if (event.getTo() == null) return;
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
         Player player = event.getPlayer();
@@ -70,7 +69,6 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private void onTeleport(PlayerTeleportEvent event) {
-        if (event.getTo() == null) return;
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
         Player player = event.getPlayer();
@@ -115,18 +113,18 @@ public class PlayerListener implements Listener {
             return true;
         Location locFrom2 = locFrom.clone();
         int maxWorldHeightFrom = locFrom2.getWorld().getMaxHeight();
-        if (locFrom2.getY() > maxWorldHeightFrom) {
-            locFrom2.setY(maxWorldHeightFrom);
+        if (locFrom2.getY() >= maxWorldHeightFrom) {
+            locFrom2.setY(maxWorldHeightFrom - 1);
         }
         Location locTo2 = locTo.clone();
         int maxWorldHeightTo = locTo2.getWorld().getMaxHeight();
-        if (locTo2.getY() > maxWorldHeightTo) {
-            locTo2.setY(maxWorldHeightTo);
+        if (locTo2.getY() >= maxWorldHeightTo) {
+            locTo2.setY(maxWorldHeightTo - 1);
         }
         Claim claimTo = dataStore.getClaimAt(locTo2, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom2, false, null);
         if (claimTo == claimFrom) return true;
-        PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom, locTo);
+        PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom2, locTo2);
         Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
         if (event != null) {
             event.setCancelled(playerClaimBorderEvent.isCancelled());
