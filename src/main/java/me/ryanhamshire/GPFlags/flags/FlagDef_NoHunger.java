@@ -25,6 +25,7 @@ public class FlagDef_NoHunger extends FlagDefinition {
     public void onHungerDeplete(FoodLevelChangeEvent e) {
         Flag flag = this.getFlagInstanceAtLocation(e.getEntity().getLocation(), null);
         if (flag == null) return;
+        if (e.getFoodLevel() >= e.getEntity().getFoodLevel()) return;
         e.setCancelled(true);
     }
 
