@@ -73,7 +73,6 @@ public class ListClaimFlagsCmd extends BaseCmd {
         for (Flag flag4 : flags) {
             flagsFound = true;
             builder5.append((flag4.getSet() ? "&a" : "&c") + flag4.getFlagDefinition().getName() + (verbose ? "&7(" + flag4.parameters + ")": "")).append(" ");
-
         }
 
         if (builder1.length() > 0)
