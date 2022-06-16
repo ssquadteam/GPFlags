@@ -6,7 +6,7 @@ authors: [Big_Scary, ShaneBee, DmitryRendov, DrBot]
 description: GriefPrevention add-on to set flags in claims.
 website: https://www.spigotmc.org/resources/griefprevention-flags.55773/
 version: '${project.version}'
-api-version: '1.18'
+api-version: '1.13'
 commands:
    gpflags:
       description: Base command for GriefPreventionFlags
