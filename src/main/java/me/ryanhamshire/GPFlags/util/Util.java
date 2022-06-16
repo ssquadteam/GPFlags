@@ -7,9 +7,6 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -273,20 +270,6 @@ public class Util {
         } else {
             log(message);
         }
-    }
-
-    public static void sendComponent(@Nullable CommandSender player, Messages messageID, Component... args) {
-        Component component = GPFlags.getInstance().getFlagsDataStore().getComponent(messageID, args);
-        if (player == null) {
-            Bukkit.getConsoleSender().sendMessage(getPrefixComponent().append(component));
-        }
-        else {
-            player.sendMessage(getPrefixComponent().append(component));
-        }
-    }
-
-    public static TextComponent getPrefixComponent() {
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(getColString(getPrefix()));
     }
 
     public static void sendClaimMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, MessageSpecifier specifier) {

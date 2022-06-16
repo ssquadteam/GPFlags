@@ -1,10 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
 import me.ryanhamshire.GPFlags.util.Util;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -348,25 +344,6 @@ public class FlagsDataStore {
             message = message.replace("{" + i + "}", param);
         }
         return message;
-    }
-
-    // Number of components must be less than 10
-    synchronized public Component getComponent(Messages messageID, Component... args) {
-        String message = messages[messageID.ordinal()];
-
-        String[] splitMessage = message.split("(?<=(\\{\\d}))|(?=(\\{\\d}))");
-        TextComponent component = Component.empty();
-
-        for (int i = 0; i < splitMessage.length; i++) {
-            String s = splitMessage[i];
-            if (s.matches("\\{\\d}")) {
-                int digit = Character.getNumericValue(s.charAt(1));
-                component = component.append(args[digit]);
-            } else {
-                component = component.append(LegacyComponentSerializer.legacyAmpersand().deserialize(s).color(TextColor.color(5636095)));
-            }
-        }
-        return component;
     }
 
     void close() {
