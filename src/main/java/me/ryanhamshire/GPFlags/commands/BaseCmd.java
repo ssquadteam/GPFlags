@@ -70,14 +70,12 @@ abstract class BaseCmd {
                 player.hasPermission("gpflags.flag." + flagName) ||
 
                 // TODO (dec 25) remove "gpflags.(flag)" permission, use "gpflags.flag.(flag)" instead
-                player.hasPermission("gpflags.allflags") ||
-                player.hasPermission("gpflags." + flagName);
+                player.hasPermission("gpflags.allflags");
     }
 
     static boolean playerHasPermissionForEntity(Permissible player, String entityType) {
         // TODO (dec 25) remove "gpflags.(flag)" permission, use "gpflags.flag.(flag)" instead
-        return player.hasPermission("gpflags.nomobspawnstype." + entityType) ||
-                player.hasPermission("gpflags.flag.nomobspawnstype" + entityType);
+        return player.hasPermission("gpflags.flag.nomobspawnstype." + entityType);
     }
 
     static List<String> paramTab(CommandSender sender, String[] args) {

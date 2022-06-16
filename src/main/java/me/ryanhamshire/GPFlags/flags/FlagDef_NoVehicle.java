@@ -10,6 +10,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -27,10 +28,22 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collections;
 import java.util.List;
 
-public class FlagDef_NoVehicle extends FlagDefinition {
+public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
 
     public FlagDef_NoVehicle(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    public boolean allowMovement(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {
+        if (player.hasPermission("gpflags.bypass")) return true;
+        if (player.getVehicle() == null) return true;
+
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
+        if (flag == null) return true;
+        if (claimTo.getOwnerName().equals(player.getName())) return true;
+
+        Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+        return false;
     }
 
     @EventHandler
@@ -48,9 +61,7 @@ public class FlagDef_NoVehicle extends FlagDefinition {
     private void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         Entity vehicle = player.getVehicle();
-        if (vehicle instanceof Vehicle) {
-            handleVehicleMovement(player, (Vehicle) vehicle, event.getFrom(), event.getTo(), true);
-        }
+        handleVehicleMovement(player, (Vehicle) vehicle, event.getFrom(), event.getTo(), true);
     }
 
     private void handleVehicleMovement(Player player, Vehicle vehicle, Location locFrom, Location locTo, boolean isTeleportEvent) {

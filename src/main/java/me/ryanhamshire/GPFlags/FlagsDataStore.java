@@ -131,8 +131,8 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableHealthRegen, "Stopped regenerating player health here.", null);
         this.addDefault(defaults, Messages.HealthRegenGreaterThanZero, "Please specify how many health points (minimum: 1) players should regenerate per 5 seconds.", null);
 
-        this.addDefault(defaults, Messages.EnableNoHunger, "Disabled food level loss and hunger damage in this area.  Food level regen per 5 seconds: {0}", "0:regen amount");
-        this.addDefault(defaults, Messages.DisableNoHunger, "Disabled food level regeneration and stopped blocking food level loss in this area.", null);
+        this.addDefault(defaults, Messages.EnableNoHunger, "Disabled food level loss and hunger damage in this area.", null);
+        this.addDefault(defaults, Messages.DisableNoHunger, "Enabled food level loss and hunger damage in this area.", null);
         this.addDefault(defaults, Messages.FoodRegenInvalid, "Please specify how much food level to regenerate per 5 seconds (zero for no regneration).", null);
 
         this.addDefault(defaults, Messages.EnableCommandBlackList, "Now blocking the specified commands in this area.  Players with permission gpflags.bypass are immune to this flag.", null);
@@ -288,6 +288,9 @@ public class FlagsDataStore {
         
         this.addDefault(defaults, Messages.EnableReadLecterns, "Players can now read (not manipulate) lecturns on your claim", null);
         this.addDefault(defaults, Messages.DisableReadLecterns, "Players can no longer read lecturns on your claim", null);
+
+        this.addDefault(defaults, Messages.EnableNoBlockGravity, "Disabling block gravity in this area.", null);
+        this.addDefault(defaults, Messages.DisableNoBlockGravity, "Enabling block gravity in this area.", null);
 
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 

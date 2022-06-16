@@ -70,12 +70,12 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             return true;
         }
 
-        if (!player.getAllowFlight()) {
-            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-                player.setAllowFlight(true);
+        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+            if (!player.getAllowFlight()) {
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
-            }, 1);
-        }
+            }
+            player.setAllowFlight(true);
+        }, 1);
         return true;
     }
 

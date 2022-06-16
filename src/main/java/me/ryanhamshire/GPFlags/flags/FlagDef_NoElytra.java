@@ -1,9 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.FlagManager;
-import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.MessageSpecifier;
-import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,11 +14,21 @@ import org.bukkit.event.entity.EntityToggleGlideEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlagDef_NoElytra extends FlagDefinition {
+public class FlagDef_NoElytra extends PlayerMovementFlagDefinition {
 
 
     public FlagDef_NoElytra(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        if (lastLocation == null) return true;
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
+        if (flag == null) return true;
+        if (!player.isGliding()) return true;
+        player.setGliding(false);
+        return true;
     }
 
     @EventHandler

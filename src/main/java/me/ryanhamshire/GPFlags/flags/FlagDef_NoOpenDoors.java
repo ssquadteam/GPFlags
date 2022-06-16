@@ -41,7 +41,7 @@ public class FlagDef_NoOpenDoors extends FlagDefinition {
             if (block.getBlockData() instanceof Openable) {
 
                 PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), true, playerData.lastClaim);
+                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), false, playerData.lastClaim);
 
                 String[] params = null;
                 if (!flag.parameters.isEmpty()) {

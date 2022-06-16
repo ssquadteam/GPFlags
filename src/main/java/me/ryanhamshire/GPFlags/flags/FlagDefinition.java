@@ -65,7 +65,7 @@ public abstract class FlagDefinition implements Listener {
                 cachedClaim = playerData.lastClaim;
             }
 
-            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, cachedClaim);
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
             if (claim != null) {
                 if (playerData != null) {
                     playerData.lastClaim = claim;

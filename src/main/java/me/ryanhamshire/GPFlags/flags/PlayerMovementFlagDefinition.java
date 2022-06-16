@@ -40,9 +40,17 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         if (lastLocation.getY() > fromMaxHeight) {
             lastLocation.setY(fromMaxHeight);
         }
+        int fromMinHeight = lastLocation.getWorld().getMinHeight();
+        if (lastLocation.getY() < fromMinHeight) {
+            lastLocation.setY(fromMinHeight);
+        }
         Location to = event.getLocTo().clone();
         int toMaxHeight = to.getWorld().getMaxHeight();
         if (to.getY() > toMaxHeight) {
+            to.setY(toMaxHeight);
+        }
+        int toMinHeight = to.getWorld().getMinHeight();
+        if (to.getY() < toMinHeight) {
             to.setY(toMaxHeight);
         }
         if (!this.allowMovement(player, lastLocation, to)) {

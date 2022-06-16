@@ -46,9 +46,6 @@ public class GPFlags extends JavaPlugin {
         } catch (ClassNotFoundException ignored) {}
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
-        // Old command handler
-        // TODO remove after a while, let people get used to the new ones first
-        this.oldCommandHandler = new CommandHandler(this);
         // New command handler
         new me.ryanhamshire.GPFlags.commands.CommandHandler(this);
 

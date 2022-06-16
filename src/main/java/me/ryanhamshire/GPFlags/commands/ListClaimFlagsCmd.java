@@ -43,21 +43,21 @@ public class ListClaimFlagsCmd extends BaseCmd {
             flags = PLUGIN.getFlagManager().getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 flagsFound = true;
-                builder1.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName() + (verbose ? "(" + flag.parameters + ")": "")).append(" ");
+                builder1.append((flag.getSet() ? "&a" : "&c") + flag.getFlagDefinition().getName() + (verbose ? "&7(" + flag.parameters + ")": "")).append(" ");
             }
 
             if (claim.parent != null) {
                 flags = PLUGIN.getFlagManager().getFlags(claim.parent.getID().toString());
                 for (Flag flag : flags) {
                     flagsFound = true;
-                    builder2.append((flag.getSet() ? "+" : "-") + flag.getFlagDefinition().getName() + (verbose ? "(" + flag.parameters + ")": "")).append(" ");
+                    builder2.append((flag.getSet() ? "&a" : "&c") + flag.getFlagDefinition().getName() + (verbose ? "&7(" + flag.parameters + ")": "")).append(" ");
                 }
             }
 
             flags = PLUGIN.getFlagManager().getFlags(FlagManager.DEFAULT_FLAG_ID);
             for (Flag flag2 : flags) {
                 flagsFound = true;
-                builder3.append((flag2.getSet() ? "+" : "-") + flag2.getFlagDefinition().getName() + (verbose ? "(" + flag2.parameters + ")": "")).append(" ");
+                builder3.append((flag2.getSet() ? "&a" : "&c") + flag2.getFlagDefinition().getName() + (verbose ? "&7(" + flag2.parameters + ")": "")).append(" ");
             }
         }
 
@@ -65,14 +65,14 @@ public class ListClaimFlagsCmd extends BaseCmd {
         flags = PLUGIN.getFlagManager().getFlags(player.getWorld().getName());
         for (Flag flag3 : flags) {
             flagsFound = true;
-            builder4.append((flag3.getSet() ? "+" : "-") + flag3.getFlagDefinition().getName() + (verbose ? "(" + flag3.parameters + ")": "")).append(" ");
+            builder4.append((flag3.getSet() ? "&a" : "&c") + flag3.getFlagDefinition().getName() + (verbose ? "&7(" + flag3.parameters + ")": "")).append(" ");
         }
 
         StringBuilder builder5 = new StringBuilder();
         flags = PLUGIN.getFlagManager().getFlags("everywhere");
         for (Flag flag4 : flags) {
             flagsFound = true;
-            builder5.append((flag4.getSet() ? "+" : "-") + flag4.getFlagDefinition().getName() + (verbose ? "(" + flag4.parameters + ")": "")).append(" ");
+            builder5.append((flag4.getSet() ? "&a" : "&c") + flag4.getFlagDefinition().getName() + (verbose ? "&7(" + flag4.parameters + ")": "")).append(" ");
         }
 
         if (builder1.length() > 0)

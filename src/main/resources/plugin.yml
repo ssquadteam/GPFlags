@@ -6,69 +6,10 @@ authors: [Big_Scary, ShaneBee, DmitryRendov, DrBot]
 description: GriefPrevention add-on to set flags in claims.
 website: https://www.spigotmc.org/resources/griefprevention-flags.55773/
 version: '${project.version}'
-api-version: '1.13'
+api-version: '1.18'
 commands:
    gpflags:
       description: Base command for GriefPreventionFlags
-   allflags:
-      description: Sends a list of all flags and their flag type
-      usage: /allflags
-      aliases: [listallflags, allflagslist]
-      permission: gpflags.allflags
-   setclaimflag:
-      description: Sets a flag on a GriefPrevention land claim.
-      usage: /SetClaimFlag <flag> <optional parameters>
-      aliases: [setflag, placeflag, putflag, claimflag, placeclaimflag, putclaimflag]
-      permission: gpflags.setflag
-   setclaimflagplayer:
-      description: Sets a flag on a GriefPrevention land claim for a player from console.
-      usage: /SetClaimFlagPlayer <player> <flag> <optional parameters>
-      aliases: [setflagplayer, placeflagplayer, putflagplayer, claimflagplayer, placeclaimflagplayer, putclaimflagplayer]
-      permission: gpflags.setflagplayer
-   unsetclaimflag:
-      description: Un-sets (removes) a flag on a GriefPrevention land claim.
-      usage: /UnSetClaimFlag <flag>
-      aliases: [unsetflag, removeflag, unclaimflag, removeclaimflag]
-      permission: gpflags.unsetflag
-   setdefaultclaimflag:
-      description: Sets a flag on all GriefPrevention land claims.
-      usage: /SetDefaultClaimFlag <flag> <optional parameters>
-      aliases: [setdefaultflag, placedefaultflag, putdefaultflag, defaultclaimflag, placedefaultclaimflag, putdefaultclaimflag]
-      permission: gpflags.defaultflags
-   unsetdefaultclaimflag:
-      description: Un-sets (removes) a default flag from all GriefPrevention land claims.
-      usage: /UnSetClaimFlag <flag>
-      aliases: [unsetdefaultflag, removedefaultflag, removedefaultclaimflag]
-      permission: gpflags.defaultflags
-   listclaimflags:
-      description: Lists all the flags currently set on a GriefPrevention land claim.
-      usage: /ListClaimFlags
-      aliases: [listclaimflags, claimflags, listflags]
-      permission: gpflags.listflags
-   setworldflag:
-      description: Sets a flag on an entire world.
-      usage: /SetWorldFlag <flag> <optional parameters>
-      aliases: [placeworldflag, putworldflag, worldflag]
-      permission: gpflags.setworldflag
-   unsetworldflag:
-      description: Un-sets (removes) a world-level flag.
-      usage: /UnSetWorldFlag <flag>
-      aliases: [unsetworldflag, removeworldflag, unworldflag]
-      permission: gpflags.unsetworldflag
-   setserverflag:
-      description: Sets a flag everywhere.
-      usage: /SetServerFlag <flag> <optional parameters>
-      aliases: [placeserverflag, putserverflag, serverflag]
-      permission: gpflags.setserverflag
-   unsetserverflag:
-      description: Un-sets (removes) a server-level flag.
-      usage: /UnSetServerFlag <flag>
-      aliases: [unsetserverflag, removeserverflag, unserverflag]
-      permission: gpflags.unsetservrflag
-   gpfreload:
-      description: Reloads GriefPrevention Flags configuration settings from its config file.
-      usage: /GPFReload
-      permission: gpflags.reload
 permissions:
     gpflags.admin.*:
         description: Grants all administrative functionality.

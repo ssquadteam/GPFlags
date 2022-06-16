@@ -40,7 +40,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
 
         SpleefData data = new SpleefData(flag.getParametersArray());
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, playerData.lastClaim);
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
         if (claim == null) return;
 
         ArrayList<Chunk> chunks = claim.getChunks();
