@@ -62,7 +62,10 @@ permissions:
         children:
             gpflags.bypass.fly: true
     gpflags.bypass.fly:
-        description: Makes a player immune to the limitations of the fly flags
+        description: Makes a player immune to the limitations of the ownerfly and ownermemberfly flags
+        default: op
+    gpflags.bypass.nofly:
+        description: Makes a player immune to the limitations of the nofly flag
         default: op
     gpflags.bypass.exitcommand:
         description: Makes a player immune to the exit command flag
