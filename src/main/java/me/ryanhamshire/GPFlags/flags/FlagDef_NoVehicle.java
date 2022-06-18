@@ -60,8 +60,9 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     private void onTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
-        Entity vehicle = player.getVehicle();
-        handleVehicleMovement(player, (Vehicle) vehicle, event.getFrom(), event.getTo(), true);
+        Entity entity = player.getVehicle();
+        if (!(entity instanceof Vehicle)) return;
+        handleVehicleMovement(player, (Vehicle) entity, event.getFrom(), event.getTo(), true);
     }
 
     private void handleVehicleMovement(Player player, Vehicle vehicle, Location locFrom, Location locTo, boolean isTeleportEvent) {
