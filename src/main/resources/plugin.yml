@@ -10,11 +10,11 @@ api-version: '1.13'
 commands:
   gpflags:
     description: Reload or get help
-    usage: /gpflags <reload|help>
+    usage: /GPFlags <reload|help>
     permission: gpflags.command.gpflags
   allflags:
     description: Sends a list of all flags and their flag type
-    usage: /allflags
+    usage: /AllFlags
     aliases: [ listallflags, allflagslist ]
     permission: gpflags.command.allflags
   setclaimflag:
@@ -32,6 +32,11 @@ commands:
     usage: /UnSetClaimFlag <flag>
     aliases: [ unsetflag, removeflag, unclaimflag, removeclaimflag ]
     permission: gpflags.command.unsetclaimflag
+  unsetclaimflagplayer:
+    description: Un-sets (removes) a flag on a GriefPrevention land claim for a player from console.
+    usage: /UnSetClaimFlagPlayer <player> <flag>
+    aliases: [ unsetflagplayer, removeflagplayer, unclaimflagplayer, removeclaimflagplayer ]
+    permission: gpflags.command.unsetclaimflagplayer
   setdefaultclaimflag:
     description: Sets a flag on all GriefPrevention land claims.
     usage: /SetDefaultClaimFlag <flag> <optional parameters>
@@ -214,6 +219,8 @@ permissions:
     default: true
     children:
       gpflags.command.gpflags: true
-  gpflags.command.allflags:
+  gpflags.flag.allflags:
     description: Grants permission to apply/remove all flags.
     default: op
+    children:
+      gpflags.flag.*: true

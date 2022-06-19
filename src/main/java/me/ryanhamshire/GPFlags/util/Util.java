@@ -1,9 +1,13 @@
 package me.ryanhamshire.GPFlags.util;
 
 import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ChangeBiome;
+import me.ryanhamshire.GPFlags.flags.FlagDef_NoEnterPlayer;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -25,6 +29,7 @@ import org.bukkit.entity.minecart.HopperMinecart;
 import org.bukkit.entity.minecart.PoweredMinecart;
 import org.bukkit.entity.minecart.RideableMinecart;
 import org.bukkit.entity.minecart.StorageMinecart;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.util.StringUtil;
@@ -355,6 +360,27 @@ public class Util {
 
     public static List<String> paramTab(CommandSender sender, String[] args) {
         switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "noenterplayer":
+            case "commandblacklist":
+            case "commandwhitelist":
+            case "entercommand":
+            case "entercommand_members":
+            case "entercommand_owner":
+            case "exitcommand":
+            case "exitcommand_members":
+            case "exitcommand_owner":
+            case "entermessage":
+            case "exitmessage":
+                List<String> params = new ArrayList<>();
+                if (!(sender instanceof Player)) return null;
+                Player p = (Player) sender;
+                FlagDefinition flagD = (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("noenterplayer"));
+                String flagParams = flagD.getFlagInstanceAtLocation(p.getLocation(), p).parameters;
+                if (flagParams != null) {
+                    params.add(flagParams);
+                }
+                return StringUtil.copyPartialMatches(args[1], params, new ArrayList<>());
+
             case "nomobspawnstype":
                 List<String> entityTypes = new ArrayList<>();
                 for (EntityType entityType : EntityType.values()) {
@@ -372,6 +398,7 @@ public class Util {
                     }
                 }
                 return StringUtil.copyPartialMatches(args[1], entityTypes, new ArrayList<>());
+
             case "changebiome":
                 ArrayList<String> biomes = new ArrayList<>();
                 WorldSettings worldSettings = null;
@@ -385,6 +412,7 @@ public class Util {
                 }
                 biomes.sort(String.CASE_INSENSITIVE_ORDER);
                 return StringUtil.copyPartialMatches(args[1], biomes, new ArrayList<>());
+
             case "noopendoors":
                 if (args.length != 2) return null;
                 List<String> doorType = Arrays.asList("doors", "trapdoors", "gates");

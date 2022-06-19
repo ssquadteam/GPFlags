@@ -18,7 +18,7 @@ import java.util.List;
 public class CommandGPFlags implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (args.length > 1 && args[0].equalsIgnoreCase("reload")) {
+        if (args.length > 0 && args[0].equalsIgnoreCase("reload")) {
             if (!commandSender.hasPermission("gpflags.command.reload")) {
                 Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
                 return true;
