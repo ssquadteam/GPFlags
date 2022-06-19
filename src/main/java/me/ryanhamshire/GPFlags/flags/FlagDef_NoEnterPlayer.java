@@ -24,7 +24,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (player.hasPermission("gpflags.bypass")) return true;
+        if (player.hasPermission("gpflags.bypass.noenter")) return true;
 
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;

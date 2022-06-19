@@ -8,68 +8,212 @@ website: https://www.spigotmc.org/resources/griefprevention-flags.55773/
 version: '${project.version}'
 api-version: '1.13'
 commands:
-   gpflags:
-      description: Base command for GriefPreventionFlags
+  gpflags:
+    description: Reload or get help
+    usage: /gpflags <reload|help>
+    permission: gpflags.command.gpflags
+  allflags:
+    description: Sends a list of all flags and their flag type
+    usage: /allflags
+    aliases: [ listallflags, allflagslist ]
+    permission: gpflags.command.allflags
+  setclaimflag:
+    description: Sets a flag on a GriefPrevention land claim.
+    usage: /SetClaimFlag <flag> <optional parameters>
+    aliases: [ setflag, placeflag, putflag, claimflag, placeclaimflag, putclaimflag ]
+    permission: gpflags.command.setclaimflag
+  setclaimflagplayer:
+    description: Sets a flag on a GriefPrevention land claim for a player from console.
+    usage: /SetClaimFlagPlayer <player> <flag> <optional parameters>
+    aliases: [ setflagplayer, placeflagplayer, putflagplayer, claimflagplayer, placeclaimflagplayer, putclaimflagplayer ]
+    permission: gpflags.command.setclaimflagplayer
+  unsetclaimflag:
+    description: Un-sets (removes) a flag on a GriefPrevention land claim.
+    usage: /UnSetClaimFlag <flag>
+    aliases: [ unsetflag, removeflag, unclaimflag, removeclaimflag ]
+    permission: gpflags.command.unsetclaimflag
+  setdefaultclaimflag:
+    description: Sets a flag on all GriefPrevention land claims.
+    usage: /SetDefaultClaimFlag <flag> <optional parameters>
+    aliases: [ setdefaultflag, placedefaultflag, putdefaultflag, defaultclaimflag, placedefaultclaimflag, putdefaultclaimflag ]
+    permission: gpflags.command.setdefaultclaimflag
+  unsetdefaultclaimflag:
+    description: Un-sets (removes) a default flag from all GriefPrevention land claims.
+    usage: /UnSetClaimFlag <flag>
+    aliases: [ unsetdefaultflag, removedefaultflag, removedefaultclaimflag ]
+    permission: gpflags.command.unsetdefaultclaimflag
+  listclaimflags:
+    description: Lists all the flags currently set on a GriefPrevention land claim.
+    usage: /ListClaimFlags
+    aliases: [ listclaimflags, claimflags, listflags ]
+    permission: gpflags.command.listclaimflags
+  setworldflag:
+    description: Sets a flag on an entire world.
+    usage: /SetWorldFlag <flag> <optional parameters>
+    aliases: [ placeworldflag, putworldflag, worldflag ]
+    permission: gpflags.command.setworldflag
+  unsetworldflag:
+    description: Un-sets (removes) a world-level flag.
+    usage: /UnSetWorldFlag <flag>
+    aliases: [ unsetworldflag, removeworldflag, unworldflag ]
+    permission: gpflags.command.unsetworldflag
+  setserverflag:
+    description: Sets a flag everywhere.
+    usage: /SetServerFlag <flag> <optional parameters>
+    aliases: [ placeserverflag, putserverflag, serverflag ]
+    permission: gpflags.command.setserverflag
+  unsetserverflag:
+    description: Un-sets (removes) a server-level flag.
+    usage: /UnSetServerFlag <flag>
+    aliases: [ unsetserverflag, removeserverflag, unserverflag ]
+    permission: gpflags.command.unsetserverflag
 permissions:
-    gpflags.admin.*:
-        description: Grants all administrative functionality.
-        children:
-            gpflags.setflag: true
-            gpflags.defaultflags: true
-            gpflags.unsetflag: true
-            gpflags.setworldflag: true
-            gpflags.unsetworldflag: true
-            gpflags.setserverflag: true
-            gpflags.unsetserverflag: true
-            gpflags.listflags: true
-            gpflags.reload: true
-            gpflags.allflags: true
-            gpflags.bypass: true
-            gpflags.bypass.fly: true
-    gpflags.setflag:
-        description: Grants permission to use /SetClaimFlag.
-        default: op
-    gpflags.unsetflag:
-        description: Grants permission to use /UnSetClaimFlag.
-        default: op
-    gpflags.setworldflag:
-        description: Grants permission to use /SetWorldFlag.
-        default: op
-    gpflags.unsetworldflag:
-        description: Grants permission to use /UnSetWorldFlag.
-        default: op
-    gpflags.setserverflag:
-        description: Grants permission to use /SetServerFlag.
-        default: op
-    gpflags.unsetserverflag:
-        description: Grants permission to use /UnSetServerFlag.
-        default: op
-    gpflags.defaultflags:
-        description: Grants permission to use /SetDefaultClaimFlag and /UnSetDefaultClaimFlag.
-        default: op
-    gpflags.listflags:
-        description: Grants permission to use /ListClaimFlags.
-        default: op
-    gpflags.reload:
-        description: Grants permission to use /GPFReload.
-        default: op
-    gpflags.allflags:
-        description: Grants permission to apply/remove all flags.
-        default: op
-    gpflags.bypass:
-        description: Makes a player immune to the limitations of flags like CommandBlackList, NoEnter, and NoFlight.
-        default: op
-        children:
-            gpflags.bypass.fly: true
-    gpflags.bypass.fly:
-        description: Makes a player immune to the limitations of the ownerfly and ownermemberfly flags
-        default: op
-    gpflags.bypass.nofly:
-        description: Makes a player immune to the limitations of the nofly flag
-        default: op
-    gpflags.bypass.exitcommand:
-        description: Makes a player immune to the exit command flag
-        default: op
-    gpflags.bypass.entercommand:
-      description: Makes a player immune to the enter command flag
+  gpflags.admin.*:
+    description: Grants all administrative functionality. (depreciated)
+    children:
+      gpflags.admin: true
+  gpflags.admin:
+      description: Grants all administrative functionality.
+      children:
+          gpflags.command.setclaimflag: true
+          gpflags.command.setdefaultflag: true
+          gpflags.command.unsetdefaultflag: true
+          gpflags.command.unsetclaimflag: true
+          gpflags.command.setworldflag: true
+          gpflags.command.unsetworldflag: true
+          gpflags.command.setserverflag: true
+          gpflags.command.unsetserverflag: true
+          gpflags.command.listflags: true
+          gpflags.command.reload: true
+          gpflags.command.allflags: true
+          gpflags.bypass: true
+          gpflags.bypass.fly: true
+  gpflags.setflag:
+      description: Grants permission to use /SetClaimFlag. (depreciated)
       default: op
+      children:
+        gpflags.command.setclaimflag: true
+  gpflags.unsetflag:
+      description: Grants permission to use /UnSetClaimFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.unsetclaimflag: true
+  gpflags.setworldflag:
+      description: Grants permission to use /SetWorldFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.setworldflag: true
+  gpflags.unsetworldflag:
+      description: Grants permission to use /UnSetWorldFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.unsetworldflag: true
+  gpflags.setserverflag:
+      description: Grants permission to use /SetServerFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.setserverflag: true
+  gpflags.unsetserverflag:
+      description: Grants permission to use /UnSetServerFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.unsetserverflag: true
+  gpflags.defaultflags:
+      description: Grants permission to use /SetDefaultClaimFlag and /UnSetDefaultClaimFlag. (depreciated)
+      default: op
+      children:
+        gpflags.command.setdefaultclaimflag: true
+        gpflags.command.unsetdefaultclaimflag: true
+  gpflags.listflags:
+      description: Grants permission to use /ListClaimFlags. (depreciated)
+      default: op
+      children:
+        gpflags.command.listflags: true
+  gpflags.reload:
+      description: Grants permission to use /GPFReload. (depreciated)
+      default: op
+      children:
+        gpflags.command.reload: true
+  gpflags.allflags:
+      description: Grants permission to apply/remove all flags. (depreciated)
+      default: op
+      children:
+        gpflags.command.allflags: true
+  gpflags.bypass:
+      description: Makes a player immune to the limitations of all flags (depreciated).
+      default: op
+      children:
+          gpflags.bypass.fly: true
+          gpflags.bypass.noflight: true
+          gpflags.bypass.exitcommand: true
+          gpflags.bypass.entercommand: true
+          gpflags.bypass.biomeblacklist: true
+          gpflags.bypass.commandblacklist: true
+          gpflags.bypass.commandwhitelist: true
+          gpflags.bypass.noenter: true
+          gpflags.bypass.novehicle: true
+          gpflags.bypass.self: true
+  gpflags.bypass.biomeblacklist:
+    description: Makes a player immune to the limitations of the biomeblacklist
+    default: op
+  gpflags.bypass.commandblacklist:
+    description: Makes a player immune to the limitations of the commandblacklist flag
+    default: op
+  gpflags.bypass.commandwhitelist:
+    description: Makes a player immune to the commandwhitelist flag
+    default: op
+  gpflags.bypass.noenter:
+    description: Makes a player immune to the noenter and noenterplayer flags
+    default: op
+  gpflags.bypass.novehicle:
+    description: Makes a player immune to the novehicle flag
+    default: op
+  gpflags.bypass.fly:
+      description: Makes a player immune to the limitations of the ownerfly and ownermemberfly flags
+      default: op
+  gpflags.bypass.noflight:
+      description: Makes a player immune to the limitations of the noflight flag
+      default: op
+  gpflags.bypass.exitcommand:
+      description: Makes a player immune to the exit command flags
+      default: op
+  gpflags.bypass.entercommand:
+    description: Makes a player immune to enter command flags
+    default: op
+  gpflags.command.setclaimflag:
+    description: Grants permission to use /SetClaimFlag.
+    default: op
+  gpflags.command.unsetclaimflag:
+    description: Grants permission to use /UnSetClaimFlag.
+    default: op
+  gpflags.command.setworldflag:
+    description: Grants permission to use /SetWorldFlag.
+    default: op
+  gpflags.command.unsetworldflag:
+    description: Grants permission to use /UnSetWorldFlag.
+    default: op
+  gpflags.command.setserverflag:
+    description: Grants permission to use /SetServerFlag.
+    default: op
+  gpflags.command.unsetserverflag:
+    description: Grants permission to use /UnSetServerFlag.
+    default: op
+  gpflags.command.defaultflags:
+    description: Grants permission to use /SetDefaultClaimFlag and /UnSetDefaultClaimFlag.
+    default: op
+  gpflags.command.listflags:
+    description: Grants permission to use /ListClaimFlags.
+    default: op
+  gpflags.command.reload:
+    description: Grants permission to use /GPFlags reload.
+    default: op
+    children:
+      gpflags.command.gpflags: true
+  gpflags.command.help:
+    description: Grants permission to use /GPFlags help.
+    default: true
+    children:
+      gpflags.command.gpflags: true
+  gpflags.command.allflags:
+    description: Grants permission to apply/remove all flags.
+    default: op

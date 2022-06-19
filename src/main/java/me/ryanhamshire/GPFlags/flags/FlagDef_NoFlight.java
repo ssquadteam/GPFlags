@@ -60,7 +60,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
      */
     private boolean handleFlyAttempt(Player player) {
         if (player.getGameMode() == GameMode.SPECTATOR) return false;
-        if (player.hasPermission("gpflags.bypass") || player.hasPermission("gpflags.bypass.noflight")) {
+        if (player.hasPermission("gpflags.bypass.noflight")) {
             return false;
         }
         

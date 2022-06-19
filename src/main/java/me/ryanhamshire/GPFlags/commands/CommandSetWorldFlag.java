@@ -9,23 +9,24 @@ import me.ryanhamshire.GPFlags.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SetWorldFlagCmd extends BaseCmd {
-
-    SetWorldFlagCmd(GPFlags plugin) {
-        super(plugin);
-        command = "SetWorldFlag";
-        usage = "<world> <flag> [<parameters>]";
-    }
-
+public class CommandSetWorldFlag implements TabExecutor {
     @Override
-    boolean execute(CommandSender sender, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if (!sender.hasPermission("gpflags.command.setworldflag")) {
+            Util.sendMessage(sender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            return true;
+        }
         if (args.length < 2) return false;
 
         World world = Bukkit.getWorld(args[0]);
@@ -35,13 +36,14 @@ public class SetWorldFlagCmd extends BaseCmd {
         }
 
         String flagName = args[1];
-        FlagDefinition def = PLUGIN.getFlagManager().getFlagDefinitionByName(flagName);
+        GPFlags gpflags = GPFlags.getInstance();
+        FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            Util.sendMessage(sender, TextMode.Err, getFlagDefsMessage(sender));
+            Util.sendMessage(sender, TextMode.Err, Util.getFlagDefsMessage(sender));
             return true;
         }
 
-        if (!playerHasPermissionForFlag(def, sender)) {
+        if (!sender.hasPermission("gpflags.flag" + def.getName())) {
             Util.sendMessage(sender, TextMode.Err, Messages.NoFlagPermission);
             return true;
         }
@@ -54,11 +56,11 @@ public class SetWorldFlagCmd extends BaseCmd {
         String[] params = new String[args.length - 2];
         System.arraycopy(args, 2, params, 0, args.length - 2);
 
-        SetFlagResult result = PLUGIN.getFlagManager().setFlag(world.getName(), def, true, params);
+        SetFlagResult result = gpflags.getFlagManager().setFlag(world.getName(), def, true, params);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(sender, color, Messages.WorldFlagSet);
-            PLUGIN.getFlagManager().save();
+            gpflags.getFlagManager().save();
         } else {
             Util.sendMessage(sender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         }
@@ -67,17 +69,16 @@ public class SetWorldFlagCmd extends BaseCmd {
     }
 
     @Override
-    List<String> tab(CommandSender sender, String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
             List<String> worlds = new ArrayList<>();
             Bukkit.getWorlds().forEach(world -> worlds.add(world.getName()));
             return StringUtil.copyPartialMatches(args[0], worlds, new ArrayList<>());
         } else if (args.length == 2) {
-            return flagTab(sender, args[1]);
+            return Util.flagTab(commandSender, args[1]);
         } else if (args.length == 3) {
-            return paramTab(sender, args);
+            return Util.paramTab(commandSender, args);
         }
         return Collections.emptyList();
     }
-
 }

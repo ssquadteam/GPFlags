@@ -82,8 +82,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private boolean canFly(Player player) {
         GameMode mode = player.getGameMode();
-        return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE ||
-                player.hasPermission("gpflags.bypass.fly") || player.hasPermission("gpflags.bypass");
+        return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE || player.hasPermission("gpflags.bypass.fly");
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

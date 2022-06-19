@@ -1,10 +1,7 @@
 package me.ryanhamshire.GPFlags.util;
 
-import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.GPFlagsConfig;
-import me.ryanhamshire.GPFlags.MessageSpecifier;
-import me.ryanhamshire.GPFlags.Messages;
-import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.md_5.bungee.api.ChatColor;
@@ -12,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
@@ -28,8 +26,11 @@ import org.bukkit.entity.minecart.PoweredMinecart;
 import org.bukkit.entity.minecart.RideableMinecart;
 import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.permissions.Permissible;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,8 +116,7 @@ public class Util {
 
     private static boolean canFly(Player player) {
         GameMode mode = player.getGameMode();
-        return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE ||
-                player.hasPermission("gpflags.bypass.fly") || player.hasPermission("gpflags.bypass");
+        return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE || player.hasPermission("gpflags.bypass.fly");
     }
 
     /**
@@ -326,5 +326,72 @@ public class Util {
             return claim.allowAccess(player) == null;
         }
     }
+
+    public static MessageSpecifier getFlagDefsMessage(Permissible player) {
+        StringBuilder flagDefsList = new StringBuilder();
+        Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
+        flagDefsList.append("&b");
+        for (FlagDefinition def : defs) {
+            if (player.hasPermission("gpflags.flag." + def.getName())) {
+                flagDefsList.append(def.getName()).append("&7,&b ");
+            }
+        }
+        String def = flagDefsList.toString();
+        if (def.length() > 5) {
+            def = def.substring(0, def.length() - 4);
+        }
+        return new MessageSpecifier(Messages.InvalidFlagDefName, def);
+    }
+
+    public static List<String> flagTab(CommandSender sender, String arg) {
+        List<String> flags = new ArrayList<>();
+        GPFlags.getInstance().getFlagManager().getFlagDefinitions().forEach(flagDefinition -> {
+            if (sender.hasPermission("gpflags.flag." + flagDefinition.getName())) {
+                flags.add(flagDefinition.getName());
+            }
+        });
+        return StringUtil.copyPartialMatches(arg, flags, new ArrayList<>());
+    }
+
+    public static List<String> paramTab(CommandSender sender, String[] args) {
+        switch (args[0].toLowerCase(Locale.ROOT)) {
+            case "nomobspawnstype":
+                List<String> entityTypes = new ArrayList<>();
+                for (EntityType entityType : EntityType.values()) {
+                    String type = entityType.toString();
+                    if (sender.hasPermission("gpflags.flag.nomobspawnstype." + type)) {
+                        String arg = args[1];
+                        if (arg.contains(";")) {
+                            if (arg.charAt(arg.length() - 1) != ';') {
+                                arg = arg.substring(0, arg.lastIndexOf(';') + 1);
+                            }
+                            entityTypes.add(arg + type);
+                        } else {
+                            entityTypes.add(type);
+                        }
+                    }
+                }
+                return StringUtil.copyPartialMatches(args[1], entityTypes, new ArrayList<>());
+            case "changebiome":
+                ArrayList<String> biomes = new ArrayList<>();
+                WorldSettings worldSettings = null;
+                if (sender instanceof Player) {
+                    worldSettings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
+                }
+                for (Biome biome : Biome.values()) {
+                    if ((worldSettings != null && !(worldSettings.biomeBlackList.contains(biome.toString()))) || sender.hasPermission("gpflags.bypass.biomeblacklist")) {
+                        biomes.add(biome.toString());
+                    }
+                }
+                biomes.sort(String.CASE_INSENSITIVE_ORDER);
+                return StringUtil.copyPartialMatches(args[1], biomes, new ArrayList<>());
+            case "noopendoors":
+                if (args.length != 2) return null;
+                List<String> doorType = Arrays.asList("doors", "trapdoors", "gates");
+                return StringUtil.copyPartialMatches(args[1], doorType, new ArrayList<>());
+        }
+        return Collections.emptyList();
+    }
+
 
 }
