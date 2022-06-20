@@ -35,7 +35,7 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         }
 
         if (!player.hasPermission("gpflags.flag." + def.getName())) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 

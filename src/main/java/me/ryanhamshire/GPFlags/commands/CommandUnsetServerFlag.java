@@ -33,8 +33,8 @@ public class CommandUnsetServerFlag implements TabExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("gpflags.flag" + def.getName())) {
-            Util.sendMessage(sender, TextMode.Err, Messages.NoFlagPermission);
+        if (!sender.hasPermission("gpflags.flag." + def.getName())) {
+            Util.sendMessage(sender, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 

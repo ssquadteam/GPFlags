@@ -34,7 +34,7 @@ public class CommandSetServerFlag implements TabExecutor {
         }
 
         if (!commandSender.hasPermission("gpflags.flag." + def.getName())) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagPermission);
+            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 

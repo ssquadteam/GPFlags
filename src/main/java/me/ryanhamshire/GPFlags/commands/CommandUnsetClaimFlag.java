@@ -53,8 +53,8 @@ public class CommandUnsetClaimFlag implements TabExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("gpflags.flag" + def.getName())) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission);
+        if (!sender.hasPermission("gpflags.flag." + def.getName())) {
+            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 
