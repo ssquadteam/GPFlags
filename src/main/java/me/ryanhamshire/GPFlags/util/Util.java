@@ -398,10 +398,6 @@ public class Util {
 
             case "changebiome":
                 ArrayList<String> biomes = new ArrayList<>();
-                WorldSettings worldSettings = null;
-                if (sender instanceof Player) {
-                    worldSettings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
-                }
                 for (Biome biome : Biome.values()) {
                     if (sender.hasPermission("gpflags.flag.changebiome." + biome)) {
                         biomes.add(biome.toString());
