@@ -142,7 +142,7 @@ public class PlayerListener implements Listener {
         assert world != null;
         if (flagOwnerFly != null || flagOwnerMemberFly != null) {
             for (Player player : world.getPlayers()) {
-                if (claim.contains(player.getLocation(), false, true)) {
+                if (claim.contains(Util.getInBoundsLocation(player), false, true)) {
                     Util.disableFlight(player);
                 }
             }
@@ -156,7 +156,7 @@ public class PlayerListener implements Listener {
         Claim claimFrom = event.getFrom();
         World world = claimFrom.getGreaterBoundaryCorner().getWorld();
         for (Player player : world.getPlayers()) {
-            Location loc = player.getLocation();
+            Location loc = Util.getInBoundsLocation(player);
 
             // Resizing a claim to be smaller and falling on the outside
             if (!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) {

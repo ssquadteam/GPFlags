@@ -5,10 +5,7 @@ import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -412,6 +409,15 @@ public class Util {
                 return StringUtil.copyPartialMatches(args[1], doorType, new ArrayList<>());
         }
         return Collections.emptyList();
+    }
+
+    public static Location getInBoundsLocation(Player p) {
+        Location loc = p.getLocation();
+        World world = loc.getWorld();
+        if (loc.getBlockY() >= world.getMaxHeight()) {
+            loc.setY(world.getMaxHeight() - 1);
+        }
+        return loc;
     }
 
 
