@@ -70,7 +70,10 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         }
         
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        Flag ownerFly = GPFlags.getInstance().getFlagManager()
+
+        if (claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.noflight.ownclaim")) return false;
+
+            Flag ownerFly = GPFlags.getInstance().getFlagManager()
                 .getFlagDefinitionByName("OwnerFly")
                 .getFlagInstanceAtLocation(player.getLocation(), player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager()

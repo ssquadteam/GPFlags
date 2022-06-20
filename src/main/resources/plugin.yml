@@ -91,8 +91,7 @@ permissions:
           gpflags.command.listflags: true
           gpflags.command.reload: true
           gpflags.command.allflags: true
-          gpflags.bypass: true
-          gpflags.bypass.fly: true
+          gpflags.bypass.*: true
   gpflags.setflag:
       description: Grants permission to use /SetClaimFlag. (depreciated)
       default: op
@@ -146,40 +145,80 @@ permissions:
         gpflags.command.allflags: true
   gpflags.bypass:
       description: Makes a player immune to the limitations of all flags (depreciated).
-      default: op
+      default: false
       children:
-          gpflags.bypass.fly: true
-          gpflags.bypass.noflight: true
-          gpflags.bypass.exitcommand: true
-          gpflags.bypass.entercommand: true
-          gpflags.bypass.commandblacklist: true
-          gpflags.bypass.commandwhitelist: true
-          gpflags.bypass.noenter: true
-          gpflags.bypass.novehicle: true
-          gpflags.bypass.self: true
+          gpflags.bypass.*: true
   gpflags.bypass.commandblacklist:
-    description: Makes a player immune to the limitations of the commandblacklist flag
+    description: Makes a player immune to commandblacklist flags
     default: op
   gpflags.bypass.commandwhitelist:
-    description: Makes a player immune to the commandwhitelist flag
+    description: Makes a player immune to commandwhitelist flags
     default: op
   gpflags.bypass.noenter:
-    description: Makes a player immune to the noenter and noenterplayer flags
+    description: Makes a player immune to noenter and noenterplayer flags
     default: op
   gpflags.bypass.novehicle:
-    description: Makes a player immune to the novehicle flag
+    description: Makes a player immune to novehicle flags
     default: op
   gpflags.bypass.fly:
-      description: Makes a player immune to the limitations of the ownerfly and ownermemberfly flags
+      description: Makes a player immune to ownerfly and ownermemberfly flags
       default: op
   gpflags.bypass.noflight:
-      description: Makes a player immune to the limitations of the noflight flag
+      description: Makes a player immune to noflight flags
       default: op
   gpflags.bypass.exitcommand:
-      description: Makes a player immune to the exit command flags
-      default: op
+      description: Makes a player immune to exitcommand flags
+      default: false
+  gpflags.bypass.nochorusfruit:
+    description: Makes a player immune to nochorusfruit flags
+    default: op
+  gpflags.bypass.commandblacklist.ownclaim:
+    description: Makes a player immune to their own commandblacklist flags
+    default: op
+  gpflags.bypass.commandwhitelist.ownclaim:
+    description: Makes a player immune to their own commandwhitelist flags
+    default: op
   gpflags.bypass.entercommand:
-    description: Makes a player immune to enter command flags
+    description: Makes a player immune to entercommand flags
+    default: false
+  gpflags.bypass.nochorusfruit.ownclaim:
+    description: Makes a player immune to their own nochorusfruit flags
+    default: op
+  gpflags.bypass.noelytra:
+    description: Makes a player immune to noelytra flags
+    default: op
+  gpflags.bypass.noelytra.ownclaim:
+    description: Makes a player immune to their own noelytra flags
+    default: op
+  gpflags.bypass.noenderpearl:
+    description: Makes a player immune to noenderpearl flags
+    default: op
+  gpflags.bypass.noenderpearl.ownclaim:
+    description: Makes a player immune to their own noenderpearl flags
+    default: op
+  gpflags.bypass.noflight.ownclaim:
+    description: Makes a player immune to their own noflight flags
+    default: op
+  gpflags.bypass.noitemdrop:
+    description: Makes a player immune to noitemdrop flags
+    default: op
+  gpflags.bypass.noitemdrop.ownclaim:
+    description: Makes a player immune to their own noitemdrop flags
+    default: op
+  gpflags.bypass.noitempickup:
+    description: Makes a player immune to their own noitempickup flags
+    default: op
+  gpflags.bypass.nomcmmoskills:
+    description: Makes a player immune to nomcmmoskills flags
+    default: op
+  gpflags.bypass.nomcmmoskills.ownclaim:
+    description: Makes a player immune to their own nomcmmoskills flags
+    default: op
+  gpflags.bypass.nomcmmoxp:
+    description: Makes a player immune to nomcmmoxp flags
+    default: op
+  gpflags.bypass.nomcmmoxp.ownclaim:
+    description: Makes a player immune to their own nomcmmoxp flags
     default: op
   gpflags.command.setclaimflag:
     description: Grants permission to use /SetClaimFlag.

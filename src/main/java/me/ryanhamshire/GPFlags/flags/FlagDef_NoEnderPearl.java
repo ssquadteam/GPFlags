@@ -30,28 +30,26 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         if (event.getCause() != TeleportCause.ENDER_PEARL) return;
 
         Player player = event.getPlayer();
+        if (player.hasPermission("gpflags.bypass.noenderpearl")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
-            event.setCancelled(true);
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), false, null);
-            if (claim != null) {
+            if (!claim.getOwnerID().equals(player.getUniqueId()) || !player.hasPermission("gpflags.bypass.noenderpearl.ownclaim")) {
+                event.setCancelled(true);
                 String owner = claim.getOwnerName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
                 Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
                 return;
             }
-            String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInWorld);
-            Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{p}", player.getName()));
-            return;
         }
 
         flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
-            event.setCancelled(true);
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), false, null);
-            if (claim != null) {
+            if (!claim.getOwnerID().equals(player.getUniqueId()) || !player.hasPermission("gpflags.bypass.noenderpearl.ownclaim")) {
+                event.setCancelled(true);
                 String owner = claim.getOwnerName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);

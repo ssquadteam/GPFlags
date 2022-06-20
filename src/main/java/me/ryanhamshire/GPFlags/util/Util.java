@@ -370,7 +370,9 @@ public class Util {
                 if (!(sender instanceof Player)) return null;
                 Player p = (Player) sender;
                 FlagDefinition flagD = (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("noenterplayer"));
-                String flagParams = flagD.getFlagInstanceAtLocation(p.getLocation(), p).parameters;
+                Flag flag = flagD.getFlagInstanceAtLocation(p.getLocation(), p);
+                if (flag == null) return null;
+                String flagParams = flag.parameters;
                 if (flagParams != null) {
                     params.add(flagParams);
                 }
@@ -396,10 +398,6 @@ public class Util {
 
             case "changebiome":
                 ArrayList<String> biomes = new ArrayList<>();
-                WorldSettings worldSettings = null;
-                if (sender instanceof Player) {
-                    worldSettings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
-                }
                 for (Biome biome : Biome.values()) {
                     if (sender.hasPermission("gpflags.flag.changebiome." + biome)) {
                         biomes.add(biome.toString());

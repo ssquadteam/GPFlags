@@ -40,7 +40,8 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
 
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
-        if (claimTo.getOwnerName().equals(player.getName())) return true;
+        if (claimTo.getOwnerID().equals(player.getUniqueId())) return true;
+        if (claimTo.hasExplicitPermission(player, ClaimPermission.Inventory)) return true;
 
         Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
         return false;
@@ -69,7 +70,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(locTo, player);
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(locTo, false, null);
-            if (claim.getOwnerName().equals(player.getName())) return;
+            if (claim.getOwnerID().equals(player.getUniqueId())) return;
             if (claim.hasExplicitPermission(player, ClaimPermission.Inventory)) return;
             if (isTeleportEvent) {
                 player.leaveVehicle();
@@ -98,7 +99,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
             Flag flag = this.getFlagInstanceAtLocation(vehicle.getLocation(), player);
             if (flag != null) {
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
-                if (claim != null && !claim.hasExplicitPermission(player, ClaimPermission.Inventory) && !claim.getOwnerName().equals(player.getName())) {
+                if (claim != null && !claim.hasExplicitPermission(player, ClaimPermission.Inventory) && !claim.getOwnerID().equals(player.getUniqueId())) {
                     event.setCancelled(true);
                     Util.sendMessage(player, TextMode.Err, Messages.NoEnterVehicle);
                 }
@@ -116,7 +117,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
                 Player player = (Player) entity;
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
                 if (claim == null) return;
-                if (claim.getOwnerName().equals(player.getName())) return;
+                if (claim.getOwnerID().equals(player.getUniqueId())) return;
                 if (claim.hasExplicitPermission(player, ClaimPermission.Inventory)) return;
             }
             event.setCollisionCancelled(true);
