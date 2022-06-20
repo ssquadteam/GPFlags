@@ -26,7 +26,7 @@ public class FlagDef_CommandBlackList extends CommandListFlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("gpflags.bypass")) return;
+        if (player.hasPermission("gpflags.bypass.commandblacklist")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;

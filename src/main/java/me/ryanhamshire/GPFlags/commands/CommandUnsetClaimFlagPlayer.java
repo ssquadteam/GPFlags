@@ -4,7 +4,6 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.TextMode;
-import me.ryanhamshire.GPFlags.flags.FlagDef_ChangeBiome;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -12,26 +11,27 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 
-public class SetClaimFlagPlayerCmd extends BaseCmd {
-
-    SetClaimFlagPlayerCmd(GPFlags plugin) {
-        super(plugin);
-        command = "SetClaimFlagPlayer";
-        usage = "<player> <flag> [<parameters>]";
-    }
-
+public class CommandUnsetClaimFlagPlayer implements TabExecutor {
     @Override
-    boolean execute(CommandSender sender, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+        if (!sender.hasPermission("gpflags.command.unsetclaimflagplayer")) {
+            Util.sendMessage(sender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            return true;
+        }
         if (args.length < 2) return false;
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            Util.sendMessage(sender, "&c%s &7is not online", args[0]);
+            Util.sendMessage(sender, "&c" + args[0] + " &7is not online");
             return false;
         }
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
@@ -41,8 +41,9 @@ public class SetClaimFlagPlayerCmd extends BaseCmd {
             return false;
         }
 
+        GPFlags gpflags = GPFlags.getInstance();
         String flagName = args[1];
-        FlagDefinition def = PLUGIN.getFlagManager().getFlagDefinitionByName(flagName);
+        FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
             Util.sendMessage(sender, "&c%s&7 is not a valid flag", flagName);
             return false;
@@ -52,38 +53,28 @@ public class SetClaimFlagPlayerCmd extends BaseCmd {
             return true;
         }
 
-        String[] params = new String[args.length - 2];
-        System.arraycopy(args, 2, params, 0, args.length - 2);
-
-        // SET BIOME
-        if (flagName.equalsIgnoreCase("ChangeBiome")) {
-            if (args.length < 3) return false;
-            FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) PLUGIN.getFlagManager().getFlagDefinitionByName("changebiome"));
-            String biome = params[0].toUpperCase().replace(" ", "_");
-            if (!flagD.changeBiome(sender, claim, biome)) return true;
-        }
-
-        SetFlagResult result = PLUGIN.getFlagManager().setFlag(claim.getID().toString(), def, true, params);
+        SetFlagResult result = gpflags.getFlagManager().unSetFlag(claim, def);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         Util.sendMessage(sender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
+        String message;
         if (result.isSuccess()) {
-            PLUGIN.getFlagManager().save();
-            Util.sendMessage(sender, "&7Flag &b%s &7successfully set in &b%s&7's claim.", def.getName(), player.getName() );
-            return true;
+            gpflags.getFlagManager().save();
+            message = "&7Flag &b%s &7successfully unset in &b%s&7's claim.";
+
+        } else {
+            message = "&cFlag &b%s &cfailed to unset in &b%s&c's claim.";
         }
+        Util.sendMessage(sender, message, def.getName(), player.getName());
+
         return true;
     }
 
     @Override
-    List<String> tab(CommandSender sender, String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (args.length == 1) {
-            return null; // allows for tabbing players
+            return null; // returns player list
         } else if (args.length == 2) {
-            return flagTab(sender, args[1]);
-        } else if (args.length > 2) {
-            String[] params = new String[args.length - 1];
-            System.arraycopy(args, 1, params, 0, args.length - 1);
-            return paramTab(sender, params);
+            return Util.flagTab(sender, args[1]);
         }
         return Collections.emptyList();
     }

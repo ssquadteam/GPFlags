@@ -1,7 +1,5 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.List;
-
 public class WorldSettings {
 
     public boolean pvpRequiresClaimFlag = false;
@@ -12,7 +10,5 @@ public class WorldSettings {
     public String pvpExitClaimMessage = null;
     public String worldGamemodeDefault = null;
     public boolean noMonsterSpawnIgnoreSpawners = false;
-
-    public List biomeBlackList = null;
 
 }

@@ -101,12 +101,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
         assert world != null;
-        if (GPFlags.getInstance().getWorldSettingsManager().get(world).biomeBlackList.contains(biome)) {
-            if (!(sender.hasPermission("gpflags.bypass"))) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                        "&cThe biome &b" + biome + " &chas been blacklisted in this world"));
-                return false;
-            }
+        if (!sender.hasPermission("gpflags.flag.changebiome." + biome)) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                    "&cYou do not have permissions for the biome &b" + biome + " &c."));
+            return false;
         }
         changeBiome(claim, b);
         return true;
