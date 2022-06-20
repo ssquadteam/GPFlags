@@ -5,6 +5,9 @@ import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -22,6 +25,11 @@ public class FlagDef_NoChorusFruit extends FlagDefinition {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.getCause() != TeleportCause.CHORUS_FRUIT) return;
+
+        Player player = event.getPlayer();
+        if (player.hasPermission("gpflags.bypass.nochorusfruit")) return;
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.nochorusfruit.ownclaim")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {

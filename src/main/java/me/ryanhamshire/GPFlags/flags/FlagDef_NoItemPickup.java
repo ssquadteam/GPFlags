@@ -5,6 +5,8 @@ import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,9 +25,13 @@ public class FlagDef_NoItemPickup extends FlagDefinition {
     public void onPlayerPickupItem(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = ((Player) event.getEntity());
+            if (player.hasPermission("gpflags.bypass.noitempickup")) return;
 
             Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
             if (flag == null) return;
+
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+            if (claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.noitempickup.ownclaim")) return;
 
             event.setCancelled(true);
         }
