@@ -78,10 +78,6 @@ public class GPFlagsConfig {
             settings.pvpExitClaimMessage = inConfig.getString("World Flags." + worldName + ".ExitMessage", "PvP is disabled in this area, you are now safe");
             outConfig.set("World Flags." + worldName + ".ExitMessage", settings.pvpExitClaimMessage);
 
-            // Adds default biomes to be ignored in the ChangeBiome flag
-            settings.biomeBlackList = inConfig.getList("World Flags." + worldName + ".Biomes.Blacklist", Arrays.asList("MUSHROOM_FIELDS", "MUSHROOM_FIELD_SHORE"));
-            outConfig.set("World Flags." + worldName + ".Biomes.Blacklist", settings.biomeBlackList);
-
             settings.noMonsterSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", true);
             outConfig.set("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", settings.noMonsterSpawnIgnoreSpawners);
 

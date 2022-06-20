@@ -98,7 +98,7 @@ public class CommandSetClaimFlag implements TabExecutor {
             }
         }
 
-        // Check to see if biome is blacklisted
+        // Check to see if biome is allowed for the player
         if (flagName.equalsIgnoreCase("ChangeBiome")) {
             if (args.length < 2) return false;
             FlagDef_ChangeBiome flagD = ((FlagDef_ChangeBiome) gpflags.getFlagManager().getFlagDefinitionByName("changebiome"));

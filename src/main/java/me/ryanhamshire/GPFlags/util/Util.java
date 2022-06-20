@@ -406,7 +406,7 @@ public class Util {
                     worldSettings = GPFlags.getInstance().getWorldSettingsManager().get(((Player) sender).getWorld());
                 }
                 for (Biome biome : Biome.values()) {
-                    if ((worldSettings != null && !(worldSettings.biomeBlackList.contains(biome.toString()))) || sender.hasPermission("gpflags.bypass.biomeblacklist")) {
+                    if (sender.hasPermission("gpflags.flag.changebiome." + biome)) {
                         biomes.add(biome.toString());
                     }
                 }

@@ -152,15 +152,11 @@ permissions:
           gpflags.bypass.noflight: true
           gpflags.bypass.exitcommand: true
           gpflags.bypass.entercommand: true
-          gpflags.bypass.biomeblacklist: true
           gpflags.bypass.commandblacklist: true
           gpflags.bypass.commandwhitelist: true
           gpflags.bypass.noenter: true
           gpflags.bypass.novehicle: true
           gpflags.bypass.self: true
-  gpflags.bypass.biomeblacklist:
-    description: Makes a player immune to the limitations of the biomeblacklist
-    default: op
   gpflags.bypass.commandblacklist:
     description: Makes a player immune to the limitations of the commandblacklist flag
     default: op
