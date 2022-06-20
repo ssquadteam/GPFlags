@@ -154,9 +154,8 @@ public class PlayerListener implements Listener {
     private void onChangeClaim(ClaimModifiedEvent event) {
         Claim claimTo = event.getTo();
         Claim claimFrom = event.getFrom();
-        CommandSender modifier = event.getModifier();
-        if (modifier instanceof Player) {
-            Player player = ((Player) modifier);
+        World world = claimFrom.getGreaterBoundaryCorner().getWorld();
+        for (Player player : world.getPlayers()) {
             Location loc = player.getLocation();
 
             // Resizing a claim to be smaller and falling on the outside
