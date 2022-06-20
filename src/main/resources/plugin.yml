@@ -205,6 +205,9 @@ permissions:
   gpflags.bypass.noitemdrop.ownclaim:
     description: Makes a player immune to their own noitemdrop flags
     default: op
+  gpflags.bypass.noitempickup.ownclaim:
+    description: Makes a player immune to their own noitempickup flags
+    default: op
   gpflags.bypass.noitempickup:
     description: Makes a player immune to their own noitempickup flags
     default: op
@@ -255,7 +258,7 @@ permissions:
     children:
       gpflags.command.gpflags: true
   gpflags.flag.allflags:
-    description: Grants permission to apply/remove all flags.
+    description: Grants permission to apply/remove all flags. (depreciated)
     default: op
     children:
       gpflags.flag.*: true

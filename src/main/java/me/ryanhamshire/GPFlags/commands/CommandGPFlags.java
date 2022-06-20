@@ -27,6 +27,10 @@ public class CommandGPFlags implements TabExecutor {
             Util.sendMessage(commandSender, TextMode.Success, Messages.ReloadComplete);
             return true;
         }
+        if (!commandSender.hasPermission("gpflags.command.help")) {
+            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            return true;
+        }
         List<Command> cmdList = PluginCommandYamlParser.parse(GPFlags.getInstance());
         for (Command c : cmdList) {
             if (c.getPermission() == null || commandSender.hasPermission(c.getPermission())) {
