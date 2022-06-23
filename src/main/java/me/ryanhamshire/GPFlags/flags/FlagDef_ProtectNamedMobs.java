@@ -41,6 +41,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
 
         Player player = (Player) damager;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(entity.getLocation(), false, null);
+        if (claim == null) return;
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         event.setCancelled(true);
     }
@@ -62,7 +63,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
 
     @Override
     public List<FlagType> getFlagType() {
-        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
+        return Arrays.asList(FlagType.CLAIM);
     }
 
 }
