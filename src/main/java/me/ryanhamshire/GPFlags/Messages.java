@@ -168,6 +168,8 @@ public enum Messages {
     DisableReadLecterns,
     EnableNoBlockGravity,
     DisableNoBlockGravity,
+    EnableNoBlockForm,
+    DisableNoBlockForm,
     
     //EXPERIMENTAL
     ChangeBiomeSet,

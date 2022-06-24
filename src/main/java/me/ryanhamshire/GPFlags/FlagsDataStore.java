@@ -292,6 +292,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoBlockGravity, "Disabling block gravity in this area.", null);
         this.addDefault(defaults, Messages.DisableNoBlockGravity, "Enabling block gravity in this area.", null);
 
+        this.addDefault(defaults, Messages.EnableNoBlockForm, "Blocks will no longer form or spread based on world conditions.", null);
+        this.addDefault(defaults, Messages.DisableNoBlockForm, "Blocks will once again form and spread based on world conditions.", null);
+
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 
         //load the config file
