@@ -32,7 +32,7 @@ public class FlagDef_CommandBlackList extends CommandListFlagDefinition {
         if (flag == null) return;
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.commandblacklist.ownclaim")) return;
+        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.commandblacklist.ownclaim")) return;
 
         if (this.commandInList(flag.parameters, event.getMessage())) {
             event.setCancelled(true);

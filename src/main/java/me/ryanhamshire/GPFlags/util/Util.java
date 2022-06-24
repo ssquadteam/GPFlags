@@ -420,5 +420,11 @@ public class Util {
         return loc;
     }
 
+    public static boolean isClaimOwner(Claim c, Player p) {
+        if (c == null) return false;
+        if (c.getOwnerID() == null) return false;
+        return c.getOwnerID().equals(p.getUniqueId());
+    }
+
 
 }

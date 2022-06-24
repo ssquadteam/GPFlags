@@ -70,7 +70,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(locTo, player);
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(locTo, false, null);
-            if (claim.getOwnerID().equals(player.getUniqueId())) return;
+            if (Util.isClaimOwner(claim, player)) return;
             if (claim.hasExplicitPermission(player, ClaimPermission.Inventory)) return;
             if (isTeleportEvent) {
                 player.leaveVehicle();
@@ -99,7 +99,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
             Flag flag = this.getFlagInstanceAtLocation(vehicle.getLocation(), player);
             if (flag != null) {
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
-                if (claim != null && !claim.hasExplicitPermission(player, ClaimPermission.Inventory) && !claim.getOwnerID().equals(player.getUniqueId())) {
+                if (claim != null && !claim.hasExplicitPermission(player, ClaimPermission.Inventory) && !Util.isClaimOwner(claim, player)) {
                     event.setCancelled(true);
                     Util.sendMessage(player, TextMode.Err, Messages.NoEnterVehicle);
                 }
@@ -117,7 +117,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
                 Player player = (Player) entity;
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
                 if (claim == null) return;
-                if (claim.getOwnerID().equals(player.getUniqueId())) return;
+                if (Util.isClaimOwner(claim, player)) return;
                 if (claim.hasExplicitPermission(player, ClaimPermission.Inventory)) return;
             }
             event.setCollisionCancelled(true);

@@ -38,7 +38,7 @@ public class FlagDef_NoElytra extends PlayerMovementFlagDefinition {
         Player player = (Player) event.getEntity();
         if (player.hasPermission("gpflags.bypass.noelytra")) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim != null && claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.noelytra.ownclaim")) return;
+        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.noelytra.ownclaim")) return;
 
         if (this.getFlagInstanceAtLocation(entity.getLocation(), null) == null) return;
 
