@@ -29,7 +29,7 @@ public class FlagDef_NoChorusFruit extends FlagDefinition {
         Player player = event.getPlayer();
         if (player.hasPermission("gpflags.bypass.nochorusfruit")) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.nochorusfruit.ownclaim")) return;
+        if (claim != null && claim.getOwnerID().equals(player.getUniqueId()) && player.hasPermission("gpflags.bypass.nochorusfruit.ownclaim")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
