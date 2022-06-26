@@ -289,7 +289,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                 return;
             }
             for (ItemStack item : player.getInventory()) {
-                if (item != null && isProjectile(item)) {
+                if (isProjectile(item)) {
                     event.getProjectile().setMetadata("item-stack", new FixedMetadataValue(GPFlags.getInstance(), item.clone()));
                     return;
                 }
@@ -298,6 +298,9 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     }
 
     private boolean isProjectile(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
         switch (item.getType()) {
             case ARROW:
             case SPECTRAL_ARROW:
