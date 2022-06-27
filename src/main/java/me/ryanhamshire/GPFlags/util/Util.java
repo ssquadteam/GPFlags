@@ -25,6 +25,7 @@ import org.bukkit.entity.minecart.StorageMinecart;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -316,6 +317,22 @@ public class Util {
         }
     }
 
+    public static boolean canInventory(Claim claim, Player player) {
+        try {
+            return claim.checkPermission(player, ClaimPermission.Inventory, null) == null;
+        } catch (NoSuchFieldError e) {
+            return claim.allowContainers(player) == null;
+        }
+    }
+
+    public static boolean canManage(Claim claim, Player player) {
+        try {
+            return claim.checkPermission(player, ClaimPermission.Manage, null) == null;
+        } catch (NoSuchFieldError e) {
+            return claim.allowGrantPermission(player) == null;
+        }
+    }
+
     public static boolean canAccess(Claim claim, Player player) {
         try {
             return claim.checkPermission(player, ClaimPermission.Access, null) == null;
@@ -424,6 +441,35 @@ public class Util {
         if (c == null) return false;
         if (c.getOwnerID() == null) return false;
         return c.getOwnerID().equals(p.getUniqueId());
+    }
+
+    public static boolean shouldBypass(Player p, Claim c, Flag f) {
+        String basePerm = "gpflags.bypass." + f.getFlagDefinition().getName();
+        if (p.hasPermission(basePerm)) return true;
+        if (c == null) return p.hasPermission(basePerm + ".nonclaim");
+
+        if (isClaimOwner(c, p) && p.hasPermission(basePerm + ".own")) return true;
+        if (isManageTrusted(p, c) && p.hasPermission(basePerm + ".manage")) return true;
+        if (isBuildTrusted(p, c) && p.hasPermission(basePerm + ".edit")) return true;
+        if (isContainerTrusted(p, c) && p.hasPermission(basePerm + ".inventory")) return true;
+        if (isAccessTrusted(p, c) && p.hasPermission(basePerm + ".access")) return true;
+        return false;
+    }
+
+    public static boolean isManageTrusted(Player p, @NotNull Claim c) {
+        return Util.canManage(c, p);
+    }
+
+    public static boolean isBuildTrusted(Player p, @NotNull Claim c) {
+        return Util.canBuild(c, p);
+    }
+
+    public static boolean isContainerTrusted(Player p, @NotNull Claim c) {
+        return Util.canInventory(c, p);
+    }
+
+    public static boolean isAccessTrusted(Player p, @NotNull Claim c) {
+        return Util.canAccess(c, p);
     }
 
 
