@@ -31,7 +31,7 @@ public class FlagDef_CommandWhiteList extends CommandListFlagDefinition {
         if (flag == null) return;
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (!Util.shouldBypass(player, claim, flag)) return;
+        if (Util.shouldBypass(player, claim, flag)) return;
 
         if (!this.commandInList(flag.parameters, event.getMessage())) {
             event.setCancelled(true);
