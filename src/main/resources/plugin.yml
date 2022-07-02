@@ -160,6 +160,27 @@ permissions:
   gpflags.bypass.novehicle:
     description: Makes a player immune to novehicle flags
     default: op
+  gpflags.bypass.novehicle.ownclaim:
+    description: Makes a player immune to their own novehicle flags
+    default: op
+  gpflags.bypass.novehicle.nonclaim:
+    description: Makes a player immune to novehicle outside of claims
+    default: op
+  gpflags.bypass.novehicle.adminclaim:
+    description: Makes a player immune to novehicle in adminclaims
+    default: op
+  gpflags.bypass.novehicle.manage:
+    description: Makes a player immune to novehicle where they have manage trust
+    default: op
+  gpflags.bypass.novehicle.edit:
+    description: Makes a player immune to novehicle where they have edit trust
+    default: op
+  gpflags.bypass.novehicle.inventory:
+    description: Makes a player immune to novehicle where they have inventory trust
+    default: op
+  gpflags.bypass.novehicle.access:
+    description: Makes a player immune to novehicle where they have access trust
+    default: op
   gpflags.bypass.fly:
       description: Makes a player immune to ownerfly and ownermemberfly flags
       default: op
@@ -172,8 +193,44 @@ permissions:
   gpflags.bypass.nochorusfruit:
     description: Makes a player immune to nochorusfruit flags
     default: op
+  gpflags.bypass.nochorusfruit.nonclaim:
+    description: Makes a player immune to nochorusfruit outside of claims
+    default: op
+  gpflags.bypass.nochorusfruit.adminclaim:
+    description: Makes a player immune to nochorusfruit in adminclaims
+    default: op
+  gpflags.bypass.nochorusfruit.manage:
+    description: Makes a player immune to nochorusfruit where they have manage trust
+    default: op
+  gpflags.bypass.nochorusfruit.edit:
+    description: Makes a player immune to nochorusfruit where they have edit trust
+    default: op
+  gpflags.bypass.nochorusfruit.inventory:
+    description: Makes a player immune to nochorusfruit where they have inventory trust
+    default: op
+  gpflags.bypass.nochorusfruit.access:
+    description: Makes a player immune to nochorusfruit where they have access trust
+    default: op
   gpflags.bypass.commandblacklist.ownclaim:
     description: Makes a player immune to their own commandblacklist flags
+    default: op
+  gpflags.bypass.commandblacklist.nonclaim:
+    description: Makes a player immune to commandblacklist outside of claims
+    default: op
+  gpflags.bypass.commandblacklist.adminclaim:
+    description: Makes a player immune to commandblacklist in adminclaims
+    default: op
+  gpflags.bypass.commandblacklist.manage:
+    description: Makes a player immune to commandblacklist where they have manage trust
+    default: op
+  gpflags.bypass.commandblacklist.edit:
+    description: Makes a player immune to commandblacklist where they have edit trust
+    default: op
+  gpflags.bypass.commandblacklist.inventory:
+    description: Makes a player immune to commandblacklist where they have inventory trust
+    default: op
+  gpflags.bypass.commandblacklist.access:
+    description: Makes a player immune to commandblacklist where they have access trust
     default: op
   gpflags.bypass.commandwhitelist.ownclaim:
     description: Makes a player immune to their own commandwhitelist flags
@@ -190,14 +247,68 @@ permissions:
   gpflags.bypass.noelytra.ownclaim:
     description: Makes a player immune to their own noelytra flags
     default: op
+  gpflags.bypass.noelytra.nonclaim:
+    description: Makes a player immune to noelytra outside of claims
+    default: op
+  gpflags.bypass.noelytra.adminclaim:
+    description: Makes a player immune to noelytra in adminclaims
+    default: op
+  gpflags.bypass.noelytra.manage:
+    description: Makes a player immune to noelytra where they have manage trust
+    default: op
+  gpflags.bypass.noelytra.edit:
+    description: Makes a player immune to noelytra where they have edit trust
+    default: op
+  gpflags.bypass.noelytra.inventory:
+    description: Makes a player immune to noelytra where they have inventory trust
+    default: op
+  gpflags.bypass.noelytra.access:
+    description: Makes a player immune to noelytra where they have access trust
+    default: op
   gpflags.bypass.noenderpearl:
     description: Makes a player immune to noenderpearl flags
     default: op
   gpflags.bypass.noenderpearl.ownclaim:
     description: Makes a player immune to their own noenderpearl flags
     default: op
+  gpflags.bypass.noenderpearl.nonclaim:
+    description: Makes a player immune to noenderpearl outside of claims
+    default: op
+  gpflags.bypass.noenderpearl.adminclaim:
+    description: Makes a player immune to noenderpearl in adminclaims
+    default: op
+  gpflags.bypass.noenderpearl.manage:
+    description: Makes a player immune to noenderpearl where they have manage trust
+    default: op
+  gpflags.bypass.noenderpearl.edit:
+    description: Makes a player immune to noenderpearl where they have edit trust
+    default: op
+  gpflags.bypass.noenderpearl.inventory:
+    description: Makes a player immune to noenderpearl where they have inventory trust
+    default: op
+  gpflags.bypass.noenderpearl.access:
+    description: Makes a player immune to noenderpearl where they have access trust
+    default: op
   gpflags.bypass.noflight.ownclaim:
     description: Makes a player immune to their own noflight flags
+    default: op
+  gpflags.bypass.noflight.nonclaim:
+    description: Makes a player immune to noflight outside of claims
+    default: op
+  gpflags.bypass.noflight.adminclaim:
+    description: Makes a player immune to noflight in adminclaims
+    default: op
+  gpflags.bypass.noflight.manage:
+    description: Makes a player immune to noflight where they have manage trust
+    default: op
+  gpflags.bypass.noflight.edit:
+    description: Makes a player immune to noflight where they have edit trust
+    default: op
+  gpflags.bypass.noflight.inventory:
+    description: Makes a player immune to noflight where they have inventory trust
+    default: op
+  gpflags.bypass.noflight.access:
+    description: Makes a player immune to noflight where they have access trust
     default: op
   gpflags.bypass.noitemdrop:
     description: Makes a player immune to noitemdrop flags
@@ -205,8 +316,44 @@ permissions:
   gpflags.bypass.noitemdrop.ownclaim:
     description: Makes a player immune to their own noitemdrop flags
     default: op
+  gpflags.bypass.noitemdrop.nonclaim:
+    description: Makes a player immune to noitemdrop outside of claims
+    default: op
+  gpflags.bypass.noitemdrop.adminclaim:
+    description: Makes a player immune to noitemdrop in adminclaims
+    default: op
+  gpflags.bypass.noitemdrop.manage:
+    description: Makes a player immune to noitemdrop where they have manage trust
+    default: op
+  gpflags.bypass.noitemdrop.edit:
+    description: Makes a player immune to noitemdrop where they have edit trust
+    default: op
+  gpflags.bypass.noitemdrop.inventory:
+    description: Makes a player immune to noitemdrop where they have inventory trust
+    default: op
+  gpflags.bypass.noitemdrop.access:
+    description: Makes a player immune to noitemdrop where they have access trust
+    default: op
   gpflags.bypass.noitempickup.ownclaim:
     description: Makes a player immune to their own noitempickup flags
+    default: op
+  gpflags.bypass.noitempickup.nonclaim:
+    description: Makes a player immune to noitempickup outside of claims
+    default: op
+  gpflags.bypass.noitempickup.adminclaim:
+    description: Makes a player immune to noitempickup in adminclaims
+    default: op
+  gpflags.bypass.noitempickup.manage:
+    description: Makes a player immune to noitempickup where they have manage trust
+    default: op
+  gpflags.bypass.noitempickup.edit:
+    description: Makes a player immune to noitempickup where they have edit trust
+    default: op
+  gpflags.bypass.noitempickup.inventory:
+    description: Makes a player immune to noitempickup where they have inventory trust
+    default: op
+  gpflags.bypass.noitempickup.access:
+    description: Makes a player immune to noitempickup where they have access trust
     default: op
   gpflags.bypass.noitempickup:
     description: Makes a player immune to their own noitempickup flags
@@ -217,11 +364,47 @@ permissions:
   gpflags.bypass.nomcmmoskills.ownclaim:
     description: Makes a player immune to their own nomcmmoskills flags
     default: op
+  gpflags.bypass.nomcmmoskills.nonclaim:
+    description: Makes a player immune to nomcmmoskills outside of claims
+    default: op
+  gpflags.bypass.nomcmmoskills.adminclaim:
+    description: Makes a player immune to nomcmmoskills in adminclaims
+    default: op
+  gpflags.bypass.nomcmmoskills.manage:
+    description: Makes a player immune to nomcmmoskills where they have manage trust
+    default: op
+  gpflags.bypass.nomcmmoskills.edit:
+    description: Makes a player immune to nomcmmoskills where they have edit trust
+    default: op
+  gpflags.bypass.nomcmmoskills.inventory:
+    description: Makes a player immune to nomcmmoskills where they have inventory trust
+    default: op
+  gpflags.bypass.nomcmmoskills.access:
+    description: Makes a player immune to nomcmmoskills where they have access trust
+    default: op
   gpflags.bypass.nomcmmoxp:
     description: Makes a player immune to nomcmmoxp flags
     default: op
   gpflags.bypass.nomcmmoxp.ownclaim:
     description: Makes a player immune to their own nomcmmoxp flags
+    default: op
+  gpflags.bypass.nomcmmoxp.nonclaim:
+    description: Makes a player immune to nomcmmoxp outside of claims
+    default: op
+  gpflags.bypass.nomcmmoxp.adminclaim:
+    description: Makes a player immune to nomcmmoxp in adminclaims
+    default: op
+  gpflags.bypass.nomcmmoxp.manage:
+    description: Makes a player immune to nomcmmoxp where they have manage trust
+    default: op
+  gpflags.bypass.nomcmmoxp.edit:
+    description: Makes a player immune to nomcmmoxp where they have edit trust
+    default: op
+  gpflags.bypass.nomcmmoxp.inventory:
+    description: Makes a player immune to nomcmmoxp where they have inventory trust
+    default: op
+  gpflags.bypass.nomcmmoxp.access:
+    description: Makes a player immune to nomcmmoxp where they have access trust
     default: op
   gpflags.command.setclaimflag:
     description: Grants permission to use /SetClaimFlag.
