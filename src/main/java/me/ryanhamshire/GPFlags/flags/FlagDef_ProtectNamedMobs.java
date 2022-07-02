@@ -63,7 +63,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
 
     @Override
     public List<FlagType> getFlagType() {
-        return Arrays.asList(FlagType.CLAIM);
+        return Arrays.asList(FlagType.CLAIM, FlagType.SERVER, FlagType.WORLD);
     }
 
 }
