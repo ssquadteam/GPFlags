@@ -443,17 +443,21 @@ public class Util {
         return c.getOwnerID().equals(p.getUniqueId());
     }
 
-    public static boolean shouldBypass(Player p, Claim c, Flag f) {
-        String basePerm = "gpflags.bypass." + f.getFlagDefinition().getName();
+    public static boolean shouldBypass(Player p, Claim c, String basePerm) {
         if (p.hasPermission(basePerm)) return true;
         if (c == null) return p.hasPermission(basePerm + ".nonclaim");
-
-        if (isClaimOwner(c, p) && p.hasPermission(basePerm + ".own")) return true;
+        if (c.getOwnerID() == null && p.hasPermission(basePerm + ".adminclaim")) return true;
+        if (isClaimOwner(c, p) && p.hasPermission(basePerm + ".ownclaim")) return true;
         if (isManageTrusted(p, c) && p.hasPermission(basePerm + ".manage")) return true;
         if (isBuildTrusted(p, c) && p.hasPermission(basePerm + ".edit")) return true;
         if (isContainerTrusted(p, c) && p.hasPermission(basePerm + ".inventory")) return true;
         if (isAccessTrusted(p, c) && p.hasPermission(basePerm + ".access")) return true;
         return false;
+    }
+
+    public static boolean shouldBypass(Player p, Claim c, Flag f) {
+        String basePerm = "gpflags.bypass." + f.getFlagDefinition().getName();
+        return shouldBypass(p, c, basePerm);
     }
 
     public static boolean isManageTrusted(Player p, @NotNull Claim c) {
