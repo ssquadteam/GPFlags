@@ -26,13 +26,12 @@ public class FlagDef_CommandWhiteList extends CommandListFlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("gpflags.bypass.commandwhitelist")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.commandwhitelist.ownclaim")) return;
+        if (!Util.shouldBypass(player, claim, flag)) return;
 
         if (!this.commandInList(flag.parameters, event.getMessage())) {
             event.setCancelled(true);

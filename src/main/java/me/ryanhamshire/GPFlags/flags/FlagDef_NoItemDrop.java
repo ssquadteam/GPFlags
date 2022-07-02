@@ -25,13 +25,12 @@ public class FlagDef_NoItemDrop extends FlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        if (player.hasPermission("gpflags.bypass.noitemdrop")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.noitemdrop.ownclaim")) return;
+        if (Util.shouldBypass(player, claim, flag)) return;
 
         event.setCancelled(true);
     }

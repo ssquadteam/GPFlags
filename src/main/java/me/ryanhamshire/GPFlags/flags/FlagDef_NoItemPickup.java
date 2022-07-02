@@ -26,13 +26,12 @@ public class FlagDef_NoItemPickup extends FlagDefinition {
     public void onPlayerPickupItem(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = ((Player) event.getEntity());
-            if (player.hasPermission("gpflags.bypass.noitempickup")) return;
 
             Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
             if (flag == null) return;
 
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-            if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.noitempickup.ownclaim")) return;
+            if (Util.shouldBypass(player, claim, flag)) return;
 
             event.setCancelled(true);
         }

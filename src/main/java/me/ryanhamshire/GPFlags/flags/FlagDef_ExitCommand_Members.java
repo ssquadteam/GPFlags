@@ -28,7 +28,7 @@ public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition {
 
         if (flag == this.getFlagInstanceAtLocation(to, player)) return true;
 
-        if (player.hasPermission("gpflags.bypass.exitcommand")) return true;
+        if (Util.shouldBypass(player, claimFrom, flag)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());

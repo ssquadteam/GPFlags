@@ -42,13 +42,11 @@ public class FlagDef_NoMcMMOSkills extends FlagDefinition {
 
     private void handleEvent(Player player, Cancellable event) {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-        if (player.hasPermission("gpflags.bypass.nomcmmoskills")) return;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.nomcmmoskills.ownclaim")) return;
 
-        if (flag != null) {
-            event.setCancelled(true);
-        }
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (Util.shouldBypass(player, claim, flag)) return;
+
+        event.setCancelled(true);
     }
 
     @Override

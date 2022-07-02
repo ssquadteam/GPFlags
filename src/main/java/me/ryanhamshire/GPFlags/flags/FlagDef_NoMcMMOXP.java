@@ -30,13 +30,10 @@ public class FlagDef_NoMcMMOXP extends FlagDefinition {
 
     private void handleEvent(Player player, Cancellable event) {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-        if (player.hasPermission("gpflags.bypass.nomcmmoxp")) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.nomcmmoxp.ownclaim")) return;
+        if (Util.shouldBypass(player, claim, flag)) return;
 
-        if (flag != null) {
-            event.setCancelled(true);
-        }
+        event.setCancelled(true);
     }
 
     @Override

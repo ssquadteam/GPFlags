@@ -30,12 +30,11 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         if (event.getCause() != TeleportCause.ENDER_PEARL) return;
 
         Player player = event.getPlayer();
-        if (player.hasPermission("gpflags.bypass.noenderpearl")) return;
 
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), false, null);
-            if (!Util.isClaimOwner(claim, player) || !player.hasPermission("gpflags.bypass.noenderpearl.ownclaim")) {
+            if (!Util.shouldBypass(player, claim, flag)) {
                 event.setCancelled(true);
                 String owner = claim.getOwnerName();
 
@@ -48,7 +47,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), false, null);
-            if (!Util.isClaimOwner(claim, player) || !player.hasPermission("gpflags.bypass.noenderpearl.ownclaim")) {
+            if (!Util.shouldBypass(player, claim, flag)) {
                 event.setCancelled(true);
                 String owner = claim.getOwnerName();
 

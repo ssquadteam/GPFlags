@@ -60,9 +60,6 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
      */
     private boolean handleFlyAttempt(Player player) {
         if (player.getGameMode() == GameMode.SPECTATOR) return false;
-        if (player.hasPermission("gpflags.bypass.noflight")) {
-            return false;
-        }
         
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) {
@@ -71,7 +68,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
-        if (Util.isClaimOwner(claim, player) && player.hasPermission("gpflags.bypass.noflight.ownclaim")) return false;
+        if (Util.shouldBypass(player, claim, flag)) return false;
 
             Flag ownerFly = GPFlags.getInstance().getFlagManager()
                 .getFlagDefinitionByName("OwnerFly")

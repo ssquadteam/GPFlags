@@ -30,7 +30,7 @@ public class FlagDef_EnterCommand extends PlayerMovementFlagDefinition {
         if (flag == null) return true;
         Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
         if (flag == oldFlag) return true;
-        if (player.hasPermission("gpflags.bypass.entercommand")) return true;
+        if (Util.shouldBypass(player, claimTo, flag)) return true;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
