@@ -23,11 +23,6 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         super(manager, plugin);
     }
 
-    @Deprecated
-    public boolean allowMovement(Player player, Location from, Location to) {
-        return true;
-    }
-
     public boolean allowMovement(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {
         return true;
     }
@@ -52,10 +47,6 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         int toMinHeight = to.getWorld().getMinHeight();
         if (to.getY() < toMinHeight) {
             to.setY(toMaxHeight);
-        }
-        if (!this.allowMovement(player, lastLocation, to)) {
-            //this.undoMovement(player, lastLocation);
-            event.setCancelled(true);
         }
         if (!this.allowMovement(player, lastLocation, to, event.getClaimFrom(), event.getClaimTo())) {
             event.setCancelled(true);

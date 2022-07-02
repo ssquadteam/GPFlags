@@ -10,6 +10,7 @@ import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.WorldSettings;
 import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,7 +28,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         WorldSettings settings = this.settingsManager.get(player.getWorld());
 
         if (lastLocation == null) return true;

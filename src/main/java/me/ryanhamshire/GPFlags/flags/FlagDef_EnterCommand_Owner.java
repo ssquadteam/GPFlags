@@ -7,6 +7,7 @@ import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
@@ -22,7 +23,7 @@ public class FlagDef_EnterCommand_Owner extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return true;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;

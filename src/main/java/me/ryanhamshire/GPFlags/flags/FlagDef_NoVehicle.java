@@ -34,7 +34,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         super(manager, plugin);
     }
 
-    public boolean allowMovement(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (player.hasPermission("gpflags.bypass.novehicle")) return true;
         if (player.getVehicle() == null) return true;
 

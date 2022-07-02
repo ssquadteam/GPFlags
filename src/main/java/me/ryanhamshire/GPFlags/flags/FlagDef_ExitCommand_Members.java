@@ -21,7 +21,7 @@ public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to) {
+    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return true;
         Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
         if (flag == null) return true;
