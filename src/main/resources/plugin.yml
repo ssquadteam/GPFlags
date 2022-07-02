@@ -177,7 +177,7 @@ permissions:
     default: op
   gpflags.bypass.novehicle.inventory:
     description: Makes a player immune to novehicle where they have inventory trust
-    default: op
+    default: true
   gpflags.bypass.novehicle.access:
     description: Makes a player immune to novehicle where they have access trust
     default: op
