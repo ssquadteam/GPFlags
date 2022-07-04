@@ -42,7 +42,7 @@ public class FlagDef_NoMcMMOSkills extends FlagDefinition {
 
     private void handleEvent(Player player, Cancellable event) {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-
+        if (flag == null) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (Util.shouldBypass(player, claim, flag)) return;
 
