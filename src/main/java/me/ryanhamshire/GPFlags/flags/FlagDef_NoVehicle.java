@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
@@ -121,6 +122,21 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
             event.setCancelled(true);
         }
     }
+
+    /*
+    Unneeded because GP already cancels this...?
+    @EventHandler
+    private void onPlace(EntityPlaceEvent event) {
+        Entity entity = event.getEntity();
+        Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
+        if (flag == null) return;
+        if (!(entity instanceof Vehicle)) return;
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(entity.getLocation(), false, null);
+        Player player = event.getPlayer();
+        if (Util.shouldBypass(player, claim, flag)) return;
+        Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+    }
+     */
 
     @Override
     public String getName() {
