@@ -1,10 +1,6 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.Flag;
-import me.ryanhamshire.GPFlags.FlagManager;
-import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.MessageSpecifier;
-import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,7 +22,8 @@ public class FlagDef_NoMobSpawns extends FlagDefinition {
         if (type == EntityType.PLAYER || type == EntityType.ARMOR_STAND) return;
 
         SpawnReason reason = event.getSpawnReason();
-        if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) return;
+        WorldSettings settings = this.settingsManager.get(event.getEntity().getWorld());
+        if (settings.noMonsterSpawnIgnoreSpawners && (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG)) return;
 
 
         Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);

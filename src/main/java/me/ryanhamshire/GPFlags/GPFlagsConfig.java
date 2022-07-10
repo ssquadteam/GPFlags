@@ -80,6 +80,9 @@ public class GPFlagsConfig {
             settings.noMonsterSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", true);
             outConfig.set("World Flags." + worldName + ".NoMonsterSpawn Flag Ignores Spawners and Eggs", settings.noMonsterSpawnIgnoreSpawners);
 
+            settings.noMobSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMobSpawn Flag Ignores Spawners and Eggs", true);
+            outConfig.set("World Flags." + worldName + ".NoMobSpawn Flag Ignores Spawners and Eggs", settings.noMobSpawnIgnoreSpawners);
+
             outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + plugin.getDescription().getVersion() +
                     "\nServer Version: " + plugin.getServer().getVersion() + "\n\n");
         }

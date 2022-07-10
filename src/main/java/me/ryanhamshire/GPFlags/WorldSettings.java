@@ -10,5 +10,6 @@ public class WorldSettings {
     public String pvpExitClaimMessage = null;
     public String worldGamemodeDefault = null;
     public boolean noMonsterSpawnIgnoreSpawners = false;
+    public boolean noMobSpawnIgnoreSpawners = false;
 
 }
