@@ -117,9 +117,9 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
                 Player player = (Player) entity;
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
                 if (Util.shouldBypass(player, claim, flag)) return;
+                event.setCollisionCancelled(true);
+                event.setCancelled(true);
             }
-            event.setCollisionCancelled(true);
-            event.setCancelled(true);
         }
     }
 
