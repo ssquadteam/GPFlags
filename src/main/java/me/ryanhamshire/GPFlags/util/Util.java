@@ -476,4 +476,21 @@ public class Util {
         return Util.canAccess(c, p);
     }
 
+    public static boolean canManageFlags(Player player, Claim claim, String commandname) {
+        String basePerm = "gpflags.command." + commandname;
+        if (claim.getOwnerID() == null) {
+            return player.hasPermission(basePerm + ".adminclaim");
+        }
+        if (claim.getOwnerID().equals(player.getUniqueId())) {
+            return true;
+        }
+        if (canManage(claim, player) && player.hasPermission(basePerm + ".manage")) {
+            return true;
+        }
+        if (canBuild(claim, player) && player.hasPermission(basePerm + ".edit")) {
+            return true;
+        }
+        return false;
+    }
+
 }
