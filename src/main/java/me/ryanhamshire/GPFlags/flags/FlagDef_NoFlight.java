@@ -34,7 +34,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
 
     @Override
     public void processPlayer(Player player) {
-        if(! player.isFlying()) return;
+        if(!player.isFlying()) return;
         handleFlyAttempt(player);
     }
 
