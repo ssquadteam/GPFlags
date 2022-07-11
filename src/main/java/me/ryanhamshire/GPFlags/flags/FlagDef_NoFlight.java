@@ -70,7 +70,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
 
         if (Util.shouldBypass(player, claim, flag)) return false;
 
-            Flag ownerFly = GPFlags.getInstance().getFlagManager()
+        Flag ownerFly = GPFlags.getInstance().getFlagManager()
                 .getFlagDefinitionByName("OwnerFly")
                 .getFlagInstanceAtLocation(player.getLocation(), player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager()
