@@ -68,8 +68,8 @@ public class CommandSetClaimFlag implements TabExecutor {
             return true;
         }
 
-        // Check that they can build in the claim
-        if (!Util.canBuild(claim, player)) {
+        // Check that they can set flags in the area
+        if (canSetFlags(player, claim)) {
             Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
             return true;
         }
@@ -177,5 +177,21 @@ public class CommandSetClaimFlag implements TabExecutor {
             return Util.paramTab(commandSender, args);
         }
         return Collections.emptyList();
+    }
+
+    public boolean canSetFlags(Player player, Claim claim) {
+        if (claim.getOwnerID() == null) {
+            return player.hasPermission("gpflags.command.setclaimflag.adminclaim");
+        }
+        if (claim.getOwnerID().equals(player.getUniqueId())) {
+            return true;
+        }
+        if (Util.canManage(claim, player) && player.hasPermission("gpflags.command.setclaimflag.manage")) {
+            return true;
+        }
+        if (Util.canBuild(claim, player) && player.hasPermission("gpflags.command.setclaimflag.edit")) {
+            return true;
+        }
+        return false;
     }
 }
