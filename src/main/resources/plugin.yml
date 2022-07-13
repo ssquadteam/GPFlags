@@ -175,8 +175,8 @@ permissions:
   gpflags.bypass.novehicle.manage:
     description: Makes a player immune to novehicle where they have manage trust
     default: op
-  gpflags.bypass.novehicle.edit:
-    description: Makes a player immune to novehicle where they have edit trust
+  gpflags.bypass.novehicle.build:
+    description: Makes a player immune to novehicle where they have build trust
     default: op
   gpflags.bypass.novehicle.inventory:
     description: Makes a player immune to novehicle where they have inventory trust
@@ -205,8 +205,8 @@ permissions:
   gpflags.bypass.nochorusfruit.manage:
     description: Makes a player immune to nochorusfruit where they have manage trust
     default: op
-  gpflags.bypass.nochorusfruit.edit:
-    description: Makes a player immune to nochorusfruit where they have edit trust
+  gpflags.bypass.nochorusfruit.build:
+    description: Makes a player immune to nochorusfruit where they have build trust
     default: op
   gpflags.bypass.nochorusfruit.inventory:
     description: Makes a player immune to nochorusfruit where they have inventory trust
@@ -226,8 +226,8 @@ permissions:
   gpflags.bypass.commandblacklist.manage:
     description: Makes a player immune to commandblacklist where they have manage trust
     default: op
-  gpflags.bypass.commandblacklist.edit:
-    description: Makes a player immune to commandblacklist where they have edit trust
+  gpflags.bypass.commandblacklist.build:
+    description: Makes a player immune to commandblacklist where they have build trust
     default: op
   gpflags.bypass.commandblacklist.inventory:
     description: Makes a player immune to commandblacklist where they have inventory trust
@@ -259,8 +259,8 @@ permissions:
   gpflags.bypass.noelytra.manage:
     description: Makes a player immune to noelytra where they have manage trust
     default: op
-  gpflags.bypass.noelytra.edit:
-    description: Makes a player immune to noelytra where they have edit trust
+  gpflags.bypass.noelytra.build:
+    description: Makes a player immune to noelytra where they have build trust
     default: op
   gpflags.bypass.noelytra.inventory:
     description: Makes a player immune to noelytra where they have inventory trust
@@ -283,8 +283,8 @@ permissions:
   gpflags.bypass.noenderpearl.manage:
     description: Makes a player immune to noenderpearl where they have manage trust
     default: op
-  gpflags.bypass.noenderpearl.edit:
-    description: Makes a player immune to noenderpearl where they have edit trust
+  gpflags.bypass.noenderpearl.build:
+    description: Makes a player immune to noenderpearl where they have build trust
     default: op
   gpflags.bypass.noenderpearl.inventory:
     description: Makes a player immune to noenderpearl where they have inventory trust
@@ -304,8 +304,8 @@ permissions:
   gpflags.bypass.noflight.manage:
     description: Makes a player immune to noflight where they have manage trust
     default: op
-  gpflags.bypass.noflight.edit:
-    description: Makes a player immune to noflight where they have edit trust
+  gpflags.bypass.noflight.build:
+    description: Makes a player immune to noflight where they have build trust
     default: op
   gpflags.bypass.noflight.inventory:
     description: Makes a player immune to noflight where they have inventory trust
@@ -328,8 +328,8 @@ permissions:
   gpflags.bypass.noitemdrop.manage:
     description: Makes a player immune to noitemdrop where they have manage trust
     default: op
-  gpflags.bypass.noitemdrop.edit:
-    description: Makes a player immune to noitemdrop where they have edit trust
+  gpflags.bypass.noitemdrop.build:
+    description: Makes a player immune to noitemdrop where they have build trust
     default: op
   gpflags.bypass.noitemdrop.inventory:
     description: Makes a player immune to noitemdrop where they have inventory trust
@@ -349,8 +349,8 @@ permissions:
   gpflags.bypass.noitempickup.manage:
     description: Makes a player immune to noitempickup where they have manage trust
     default: op
-  gpflags.bypass.noitempickup.edit:
-    description: Makes a player immune to noitempickup where they have edit trust
+  gpflags.bypass.noitempickup.build:
+    description: Makes a player immune to noitempickup where they have build trust
     default: op
   gpflags.bypass.noitempickup.inventory:
     description: Makes a player immune to noitempickup where they have inventory trust
@@ -376,8 +376,8 @@ permissions:
   gpflags.bypass.nomcmmoskills.manage:
     description: Makes a player immune to nomcmmoskills where they have manage trust
     default: op
-  gpflags.bypass.nomcmmoskills.edit:
-    description: Makes a player immune to nomcmmoskills where they have edit trust
+  gpflags.bypass.nomcmmoskills.build:
+    description: Makes a player immune to nomcmmoskills where they have build trust
     default: op
   gpflags.bypass.nomcmmoskills.inventory:
     description: Makes a player immune to nomcmmoskills where they have inventory trust
@@ -400,8 +400,8 @@ permissions:
   gpflags.bypass.nomcmmoxp.manage:
     description: Makes a player immune to nomcmmoxp where they have manage trust
     default: op
-  gpflags.bypass.nomcmmoxp.edit:
-    description: Makes a player immune to nomcmmoxp where they have edit trust
+  gpflags.bypass.nomcmmoxp.build:
+    description: Makes a player immune to nomcmmoxp where they have build trust
     default: op
   gpflags.bypass.nomcmmoxp.inventory:
     description: Makes a player immune to nomcmmoxp where they have inventory trust

@@ -313,7 +313,7 @@ public class Util {
         try {
             return claim.checkPermission(player, ClaimPermission.Build, null) == null;
         } catch (NoSuchFieldError e) {
-            return claim.allowEdit(player) == null;
+            return claim.allowBuild(player, Material.STONE) == null;
         }
     }
 
@@ -449,7 +449,7 @@ public class Util {
         if (c.getOwnerID() == null && p.hasPermission(basePerm + ".adminclaim")) return true;
         if (isClaimOwner(c, p) && p.hasPermission(basePerm + ".ownclaim")) return true;
         if (isManageTrusted(p, c) && p.hasPermission(basePerm + ".manage")) return true;
-        if (isBuildTrusted(p, c) && p.hasPermission(basePerm + ".edit")) return true;
+        if (isBuildTrusted(p, c) && (p.hasPermission(basePerm + ".build") || p.hasPermission(basePerm + ".edit"))) return true;
         if (isContainerTrusted(p, c) && p.hasPermission(basePerm + ".inventory")) return true;
         if (isAccessTrusted(p, c) && p.hasPermission(basePerm + ".access")) return true;
         return false;
