@@ -170,6 +170,7 @@ public enum Messages {
     DisableNoBlockGravity,
     EnableNoBlockForm,
     DisableNoBlockForm,
+
     EnableBuyBuildTrust,
     DisableBuyBuildTrust,
     BuildTrustPrice,
@@ -179,6 +180,12 @@ public enum Messages {
     NotEnoughMoney,
     CannotBuyTrustHere,
     BoughtTrust,
+    EnableBuyContainerTrust,
+    DisableBuyContainerTrust,
+    ContainerTrustPrice,
+    EnableBuyAccessTrust,
+    DisableBuyAccessTrust,
+    AccessTrustPrice,
 
 
     //EXPERIMENTAL

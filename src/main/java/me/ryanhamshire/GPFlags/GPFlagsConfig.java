@@ -172,7 +172,9 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));
 
             this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
-            
+            this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
+
             this.flagManager.registerFlagDefinition(new FlagDef_ViewContainers(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ReadLecterns(this.flagManager, plugin));
 
