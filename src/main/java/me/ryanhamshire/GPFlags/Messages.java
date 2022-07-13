@@ -170,7 +170,16 @@ public enum Messages {
     DisableNoBlockGravity,
     EnableNoBlockForm,
     DisableNoBlockForm,
-    
+    EnableBuyEditTrust,
+    DisableBuyEditTrust,
+    EditTrustPrice,
+    CostRequired,
+    ProblemWithFlagSetup,
+    AlreadyHaveTrust,
+    NotEnoughMoney,
+    CannotBuyTrustHere,
+
+
     //EXPERIMENTAL
     ChangeBiomeSet,
     ChangeBiomeUnset,
