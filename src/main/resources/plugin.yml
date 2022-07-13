@@ -75,6 +75,12 @@ commands:
   buybuildtrust:
     description: Buy buildtrust in a claim.
     usage: /buybuildtrust
+  buycontainertrust:
+    description: Buy containertrust in a claim.
+    usage: /buycontainertrust
+  buyaccesstrust:
+    description: Buy inventorytrust in a claim.
+    usage: /buyinventorytrust
 permissions:
   gpflags.admin.*:
     description: Grants all administrative functionality. (depreciated)
