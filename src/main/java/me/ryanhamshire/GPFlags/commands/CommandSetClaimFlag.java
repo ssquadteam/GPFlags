@@ -69,7 +69,7 @@ public class CommandSetClaimFlag implements TabExecutor {
         }
 
         // Check that they can set flags in the area
-        if (!Util.canManageFlags(player, claim, "setclaimflag")) {
+        if (!Util.canManageFlags(player, claim)) {
             Util.sendMessage(player, TextMode.Err, Messages.NotYourClaim);
             return true;
         }
