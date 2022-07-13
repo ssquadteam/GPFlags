@@ -297,7 +297,7 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnableBuyBuildTrust, "Build trust can now be bought in this claim for {0}.", "0: Cost");
         this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Build trust can no longer be bought in this claim.", null);
-        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for \\${0}. If you wish to do so, use /buyedittrust.",
+        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for \\${0}. If you wish to do so, use /buybuildtrust.",
                 "0: cost");
         this.addDefault(defaults, Messages.CostRequired, "You must specify a price",
                 null);
