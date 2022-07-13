@@ -178,6 +178,7 @@ public enum Messages {
     AlreadyHaveTrust,
     NotEnoughMoney,
     CannotBuyTrustHere,
+    BoughtTrust,
 
 
     //EXPERIMENTAL

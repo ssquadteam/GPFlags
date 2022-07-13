@@ -295,16 +295,17 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoBlockForm, "Blocks will no longer form or spread based on world conditions.", null);
         this.addDefault(defaults, Messages.DisableNoBlockForm, "Blocks will once again form and spread based on world conditions.", null);
 
-        this.addDefault(defaults, Messages.EnableBuyBuildTrust, "Edit trust can now be bought in this claim for {0}.", "0: Cost");
-        this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Edit trust can no longer be bought in this claim.", null);
-        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy edit trust in this claim for \\${0}. If you wish to do so, use /buyedittrust.",
+        this.addDefault(defaults, Messages.EnableBuyBuildTrust, "Build trust can now be bought in this claim for {0}.", "0: Cost");
+        this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Build trust can no longer be bought in this claim.", null);
+        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for \\${0}. If you wish to do so, use /buyedittrust.",
                 "0: cost");
         this.addDefault(defaults, Messages.CostRequired, "You must specify a price",
                 null);
         this.addDefault(defaults, Messages.ProblemWithFlagSetup, "There was an issue in the flag params.", "0: Cost");
         this.addDefault(defaults, Messages.AlreadyHaveTrust, "You already have trust in this claim", null);
-        this.addDefault(defaults, Messages.NotEnoughMoney, "You do not have enough money to buy edit trust.", null);
-        this.addDefault(defaults, Messages.CannotBuyTrustHere, "Edit trust can not be bought in this claim.", null);
+        this.addDefault(defaults, Messages.NotEnoughMoney, "You do not have enough money to buy that type of trust.", null);
+        this.addDefault(defaults, Messages.CannotBuyTrustHere, "That type of trust can not be bought in this claim.", null);
+        this.addDefault(defaults, Messages.BoughtTrust, "You have successfully bought that type of trust for {0}.", "0: Cost");
 
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 
