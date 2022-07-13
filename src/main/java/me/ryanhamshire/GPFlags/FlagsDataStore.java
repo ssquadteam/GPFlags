@@ -299,6 +299,14 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Build trust can no longer be bought in this claim.", null);
         this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for \\${0}. If you wish to do so, use /buybuildtrust.",
                 "0: cost");
+        this.addDefault(defaults, Messages.EnableBuyAccessTrust, "Access trust can now be bought in this claim for {0}.", "0: Cost");
+        this.addDefault(defaults, Messages.DisableBuyAccessTrust, "Access trust can no longer be bought in this claim.", null);
+        this.addDefault(defaults, Messages.AccessTrustPrice, "You can buy access trust in this claim for \\${0}. If you wish to do so, use /buyaccesstrust.",
+                "0: cost");
+        this.addDefault(defaults, Messages.EnableBuyContainerTrust, "Container trust can now be bought in this claim for {0}.", "0: Cost");
+        this.addDefault(defaults, Messages.DisableBuyContainerTrust, "Container trust can no longer be bought in this claim.", null);
+        this.addDefault(defaults, Messages.ContainerTrustPrice, "You can buy container trust in this claim for \\${0}. If you wish to do so, use /buycontainertrust.",
+                "0: cost");
         this.addDefault(defaults, Messages.CostRequired, "You must specify a price",
                 null);
         this.addDefault(defaults, Messages.ProblemWithFlagSetup, "There was an issue in the flag params.", "0: Cost");
