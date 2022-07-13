@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 
-public class CommandBuyEditTrust implements CommandExecutor {
+public class CommandBuyBuildTrust implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -26,7 +26,7 @@ public class CommandBuyEditTrust implements CommandExecutor {
 
         Collection<Flag> flags = GPFlags.getInstance().getFlagManager().getFlags(claim.getID().toString());
         for (Flag flag : flags) {
-            if (flag.getFlagDefinition().getName().equalsIgnoreCase("BuyEditTrust")) {
+            if (flag.getFlagDefinition().getName().equalsIgnoreCase("BuyBuildTrust")) {
                 if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Edit) {
                     Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
                     return true;

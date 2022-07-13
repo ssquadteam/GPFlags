@@ -170,6 +170,8 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));
+
+            this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
             
             this.flagManager.registerFlagDefinition(new FlagDef_ViewContainers(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ReadLecterns(this.flagManager, plugin));

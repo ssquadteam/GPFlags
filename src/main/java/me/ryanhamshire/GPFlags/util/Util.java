@@ -311,7 +311,7 @@ public class Util {
 
     public static boolean canBuild(Claim claim, Player player) {
         try {
-            return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
+            return claim.checkPermission(player, ClaimPermission.Build, null) == null;
         } catch (NoSuchFieldError e) {
             return claim.allowEdit(player) == null;
         }

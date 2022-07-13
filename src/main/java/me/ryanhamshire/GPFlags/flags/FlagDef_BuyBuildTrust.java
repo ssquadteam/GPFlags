@@ -13,25 +13,25 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.util.Collections;
 import java.util.List;
 
-public class FlagDef_BuyEditTrust extends PlayerMovementFlagDefinition {
+public class FlagDef_BuyBuildTrust extends PlayerMovementFlagDefinition {
 
-    public FlagDef_BuyEditTrust(FlagManager manager, GPFlags plugin) {
+    public FlagDef_BuyBuildTrust(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
     @Override
     public String getName() {
-        return "BuyEditTrust";
+        return "BuyBuildTrust";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.EnableBuyEditTrust, parameters);
+        return new MessageSpecifier(Messages.EnableBuyBuildTrust, parameters);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.DisableBuyEditTrust);
+        return new MessageSpecifier(Messages.DisableBuyBuildTrust);
     }
 
     @Override
@@ -62,8 +62,8 @@ public class FlagDef_BuyEditTrust extends PlayerMovementFlagDefinition {
         if (flag == null) return true;
 
         if (claimTo == null) return true;
-        if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Edit) return true;
-        Util.sendMessage(player, TextMode.Info, Messages.EditTrustPrice, flag.parameters);
+        if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return true;
+        Util.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
 
         return true;
     }
@@ -74,7 +74,7 @@ public class FlagDef_BuyEditTrust extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Edit) return;
-        Util.sendMessage(player, TextMode.Info, Messages.EditTrustPrice, flag.parameters);
+        if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Build) return;
+        Util.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
     }
 }

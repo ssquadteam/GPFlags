@@ -57,7 +57,7 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetdefaultclaimflag").setExecutor(new CommandUnsetDefaultClaimFlag());
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
-        getCommand("buyedittrust").setExecutor(new CommandBuyEditTrust());
+        getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());
 
 
         new Metrics(this);

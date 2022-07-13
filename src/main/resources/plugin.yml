@@ -72,9 +72,9 @@ commands:
     usage: /UnSetServerFlag <flag>
     aliases: [ unsetserverflag, removeserverflag, unserverflag ]
     permission: gpflags.command.unsetserverflag
-  buyedittrust:
-    description: Buy edittrust in a claim.
-    usage: /buyedittrust
+  buybuildtrust:
+    description: Buy buildtrust in a claim.
+    usage: /buybuildtrust
 permissions:
   gpflags.admin.*:
     description: Grants all administrative functionality. (depreciated)
