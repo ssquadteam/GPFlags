@@ -167,6 +167,8 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoOpenDoors(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoVehicle(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoBlockForm(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoBlockSpread(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoDripstoneSpread(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoMobSpawnsType(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));

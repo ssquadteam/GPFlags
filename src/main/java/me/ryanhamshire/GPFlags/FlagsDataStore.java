@@ -292,8 +292,14 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoBlockGravity, "Disabling block gravity in this area.", null);
         this.addDefault(defaults, Messages.DisableNoBlockGravity, "Enabling block gravity in this area.", null);
 
-        this.addDefault(defaults, Messages.EnableNoBlockForm, "Blocks will no longer form or spread based on world conditions.", null);
-        this.addDefault(defaults, Messages.DisableNoBlockForm, "Blocks will once again form and spread based on world conditions.", null);
+        this.addDefault(defaults, Messages.EnableNoBlockForm, "Blocks will no longer form based on world conditions.", null);
+        this.addDefault(defaults, Messages.DisableNoBlockForm, "Blocks will once again form based on world conditions.", null);
+
+        this.addDefault(defaults, Messages.EnableNoBlockSpread, "Blocks will no longer spread based on world conditions.", null);
+        this.addDefault(defaults, Messages.DisableNoBlockSpread, "Blocks will once again spread based on world conditions.", null);
+
+        this.addDefault(defaults, Messages.EnableNoDripstoneSpread, "Dripstone will no longer spread based on world conditions.", null);
+        this.addDefault(defaults, Messages.DisableNoDripstoneSpread, "Dripstone will once again spread based on world conditions.", null);
 
         this.addDefault(defaults, Messages.EnableBuyBuildTrust, "Build trust can now be bought in this claim for {0}.", "0: Cost");
         this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Build trust can no longer be bought in this claim.", null);

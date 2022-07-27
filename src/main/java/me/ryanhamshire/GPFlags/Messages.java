@@ -170,6 +170,10 @@ public enum Messages {
     DisableNoBlockGravity,
     EnableNoBlockForm,
     DisableNoBlockForm,
+    EnableNoBlockSpread,
+    DisableNoBlockSpread,
+    EnableNoDripstoneSpread,
+    DisableNoDripstoneSpread,
 
     EnableBuyBuildTrust,
     DisableBuyBuildTrust,
