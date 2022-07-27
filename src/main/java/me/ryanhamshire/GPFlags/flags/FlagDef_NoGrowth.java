@@ -30,16 +30,6 @@ public class FlagDef_NoGrowth extends FlagDefinition {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onSpread(BlockSpreadEvent event) {
-        Block block = event.getBlock();
-
-        Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
-        if (flag == null) return;
-
-        event.setCancelled(true);
-    }
-
     @Override
     public String getName() {
         return "NoGrowth";
