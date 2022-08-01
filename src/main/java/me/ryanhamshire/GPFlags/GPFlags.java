@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
