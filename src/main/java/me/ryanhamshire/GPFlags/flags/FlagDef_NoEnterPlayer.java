@@ -28,7 +28,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
         if (lastLocation == null || flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
-        if (flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return true;
+        if (!flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return true;
 
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
