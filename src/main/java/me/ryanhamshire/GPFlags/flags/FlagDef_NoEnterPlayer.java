@@ -29,7 +29,8 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if (flag == null) return true;
         if (lastLocation == null || flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
         if (!flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return true;
-
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (claim.getOwnerName().equals(player.getName())) return true;
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
     }
