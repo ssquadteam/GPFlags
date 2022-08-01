@@ -1,6 +1,9 @@
 package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
+import me.ryanhamshire.GPFlags.commands.CommandBuyAccessTrust;
+import me.ryanhamshire.GPFlags.commands.CommandBuyBuildTrust;
+import me.ryanhamshire.GPFlags.commands.CommandBuyContainerTrust;
 import me.ryanhamshire.GPFlags.flags.*;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -173,10 +176,6 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoItemDamage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoElytra(this.flagManager, plugin));
 
-            this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
-
             this.flagManager.registerFlagDefinition(new FlagDef_ViewContainers(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ReadLecterns(this.flagManager, plugin));
 
@@ -201,6 +200,17 @@ public class GPFlagsConfig {
             }
             //if failed, we just won't have those flags available
             catch (NoClassDefFoundError ignore) {
+            }
+
+            // vault-reliant flags
+            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+                plugin.getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());
+                plugin.getCommand("buycontainertrust").setExecutor(new CommandBuyContainerTrust());
+                plugin.getCommand("buyaccesstrust").setExecutor(new CommandBuyAccessTrust());
+
+                this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
+                this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
+                this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
             }
         } else {
             // Update world settings for flags (probably on a reload)
