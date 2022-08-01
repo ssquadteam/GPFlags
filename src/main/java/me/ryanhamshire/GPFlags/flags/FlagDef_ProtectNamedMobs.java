@@ -1,10 +1,6 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import me.ryanhamshire.GPFlags.Flag;
-import me.ryanhamshire.GPFlags.FlagManager;
-import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.MessageSpecifier;
-import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -32,6 +28,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
         if (flag == null) return;
         if (entity.getType() == EntityType.PLAYER) return;
         if (entity.getCustomName() == null) return;
+        if (MythicMobsHook.isMythicMob(entity)) return;
 
         Entity damager = event.getDamager();
         if (damager.getType() != EntityType.PLAYER) {
