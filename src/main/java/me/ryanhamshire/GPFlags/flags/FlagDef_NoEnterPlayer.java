@@ -10,6 +10,7 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +31,8 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if (!flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return true;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, null);
         if (player.getName().equalsIgnoreCase(claim.getOwnerName())) return true;
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        if (playerData.ignoreClaims) return true;
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
     }
