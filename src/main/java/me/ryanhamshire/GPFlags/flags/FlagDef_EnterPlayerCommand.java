@@ -22,12 +22,12 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return true;
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return true;
+        if (flag == null) return;
 
-        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
@@ -35,8 +35,6 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
             Util.logFlagCommands("Entrance command: " + commandLine);
             Bukkit.getServer().dispatchCommand(player, commandLine);
         }
-
-        return true;
     }
 
     @Override

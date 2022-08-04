@@ -22,10 +22,10 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return true;
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == null) return true;
+        if (flag == null) return;
 
         // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
         Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
@@ -35,11 +35,11 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
         if (claimFrom != null && claimTo != null) {
             // moving to parent claim, and the sub claim does not have its own exit message
             if (claimFrom.parent == claimTo && (flagFrom == null || !flagFrom.getSet())) {
-                return true;
+                return;
             }
             // moving to sub-claim, and the sub claim does not have its own enter message
             if (claimTo.parent == claimFrom && (flagToEnter == null || !flagToEnter.getSet())) {
-                return true;
+                return;
             }
         }
 
@@ -49,8 +49,6 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
         }
 
         Util.sendClaimMessage(player, TextMode.Info, prefix + message);
-
-        return true;
     }
 
     @Override

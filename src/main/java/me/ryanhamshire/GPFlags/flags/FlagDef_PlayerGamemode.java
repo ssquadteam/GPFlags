@@ -28,13 +28,13 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         WorldSettings settings = this.settingsManager.get(player.getWorld());
 
-        if (lastLocation == null) return true;
+        if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) {
-            if (this.getFlagInstanceAtLocation(lastLocation, player) == null) return true;
+            if (this.getFlagInstanceAtLocation(lastLocation, player) == null) return;
 
             String gameMode = settings.worldGamemodeDefault;
             player.setGameMode(GameMode.valueOf(gameMode.toUpperCase()));
@@ -44,21 +44,20 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
                 Block block = player.getLocation().getBlock();
                 Block below = block.getRelative(BlockFace.DOWN);
                 if (below.getRelative(BlockFace.DOWN).getType() != Material.AIR && block.getRelative(BlockFace.UP).getType() == Material.AIR)
-                    return true;
+                    return;
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
                 player.teleport(block.getRelative(BlockFace.UP).getLocation());
             }
-            return true;
+            return;
         }
-        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return;
         String gameMode = flag.parameters;
         String playerGameMode = player.getGameMode().toString();
-        if (gameMode.equalsIgnoreCase(playerGameMode)) return true;
+        if (gameMode.equalsIgnoreCase(playerGameMode)) return;
         player.setGameMode(GameMode.valueOf(gameMode.toUpperCase()));
         Util.sendMessage(player, TextMode.Warn, Messages.PlayerGamemode, gameMode);
-        return true;
     }
 
     @EventHandler

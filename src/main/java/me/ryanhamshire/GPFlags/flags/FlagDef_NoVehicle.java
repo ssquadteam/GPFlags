@@ -42,7 +42,6 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         if (flag == null) return true;
         if (Util.shouldBypass(player, claimTo, flag)) return true;
 
-
         Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
         return false;
     }

@@ -29,8 +29,8 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
-        if (lastLocation == null) return true;
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
+        if (lastLocation == null) return;
         Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
 
@@ -38,7 +38,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
             if (claim != null) {
                 Flag noFlight = GPFlags.getInstance().getFlagManager().getFlag(claim, GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("NoFlight"));
                 if (noFlight != null && !noFlight.getSet()) {
-                    return true;
+                    return;
                 }
             }
             GameMode mode = player.getGameMode();
@@ -53,25 +53,24 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                     GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
                 Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
-                return true;
+                return;
             }
             if (player.getAllowFlight() && mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR &&
                     !player.hasPermission("gpflags.bypass.fly")) {
                 player.setAllowFlight(false);
                 Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
-            return true;
+            return;
         }
-        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return true;
-        if (flag == null) return true;
-        if (claim == null) return true;
+        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return;
+        if (flag == null) return;
+        if (claim == null) return;
 
         if (Util.canAccess(claim, player)) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                 player.setAllowFlight(true);
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             }, 1);
-            return true;
         } else {
             GameMode mode = player.getGameMode();
             if (mode != GameMode.CREATIVE && mode != GameMode.SPECTATOR && player.isFlying() &&
@@ -86,7 +85,6 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
         }
-        return true;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

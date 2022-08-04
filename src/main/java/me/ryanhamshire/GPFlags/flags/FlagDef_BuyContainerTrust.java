@@ -57,15 +57,13 @@ public class FlagDef_BuyContainerTrust extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return true;
+        if (flag == null) return;
 
-        if (claimTo == null) return true;
-        if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return true;
+        if (claimTo == null) return;
+        if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         Util.sendMessage(player, TextMode.Info, Messages.ContainerTrustPrice, flag.parameters);
-
-        return true;
     }
 
     @EventHandler

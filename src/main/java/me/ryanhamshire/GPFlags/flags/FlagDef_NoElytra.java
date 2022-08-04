@@ -22,14 +22,13 @@ public class FlagDef_NoElytra extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return true;
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return true;
-        if (!player.isGliding()) return true;
-        if (Util.shouldBypass(player, claimTo, flag)) return true;
+        if (flag == null) return;
+        if (!player.isGliding()) return;
+        if (Util.shouldBypass(player, claimTo, flag)) return;
         player.setGliding(false);
-        return true;
     }
 
     @EventHandler

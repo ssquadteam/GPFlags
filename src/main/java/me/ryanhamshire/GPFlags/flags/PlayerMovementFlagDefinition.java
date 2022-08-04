@@ -30,14 +30,14 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     @EventHandler
     public void onMove(PlayerClaimBorderEvent event) {
         Player player = event.getPlayer();
-        Location lastLocation = event.getLocFrom().clone();
-        int fromMaxHeight = lastLocation.getWorld().getMaxHeight();
-        if (lastLocation.getY() > fromMaxHeight) {
-            lastLocation.setY(fromMaxHeight);
+        Location from = event.getLocFrom().clone();
+        int fromMaxHeight = from.getWorld().getMaxHeight();
+        if (from.getY() > fromMaxHeight) {
+            from.setY(fromMaxHeight);
         }
-        int fromMinHeight = lastLocation.getWorld().getMinHeight();
-        if (lastLocation.getY() < fromMinHeight) {
-            lastLocation.setY(fromMinHeight);
+        int fromMinHeight = from.getWorld().getMinHeight();
+        if (from.getY() < fromMinHeight) {
+            from.setY(fromMinHeight);
         }
         Location to = event.getLocTo().clone();
         int toMaxHeight = to.getWorld().getMaxHeight();
@@ -48,10 +48,16 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         if (to.getY() < toMinHeight) {
             to.setY(toMaxHeight);
         }
-        if (!this.allowMovement(player, lastLocation, to, event.getClaimFrom(), event.getClaimTo())) {
+        Claim claimFrom = event.getClaimFrom();
+        Claim claimTo = event.getClaimTo();
+        if (!this.allowMovement(player, from, to, claimFrom, claimTo)) {
             event.setCancelled(true);
+            return;
         }
+        onChangeClaim(player, from, to, claimFrom, claimTo);
     }
+
+    public void onChangeClaim(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {}
 
     // This is being removed, but we are keeping it for a bit just in case
     public void undoMovement(Player player, Location lastLocation) {

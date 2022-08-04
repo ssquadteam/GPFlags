@@ -21,24 +21,22 @@ public class FlagDef_ExitCommand_Owner extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return true;
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == null) return true;
+        if (flag == null) return;
 
-        if (flag == this.getFlagInstanceAtLocation(to, player)) return true;
+        if (flag == this.getFlagInstanceAtLocation(to, player)) return;
 
-        if (player.hasPermission("gpflags.bypass.exitcommand")) return true;
+        if (player.hasPermission("gpflags.bypass.exitcommand")) return;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        if (!playerData.lastClaim.getOwnerName().equals(player.getName())) return true;
+        if (!playerData.lastClaim.getOwnerName().equals(player.getName())) return;
         String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for (String commandLine : commandLines) {
             Util.logFlagCommands("Exit command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
-
-        return true;
     }
 
     @Override
