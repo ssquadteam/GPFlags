@@ -11,14 +11,14 @@ import org.bukkit.event.player.PlayerEvent;
  * Called when a player enters/exits a claim
  */
 @SuppressWarnings("unused")
-public class PlayerClaimBorderEvent extends PlayerEvent implements Cancellable {
+public class PlayerPreClaimBorderEvent extends PlayerEvent implements Cancellable {
 
     private static HandlerList handlerList = new HandlerList();
     private Claim claimFrom, claimTo;
     private Location locFrom, locTo;
     private boolean cancelled = false;
 
-    public PlayerClaimBorderEvent(Player who, Claim claimFrom, Claim claimTo, Location from, Location to) {
+    public PlayerPreClaimBorderEvent(Player who, Claim claimFrom, Claim claimTo, Location from, Location to) {
         super(who);
         this.claimFrom = claimFrom;
         this.claimTo = claimTo;

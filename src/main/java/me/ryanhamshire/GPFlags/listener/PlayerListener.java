@@ -3,7 +3,8 @@ package me.ryanhamshire.GPFlags.listener;
 import me.ryanhamshire.GPFlags.Flag;
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.event.PlayerClaimBorderEvent;
+import me.ryanhamshire.GPFlags.event.PlayerPostClaimBorderEvent;
+import me.ryanhamshire.GPFlags.event.PlayerPreClaimBorderEvent;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
@@ -123,12 +124,15 @@ public class PlayerListener implements Listener {
         Claim claimTo = dataStore.getClaimAt(locTo2, false, null);
         Claim claimFrom = dataStore.getClaimAt(locFrom2, false, null);
         if (claimTo == claimFrom) return true;
-        PlayerClaimBorderEvent playerClaimBorderEvent = new PlayerClaimBorderEvent(player, claimFrom, claimTo, locFrom2, locTo2);
-        Bukkit.getPluginManager().callEvent(playerClaimBorderEvent);
-        if (event != null) {
-            event.setCancelled(playerClaimBorderEvent.isCancelled());
+        PlayerPreClaimBorderEvent playerPreClaimBorderEvent = new PlayerPreClaimBorderEvent(player, claimFrom, claimTo, locFrom2, locTo2);
+        Bukkit.getPluginManager().callEvent(playerPreClaimBorderEvent);
+        if (!playerPreClaimBorderEvent.isCancelled()) {
+            Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(playerPreClaimBorderEvent));
         }
-        return !playerClaimBorderEvent.isCancelled();
+        if (event != null) {
+            event.setCancelled(playerPreClaimBorderEvent.isCancelled());
+        }
+        return !playerPreClaimBorderEvent.isCancelled();
     }
 
     @EventHandler
@@ -159,13 +163,19 @@ public class PlayerListener implements Listener {
 
             // Resizing a claim to be smaller and falling on the outside
             if (!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) {
-                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
+                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
+                if (!borderEvent.isCancelled()) {
+                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
+                }
             }
             // Resizing a claim to be larger and falling on the inside
             if (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false)) {
-                PlayerClaimBorderEvent borderEvent = new PlayerClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
+                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
+                if (!borderEvent.isCancelled()) {
+                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
+                }
             }
         }
     }

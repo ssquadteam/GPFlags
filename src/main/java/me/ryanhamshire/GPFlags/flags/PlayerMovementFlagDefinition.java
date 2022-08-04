@@ -2,7 +2,8 @@ package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
-import me.ryanhamshire.GPFlags.event.PlayerClaimBorderEvent;
+import me.ryanhamshire.GPFlags.event.PlayerPostClaimBorderEvent;
+import me.ryanhamshire.GPFlags.event.PlayerPreClaimBorderEvent;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,7 +29,7 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     }
 
     @EventHandler
-    public void onMove(PlayerClaimBorderEvent event) {
+    public void onMove(PlayerPreClaimBorderEvent event) {
         Player player = event.getPlayer();
         Location from = event.getLocFrom().clone();
         int fromMaxHeight = from.getWorld().getMaxHeight();
@@ -52,9 +53,12 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         Claim claimTo = event.getClaimTo();
         if (!this.allowMovement(player, from, to, claimFrom, claimTo)) {
             event.setCancelled(true);
-            return;
         }
-        onChangeClaim(player, from, to, claimFrom, claimTo);
+    }
+
+    @EventHandler
+    public void onPostMove(PlayerPostClaimBorderEvent event) {
+        onChangeClaim(event.getPlayer(), event.getLocFrom(), event.getLocTo(), event.getClaimFrom(), event.getClaimTo());
     }
 
     public void onChangeClaim(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {}
