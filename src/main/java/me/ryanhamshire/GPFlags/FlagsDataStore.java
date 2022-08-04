@@ -321,6 +321,17 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.CannotBuyTrustHere, "That type of trust can not be bought in this claim.", null);
         this.addDefault(defaults, Messages.BoughtTrust, "You have successfully bought that type of trust for {0}.", "0: Cost");
 
+        this.addDefault(defaults, Messages.EnableNotifyEnter, "You will now receive notifications when a player enters this claim", null);
+        this.addDefault(defaults, Messages.DisableNotifyEnter, "You will no longer receive notifications when a player enters this claim", null);
+        this.addDefault(defaults, Messages.NotifyEnter, "{0} has entered {1}", "0: player, 1: claim name");
+
+        this.addDefault(defaults, Messages.EnableNotifyExit, "You will now receive notifications when a player enters this claim", null);
+        this.addDefault(defaults, Messages.DisableNotifyExit, "You will no longer receive notifications when a player exits this claim", null);
+        this.addDefault(defaults, Messages.NotifyExit, "{0} has left {1}", "0: player, 1: claim name");
+
+
+
+
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 
         //load the config file

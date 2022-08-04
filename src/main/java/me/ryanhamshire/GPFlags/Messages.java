@@ -174,6 +174,12 @@ public enum Messages {
     DisableNoBlockSpread,
     EnableNoDripstoneSpread,
     DisableNoDripstoneSpread,
+    EnableNotifyEnter,
+    DisableNotifyEnter,
+    EnableNotifyExit,
+    DisableNotifyExit,
+    NotifyEnter,
+    NotifyExit,
 
     EnableBuyBuildTrust,
     DisableBuyBuildTrust,
