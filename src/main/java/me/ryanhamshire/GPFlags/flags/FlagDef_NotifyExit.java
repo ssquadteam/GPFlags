@@ -39,6 +39,7 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
         Player owner = Bukkit.getPlayer(claimTo.getOwnerID());
         if (owner == null) return;
         if (owner.getName().equals(player.getName())) return;
+        if (!owner.canSee(player)) return;
         String param = flag.parameters;
         if (param == null || param.isEmpty()) {
             param = "claim " + claimTo.getID();
