@@ -39,7 +39,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         handleFlyAttempt(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCanceled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
         event.setCancelled(handleFlyAttempt(event.getPlayer()));
     }
