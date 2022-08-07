@@ -33,13 +33,13 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         return 30L;
     }
 
-    @Override (ignoreCanceled = true)
+    @Override
     public void processPlayer(Player player) {
         if(!player.isFlying()) return;
         handleFlyAttempt(player);
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCanceled = true)
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
         event.setCancelled(handleFlyAttempt(event.getPlayer()));
     }
