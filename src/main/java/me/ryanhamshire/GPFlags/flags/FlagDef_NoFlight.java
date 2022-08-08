@@ -10,6 +10,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
+import org.bukkit.event.EventPriority;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,7 +39,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         handleFlyAttempt(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerToggleFlight(PlayerToggleFlightEvent event) {
         event.setCancelled(handleFlyAttempt(event.getPlayer()));
     }
