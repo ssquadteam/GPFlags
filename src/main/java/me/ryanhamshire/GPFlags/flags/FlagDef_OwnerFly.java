@@ -38,7 +38,6 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         if (claim.contains(owner.getLocation(), false, false)) {
             owner.setAllowFlight(true);
         }
-        owner.setAllowFlight(true);
     }
 
     @Override
