@@ -117,6 +117,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_KeepInventory(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_InfiniteArrows(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_KeepLevel(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_KeepLoaded(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NetherPortalPlayerCommand(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NetherPortalConsoleCommand(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoCombatLoot(this.flagManager, plugin));

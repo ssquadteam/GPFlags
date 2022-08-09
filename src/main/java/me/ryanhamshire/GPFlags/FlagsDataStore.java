@@ -99,6 +99,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableKeepLevel, "Players will keep their experience/levels when they die in this land claim.", null);
         this.addDefault(defaults, Messages.DisableKeepLevel, "Disabled protection for experience/levels when dying in this land claim.", null);
 
+        this.addDefault(defaults, Messages.EnableKeepLoaded, "This claim will be kept loaded.", null);
+        this.addDefault(defaults, Messages.DisableKeepLoaded, "This claim will no longer be kept loaded.", null);
+
         this.addDefault(defaults, Messages.EnableNetherPortalPlayerCommand, "Players who step into nether portals in this land claim will now auto-execute the specified command line.", null);
         this.addDefault(defaults, Messages.DisableNetherPortalPlayerCommand, "Disabled player command execution for nether portals in this land claim.", null);
 

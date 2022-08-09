@@ -41,6 +41,8 @@ public enum Messages {
     NoFlagPermission,
     EnableKeepLevel,
     DisableKeepLevel,
+    EnableKeepLoaded,
+    DisableKeepLoaded,
     EnableNetherPortalPlayerCommand,
     DisableNetherPortalPlayerCommand,
     CommandRequired,
