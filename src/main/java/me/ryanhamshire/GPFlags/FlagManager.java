@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -125,6 +126,12 @@ public class FlagManager {
             def.incrementInstances();
         }
         claimFlags.put(key, flag);
+        Claim claim = GriefPrevention.instance.dataStore.getClaim(Long.getLong(claimId));
+        if (isActive) {
+            def.onFlagSet(claim, parameters.toString());
+        } else {
+            def.onFlagUnset(claim);
+        }
         return result;
     }
 

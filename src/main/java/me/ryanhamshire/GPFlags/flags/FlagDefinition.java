@@ -48,6 +48,12 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract List<FlagType> getFlagType();
 
+    public void onFlagSet(Claim claim, String params) {
+    }
+
+    public void onFlagUnset(Claim claim) {
+    }
+
     /**
      * Get an instance of a flag at a location
      *

@@ -151,10 +151,6 @@ public class CommandSetClaimFlag implements TabExecutor {
             }
         }
 
-        // Turn on fly if it was a Fly flag
-        if (args[0].equalsIgnoreCase("OwnerFly") && player.getUniqueId().equals(claim.getOwnerID())) {
-            player.setAllowFlight(true);
-        }
         if (args[0].equalsIgnoreCase("OwnerMemberFly")) {
             player.setAllowFlight(true);
             World world = player.getWorld();

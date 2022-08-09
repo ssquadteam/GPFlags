@@ -22,10 +22,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.UUID;
+
 public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener {
 
     public FlagDef_OwnerFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public void onFlagSet(Claim claim, String param) {
+        UUID uuid = claim.getOwnerID();
+        Player owner = Bukkit.getPlayer(uuid);
+        if (owner == null) return;
+        if (claim.contains(owner.getLocation(), false, false)) {
+            owner.setAllowFlight(true);
+        }
+        owner.setAllowFlight(true);
     }
 
     @Override
