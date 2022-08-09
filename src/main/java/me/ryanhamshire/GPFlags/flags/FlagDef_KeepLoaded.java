@@ -19,18 +19,20 @@ public class FlagDef_KeepLoaded extends FlagDefinition {
         super(manager, plugin);
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onChunkUnload(ChunkUnloadEvent event) {
-        Chunk chunk = event.getChunk();
-        World world = event.getWorld();
-        for (int x = 0; x < 16; x++) {
-            for (int y = 0; y < 16; y++) {
-                Location loc = chunk.getBlock(0, world.getMaxHeight(), 0).getLocation().toBlockLocation();
-                Flag flag = this.getFlagInstanceAtLocation(loc, null);
-                if (flag != null) {
-                    chunk.setForceLoaded(true);
-                }
-            }
+    @Override
+    public void onFlagSet(Claim claim, String string) {
+        ArrayList<Chunk> chunks = claim.getChunks();
+        for (Chunk chunk : chunks) {
+            chunk.setForceLoaded(true);
+            chunk.load(true);
+        }
+    }
+
+    @Override
+    public void onFlagUnset(Claim claim) {
+        ArrayList<Chunk> chunks = claim.getChunks();
+        for (Chunk chunk : chunks) {
+            chunk.setForceLoaded(false);
         }
     }
 
