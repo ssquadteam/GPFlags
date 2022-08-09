@@ -112,7 +112,7 @@ public class Util {
         }
     }
 
-    private static boolean canFly(Player player) {
+    public static boolean canFly(Player player) {
         GameMode mode = player.getGameMode();
         return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE || player.hasPermission("gpflags.bypass.fly");
     }

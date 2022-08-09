@@ -33,9 +33,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (lastLocation == null) return;
         Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
-        GameMode mode = player.getGameMode();
-        if (mode == GameMode.CREATIVE || mode == GameMode.SPECTATOR) return;
-        if (player.hasPermission("gpflags.bypass.fly")) return;
+        if (Util.canFly(player)) return;
 
         // When entering a new region without the flags set
         if (flag == null && ownerFly == null) {
