@@ -37,7 +37,7 @@ public class CommandUnsetDefaultClaimFlag implements TabExecutor {
             return true;
         }
 
-        SetFlagResult result = gpflags.getFlagManager().unSetFlag(FlagManager.DEFAULT_FLAG_ID, def);
+        SetFlagResult result = gpflags.getFlagManager().unSetFlag(FlagManager.DEFAULT_FLAG_ID, def, true);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(player, color, Messages.DefaultFlagUnSet);

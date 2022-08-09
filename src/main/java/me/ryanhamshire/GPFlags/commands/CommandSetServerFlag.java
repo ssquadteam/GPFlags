@@ -46,7 +46,7 @@ public class CommandSetServerFlag implements TabExecutor {
         String[] params = new String[args.length - 1];
         System.arraycopy(args, 1, params, 0, args.length - 1);
 
-        SetFlagResult result = plugin.getFlagManager().setFlag("everywhere", def, true, params);
+        SetFlagResult result = plugin.getFlagManager().setFlag("everywhere", def, true, true, params);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(commandSender, color, Messages.ServerFlagSet);

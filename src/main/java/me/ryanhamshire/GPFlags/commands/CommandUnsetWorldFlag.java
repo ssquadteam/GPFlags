@@ -40,7 +40,7 @@ public class CommandUnsetWorldFlag implements TabExecutor {
             return true;
         }
 
-        SetFlagResult result = plugin.getFlagManager().unSetFlag(player.getWorld().getName(), def);
+        SetFlagResult result = plugin.getFlagManager().unSetFlag(player.getWorld().getName(), def, true);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(player, color, Messages.WorldFlagUnSet);

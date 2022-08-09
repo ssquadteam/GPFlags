@@ -122,7 +122,7 @@ public class CommandSetClaimFlag implements TabExecutor {
         }
 
         // Change the flag in the file storage
-        SetFlagResult result = gpflags.getFlagManager().setFlag(claimID.toString(), def, true, params);
+        SetFlagResult result = gpflags.getFlagManager().setFlag(claimID.toString(), def, true, true, params);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         if (result.isSuccess()) gpflags.getFlagManager().save();

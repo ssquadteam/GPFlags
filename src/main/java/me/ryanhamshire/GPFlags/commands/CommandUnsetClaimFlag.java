@@ -68,7 +68,7 @@ public class CommandUnsetClaimFlag implements TabExecutor {
             flagD.resetBiome(claim.getID());
         }
 
-        SetFlagResult result = plugin.getFlagManager().unSetFlag(claimID.toString(), def);
+        SetFlagResult result = plugin.getFlagManager().unSetFlag(claimID.toString(), def, true);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         if (result.isSuccess()) plugin.getFlagManager().save();

@@ -38,7 +38,7 @@ public class CommandUnsetServerFlag implements TabExecutor {
             return true;
         }
 
-        SetFlagResult result = plugin.getFlagManager().unSetFlag("everywhere", def);
+        SetFlagResult result = plugin.getFlagManager().unSetFlag("everywhere", def, true);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(sender, color, Messages.ServerFlagUnSet);

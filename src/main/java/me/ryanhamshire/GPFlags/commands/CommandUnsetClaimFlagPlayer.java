@@ -53,7 +53,7 @@ public class CommandUnsetClaimFlagPlayer implements TabExecutor {
             return true;
         }
 
-        SetFlagResult result = gpflags.getFlagManager().unSetFlag(claim, def);
+        SetFlagResult result = gpflags.getFlagManager().unSetFlag(claim, def, true);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         Util.sendMessage(sender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         String message;
