@@ -332,6 +332,8 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableNotifyExit, "You will no longer receive notifications when a player exits this claim", null);
         this.addDefault(defaults, Messages.NotifyExit, "{0} has left {1}", "0: player, 1: claim name");
 
+        this.addDefault(defaults, Messages.EnabledAllowMobAttackMob, "Mobs can now attack other mobs in this claim", null);
+        this.addDefault(defaults, Messages.DisabledAllowMobAttackMob, "Mobs can no longer attack other mobs in this claim", null);
 
 
 

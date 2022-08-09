@@ -198,6 +198,8 @@ public enum Messages {
     EnableBuyAccessTrust,
     DisableBuyAccessTrust,
     AccessTrustPrice,
+    EnabledAllowMobAttackMob,
+    DisabledAllowMobAttackMob,
 
 
     //EXPERIMENTAL
