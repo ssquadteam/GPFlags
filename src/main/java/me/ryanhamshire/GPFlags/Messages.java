@@ -161,6 +161,8 @@ public enum Messages {
     DisabledNoFallDamage,
     EnabledNoExplosionDamage,
     DisabledNoExplosionDamage,
+    EnabledNoBlockExplosions,
+    DisabledNoBlockExplosions,
     NoOwnerFlag,
     EnableNoElytra,
     DisableNoElytra,

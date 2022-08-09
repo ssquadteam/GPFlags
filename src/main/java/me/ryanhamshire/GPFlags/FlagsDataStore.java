@@ -249,6 +249,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnabledNoExplosionDamage, "Players will no longer take damage caused by explosions in this claim", null);
         this.addDefault(defaults, Messages.DisabledNoExplosionDamage, "Players will now continue to take damage caused by explosions in this claim", null);
 
+        this.addDefault(defaults, Messages.EnabledNoBlockExplosions, "Blocks will no longer explode in this region", null);
+        this.addDefault(defaults, Messages.DisabledNoBlockExplosions, "Blocks will now explode in this region", null);
+
         this.addDefault(defaults, Messages.NoOwnerFlag, "You cannot set both OwnerFly and OwnerMemberFly flags in one claim", null);
 
         this.addDefault(defaults, Messages.ChangeBiomeSet, "The biome in this claim has been set to {0}. Relog to see the changes.", "0: Biome");
