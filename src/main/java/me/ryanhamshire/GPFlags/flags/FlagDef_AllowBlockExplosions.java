@@ -2,41 +2,40 @@ package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class FlagDef_NoBlockExplosions extends FlagDefinition {
+public class FlagDef_AllowBlockExplosions extends FlagDefinition {
 
-    public FlagDef_NoBlockExplosions(FlagManager manager, GPFlags plugin) {
+    public FlagDef_AllowBlockExplosions(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
-    @EventHandler
+    @EventHandler (priority = EventPriority.HIGH)
     public void onBlockExplode(BlockExplodeEvent e) {
         Block block = e.getBlock();
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
-        e.setCancelled(true);
+        e.setCancelled(false);
     }
 
     @Override
     public String getName() {
-        return "NoBlockExplosions";
+        return "AllowBlockExplosions";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.EnabledNoBlockExplosions);
+        return new MessageSpecifier(Messages.EnabledAllowBlockExplosions);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.DisabledNoBlockExplosions);
+        return new MessageSpecifier(Messages.DisabledAllowBlockExplosions);
     }
 
     @Override

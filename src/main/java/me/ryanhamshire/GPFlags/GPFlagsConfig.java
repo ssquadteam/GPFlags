@@ -165,7 +165,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_ExitCommand_Owner(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitCommand_Members(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoExplosionDamage(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_NoBlockExplosions(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_AllowBlockExplosions(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ProtectNamedMobs(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoBlockGravity(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ChangeBiome(this.flagManager, plugin));
