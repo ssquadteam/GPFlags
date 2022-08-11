@@ -127,41 +127,6 @@ public class CommandSetClaimFlag implements TabExecutor {
         Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         if (result.isSuccess()) gpflags.getFlagManager().save();
 
-        // Kick people out if it was a NoEnter flag
-        if (args[0].equalsIgnoreCase("NoEnter") && args.length >= 2) {
-            World world = player.getWorld();
-            for (Player p : world.getPlayers()) {
-                if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
-                    if (claim.getPermission(p.getName()) == null && !claim.getOwnerName().equals(p.getName())) {
-                        GriefPrevention.instance.ejectPlayer(p);
-                    }
-                }
-            }
-        }
-        if (args[0].equalsIgnoreCase("NoEnterPlayer") && args.length >= 2) {
-            for (int i = 1; i < args.length; i++) {
-                Player target = Bukkit.getPlayer(args[i]);
-                if (target != null && target.getName().equalsIgnoreCase(args[i])) {
-                    if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
-                        if (claim.getPermission(args[i]) == null) {
-                            GriefPrevention.instance.ejectPlayer(target);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (args[0].equalsIgnoreCase("OwnerMemberFly")) {
-            player.setAllowFlight(true);
-            World world = player.getWorld();
-            for (Player p : world.getPlayers()) {
-                if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
-                    if (claim.getPermission(p.getUniqueId().toString()) == ClaimPermission.Access) {
-                        p.setAllowFlight(true);
-                    }
-                }
-            }
-        }
         return true;
     }
 

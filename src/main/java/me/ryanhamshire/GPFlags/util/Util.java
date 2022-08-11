@@ -4,6 +4,8 @@ import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -310,6 +312,8 @@ public class Util {
     }
 
     public static boolean canBuild(Claim claim, Player player) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Build, null) == null;
         } catch (NoSuchFieldError e) {
@@ -318,6 +322,8 @@ public class Util {
     }
 
     public static boolean canInventory(Claim claim, Player player) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Inventory, null) == null;
         } catch (NoSuchFieldError e) {
@@ -326,6 +332,8 @@ public class Util {
     }
 
     public static boolean canManage(Claim claim, Player player) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Manage, null) == null;
         } catch (NoSuchFieldError e) {
@@ -334,6 +342,8 @@ public class Util {
     }
 
     public static boolean canAccess(Claim claim, Player player) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Access, null) == null;
         } catch (NoSuchMethodError e) {

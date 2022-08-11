@@ -11,6 +11,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,6 +20,18 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
 
     public FlagDef_NoEnter(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public void onFlagSet(Claim claim, String string) {
+        World world = claim.getLesserBoundaryCorner().getWorld();
+        for (Player p : world.getPlayers()) {
+            if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
+                if (Util.canAccess(claim, p) && !p.hasPermission("gpflags.bypass.noenter")) {
+                    GriefPrevention.instance.ejectPlayer(p);
+                }
+            }
+        }
     }
 
     @Override
@@ -31,7 +44,6 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, playerData.lastClaim);
         if (Util.canAccess(claim, player)) return true;
-        if (playerData.ignoreClaims) return true;
 
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterMessage);
         return false;

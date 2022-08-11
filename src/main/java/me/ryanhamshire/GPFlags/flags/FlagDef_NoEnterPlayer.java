@@ -11,6 +11,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,21 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     public FlagDef_NoEnterPlayer(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public void onFlagSet(Claim claim, String string) {
+        String[] args = string.split(" ");
+        for (int i = 1; i < args.length; i++) {
+            Player target = Bukkit.getPlayer(args[i]);
+            if (target != null && target.getName().equalsIgnoreCase(args[i])) {
+                if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
+                    if (!target.hasPermission("gpflags.bypass.noenter")) {
+                        GriefPrevention.instance.ejectPlayer(target);
+                    }
+                }
+            }
+        }
     }
 
     @Override

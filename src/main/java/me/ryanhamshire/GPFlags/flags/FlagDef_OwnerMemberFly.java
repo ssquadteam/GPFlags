@@ -9,10 +9,7 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -26,6 +23,16 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
 
     public FlagDef_OwnerMemberFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @Override
+    public void onFlagSet(Claim claim, String param) {
+        World world = claim.getLesserBoundaryCorner().getWorld();
+        for (Player p : world.getPlayers()) {
+            if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
+                handleFlight(p);
+            }
+        }
     }
 
     @Override

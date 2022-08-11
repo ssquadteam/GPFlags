@@ -76,17 +76,6 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
             return true;
         }
 
-        // Kick people out if it was a NoEnter flag
-        if (flagName.equalsIgnoreCase("NoEnter")) {
-            World world = player.getWorld();
-            for (Player p : world.getPlayers()) {
-                if (claim.contains(Util.getInBoundsLocation(p), true, false)) {
-                    if (claim.getPermission(p.getName()) == null && !claim.getOwnerName().equals(p.getName())) {
-                        GriefPrevention.instance.ejectPlayer(p);
-                    }
-                }
-            }
-        }
         if (flagName.equalsIgnoreCase("NoEnterPlayer") && args.length >= 3) {
             for (int i = 1; i < args.length; i++) {
                 Player target = Bukkit.getPlayer(args[i]);
@@ -95,22 +84,6 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
                         if (claim.getPermission(args[i]) == null) {
                             GriefPrevention.instance.ejectPlayer(target);
                         }
-                    }
-                }
-            }
-        }
-
-        // Turn on fly if it was a Fly flag
-        if (flagName.equalsIgnoreCase("OwnerFly")) {
-            player.setAllowFlight(true);
-        }
-        if (flagName.equalsIgnoreCase("OwnerMemberFly")) {
-            player.setAllowFlight(true);
-            World world = player.getWorld();
-            for (Player p : world.getPlayers()) {
-                if (claim.contains(Util.getInBoundsLocation(p), true, false)) {
-                    if (claim.getPermission(p.getUniqueId().toString()) == ClaimPermission.Access) {
-                        p.setAllowFlight(true);
                     }
                 }
             }
