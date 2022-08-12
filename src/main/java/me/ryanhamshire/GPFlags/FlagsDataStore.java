@@ -338,7 +338,10 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnabledAllowWitherDamage, "Withers can now deal damage to mobs in this region", null);
         this.addDefault(defaults, Messages.DisabledAllowWitherDamage, "Withers can no longer deal damage to mobs in this region", null);
 
-
+        this.addDefault(defaults, Messages.EnabledNoPotionEffects, "Potion effects are now disabled in this region.", null);
+        this.addDefault(defaults, Messages.DisabledNoPotionEffects, "Potion effects are now enabled in this region.", null);
+        this.addDefault(defaults, Messages.NotValidPotionName, "{0} is not a valid potion effect type. See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html for a complete list.", "0: invalid potion effect type");
+        this.addDefault(defaults, Messages.SpecifyPotionEffectName, "Potion effect names required or use 'all' for all effects.", null);
 
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 

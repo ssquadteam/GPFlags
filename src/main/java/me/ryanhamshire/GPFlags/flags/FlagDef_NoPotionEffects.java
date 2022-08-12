@@ -1,0 +1,121 @@
+package me.ryanhamshire.GPFlags.flags;
+
+import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GriefPrevention.Claim;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+public class FlagDef_NoPotionEffects extends PlayerMovementFlagDefinition implements Listener {
+
+    public FlagDef_NoPotionEffects(FlagManager manager, GPFlags plugin) {
+        super(manager, plugin);
+    }
+
+    @Override
+    public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
+        Flag flag = this.getFlagInstanceAtLocation(to, player);
+        if (flag == null) return;
+        if (player.hasPermission("gpflags.bypass.nopotioneffects")) return;
+
+        for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+            PotionEffectType effectType = potionEffect.getType();
+
+            if (flag.parameters.equalsIgnoreCase("all")) {
+                player.removePotionEffect(effectType);
+                return;
+            }
+            String[] paramArray = flag.getParametersArray();
+            for (String string : paramArray) {
+                if (effectType.getName().equalsIgnoreCase(string)) {
+                    player.removePotionEffect(effectType);
+                    return;
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPotionEffect(EntityPotionEffectEvent event) {
+        Flag flag = this.getFlagInstanceAtLocation(event.getEntity().getLocation(), null);
+        if (flag == null) return;
+        PotionEffect potionEffect = event.getNewEffect();
+        if (potionEffect == null) return;
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            if (player.hasPermission("gpflags.bypass.nopotioneffects")) return;
+        }
+
+        PotionEffectType effectType = potionEffect.getType();
+        String[] paramArray = flag.getParametersArray();
+        if (flag.parameters.equalsIgnoreCase("all")) {
+            event.setCancelled(true);
+            return;
+        }
+        for (String string : paramArray) {
+            if (effectType.getName().equalsIgnoreCase(string)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
+        if (flag == null) return;
+        for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+            PotionEffectType effectType = potionEffect.getType();
+            String[] paramArray = flag.getParametersArray();
+            if (flag.parameters.equalsIgnoreCase("all")) {
+                player.removePotionEffect(effectType);
+                return;
+            }
+            for (String string : paramArray) {
+                if (effectType.getName().equalsIgnoreCase(string)) {
+                    player.removePotionEffect(effectType);
+                    return;
+                }
+            }
+        }
+    }
+
+    @Override
+    public SetFlagResult validateParameters(String parameters) {
+        if (parameters.isEmpty()) {
+            return new SetFlagResult(false, new MessageSpecifier(Messages.SpecifyPotionEffectName));
+        }
+        if (parameters.equalsIgnoreCase("all")) {
+            return new SetFlagResult(true, this.getSetMessage(parameters));
+        }
+        for (String s : parameters.split(" ")) {
+            PotionEffectType pet = PotionEffectType.getByName(s.toUpperCase());
+            if (pet == null) {
+                return new SetFlagResult(false, new MessageSpecifier(Messages.NotValidPotionName, s));
+            }
+        }
+        return new SetFlagResult(true, this.getSetMessage(parameters));
+    }
+
+    @Override
+    public String getName() {
+        return "NoPotionEffects";
+    }
+
+    @Override
+    public MessageSpecifier getSetMessage(String parameters) {
+        return new MessageSpecifier(Messages.EnabledNoPotionEffects, parameters);
+    }
+
+    @Override
+    public MessageSpecifier getUnSetMessage() {
+        return new MessageSpecifier(Messages.DisabledNoPotionEffects);
+    }
+
+}

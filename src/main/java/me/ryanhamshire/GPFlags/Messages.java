@@ -234,5 +234,9 @@ public enum Messages {
     EnabledProtectNamedMobs,
     DisabledProtectNamedMobs,
 
-    Prefix
+    NotValidPotionName,
+    EnabledNoPotionEffects,
+    DisabledNoPotionEffects,
+
+    SpecifyPotionEffectName, Prefix
 }
