@@ -1,8 +1,10 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +20,28 @@ public class FlagDef_NoPotionEffects extends PlayerMovementFlagDefinition implem
     }
 
     @Override
+    public void onFlagSet(Claim claim, String string) {
+        World world = claim.getLesserBoundaryCorner().getWorld();
+        for (Player player : world.getPlayers()) {
+            if (claim.contains(Util.getInBoundsLocation(player), false, false)) {
+                for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+                    PotionEffectType effectType = potionEffect.getType();
+                    if (string.equalsIgnoreCase("all")) {
+                        player.removePotionEffect(effectType);
+                    } else {
+                        for (String s : string.split(" ")) {
+                            if (effectType.getName().equalsIgnoreCase(s)) {
+                                player.removePotionEffect(effectType);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return;
@@ -28,13 +52,12 @@ public class FlagDef_NoPotionEffects extends PlayerMovementFlagDefinition implem
 
             if (flag.parameters.equalsIgnoreCase("all")) {
                 player.removePotionEffect(effectType);
-                return;
-            }
-            String[] paramArray = flag.getParametersArray();
-            for (String string : paramArray) {
-                if (effectType.getName().equalsIgnoreCase(string)) {
-                    player.removePotionEffect(effectType);
-                    return;
+            } else {
+                String[] paramArray = flag.getParametersArray();
+                for (String string : paramArray) {
+                    if (effectType.getName().equalsIgnoreCase(string)) {
+                        player.removePotionEffect(effectType);
+                    }
                 }
             }
         }
@@ -75,12 +98,11 @@ public class FlagDef_NoPotionEffects extends PlayerMovementFlagDefinition implem
             String[] paramArray = flag.getParametersArray();
             if (flag.parameters.equalsIgnoreCase("all")) {
                 player.removePotionEffect(effectType);
-                return;
-            }
-            for (String string : paramArray) {
-                if (effectType.getName().equalsIgnoreCase(string)) {
-                    player.removePotionEffect(effectType);
-                    return;
+            } else {
+                for (String string : paramArray) {
+                    if (effectType.getName().equalsIgnoreCase(string)) {
+                        player.removePotionEffect(effectType);
+                    }
                 }
             }
         }
