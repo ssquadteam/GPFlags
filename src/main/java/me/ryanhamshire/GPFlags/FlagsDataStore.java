@@ -343,6 +343,11 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.NotValidPotionName, "{0} is not a valid potion effect type. See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html for a complete list.", "0: invalid potion effect type");
         this.addDefault(defaults, Messages.SpecifyPotionEffectName, "Potion effect names required or use 'all' for all effects.", null);
 
+        this.addDefault(defaults, Messages.EnabledSpawnReasonWhitelist, "Only spawns of the selected reasons will be allowed in this region.", null);
+        this.addDefault(defaults, Messages.DisabledSpawnReasonWhitelist, "Spawns are now allowed in this region.", null);
+        this.addDefault(defaults, Messages.NotValidSpawnReason, "{0} is not a valid spawn reason. See https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html for a complete list.", "0: invalid spawn reason");
+        this.addDefault(defaults, Messages.SpecifySpawnReason, "Spawn reason names required.", null);
+
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 
         //load the config file

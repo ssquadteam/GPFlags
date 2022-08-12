@@ -237,6 +237,12 @@ public enum Messages {
     NotValidPotionName,
     EnabledNoPotionEffects,
     DisabledNoPotionEffects,
+    SpecifyPotionEffectName,
 
-    SpecifyPotionEffectName, Prefix
+    SpecifySpawnReason,
+    NotValidSpawnReason,
+    EnabledSpawnReasonWhitelist,
+    DisabledSpawnReasonWhitelist,
+
+    Prefix
 }
