@@ -1,4 +1,4 @@
-name: GriefPreventionFlags
+name: GPFlags
 main: me.ryanhamshire.GPFlags.GPFlags
 depend: [GriefPrevention]
 softdepend: [mcMMO, Vault, MythicMobs]

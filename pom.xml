@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>tk.shanebee</groupId>
-    <artifactId>GriefPreventionFlags</artifactId>
+    <artifactId>GPFlags</artifactId>
     <version>5.12.5-SNAPSHOT</version>
 
     <properties>
