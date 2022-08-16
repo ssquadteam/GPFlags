@@ -309,15 +309,15 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnableBuyBuildTrust, "Build trust can now be bought in this claim for {0}.", "0: Cost");
         this.addDefault(defaults, Messages.DisableBuyBuildTrust, "Build trust can no longer be bought in this claim.", null);
-        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for \\${0}. If you wish to do so, use /buybuildtrust.",
+        this.addDefault(defaults, Messages.BuildTrustPrice, "You can buy build trust in this claim for ${0}. If you wish to do so, use /buybuildtrust.",
                 "0: cost");
         this.addDefault(defaults, Messages.EnableBuyAccessTrust, "Access trust can now be bought in this claim for {0}.", "0: Cost");
         this.addDefault(defaults, Messages.DisableBuyAccessTrust, "Access trust can no longer be bought in this claim.", null);
-        this.addDefault(defaults, Messages.AccessTrustPrice, "You can buy access trust in this claim for \\${0}. If you wish to do so, use /buyaccesstrust.",
+        this.addDefault(defaults, Messages.AccessTrustPrice, "You can buy access trust in this claim for ${0}. If you wish to do so, use /buyaccesstrust.",
                 "0: cost");
         this.addDefault(defaults, Messages.EnableBuyContainerTrust, "Container trust can now be bought in this claim for {0}.", "0: Cost");
         this.addDefault(defaults, Messages.DisableBuyContainerTrust, "Container trust can no longer be bought in this claim.", null);
-        this.addDefault(defaults, Messages.ContainerTrustPrice, "You can buy container trust in this claim for \\${0}. If you wish to do so, use /buycontainertrust.",
+        this.addDefault(defaults, Messages.ContainerTrustPrice, "You can buy container trust in this claim for ${0}. If you wish to do so, use /buycontainertrust.",
                 "0: cost");
         this.addDefault(defaults, Messages.CostRequired, "You must specify a price",
                 null);
@@ -325,7 +325,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.AlreadyHaveTrust, "You already have trust in this claim", null);
         this.addDefault(defaults, Messages.NotEnoughMoney, "You do not have enough money to buy that type of trust.", null);
         this.addDefault(defaults, Messages.CannotBuyTrustHere, "That type of trust can not be bought in this claim.", null);
-        this.addDefault(defaults, Messages.BoughtTrust, "You have successfully bought that type of trust for {0}.", "0: Cost");
+        this.addDefault(defaults, Messages.BoughtTrust, "You have successfully bought that type of trust for ${0}.", "0: Cost");
 
         this.addDefault(defaults, Messages.EnableNotifyEnter, "You will now receive notifications when a player enters this claim", null);
         this.addDefault(defaults, Messages.DisableNotifyEnter, "You will no longer receive notifications when a player enters this claim", null);
@@ -368,7 +368,6 @@ public class FlagsDataStore {
             //read the message from the file, use default if necessary
             this.messages[messageID.ordinal()] = config.getString("Messages." + messageID.name() + ".Text", messageData.text);
             config.set("Messages." + messageID.name() + ".Text", this.messages[messageID.ordinal()]);
-            this.messages[messageID.ordinal()] = this.messages[messageID.ordinal()].replace('$', (char) 0x00A7);
 
             if (messageData.notes != null) {
                 messageData.notes = config.getString("Messages." + messageID.name() + ".Notes", messageData.notes);
