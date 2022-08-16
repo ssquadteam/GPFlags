@@ -15,7 +15,6 @@ public class Flag {
     Flag(FlagDefinition definition, String parameters) {
         this.flagDefinition = definition;
         this.parameters = parameters;
-        this.parameters = this.parameters.replace('$', (char) 0x00A7);
         this.parameters = this.parameters.replace('&', (char) 0x00A7);
     }
 
