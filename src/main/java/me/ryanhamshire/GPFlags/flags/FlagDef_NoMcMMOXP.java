@@ -31,6 +31,7 @@ public class FlagDef_NoMcMMOXP extends FlagDefinition {
     private void handleEvent(Player player, Cancellable event) {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (flag == null) return;
         if (Util.shouldBypass(player, claim, flag)) return;
 
         event.setCancelled(true);
