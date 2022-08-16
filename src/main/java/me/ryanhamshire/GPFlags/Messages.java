@@ -244,5 +244,9 @@ public enum Messages {
     EnabledSpawnReasonWhitelist,
     DisabledSpawnReasonWhitelist,
 
+    EnableBuySubclaim,
+    DisableBuySubclaim,
+    SubclaimPrice,
+
     Prefix
 }

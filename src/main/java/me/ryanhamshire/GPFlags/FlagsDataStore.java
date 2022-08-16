@@ -348,6 +348,10 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.NotValidSpawnReason, "{0} is not a valid spawn reason. See https://hub.spigotmc.org/javadocs/spigot/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html for a complete list.", "0: invalid spawn reason");
         this.addDefault(defaults, Messages.SpecifySpawnReason, "Spawn reason names required.", null);
 
+        this.addDefault(defaults, Messages.EnableBuySubclaim, "This subclaim can now be bought for {0}.", "0: cost");
+        this.addDefault(defaults, Messages.DisableBuySubclaim, "This subclaim can no longer be purchased.", null);
+        this.addDefault(defaults, Messages.SubclaimPrice, "You can buy this subclaim for {0}. If you wish to do so, use /buysubclaim.", "0: cost");
+
         this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
 
         //load the config file

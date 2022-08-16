@@ -4,6 +4,7 @@ import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.commands.CommandBuyAccessTrust;
 import me.ryanhamshire.GPFlags.commands.CommandBuyBuildTrust;
 import me.ryanhamshire.GPFlags.commands.CommandBuyContainerTrust;
+import me.ryanhamshire.GPFlags.commands.CommandBuySubclaim;
 import me.ryanhamshire.GPFlags.flags.*;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -214,10 +215,12 @@ public class GPFlagsConfig {
                 plugin.getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());
                 plugin.getCommand("buycontainertrust").setExecutor(new CommandBuyContainerTrust());
                 plugin.getCommand("buyaccesstrust").setExecutor(new CommandBuyAccessTrust());
+                plugin.getCommand("buysubclaim").setExecutor(new CommandBuySubclaim());
 
                 this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
                 this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
                 this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
+                this.flagManager.registerFlagDefinition(new FlagDef_BuySubclaim(this.flagManager, plugin));
             }
         } else {
             // Update world settings for flags (probably on a reload)
