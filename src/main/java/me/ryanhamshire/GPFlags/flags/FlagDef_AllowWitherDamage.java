@@ -11,9 +11,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlagDef_AllowWitherDamange extends FlagDefinition {
+public class FlagDef_AllowWitherDamage extends FlagDefinition {
 
-    public FlagDef_AllowWitherDamange(FlagManager manager, GPFlags plugin) {
+    public FlagDef_AllowWitherDamage(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
