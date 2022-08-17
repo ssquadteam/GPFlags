@@ -28,7 +28,7 @@ public class FlagDef_NoVineGrowth extends FlagDefinition {
         if (flag == null) return;
 
         Material newType = event.getSource().getType();
-        if (newType == Material.VINE || newType == Material.GLOW_LICHEN || newType == Material.WEEPING_VINES || newType == Material.TWISTING_VINES) {
+        if (newType == Material.VINE || newType == Material.GLOW_LICHEN || newType == Material.WEEPING_VINES || newType == Material.TWISTING_VINES || newType == Material.CAVE_VINES || newType == Material.CAVE_VINES_PLANT) {
             event.setCancelled(true);
         }
     }
