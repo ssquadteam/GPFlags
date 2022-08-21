@@ -123,7 +123,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoPlayerDamageByMonster, "Players will not take any damage by monsters in this land claim.", null);
         this.addDefault(defaults, Messages.DisableNoPlayerDamageByMonster, "Stopped preventing player damage by monsters in this land claim.", null);
 
-        this.addDefault(defaults, Messages.EnabledNoEnter, "Players now require /AccessTrust or higher permission to enter this area.  Players with permission gpflags.bypass.noenter are immune to this flag.", null);
+        this.addDefault(defaults, Messages.EnabledNoEnter, "Players now require /AccessTrust or higher permission to enter this area.", null);
         this.addDefault(defaults, Messages.DisabledNoEnter, "Stopped requiring permission to enter this area.", null);
         this.addDefault(defaults, Messages.NoEnterMessage, "You have been blocked from entering this claim", null);
 
@@ -138,15 +138,15 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableNoHunger, "Enabled food level loss and hunger damage in this area.", null);
         this.addDefault(defaults, Messages.FoodRegenInvalid, "Please specify how much food level to regenerate per 5 seconds (zero for no regneration).", null);
 
-        this.addDefault(defaults, Messages.EnableCommandBlackList, "Now blocking the specified commands in this area.  Players with permission gpflags.bypass.commandblacklist are immune to this flag.", null);
+        this.addDefault(defaults, Messages.EnableCommandBlackList, "Now blocking the specified commands in this area.", null);
         this.addDefault(defaults, Messages.DisableCommandBlackList, "Stopped blocking commands in this area.", null);
-        this.addDefault(defaults, Messages.EnableCommandWhiteList, "Now blocking all commands EXCEPT the specified commands in this area.  Players with permission gpflags.bypass.commandwhitelist are immune to this flag.", null);
+        this.addDefault(defaults, Messages.EnableCommandWhiteList, "Now blocking all commands EXCEPT the specified commands in this area.", null);
         this.addDefault(defaults, Messages.DisableCommandWhiteList, "Stopped blocking commands in this area.", null);
         this.addDefault(defaults, Messages.CommandListRequired, "Please provide a list of commands, separated by semicolons(;).", null);
         this.addDefault(defaults, Messages.CommandBlockedHere, "You don't have permission to use that command here.", null);
 
         this.addDefault(defaults, Messages.CantFlyHere, "You can't fly here.", null);
-        this.addDefault(defaults, Messages.EnableNoFlight, "Now blocking flight in this area.  Players with permission gpflags.bypass.noflight are immune to this flag.", null);
+        this.addDefault(defaults, Messages.EnableNoFlight, "Now blocking flight in this area.", null);
         this.addDefault(defaults, Messages.DisableNoFlight, "Stopped preventing flight in this area.", null);
 
         this.addDefault(defaults, Messages.EnableTrappedDestination, "The /trapped command will now send players to the specified location when executed here.", null);
