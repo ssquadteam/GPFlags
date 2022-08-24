@@ -1,10 +1,14 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,6 +60,19 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
 
+        Collection<Claim> claims = GriefPrevention.instance.dataStore.getClaims();
+        for (Claim claim : claims) {
+            if (GPFlags.getInstance().getFlagManager().getFlag(claim, "AllowBlockExplosions") != null) {
+                claim.areExplosivesAllowed = true;
+            }
+            if (GPFlags.getInstance().getFlagManager().getFlag(claim, "KeepLoaded") != null) {
+                ArrayList<Chunk> chunks = claim.getChunks();
+                for (Chunk chunk : chunks) {
+                    chunk.setForceLoaded(true);
+                    chunk.load(true);
+                }
+            }
+        }
 
         new Metrics(this);
 

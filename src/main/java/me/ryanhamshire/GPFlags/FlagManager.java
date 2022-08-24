@@ -129,7 +129,7 @@ public class FlagManager {
         if (newFlag) {
             Claim claim;
             try {
-                claim = GriefPrevention.instance.dataStore.getClaim(Long.getLong(claimId));
+                claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
             } catch (Exception ignored) {
                 return result;
             }
