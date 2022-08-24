@@ -15,7 +15,7 @@ public class FlagDef_AllowBlockExplosions extends FlagDefinition {
         super(manager, plugin);
     }
 
-    @EventHandler (priority = EventPriority.HIGH)
+    @EventHandler (priority = EventPriority.HIGHEST)
     public void onBlockExplode(BlockExplodeEvent e) {
         Block block = e.getBlock();
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
