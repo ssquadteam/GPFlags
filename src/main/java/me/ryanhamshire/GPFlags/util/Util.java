@@ -494,4 +494,15 @@ public class Util {
         }
     }
 
+    public static HashSet<Player> getPlayersIn(Claim claim) {
+        HashSet<Player> players = new HashSet<>();
+        World world = claim.getGreaterBoundaryCorner().getWorld();
+        for (Player p : world.getPlayers()) {
+            if (claim.contains(p.getLocation(), false, false)) {
+                players.add(p);
+            }
+        }
+        return players;
+    }
+
 }
