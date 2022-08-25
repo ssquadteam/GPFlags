@@ -36,6 +36,9 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         Player owner = Bukkit.getPlayer(uuid);
         if (owner == null) return;
         if (claim.contains(owner.getLocation(), false, false)) {
+            if (!owner.getAllowFlight()) {
+                Util.sendClaimMessage(owner, TextMode.Success, Messages.EnterFlightEnabled);
+            }
             owner.setAllowFlight(true);
         }
     }
