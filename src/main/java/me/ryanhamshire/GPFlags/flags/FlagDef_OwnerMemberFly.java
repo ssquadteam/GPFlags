@@ -27,10 +27,26 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
 
     @Override
     public void onFlagSet(Claim claim, String param) {
-        World world = claim.getLesserBoundaryCorner().getWorld();
-        for (Player p : world.getPlayers()) {
-            if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
-                handleFlight(p);
+        for (Player p : Util.getPlayersIn(claim)) {
+            handleFlight(p);
+        }
+    }
+
+    @Override
+    public void onFlagUnset(Claim claim) {
+        for (Player p : Util.getPlayersIn(claim)) {
+            if (!Util.canFly(p)) {
+                if (p.isFlying()) {
+                    Block block = p.getLocation().getBlock();
+                    while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
+                        block = block.getRelative(BlockFace.DOWN);
+                    }
+                    if (p.getLocation().getY() - block.getY() >= 4) {
+                        GPFlags.getInstance().getPlayerListener().addFallingPlayer(p);
+                    }
+                }
+                p.setAllowFlight(false);
+                Util.sendClaimMessage(p, TextMode.Warn, Messages.ExitFlightDisabled);
             }
         }
     }

@@ -35,11 +35,38 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         UUID uuid = claim.getOwnerID();
         Player owner = Bukkit.getPlayer(uuid);
         if (owner == null) return;
+        if (canFly(owner)) return;
         if (claim.contains(owner.getLocation(), false, false)) {
             if (!owner.getAllowFlight()) {
                 Util.sendClaimMessage(owner, TextMode.Success, Messages.EnterFlightEnabled);
             }
             owner.setAllowFlight(true);
+        }
+    }
+
+    @Override
+    public void onFlagUnset(Claim claim) {
+        UUID uuid = claim.getOwnerID();
+        Player owner = Bukkit.getPlayer(uuid);
+        if (owner == null) return;
+        if (canFly(owner)) return;
+        if (claim.contains(owner.getLocation(), false, false)) {
+            if (owner.isFlying()) {
+                Block block = owner.getLocation().getBlock();
+                while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
+                    block = block.getRelative(BlockFace.DOWN);
+                }
+                owner.setAllowFlight(false);
+                if (owner.getLocation().getY() - block.getY() >= 4) {
+                    GPFlags.getInstance().getPlayerListener().addFallingPlayer(owner);
+                }
+                Util.sendClaimMessage(owner, TextMode.Warn, Messages.ExitFlightDisabled);
+                return;
+            }
+            if (owner.getAllowFlight()) {
+                owner.setAllowFlight(false);
+                Util.sendClaimMessage(owner, TextMode.Warn, Messages.ExitFlightDisabled);
+            }
         }
     }
 
