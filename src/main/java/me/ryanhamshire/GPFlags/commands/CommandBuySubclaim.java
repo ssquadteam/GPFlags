@@ -24,7 +24,7 @@ public class CommandBuySubclaim implements CommandExecutor {
         }
         Player player = (Player) sender;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim == null) {
+        if (claim == null || claim.parent == null) {
             Util.sendMessage(sender, TextMode.Err, Messages.CannotBuyTrustHere);
             return true;
         }

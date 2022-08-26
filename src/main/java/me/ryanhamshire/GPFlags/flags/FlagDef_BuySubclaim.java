@@ -62,7 +62,7 @@ public class FlagDef_BuySubclaim extends PlayerMovementFlagDefinition {
         if (flag == null) return;
 
         if (claimTo == null) return;
-        if (claimTo.parent != null) return;
+        if (claimTo.parent == null) return;
 
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         Util.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
@@ -74,7 +74,8 @@ public class FlagDef_BuySubclaim extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim.parent != null) return;
+        if (claim == null) return;
+        if (claim.parent == null) return;
         if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Build) return;
         Util.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
     }
