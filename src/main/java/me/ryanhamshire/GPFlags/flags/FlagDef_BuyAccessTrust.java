@@ -74,7 +74,7 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Access) return;
+        if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Access) return;
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         if (player.getUniqueId().equals(claim.getOwnerID())) return;
