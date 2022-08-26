@@ -31,7 +31,11 @@ public class CommandBuyAccessTrust implements CommandExecutor {
         Collection<Flag> flags = GPFlags.getInstance().getFlagManager().getFlags(claim.getID().toString());
         for (Flag flag : flags) {
             if (flag.getFlagDefinition().getName().equalsIgnoreCase("BuyAccessTrust")) {
-                if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Access) {
+                if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Access ||
+                        claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build ||
+                        claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory ||
+                        player.getUniqueId().equals(claim.getOwnerID())
+                ) {
                     Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
                     return true;
                 }

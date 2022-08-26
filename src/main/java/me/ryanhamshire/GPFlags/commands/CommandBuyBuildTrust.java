@@ -31,7 +31,8 @@ public class CommandBuyBuildTrust implements CommandExecutor {
         Collection<Flag> flags = GPFlags.getInstance().getFlagManager().getFlags(claim.getID().toString());
         for (Flag flag : flags) {
             if (flag.getFlagDefinition().getName().equalsIgnoreCase("BuyBuildTrust")) {
-                if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) {
+                if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build ||
+                        player.getUniqueId().equals(claim.getOwnerID())) {
                     Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
                     return true;
                 }
