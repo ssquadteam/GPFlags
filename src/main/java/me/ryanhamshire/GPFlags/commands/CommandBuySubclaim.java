@@ -55,9 +55,7 @@ public class CommandBuySubclaim implements CommandExecutor {
                     VaultHook.giveMoney(claim.getOwnerID(), cost);
                 }
                 claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
-                claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Inventory);
                 claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
-                claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Access);
                 GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition(), true);
                 Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
                 return true;
