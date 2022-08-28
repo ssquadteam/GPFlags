@@ -202,6 +202,8 @@ public enum Messages {
     AccessTrustPrice,
     EnabledAllowWitherDamage,
     DisabledAllowWitherDamage,
+    EnableNoEliteMobSpawning,
+    DisableNoEliteMobSpawning,
 
 
     //EXPERIMENTAL
