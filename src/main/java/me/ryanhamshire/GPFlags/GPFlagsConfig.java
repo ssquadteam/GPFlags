@@ -210,6 +210,11 @@ public class GPFlagsConfig {
             catch (NoClassDefFoundError ignore) {
             }
 
+            // EliteMob flags
+            if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null) {
+                this.flagManager.registerFlagDefinition(new FlagDef_NoEliteMobSpawns(this.flagManager, plugin));
+            }
+
             // vault-reliant flags
             if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
                 plugin.getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());

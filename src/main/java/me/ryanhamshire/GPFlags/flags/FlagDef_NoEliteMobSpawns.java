@@ -9,9 +9,9 @@ import com.magmaguy.elitemobs.api.EliteMobSpawnEvent;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlagDef_NoEliteMobSpawning extends FlagDefinition {
+public class FlagDef_NoEliteMobSpawns extends FlagDefinition {
 
-    public FlagDef_NoEliteMobSpawning(FlagManager manager, GPFlags plugin) {
+    public FlagDef_NoEliteMobSpawns(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
@@ -25,17 +25,17 @@ public class FlagDef_NoEliteMobSpawning extends FlagDefinition {
 
     @Override
     public String getName() {
-        return "NoEliteMobSpawning";
+        return "NoEliteMobSpawns";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.EnableNoEliteMobSpawning);
+        return new MessageSpecifier(Messages.EnableNoEliteMobSpawns);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.DisableNoEliteMobSpawning);
+        return new MessageSpecifier(Messages.DisableNoEliteMobSpawns);
     }
 
     @Override

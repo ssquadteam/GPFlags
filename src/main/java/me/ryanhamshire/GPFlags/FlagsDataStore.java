@@ -337,8 +337,8 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnabledAllowWitherDamage, "Withers can now deal damage to mobs in this region", null);
         this.addDefault(defaults, Messages.DisabledAllowWitherDamage, "Withers can no longer deal damage to mobs in this region", null);
-        this.addDefault(defaults, Messages.EnableNoEliteMobSpawning, "Now preventing elite mob spawns in this region.", null);
-        this.addDefault(defaults, Messages.DisableNoEliteMobSpawning, "No longer preventing elite mob spawns in this region.", null);
+        this.addDefault(defaults, Messages.EnableNoEliteMobSpawns, "Now preventing elite mob spawns in this region.", null);
+        this.addDefault(defaults, Messages.DisableNoEliteMobSpawns, "No longer preventing elite mob spawns in this region.", null);
 
 
         this.addDefault(defaults, Messages.EnabledNoPotionEffects, "Potion effects are now disabled in this region.", null);
