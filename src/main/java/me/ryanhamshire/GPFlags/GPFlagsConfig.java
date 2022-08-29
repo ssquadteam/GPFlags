@@ -212,22 +212,26 @@ public class GPFlagsConfig {
             }
 
             // EliteMob flags
-            if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null) {
-                this.flagManager.registerFlagDefinition(new FlagDef_NoEliteMobSpawns(this.flagManager, plugin));
-            }
+            try {
+                if (Bukkit.getPluginManager().getPlugin("EliteMobs") != null) {
+                    this.flagManager.registerFlagDefinition(new FlagDef_NoEliteMobSpawns(this.flagManager, plugin));
+                }
+            } catch (NoClassDefFoundError ignored) {}
 
             // vault-reliant flags
-            if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
-                plugin.getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());
-                plugin.getCommand("buycontainertrust").setExecutor(new CommandBuyContainerTrust());
-                plugin.getCommand("buyaccesstrust").setExecutor(new CommandBuyAccessTrust());
-                plugin.getCommand("buysubclaim").setExecutor(new CommandBuySubclaim());
+            try {
+                if (Bukkit.getPluginManager().getPlugin("Vault") != null) {
+                    plugin.getCommand("buybuildtrust").setExecutor(new CommandBuyBuildTrust());
+                    plugin.getCommand("buycontainertrust").setExecutor(new CommandBuyContainerTrust());
+                    plugin.getCommand("buyaccesstrust").setExecutor(new CommandBuyAccessTrust());
+                    plugin.getCommand("buysubclaim").setExecutor(new CommandBuySubclaim());
 
-                this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
-                this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
-                this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
-                this.flagManager.registerFlagDefinition(new FlagDef_BuySubclaim(this.flagManager, plugin));
-            }
+                    this.flagManager.registerFlagDefinition(new FlagDef_BuyBuildTrust(this.flagManager, plugin));
+                    this.flagManager.registerFlagDefinition(new FlagDef_BuyContainerTrust(this.flagManager, plugin));
+                    this.flagManager.registerFlagDefinition(new FlagDef_BuyAccessTrust(this.flagManager, plugin));
+                    this.flagManager.registerFlagDefinition(new FlagDef_BuySubclaim(this.flagManager, plugin));
+                }
+            } catch (NoClassDefFoundError ignored) {}
         } else {
             // Update world settings for flags (probably on a reload)
             this.flagManager.getFlagDefinitions().forEach(flagDefinition -> flagDefinition.updateSettings(plugin.getWorldSettingsManager()));
