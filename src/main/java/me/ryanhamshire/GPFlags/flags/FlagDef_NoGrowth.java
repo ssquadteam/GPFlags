@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
 
 import java.util.Arrays;
 import java.util.List;
