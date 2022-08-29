@@ -205,7 +205,6 @@ public enum Messages {
     EnableNoEliteMobSpawns,
     DisableNoEliteMobSpawns,
 
-
     EnabledNoStructureGrowth,
     DisableNoStructureGrowth,
 
