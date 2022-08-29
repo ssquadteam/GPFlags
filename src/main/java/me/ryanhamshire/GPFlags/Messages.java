@@ -206,6 +206,9 @@ public enum Messages {
     DisableNoEliteMobSpawns,
 
 
+    EnabledNoStructureGrowth,
+    DisableNoStructureGrowth,
+
     //EXPERIMENTAL
     ChangeBiomeSet,
     ChangeBiomeUnset,

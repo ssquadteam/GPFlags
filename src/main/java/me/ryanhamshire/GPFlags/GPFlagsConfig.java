@@ -132,6 +132,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoHunger(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoStructureGrowth(this.flagManager, plugin));
             
             FlagDef_NoFlight noFlight = new FlagDef_NoFlight(this.flagManager, plugin);
             noFlight.firstTimeSetup();
