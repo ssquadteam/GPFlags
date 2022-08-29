@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import com.magmaguy.elitemobs.mobconstructor.EliteEntity;
 import me.ryanhamshire.GPFlags.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import com.magmaguy.elitemobs.api.EliteMobSpawnEvent;
 
@@ -17,7 +17,7 @@ public class FlagDef_NoEliteMobSpawns extends FlagDefinition {
 
     @EventHandler
     public void onEntitySpawn(EliteMobSpawnEvent event) {
-        EliteEntity ee = event.getEliteMobEntity();
+        Entity ee = event.getEntity();
         Flag flag = this.getFlagInstanceAtLocation(ee.getLocation(), null);
         if (flag == null) return;
         event.setCancelled(true);
