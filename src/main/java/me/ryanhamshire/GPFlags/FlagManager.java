@@ -133,10 +133,12 @@ public class FlagManager {
             } catch (Exception ignored) {
                 return result;
             }
-            if (isActive) {
-                def.onFlagSet(claim, parameters.toString());
-            } else {
-                def.onFlagUnset(claim);
+            if (claim != null) {
+                if (isActive) {
+                    def.onFlagSet(claim, parameters.toString());
+                } else {
+                    def.onFlagUnset(claim);
+                }
             }
         }
         return result;
