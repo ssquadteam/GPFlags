@@ -23,24 +23,22 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         }
         if (args.length < 1) return false;
 
-        Player player = ((Player) commandSender);
-
         String flagName = args[0];
 
         GPFlags gpFlags = GPFlags.getInstance();
         FlagDefinition def = gpFlags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            Util.sendMessage(player, TextMode.Err, Util.getFlagDefsMessage(player));
+            Util.sendMessage(commandSender, TextMode.Err, Util.getFlagDefsMessage(commandSender));
             return true;
         }
 
-        if (!player.hasPermission("gpflags.flag." + def.getName())) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission, def.getName());
+        if (!commandSender.hasPermission("gpflags.flag." + def.getName())) {
+            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 
         if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoFlagInClaim);
+            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagInClaim);
             return true;
         }
 
@@ -50,10 +48,10 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         SetFlagResult result = gpFlags.getFlagManager().setFlag(FlagManager.DEFAULT_FLAG_ID, def, true, true, params);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
-            Util.sendMessage(player, color, Messages.DefaultFlagSet);
+            Util.sendMessage(commandSender, color, Messages.DefaultFlagSet);
             gpFlags.getFlagManager().save();
         } else {
-            Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
+            Util.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         }
 
         return true;
