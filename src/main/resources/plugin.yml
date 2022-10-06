@@ -54,7 +54,7 @@ commands:
     permission: gpflags.command.listclaimflags
   setworldflag:
     description: Sets a flag on an entire world.
-    usage: /SetWorldFlag <flag> <optional parameters>
+    usage: /SetWorldFlag <world> <flag> <optional parameters>
     aliases: [ placeworldflag, putworldflag, worldflag ]
     permission: gpflags.command.setworldflag
   unsetworldflag:
