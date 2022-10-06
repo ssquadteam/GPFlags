@@ -55,7 +55,7 @@ public class GPFlagsConfig {
 
             settings.worldGamemodeDefault = inConfig.getString("World Flags." + worldName + ".Default Gamemode", "survival");
             String worldGMDefault = settings.worldGamemodeDefault;
-            if (worldGMDefault == null || !worldGMDefault.equalsIgnoreCase("survival") && !worldGMDefault.equalsIgnoreCase("creative") &&
+            if (!worldGMDefault.equalsIgnoreCase("survival") && !worldGMDefault.equalsIgnoreCase("creative") &&
                     !worldGMDefault.equalsIgnoreCase("adventure") && !worldGMDefault.equalsIgnoreCase("spectator")) {
                 settings.worldGamemodeDefault = "survival";
             }
