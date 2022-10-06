@@ -316,7 +316,7 @@ public class Util {
         if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Build, null) == null;
-        } catch (NoSuchFieldError e) {
+        } catch (NoSuchFieldError | NoSuchMethodError e) {
             return claim.allowBuild(player, Material.STONE) == null;
         }
     }
@@ -326,7 +326,7 @@ public class Util {
         if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Inventory, null) == null;
-        } catch (NoSuchFieldError e) {
+        } catch (NoSuchFieldError | NoSuchMethodError e) {
             return claim.allowContainers(player) == null;
         }
     }
@@ -336,7 +336,7 @@ public class Util {
         if (playerData.ignoreClaims) return true;
         try {
             return claim.checkPermission(player, ClaimPermission.Manage, null) == null;
-        } catch (NoSuchFieldError e) {
+        } catch (NoSuchFieldError | NoSuchMethodError e) {
             return claim.allowGrantPermission(player) == null;
         }
     }
