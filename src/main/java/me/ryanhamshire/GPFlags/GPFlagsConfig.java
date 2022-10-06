@@ -208,8 +208,7 @@ public class GPFlagsConfig {
                 }
             }
             //if failed, we just won't have those flags available
-            catch (NoClassDefFoundError ignore) {
-            }
+            catch (NoClassDefFoundError ignore) {}
 
             // EliteMob flags
             try {
