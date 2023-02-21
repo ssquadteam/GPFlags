@@ -31,8 +31,15 @@ public class FlagDef_NoMobDamage extends FlagDefinition {
     public void onEntityDamage(EntityDamageEvent event) {
         Entity entity = event.getEntity();
 
+        Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
+        if (flag == null) return;
+
+        // fix for GP discussion https://github.com/TechFortress/GriefPrevention/issues/1481
+        if (event.getDamage() == 0 && event.getCause() == DamageCause.CUSTOM) return;
+
         DamageCause cause = event.getCause();
         if (cause == DamageCause.ENTITY_ATTACK || cause == DamageCause.PROJECTILE) {
+            if (!(event instanceof EntityDamageByEntityEvent)) return;
             EntityDamageByEntityEvent event2 = (EntityDamageByEntityEvent) event;
             Entity attacker = event2.getDamager();
 
@@ -45,12 +52,6 @@ public class FlagDef_NoMobDamage extends FlagDefinition {
         }
 
         if (entity instanceof Animals || entity instanceof WaterMob || entity.getType() == EntityType.VILLAGER || entity.getCustomName() != null) {
-            Flag flag = this.getFlagInstanceAtLocation(entity.getLocation(), null);
-            if (flag == null) return;
-
-            // fix for GP discussion https://github.com/TechFortress/GriefPrevention/issues/1481
-            if (event.getDamage() == 0 && event.getCause() == DamageCause.CUSTOM) return;
-
             event.setCancelled(true);
         }
     }
