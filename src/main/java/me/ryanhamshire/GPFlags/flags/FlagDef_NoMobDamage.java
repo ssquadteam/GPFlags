@@ -39,7 +39,6 @@ public class FlagDef_NoMobDamage extends FlagDefinition {
 
         DamageCause cause = event.getCause();
         if (cause == DamageCause.ENTITY_ATTACK || cause == DamageCause.PROJECTILE) {
-            if (!(event instanceof EntityDamageByEntityEvent)) return;
             EntityDamageByEntityEvent event2 = (EntityDamageByEntityEvent) event;
             Entity attacker = event2.getDamager();
 
