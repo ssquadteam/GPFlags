@@ -451,6 +451,18 @@ permissions:
     default: op
     children:
       gpflags.command.gpflags: true
+  gpflags.command.buybuildtrust:
+    description: Grants tab-complete for /buybuildtrust
+    default: true
+  gpflags.command.buycontainertrust:
+    description: Grants tab-complete for /buycontainertrust
+    default: true
+  gpflags.command.buyaccesstrust:
+    description: Grants tab-complete for /buyaccesstrust
+    default: true
+  gpflags.command.buysubclaim:
+    description: Grants tab-complete for /buysubclaim
+    default: true
   gpflags.command.help:
     description: Grants permission to use /GPFlags help.
     default: true
