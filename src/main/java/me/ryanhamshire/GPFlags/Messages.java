@@ -184,6 +184,8 @@ public enum Messages {
     DisableNotifyExit,
     NotifyEnter,
     NotifyExit,
+    EnableNoAnvilDamage,
+    DisableNoAnvilDamage,
 
     EnableBuyBuildTrust,
     DisableBuyBuildTrust,

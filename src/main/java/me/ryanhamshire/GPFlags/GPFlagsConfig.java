@@ -198,6 +198,13 @@ public class GPFlagsConfig {
                 }
             }
 
+            try {
+                Class.forName("com.destroystokyo.paper.event.block.AnvilDamagedEvent");
+                this.flagManager.registerFlagDefinition(new FlagDef_NoAnvilDamage(this.flagManager, plugin));
+            }
+            //if failed, we just won't have this flag available
+            catch (ClassNotFoundException ignore) {}
+
             //try to hook into mcMMO
             try {
                 if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
