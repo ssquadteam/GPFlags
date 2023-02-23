@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
+import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.HumanEntity;
@@ -79,7 +79,7 @@ public class GPFlags extends JavaPlugin {
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
         if (getDescription().getVersion().contains("SNAPSHOT")) {
-            Util.log("&eYou are running a Beta version, things may not operate as expected");
+            Util.log("&eYou are running a snapshot version, things may not operate as expected");
         }
     }
 

@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tk.shanebee</groupId>
+    <groupId>me.ryanhamshire</groupId>
     <artifactId>GPFlags</artifactId>
     <version>5.12.6-SNAPSHOT</version>
 
@@ -38,11 +38,10 @@
             <name>Lumine Releases</name>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
-    <repository>
-        <id>akiradev-repo</id>
-        <url>https://repo.akiradev.xyz/repository/public/</url>
-    </repository>
-
+        <repository>
+            <id>akiradev-repo</id>
+            <url>https://repo.akiradev.xyz/repository/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -100,12 +99,6 @@
             <artifactId>EliteMobs</artifactId>
             <version>8.0.2</version>
         </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.0</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <profiles>
@@ -121,27 +114,6 @@
                             <!-- Put here wherever you would like the plugin to build -->
                             <outputDirectory>/Users/ShaneBee/Desktop/Server/1-16-GP TEST/plugins</outputDirectory>
                         </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <configuration>
-                            <relocations>
-                                <relocation>
-                                    <pattern>org.bstats</pattern>
-                                    <shadedPattern>me.ryanhamshire</shadedPattern>
-                                </relocation>
-                            </relocations>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>shade</goal>
-                                </goals>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>
