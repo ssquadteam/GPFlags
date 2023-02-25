@@ -302,6 +302,16 @@ public class FlagManager {
         }
     }
 
+    public HashSet<String> getUsedFlags() {
+        HashSet<String> usedFlags = new HashSet<>();
+        Set<String> claimIDs = this.flags.keySet();
+        for (String claimID : claimIDs) {
+            ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
+            usedFlags.addAll(claimFlags.keySet());
+        }
+        return usedFlags;
+    }
+
     public String flagsToString() {
         YamlConfiguration yaml = new YamlConfiguration();
 

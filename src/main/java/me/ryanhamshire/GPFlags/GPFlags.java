@@ -1,9 +1,10 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
+import java.util.concurrent.Callable;
 
 import me.ryanhamshire.GPFlags.commands.*;
+import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -74,7 +75,14 @@ public class GPFlags extends JavaPlugin {
             }
         }
 
-        new Metrics(this, 17786);
+        Metrics metrics = new Metrics(this, 17809);
+        metrics.addCustomChart(new Metrics.AdvancedPie("most_popular_flags", () -> {
+            Map<String, Integer> valueMap = new HashMap<>();
+            for (String flag : GPFlags.getInstance().getFlagManager().getUsedFlags()) {
+                valueMap.put(flag, 1);
+            }
+            return valueMap;
+        }));
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
