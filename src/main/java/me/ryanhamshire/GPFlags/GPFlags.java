@@ -1,11 +1,9 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.*;
-import java.util.concurrent.Callable;
 
 import me.ryanhamshire.GPFlags.commands.*;
-import me.ryanhamshire.GPFlags.flags.FlagDefinition;
-import me.ryanhamshire.GPFlags.listener.RidableMoveListener;
+import me.ryanhamshire.GPFlags.listener.EntityMoveListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -40,9 +38,10 @@ public class GPFlags extends JavaPlugin {
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
         try {
-            Class.forName("org.purpurmc.purpur.event.entity.RidableMoveEvent");
-            Bukkit.getPluginManager().registerEvents(new RidableMoveListener(), this);
+            Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
+            Bukkit.getPluginManager().registerEvents(new EntityMoveListener(), this);
         } catch (ClassNotFoundException ignored) {}
+
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
 
