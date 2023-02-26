@@ -26,7 +26,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
     @Override
     public void onFlagSet(Claim claim, String string) {
         String[] args = string.split(" ");
-        for (int i = 1; i < args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             Player target = Bukkit.getPlayer(args[i]);
             if (target != null && target.getName().equalsIgnoreCase(args[i])) {
                 if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
