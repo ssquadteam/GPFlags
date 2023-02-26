@@ -74,7 +74,7 @@ public class GPFlags extends JavaPlugin {
             }
         }
 
-        Metrics metrics = new Metrics(this, 17809);
+        Metrics metrics = new Metrics(this, 17786);
         metrics.addCustomChart(new Metrics.AdvancedPie("most_popular_flags", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
             for (String flag : GPFlags.getInstance().getFlagManager().getUsedFlags()) {
