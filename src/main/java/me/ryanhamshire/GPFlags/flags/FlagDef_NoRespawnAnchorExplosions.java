@@ -17,6 +17,9 @@ public class FlagDef_NoRespawnAnchorExplosions extends FlagDefinition {
 
     @EventHandler
     public void onExplosion(BlockExplodeEvent e) {
+        Flag flag = this.getFlagInstanceAtLocation(e.getBlock().getExplosion(), null);
+        if (flag == null) return;
+        
         BlockState bs = e.getExplodedBlockState();
         if (bs == null) return;
         if (bs.getType() == Material.RESPAWN_ANCHOR) e.setCancelled(true);
