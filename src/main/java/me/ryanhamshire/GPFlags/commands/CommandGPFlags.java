@@ -24,6 +24,7 @@ public class CommandGPFlags implements TabExecutor {
                 return true;
             }
             me.ryanhamshire.GPFlags.GPFlags.getInstance().reloadConfig();
+            GPFlags.getInstance().getFlagsDataStore().loadMessages();
             Util.sendMessage(commandSender, TextMode.Success, Messages.ReloadComplete);
             return true;
         }

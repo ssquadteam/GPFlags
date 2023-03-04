@@ -27,7 +27,7 @@ public class FlagsDataStore {
         this.loadMessages();
     }
 
-    private void loadMessages() {
+    public void loadMessages() {
         Messages[] messageIDs = Messages.values();
         this.messages = new String[Messages.values().length];
 
