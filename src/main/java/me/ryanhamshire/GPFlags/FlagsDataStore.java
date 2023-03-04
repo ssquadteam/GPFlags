@@ -37,7 +37,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.NoCommandPermission, "You do not have permission to use command: &7/gpflags &b{0}", "0:subcommand");
         this.addDefault(defaults, Messages.UnknownCommand, "Unknown Command: &7/gpflags &c{0}", "0:subcommand");
         this.addDefault(defaults, Messages.PlayerOnlyCommand, "Player Only Command: &7/gpflags &c{0}", "0:subcommand");
-        this.addDefault(defaults, Messages.ReloadComplete, "Reloaded config settings and flags from disk.  If you've updated your GPFlags jar file, you MUST either /reload or reboot your server to activate the update.", null);
+        this.addDefault(defaults, Messages.ReloadComplete, "Reloaded config settings, messages, and flags from disk.  If you've updated your GPFlags jar file, you MUST restart your server to activate the update.", null);
         this.addDefault(defaults, Messages.NoFlagsInThisClaim, "This claim doesn't have any flags.", null);
         this.addDefault(defaults, Messages.ThatFlagNotSet, "That flag isn't set here.", null);
         this.addDefault(defaults, Messages.InvalidFlagDefName, "Available Flags: {0}", "0:flags list");
