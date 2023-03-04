@@ -205,14 +205,6 @@ public class GPFlagsConfig {
             // if failed, we just won't have this flag available
             catch (ClassNotFoundException ignore) {}
 
-            try {
-                Class.forName("org.bukkit.event.block.BlockExplodeEvent").getMethod("getExplodedBlockState");
-                this.flagManager.registerFlagDefinition(new FlagDef_NoRespawnAnchorExplosions(this.flagManager, plugin));
-            }
-            // if failed, we just won't have this flag available
-            catch (ClassNotFoundException | NoSuchMethodException ignored) {}
-
-
             //try to hook into mcMMO
             try {
                 if (Bukkit.getPluginManager().getPlugin("mcMMO") != null) {
