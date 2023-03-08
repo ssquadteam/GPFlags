@@ -22,13 +22,14 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
         if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return;
+        if (claimTo == null) return;
 
         // get specific EnterMessage flag of destination claim and ExitMessage flag of origin claim
         Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
         Flag flagFromExit = plugin.getFlagManager().getFlag(claimFrom, plugin.getFlagManager().getFlagDefinitionByName("NotifyExit"));
 
         // Don't repeat the enter message of a claim in certain cases
-        if (claimFrom != null && claimTo != null) {
+        if (claimFrom != null) {
             // moving to sub-claim, and the sub claim does not have its own enter message
             if (claimTo.parent == claimFrom && (flagTo == null || !flagTo.getSet())) {
                 return;
@@ -38,27 +39,20 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
                 return;
             }
         }
-
-        if (claimTo == null) return;
-        Player owner = Bukkit.getPlayer(claimTo.getOwnerID());
-        if (owner == null) return;
-        if (owner.getName().equals(player.getName())) return;
-        if (!owner.canSee(player)) return;
-        if (player.getGameMode() == GameMode.SPECTATOR) return;
-        String param = flag.parameters;
-        if (param == null || param.isEmpty()) {
-            param = "claim " + claimTo.getID();
-        }
-        Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyEnter, player.getName(), param);
+        if (shouldNotify(player, claimTo)) notifyEntry(flag, claimTo, player);
     }
 
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim == null) return;
+    public boolean shouldNotify(Player p, Claim c) {
+        Player owner = Bukkit.getPlayer(c.getOwnerID());
+        if (owner == null) return false;
+        if (owner.getName().equals(p.getName())) return false;
+        if (!owner.canSee(p)) return false;
+        if (p.getGameMode() == GameMode.SPECTATOR) return false;
+        if (p.hasPermission("gpflags.bypass.notifyenter")) return false;
+        return true;
+    }
+
+    public void notifyEntry(Flag flag, Claim claim, Player player) {
         Player owner = Bukkit.getPlayer(claim.getOwnerID());
         if (owner == null) return;
         if (owner.getName().equals(player.getName())) return;
@@ -68,6 +62,16 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
         }
         Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyEnter, player.getName(), param);
 
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
+        if (flag == null) return;
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (claim == null) return;
+        if (shouldNotify(player, claim)) notifyEntry(flag, claim, player);
     }
 
     @Override
