@@ -4,6 +4,8 @@ import java.util.*;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
+import me.ryanhamshire.GPFlags.listener.ClaimModifiedListener;
+import me.ryanhamshire.GPFlags.listener.ClaimResizeListener;
 import me.ryanhamshire.GPFlags.listener.EntityMoveListener;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -42,6 +44,14 @@ public class GPFlags extends JavaPlugin {
             Class.forName("io.papermc.paper.event.entity.EntityMoveEvent");
             Bukkit.getPluginManager().registerEvents(new EntityMoveListener(), this);
         } catch (ClassNotFoundException ignored) {}
+
+        try {
+            Class.forName("me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent");
+            Bukkit.getPluginManager().registerEvents(new ClaimResizeListener(), this);
+        } catch (ClassNotFoundException e) {
+            Bukkit.getPluginManager().registerEvents(new ClaimModifiedListener(), this);
+        }
+
 
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();

@@ -152,9 +152,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
-    // Call the claim border event when a player resizes a claim and they are now outside of the claim
-    private void onChangeClaim(ClaimModifiedEvent event) {
+    public static void onClaimResize(ClaimModifiedEvent event) {
         Claim claimTo = event.getTo();
         Claim claimFrom = event.getFrom();
         World world = claimFrom.getGreaterBoundaryCorner().getWorld();
