@@ -152,32 +152,6 @@ public class PlayerListener implements Listener {
         }
     }
 
-    public static void onClaimResize(ClaimModifiedEvent event) {
-        Claim claimTo = event.getTo();
-        Claim claimFrom = event.getFrom();
-        World world = claimFrom.getGreaterBoundaryCorner().getWorld();
-        for (Player player : world.getPlayers()) {
-            Location loc = Util.getInBoundsLocation(player);
-
-            // Resizing a claim to be smaller and falling on the outside
-            if (!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) {
-                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
-                Bukkit.getPluginManager().callEvent(borderEvent);
-                if (!borderEvent.isCancelled()) {
-                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
-                }
-            }
-            // Resizing a claim to be larger and falling on the inside
-            if (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false)) {
-                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
-                Bukkit.getPluginManager().callEvent(borderEvent);
-                if (!borderEvent.isCancelled()) {
-                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
-                }
-            }
-        }
-    }
-
     @EventHandler
     private void onRespawnEvent(PlayerRespawnEvent event) {
         Location loc = event.getRespawnLocation();
