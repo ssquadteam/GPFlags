@@ -34,7 +34,7 @@ public class UpdateChecker {
 
         // Compare versions
         if (usingVersion.compareTo(latestVersion) < 0) {
-            getLogger().warning("You are using an outdated version of GPFlags. Please update at https://modrinth.com/plugin/gpflags");
+            getLogger().warning("You are using an outdated version of GPFlags. Please update at https://modrinth.com/plugin/gpflags.");
         }
     }
 
