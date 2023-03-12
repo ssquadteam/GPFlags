@@ -94,11 +94,10 @@ public class GPFlags extends JavaPlugin {
             }));
         }
 
+        UpdateChecker.checkForUpdates(this);
+
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
-        if (getDescription().getVersion().contains("SNAPSHOT")) {
-            Util.log("&eYou are running a snapshot version, things may not operate as expected");
-        }
     }
 
     public void onDisable() {
