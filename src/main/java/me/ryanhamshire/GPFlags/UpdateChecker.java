@@ -10,28 +10,27 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 import static org.bukkit.Bukkit.getLogger;
-import static sun.net.www.protocol.http.HttpURLConnection.userAgent;
 
 public class UpdateChecker {
+    static String userAgent;
 
     public static void checkForUpdates(JavaPlugin plugin) {
-        // Get latest version from Modrinth
-        final JsonElement json = getJson();
-        if (json == null) return;
-        String version = json.getAsJsonArray().get(0).getAsJsonObject().get("version_number").getAsString();
-        if (version.contains("-")) {
-            version = version.split("-")[0];
-        }
-        DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(version);
-
         // Get current version
-        version = plugin.getDescription().getVersion();
+        String version = plugin.getDescription().getVersion();
         if (version.contains("-")) {
             version = version.split("-")[0];
         }
         DefaultArtifactVersion usingVersion = new DefaultArtifactVersion(version);
+
+        // Get latest version from Modrinth
+        final JsonElement json = getJsonAs("gpflags/" + version);
+        if (json == null) return;
+        version = json.getAsJsonArray().get(0).getAsJsonObject().get("version_number").getAsString();
+        if (version.contains("-")) {
+            version = version.split("-")[0];
+        }
+        DefaultArtifactVersion latestVersion = new DefaultArtifactVersion(version);
 
         // Compare versions
         if (usingVersion.compareTo(latestVersion) < 0) {
@@ -39,7 +38,7 @@ public class UpdateChecker {
         }
     }
 
-    private static JsonElement getJson() {
+    private static JsonElement getJsonAs(String userAgent) {
         final HttpURLConnection connection;
         final JsonElement json;
         try {
