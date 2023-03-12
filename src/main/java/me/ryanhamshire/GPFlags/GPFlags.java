@@ -94,6 +94,10 @@ public class GPFlags extends JavaPlugin {
             }));
         }
 
+        metrics.addCustomChart(new Metrics.SimplePie("griefprevention_version", () -> {
+            return GriefPrevention.instance.getDescription().getVersion();
+        }));
+
         UpdateChecker.checkForUpdates(this);
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
