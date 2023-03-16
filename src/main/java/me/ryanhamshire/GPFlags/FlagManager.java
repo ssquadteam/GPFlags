@@ -99,21 +99,28 @@ public class FlagManager {
      * @return Result of setting flag
      */
     public SetFlagResult setFlag(String claimId, FlagDefinition def, boolean isActive, boolean newFlag, String... args) {
-        StringBuilder parameters = new StringBuilder();
+        StringBuilder internalParameters = new StringBuilder();
+        StringBuilder friendlyParameters = new StringBuilder();
         for (String arg : args) {
-            parameters.append(arg).append(" ");
+            if (def.getName().equals("NoEnterPlayer")) {
+                arg = Bukkit.getOfflinePlayer(arg).getName();
+                internalParameters.append(arg).append(" ");
+            }
+            friendlyParameters.append(arg).append(" ");
+
         }
-        parameters = new StringBuilder(parameters.toString().trim());
+        internalParameters = new StringBuilder(internalParameters.toString().trim());
+        friendlyParameters = new StringBuilder(friendlyParameters.toString().trim());
 
         SetFlagResult result;
         if (isActive) {
-            result = def.validateParameters(parameters.toString());
+            result = def.validateParameters(friendlyParameters.toString());
             if (!result.success) return result;
         } else {
             result = new SetFlagResult(true, def.getUnSetMessage());
         }
 
-        Flag flag = new Flag(def, parameters.toString());
+        Flag flag = new Flag(def, internalParameters.toString());
         flag.setSet(isActive);
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimId);
         if (claimFlags == null) {
@@ -135,7 +142,7 @@ public class FlagManager {
             }
             if (claim != null) {
                 if (isActive) {
-                    def.onFlagSet(claim, parameters.toString());
+                    def.onFlagSet(claim, internalParameters.toString());
                 } else {
                     def.onFlagUnset(claim);
                 }
