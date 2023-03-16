@@ -76,18 +76,6 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
             return true;
         }
 
-        if (flagName.equalsIgnoreCase("NoEnterPlayer") && args.length >= 3) {
-            for (int i = 1; i < args.length; i++) {
-                Player target = Bukkit.getPlayer(args[i]);
-                if (target != null && target.getName().equalsIgnoreCase(args[i])) {
-                    if (claim.contains(Util.getInBoundsLocation(target), true, false)) {
-                        if (claim.getPermission(args[i]) == null) {
-                            GriefPrevention.instance.ejectPlayer(target);
-                        }
-                    }
-                }
-            }
-        }
         return true;
     }
 
