@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -104,7 +105,10 @@ public class FlagManager {
         for (String arg : args) {
             friendlyParameters.append(arg).append(" ");
             if (def.getName().equals("NoEnterPlayer")) {
-                arg = Bukkit.getOfflinePlayer(arg).getUniqueId().toString();
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayerIfCached(arg);
+                if (offlinePlayer != null) {
+                    arg = offlinePlayer.getUniqueId().toString();
+                }
                 internalParameters.append(arg).append(" ");
             }
         }
