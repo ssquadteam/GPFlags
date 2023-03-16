@@ -408,19 +408,8 @@ public class Util {
                 if (flag2 == null) return null;
                 String flagParams2 = flag2.parameters;
                 if (flagParams2 == null) return null;
-                String[] flagParamsArray = flagParams2.split(" ");
-                StringBuilder builder = new StringBuilder();
-                for (String idOrName : flagParamsArray) {
-                    if (idOrName.length() > 30) {
-                        // if over 30 characters, it's a uuid
-                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(idOrName);
-                        builder.append(offlinePlayer.getName()).append(" ");
-                    } else {
-                        builder.append(idOrName).append(" ");
-                    }
-                }
                 ArrayList<String> suggestion = new ArrayList<>();
-                suggestion.add(builder.toString());
+                suggestion.add(flag2.getFriendlyParameters());
                 return StringUtil.copyPartialMatches(args[1], suggestion, new ArrayList<>());
             case "nomobspawnstype":
                 List<String> entityTypes = new ArrayList<>();

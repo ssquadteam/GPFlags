@@ -44,21 +44,21 @@ public class CommandListClaimFlags implements TabExecutor {
             flags = gpflags.getFlagManager().getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 flagsFound = true;
-                builder1.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.parameters + "&7)" : "").append(" ");
+                builder1.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.getFriendlyParameters() + "&7)" : "").append(" ");
             }
 
             if (claim.parent != null) {
                 flags = gpflags.getFlagManager().getFlags(claim.parent.getID().toString());
                 for (Flag flag : flags) {
                     flagsFound = true;
-                    builder2.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.parameters + "&7)" : "").append(" ");
+                    builder2.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.getFriendlyParameters() + "&7)" : "").append(" ");
                 }
             }
 
             flags = gpflags.getFlagManager().getFlags(FlagManager.DEFAULT_FLAG_ID);
             for (Flag flag2 : flags) {
                 flagsFound = true;
-                builder3.append(flag2.getSet() ? "&a" : "&c").append(flag2.getFlagDefinition().getName()).append(flag2.parameters.length() > 0 ? "&7(" + flag2.parameters + "&7)" : "").append(" ");
+                builder3.append(flag2.getSet() ? "&a" : "&c").append(flag2.getFlagDefinition().getName()).append(flag2.parameters.length() > 0 ? "&7(" + flag2.getFriendlyParameters() + "&7)" : "").append(" ");
             }
         }
 
@@ -66,14 +66,14 @@ public class CommandListClaimFlags implements TabExecutor {
         flags = gpflags.getFlagManager().getFlags(player.getWorld().getName());
         for (Flag flag3 : flags) {
             flagsFound = true;
-            builder4.append(flag3.getSet() ? "&a" : "&c").append(flag3.getFlagDefinition().getName()).append(flag3.parameters.length() > 0 ? "&7(" + flag3.parameters + "&7)" : "").append(" ");
+            builder4.append(flag3.getSet() ? "&a" : "&c").append(flag3.getFlagDefinition().getName()).append(flag3.parameters.length() > 0 ? "&7(" + flag3.getFriendlyParameters() + "&7)" : "").append(" ");
         }
 
         StringBuilder builder5 = new StringBuilder();
         flags = gpflags.getFlagManager().getFlags("everywhere");
         for (Flag flag4 : flags) {
             flagsFound = true;
-            builder5.append(flag4.getSet() ? "&a" : "&c").append(flag4.getFlagDefinition().getName()).append(flag4.parameters.length() > 0 ? "&7(" + flag4.parameters + "&7)" : "").append(" ");
+            builder5.append(flag4.getSet() ? "&a" : "&c").append(flag4.getFlagDefinition().getName()).append(flag4.parameters.length() > 0 ? "&7(" + flag4.getFriendlyParameters() + "&7)" : "").append(" ");
         }
 
         if (builder1.length() > 0)
