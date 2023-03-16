@@ -71,9 +71,16 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if (p.hasPermission("gpflags.bypass.noenter")) return true;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(p.getUniqueId());
         if (playerData.ignoreClaims) return true;
-        if (p.getName().equalsIgnoreCase(c.getOwnerName())) return true;
-        return !f.parameters.toUpperCase().contains(p.getName().toUpperCase());
+        String playername = p.getName();
+        if (playername.equalsIgnoreCase(c.getOwnerName())) return true;
 
+        String params = f.parameters;
+        String[] paramArray = params.split(" ");
+        for (String nameOrUUID : paramArray) {
+            if (nameOrUUID.equalsIgnoreCase(playername)) return false;
+            if (nameOrUUID.equalsIgnoreCase(String.valueOf(p.getUniqueId()))) return false;
+        }
+        return true;
     }
 
     @Override
