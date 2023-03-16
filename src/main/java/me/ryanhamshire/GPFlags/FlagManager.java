@@ -109,8 +109,8 @@ public class FlagManager {
                 if (offlinePlayer != null) {
                     arg = offlinePlayer.getUniqueId().toString();
                 }
-                internalParameters.append(arg).append(" ");
             }
+            internalParameters.append(arg).append(" ");
         }
         internalParameters = new StringBuilder(internalParameters.toString().trim());
         friendlyParameters = new StringBuilder(friendlyParameters.toString().trim());
