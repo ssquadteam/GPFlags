@@ -379,7 +379,6 @@ public class Util {
 
     public static List<String> paramTab(CommandSender sender, String[] args) {
         switch (args[0].toLowerCase(Locale.ROOT)) {
-            case "noenterplayer":
             case "commandblacklist":
             case "commandwhitelist":
             case "entercommand":
@@ -393,7 +392,7 @@ public class Util {
                 List<String> params = new ArrayList<>();
                 if (!(sender instanceof Player)) return null;
                 Player p = (Player) sender;
-                FlagDefinition flagD = (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("noenterplayer"));
+                FlagDefinition flagD = (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("entercommand"));
                 Flag flag = flagD.getFlagInstanceAtLocation(p.getLocation(), p);
                 if (flag == null) return null;
                 String flagParams = flag.parameters;
@@ -401,7 +400,28 @@ public class Util {
                     params.add(flagParams);
                 }
                 return StringUtil.copyPartialMatches(args[1], params, new ArrayList<>());
-
+            case "noenterplayer":
+                if (!(sender instanceof Player)) return null;
+                Player p2 = (Player) sender;
+                FlagDefinition flagD2 = (GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("noenterplayer"));
+                Flag flag2 = flagD2.getFlagInstanceAtLocation(p2.getLocation(), p2);
+                if (flag2 == null) return null;
+                String flagParams2 = flag2.parameters;
+                if (flagParams2 == null) return null;
+                String[] flagParamsArray = flagParams2.split(" ");
+                StringBuilder builder = new StringBuilder();
+                for (String idOrName : flagParamsArray) {
+                    if (idOrName.length() > 30) {
+                        // if over 30 characters, it's a uuid
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(idOrName);
+                        builder.append(offlinePlayer.getName()).append(" ");
+                    } else {
+                        builder.append(idOrName).append(" ");
+                    }
+                }
+                ArrayList<String> suggestion = new ArrayList<>();
+                suggestion.add(builder.toString());
+                return StringUtil.copyPartialMatches(args[1], suggestion, new ArrayList<>());
             case "nomobspawnstype":
                 List<String> entityTypes = new ArrayList<>();
                 for (EntityType entityType : EntityType.values()) {
