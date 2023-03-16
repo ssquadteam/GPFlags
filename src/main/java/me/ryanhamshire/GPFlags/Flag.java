@@ -40,7 +40,8 @@ public class Flag {
                 if (idOrName.length() > 30) {
                     // if over 30 characters, it's a uuid
                     OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(idOrName));
-                    idOrName = offlinePlayer.getName();
+                    System.out.println("Checking name of '" + UUID.fromString(idOrName) + "'.");
+                    if (offlinePlayer.getName() != null) idOrName = offlinePlayer.getName();
                 }
                 builder.append(idOrName).append(" ");
             }
