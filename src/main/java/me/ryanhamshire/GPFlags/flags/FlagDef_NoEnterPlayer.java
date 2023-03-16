@@ -32,6 +32,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
                 if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
                     if (!target.hasPermission("gpflags.bypass.noenter")) {
                         GriefPrevention.instance.ejectPlayer(target);
+                        Util.sendClaimMessage(target, TextMode.Err, Messages.NoEnterPlayerMessage);
                     }
                 }
             }
