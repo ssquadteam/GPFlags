@@ -26,11 +26,12 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
     @Override
     public void onFlagSet(Claim claim, String string) {
         String[] args = string.split(" ");
+        Flag flag = this.getFlagInstanceAtLocation(claim.getLesserBoundaryCorner(), null);
         for (int i = 0; i < args.length; i++) {
             Player target = Bukkit.getPlayer(args[i]);
             if (target != null && target.getName().equalsIgnoreCase(args[i])) {
                 if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
-                    if (!target.hasPermission("gpflags.bypass.noenter")) {
+                    if (!isAllowed(target, claim, flag)) {
                         GriefPrevention.instance.ejectPlayer(target);
                         Util.sendClaimMessage(target, TextMode.Err, Messages.NoEnterPlayerMessage);
                     }
@@ -44,7 +45,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
 
-        if (isAllowed(player, claimTo, to, flag)) return true;
+        if (isAllowed(player, claimTo, flag)) return true;
 
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
@@ -59,13 +60,13 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if (flag == null) return;
 
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (isAllowed(player, claim, loc, flag)) return;
+        if (isAllowed(player, claim, flag)) return;
 
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         GriefPrevention.instance.ejectPlayer(player);
     }
 
-    public boolean isAllowed(Player p, Claim c, Location l, Flag f) {
+    public boolean isAllowed(Player p, Claim c, Flag f) {
         if (c == null) return true;
         if (p.hasPermission("gpflags.bypass.noenter")) return true;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(p.getUniqueId());
