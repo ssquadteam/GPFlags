@@ -4,6 +4,8 @@ import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.util.UUID;
+
 /**
  * Main flag object
  */
@@ -37,12 +39,12 @@ public class Flag {
             for (String idOrName : getParametersArray()) {
                 if (idOrName.length() > 30) {
                     // if over 30 characters, it's a uuid
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(idOrName);
-                    builder.append(offlinePlayer.getName()).append(" ");
-                } else {
-                    builder.append(idOrName).append(" ");
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(idOrName));
+                    idOrName = offlinePlayer.getName();
                 }
+                builder.append(idOrName).append(" ");
             }
+            System.out.println("returning " + builder.toString().trim());
             return builder.toString().trim();
         }
         return parameters;
