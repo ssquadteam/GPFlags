@@ -40,15 +40,11 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (player.hasPermission("gpflags.bypass.noenter")) return true;
-
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return true;
-        if (!flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return true;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(to, false, null);
-        if (player.getName().equalsIgnoreCase(claim.getOwnerName())) return true;
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        if (playerData.ignoreClaims) return true;
+
+        if (isAllowed(player, claimTo, to, flag)) return true;
+
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
     }
@@ -56,13 +52,26 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
+        Location loc = player.getLocation();
+
+        Flag flag = this.getFlagInstanceAtLocation(loc, player);
         if (flag == null) return;
-        if (!flag.parameters.toUpperCase().contains(player.getName().toUpperCase())) return;
+
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (player.getName().equalsIgnoreCase(claim.getOwnerName())) return;
+        if (isAllowed(player, claim, loc, flag)) return;
+
         Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         GriefPrevention.instance.ejectPlayer(player);
+    }
+
+    public boolean isAllowed(Player p, Claim c, Location l, Flag f) {
+        if (c == null) return true;
+        if (p.hasPermission("gpflags.bypass.noenter")) return true;
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(p.getUniqueId());
+        if (playerData.ignoreClaims) return true;
+        if (p.getName().equalsIgnoreCase(c.getOwnerName())) return true;
+        return !f.parameters.toUpperCase().contains(p.getName().toUpperCase());
+
     }
 
     @Override
