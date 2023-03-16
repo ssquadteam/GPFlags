@@ -43,7 +43,7 @@ public class Flag {
                     builder.append(idOrName).append(" ");
                 }
             }
-            return builder.toString();
+            return builder.toString().trim();
         }
         return parameters;
     }
