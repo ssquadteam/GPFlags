@@ -96,8 +96,6 @@ public class CommandListClaimFlags implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        ArrayList<String> list = new ArrayList<>();
-        list.add("verbose");
-        return StringUtil.copyPartialMatches(args[0], list, new ArrayList<>());
+        return null;
     }
 }
