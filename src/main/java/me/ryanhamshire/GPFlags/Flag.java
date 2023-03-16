@@ -44,7 +44,6 @@ public class Flag {
                 }
                 builder.append(idOrName).append(" ");
             }
-            System.out.println("returning " + builder.toString().trim());
             return builder.toString().trim();
         }
         return parameters;
