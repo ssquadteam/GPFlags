@@ -103,7 +103,7 @@ public class FlagManager {
         StringBuilder friendlyParameters = new StringBuilder();
         for (String arg : args) {
             if (def.getName().equals("NoEnterPlayer")) {
-                arg = Bukkit.getOfflinePlayer(arg).getName();
+                arg = Bukkit.getOfflinePlayer(arg).getUniqueId().toString();
                 internalParameters.append(arg).append(" ");
             }
             friendlyParameters.append(arg).append(" ");
