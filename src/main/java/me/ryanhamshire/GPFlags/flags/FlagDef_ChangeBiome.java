@@ -147,12 +147,12 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.ChangeBiomeSet, parameters); // TODO CHANGE
+        return new MessageSpecifier(Messages.ChangeBiomeSet, parameters);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.ChangeBiomeUnset); // TODO CHANGE
+        return new MessageSpecifier(Messages.ChangeBiomeUnset);
     }
 
     @Override

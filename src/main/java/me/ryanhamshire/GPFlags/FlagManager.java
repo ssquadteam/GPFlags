@@ -91,7 +91,7 @@ public class FlagManager {
     }
 
     /**
-     * Set a flag for a claim
+     * Set a flag for a claim. This is called on startup to load the datastore and when setting or unsetting a flag
      *
      * @param claimId  ID of {@link Claim} which this flag will be attached to
      * @param def      Flag definition to set
@@ -104,10 +104,12 @@ public class FlagManager {
         StringBuilder friendlyParameters = new StringBuilder();
         for (String arg : args) {
             friendlyParameters.append(arg).append(" ");
-            if (def.getName().equals("NoEnterPlayer")) {
-                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayerIfCached(arg);
-                if (offlinePlayer != null) {
-                    arg = offlinePlayer.getUniqueId().toString();
+            if (def.getName().equals("NoEnterPlayer") && arg.length() > 0) {
+                if (arg.length() <= 30) {
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayerIfCached(arg);
+                    if (offlinePlayer != null) {
+                        arg = offlinePlayer.getUniqueId().toString();
+                    }
                 }
             }
             internalParameters.append(arg).append(" ");
