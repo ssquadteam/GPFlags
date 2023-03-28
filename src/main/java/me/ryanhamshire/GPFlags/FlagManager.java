@@ -138,7 +138,7 @@ public class FlagManager {
             def.incrementInstances();
         }
         claimFlags.put(key, flag);
-        if (newFlag) {
+        if (true) {
             Claim claim;
             try {
                 claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
