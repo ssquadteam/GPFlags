@@ -71,20 +71,6 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
 
-        Collection<Claim> claims = GriefPrevention.instance.dataStore.getClaims();
-        for (Claim claim : claims) {
-            if (GPFlags.getInstance().getFlagManager().getFlag(claim, "AllowBlockExplosions") != null) {
-                claim.areExplosivesAllowed = true;
-            }
-            if (GPFlags.getInstance().getFlagManager().getFlag(claim, "KeepLoaded") != null) {
-                ArrayList<Chunk> chunks = claim.getChunks();
-                for (Chunk chunk : chunks) {
-                    chunk.setForceLoaded(true);
-                    chunk.load(true);
-                }
-            }
-        }
-
         Metrics metrics = new Metrics(this, 17786);
         Set<String> usedFlags = GPFlags.getInstance().getFlagManager().getUsedFlags();
         Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
