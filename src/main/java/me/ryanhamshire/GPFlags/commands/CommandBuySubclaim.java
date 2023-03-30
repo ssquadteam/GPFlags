@@ -57,7 +57,7 @@ public class CommandBuySubclaim implements CommandExecutor {
                 }
                 claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
                 claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
-                GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition(), true);
+                GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition());
                 Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
                 return true;
             }

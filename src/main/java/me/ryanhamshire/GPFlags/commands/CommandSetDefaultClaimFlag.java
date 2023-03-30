@@ -45,7 +45,7 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         String[] params = new String[args.length - 1];
         System.arraycopy(args, 1, params, 0, args.length - 1);
 
-        SetFlagResult result = gpFlags.getFlagManager().setFlag(FlagManager.DEFAULT_FLAG_ID, def, true, true, params);
+        SetFlagResult result = gpFlags.getFlagManager().setFlag(FlagManager.DEFAULT_FLAG_ID, def, true, params);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             Util.sendMessage(commandSender, color, Messages.DefaultFlagSet);

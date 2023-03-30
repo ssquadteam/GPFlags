@@ -25,17 +25,11 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     @Override
     public void onFlagSet(Claim claim, String string) {
-        String[] args = string.split(" ");
         Flag flag = this.getFlagInstanceAtLocation(claim.getLesserBoundaryCorner(), null);
-        for (int i = 0; i < args.length; i++) {
-            Player target = Bukkit.getPlayerExact(args[i]);
-            if (target != null) {
-                if (claim.contains(Util.getInBoundsLocation(target), false, false)) {
-                    if (!isAllowed(target, claim, flag)) {
-                        GriefPrevention.instance.ejectPlayer(target);
-                        Util.sendClaimMessage(target, TextMode.Err, Messages.NoEnterPlayerMessage);
-                    }
-                }
+        for (Player player : Util.getPlayersIn(claim)) {
+            if (!isAllowed(player, claim, flag)) {
+                GriefPrevention.instance.ejectPlayer(player);
+                Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
             }
         }
     }
