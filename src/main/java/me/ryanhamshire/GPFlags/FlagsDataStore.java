@@ -70,6 +70,11 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableMobDamage, "Now blocking environmental and monster damage to passive and named mobs in this land claim.", null);
         this.addDefault(defaults, Messages.EnableMobDamage, "Stopped blocking environmental and monster damage to passive and named mobs in this land claim.", null);
 
+        this.addDefault(defaults, Messages.DisableNoMapMaking, "Map making is now allowed in this region.", null);
+        this.addDefault(defaults, Messages.EnableNoMapMaking, "Map making is now disallowed in this region.", null);
+        this.addDefault(defaults, Messages.MapMakingDisabled, "Map making has been disabled in this region.", null);
+
+
         this.addDefault(defaults, Messages.AddEnablePvP, "Disabled GriefPrevention and GPFlags player vs. player combat limitations in this land claim.", null);
         this.addDefault(defaults, Messages.RemoveEnabledPvP, "GriefPrevention and GPFlags may now limit player combat in this land claim.", null);
 

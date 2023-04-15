@@ -186,6 +186,9 @@ public enum Messages {
     NotifyExit,
     EnableNoAnvilDamage,
     DisableNoAnvilDamage,
+    EnableNoMapMaking,
+    DisableNoMapMaking,
+    MapMakingDisabled,
 
     EnableBuyBuildTrust,
     DisableBuyBuildTrust,
