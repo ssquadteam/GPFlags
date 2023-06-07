@@ -44,6 +44,8 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition {
             if (claimFrom.parent == claimTo && (flagFromExit == null || !flagFromExit.getSet())) {
                 return;
             }
+            // moving to different claim with the same message
+            if (flagTo.parameters.equals(flagFromExit.parameters)) return;
         }
 
         String message = flag.parameters;
