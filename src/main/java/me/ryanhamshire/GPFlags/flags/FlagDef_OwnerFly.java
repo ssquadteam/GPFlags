@@ -53,13 +53,18 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
         Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
 
+        // if you shouldn't be able to fly anymore
         if (flag == null && ownerMember == null) {
+
+            // if youre going into a noflight claim, let that handle messages and flight
             if (claim != null) {
                 Flag noFlight = GPFlags.getInstance().getFlagManager().getFlag(claim, GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("NoFlight"));
                 if (noFlight != null && !noFlight.getSet()) {
                     return;
                 }
             }
+
+
             if (player.isFlying() && !canFly(player)) {
                 Block block = player.getLocation().getBlock();
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {

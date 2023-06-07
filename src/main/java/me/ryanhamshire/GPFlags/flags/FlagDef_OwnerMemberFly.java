@@ -96,8 +96,10 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         // If you have trust in the claim, enable flight
         if (Util.canAccess(claim, player)) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+                if (!player.getAllowFlight()) {
+                    Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+                }
                 player.setAllowFlight(true);
-                Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             }, 1);
             return;
         }
