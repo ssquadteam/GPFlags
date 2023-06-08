@@ -26,8 +26,9 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
         if (lastLocation == null) return;
         Flag flag = this.getFlagInstanceAtLocation(to, player);
         if (flag == null) return;
-
-        if (flag == this.getFlagInstanceAtLocation(lastLocation, player)) return;
+        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
+        if (flag == oldFlag) return;
+        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) return;
 
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
