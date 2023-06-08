@@ -50,9 +50,7 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition {
 
         String message = flag.parameters;
         if (claimTo != null) {
-            if (claimTo.getOwnerName() != null) {
-                message = message.replace("%owner%", claimTo.getOwnerName());
-            }
+            message = message.replace("%owner%", claimTo.getOwnerName());
             message = message.replace("%name%", player.getName());
         }
 
