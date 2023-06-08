@@ -106,10 +106,14 @@ public class FlagManager {
             friendlyParameters.append(arg).append(" ");
             if (def.getName().equals("NoEnterPlayer") && arg.length() > 0) {
                 if (arg.length() <= 30) {
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayerIfCached(arg);
-                    if (offlinePlayer != null) {
-                        arg = offlinePlayer.getUniqueId().toString();
-                    }
+                    OfflinePlayer offlinePlayer;
+                    try {
+                        offlinePlayer = Bukkit.getOfflinePlayerIfCached(arg);
+                        if (offlinePlayer != null) {
+                            arg = offlinePlayer.getUniqueId().toString();
+                        }
+                    } catch (NoSuchMethodError ignored) {}
+
                 }
             }
             internalParameters.append(arg).append(" ");
