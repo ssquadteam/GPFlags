@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.UUID;
+
 public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
 
     public FlagDef_NotifyEnter(FlagManager manager, GPFlags plugin) {
@@ -43,7 +45,9 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
     }
 
     public boolean shouldNotify(Player p, Claim c) {
-        Player owner = Bukkit.getPlayer(c.getOwnerID());
+        UUID ownerID = c.getOwnerID();
+        if (ownerID == null) return false;
+        Player owner = Bukkit.getPlayer(ownerID);
         if (owner == null) return false;
         if (owner.getName().equals(p.getName())) return false;
         if (!owner.canSee(p)) return false;

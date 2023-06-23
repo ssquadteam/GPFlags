@@ -8,6 +8,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
 
     public FlagDef_NotifyExit(FlagManager manager, GPFlags plugin) {
@@ -37,7 +39,9 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
             }
         }
 
-        Player owner = Bukkit.getPlayer(claimTo.getOwnerID());
+        UUID ownerID = claimTo.getOwnerID();
+        if (ownerID == null) return;
+        Player owner = Bukkit.getPlayer(ownerID);
         if (owner == null) return;
         if (owner.getName().equals(player.getName())) return;
         if (!owner.canSee(player)) return;
