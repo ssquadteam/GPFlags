@@ -50,6 +50,8 @@ public class FlagDef_NoMobDamage extends FlagDefinition {
             }
         }
 
+        if (cause == DamageCause.CRAMMING) return;
+
         if (entity instanceof Animals || entity instanceof WaterMob || entity.getType() == EntityType.VILLAGER || entity.getCustomName() != null) {
             event.setCancelled(true);
         }
