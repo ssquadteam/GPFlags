@@ -349,7 +349,7 @@ There are over 80 flags and I frequently add more. A few of the more popular fla
 See the [wiki](https://github.com/akdukaan/GPFlags/wiki/Commands-and-Permissions) for all available commands and permissions.
 
 ## Dev Builds
-Development builds can be found on [Jenkins](https://jenkins.akiradev.xyz/job/GPFlags/) and in the [support Discord](https://discord.com/invite/MBdsxAR).
+Development builds can be found on [Jenkins](https://jenkins.luminescent.dev/job/GPFlags/) and in the [support Discord](https://discord.com/invite/MBdsxAR).
 
 ## Usage Stats
 <img src="https://bstats.org/signatures/bukkit/GPFlags.svg/">
