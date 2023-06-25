@@ -45,7 +45,7 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
             // moving to different claim with the same message
             Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
             if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) {
-                return;
+                if (claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
             }
         }
 

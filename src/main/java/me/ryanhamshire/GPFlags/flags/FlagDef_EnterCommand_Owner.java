@@ -29,7 +29,9 @@ public class FlagDef_EnterCommand_Owner extends PlayerMovementFlagDefinition {
         if (flag == null) return;
         Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
         if (flag == oldFlag) return;
-        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) return;
+        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) {
+            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
+        }
 
         if (player.hasPermission("gpflags.bypass.entercommand")) return;
 

@@ -27,7 +27,9 @@ public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition {
         if (flag == null) return;
         Flag newFlag = this.getFlagInstanceAtLocation(to, player);
         if (flag == newFlag) return;
-        if (newFlag != null && flag.parameters.equals(newFlag.parameters)) return;
+        if (newFlag != null && flag.parameters.equals(newFlag.parameters)) {
+            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
+        }
 
         if (player.hasPermission("gpflags.bypass.exitcommand")) return;
 
