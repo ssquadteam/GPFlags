@@ -52,8 +52,8 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
         String message = flag.parameters;
         if (claimFrom != null) {
             message = message.replace("%owner%", claimFrom.getOwnerName());
-            message = message.replace("%name%", player.getName());
         }
+        message = message.replace("%name%", player.getName());
 
         Util.sendClaimMessage(player, TextMode.Info, prefix + message);
     }
