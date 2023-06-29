@@ -107,7 +107,10 @@ public class GPFlagsConfig {
             FlagDef_AllowPvP allowPvPDef = new FlagDef_AllowPvP(this.flagManager, plugin);
             allowPvPDef.firstTimeSetup();
             this.flagManager.registerFlagDefinition(allowPvPDef);
-            
+
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterActionbar(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitActionbar(this.flagManager, plugin));
+
             this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand(this.flagManager, plugin));

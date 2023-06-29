@@ -85,6 +85,12 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.AddedEnterMessage, "Players entering this land claim will now receive this message:&b {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedEnterMessage, "Players entering this land claim will not receive any message.", null);
 
+        this.addDefault(defaults, Messages.AddedEnterActionbar, "Players entering this land claim will now receive this actionbar:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.RemovedEnterActionbar, "Players entering this land claim will not receive any actionbar.", null);
+        this.addDefault(defaults, Messages.ActionbarRequired, "Please specify an actionbar to send.", null);
+        this.addDefault(defaults, Messages.AddedExitActionbar, "Players exiting this land claim will now receive this actionbar:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.RemovedExitActionbar, "Players exiting this land claim will not receive any actionbar.", null);
+
         this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message:&b {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedExitMessage, "Players exiting this land claim will not receive any message.", null);
         this.addDefault(defaults, Messages.EnterExitPrefix, "", "This prefix will be added to all enter/exit message flags");
