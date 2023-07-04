@@ -7,7 +7,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,27 +22,26 @@ public class CommandUnsetDefaultClaimFlag implements TabExecutor {
         }
         if (args.length < 1) return false;
 
-        Player player = ((Player) sender);
         String flagName = args[0];
         GPFlags gpflags = GPFlags.getInstance();
         FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            Util.sendMessage(player, TextMode.Err, Util.getFlagDefsMessage(player));
+            Util.sendMessage(sender, TextMode.Err, Util.getFlagDefsMessage(sender));
             return true;
         }
 
         if (!sender.hasPermission("gpflags.flag." + def.getName())) {
-            Util.sendMessage(player, TextMode.Err, Messages.NoFlagPermission, def.getName());
+            Util.sendMessage(sender, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 
         SetFlagResult result = gpflags.getFlagManager().unSetFlag(FlagManager.DEFAULT_FLAG_ID, def);
         ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
-            Util.sendMessage(player, color, Messages.DefaultFlagUnSet);
+            Util.sendMessage(sender, color, Messages.DefaultFlagUnSet);
             gpflags.getFlagManager().save();
         } else {
-            Util.sendMessage(player, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
+            Util.sendMessage(sender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         }
 
         return true;
