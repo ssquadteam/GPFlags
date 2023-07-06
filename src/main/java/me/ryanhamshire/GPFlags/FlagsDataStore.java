@@ -212,6 +212,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoGrowth, "Blocks will no longer grow in this area", null);
         this.addDefault(defaults, Messages.DisableNoGrowth, "Blocks will now continue to grow in this area", null);
 
+        this.addDefault(defaults, Messages.EnableNoBlockFade, "Blocks will no longer fade in this area", null);
+        this.addDefault(defaults, Messages.DisableNoBlockFade, "Blocks will continue to fade in this area", null);
+
         this.addDefault(defaults, Messages.ExitFlightDisabled, "Flight disabled", null);
         this.addDefault(defaults, Messages.EnterFlightEnabled, "Flight enabled", null);
 
