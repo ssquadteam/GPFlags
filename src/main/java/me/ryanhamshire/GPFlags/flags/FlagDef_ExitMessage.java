@@ -42,8 +42,13 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
                 return;
             }
 
-            // moving to different claim with the same message
+            // moving between sub-claims and the sub claim does not have its own enter message
             Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
+            if (claimTo.parent == claimFrom.parent && (flagTo == null || !flagTo.getSet()) && (flagFrom == null || !flagFrom.getSet())) {
+                return;
+            }
+
+            // moving to different claim with the same message
             if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) {
                 if (claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
             }
