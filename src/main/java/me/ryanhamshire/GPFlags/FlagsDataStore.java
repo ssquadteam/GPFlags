@@ -215,6 +215,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableNoBlockFade, "Blocks will no longer fade in this area", null);
         this.addDefault(defaults, Messages.DisableNoBlockFade, "Blocks will continue to fade in this area", null);
 
+        this.addDefault(defaults, Messages.EnableNoCoralDeath, "Coral will no longer die in this area", null);
+        this.addDefault(defaults, Messages.DisableNoCoralDeath, "Coral will continue to die in this area", null);
+
         this.addDefault(defaults, Messages.ExitFlightDisabled, "Flight disabled", null);
         this.addDefault(defaults, Messages.EnterFlightEnabled, "Flight enabled", null);
 

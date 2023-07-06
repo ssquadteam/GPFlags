@@ -134,6 +134,8 @@ public enum Messages {
     DisableNoGrowth,
     EnableNoBlockFade,
     DisableNoBlockFade,
+    EnableNoCoralDeath,
+    DisableNoCoralDeath,
     OwnerFlightEnabled,
     OwnerFlightDisabled,
     OwnerMemberFlightEnabled,
