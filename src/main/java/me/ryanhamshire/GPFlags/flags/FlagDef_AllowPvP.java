@@ -1,10 +1,6 @@
 package me.ryanhamshire.GPFlags.flags;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.WeakHashMap;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -35,6 +31,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import me.ryanhamshire.GPFlags.Flag;
@@ -46,18 +43,39 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.WorldSettings;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.EntityEventHandler;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 
 public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     
     // For EntityShootBow event being called multiple times when using the enchantment Multishot
-    private Set<Player> justFiredCrossbow = Collections.newSetFromMap(new WeakHashMap<Player, Boolean>());
+    private Set<Player> justFiredCrossbow = Collections.newSetFromMap(new WeakHashMap<>());
     
     public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
+    private static final Set<PotionEffectType> POSITIVE_EFFECTS = new HashSet<>(Arrays.asList(
+            PotionEffectType.ABSORPTION,
+            PotionEffectType.CONDUIT_POWER,
+            PotionEffectType.DAMAGE_RESISTANCE,
+            PotionEffectType.DOLPHINS_GRACE,
+            PotionEffectType.FAST_DIGGING,
+            PotionEffectType.FIRE_RESISTANCE,
+            PotionEffectType.HEAL,
+            PotionEffectType.HEALTH_BOOST,
+            PotionEffectType.HERO_OF_THE_VILLAGE,
+            PotionEffectType.INCREASE_DAMAGE,
+            PotionEffectType.INVISIBILITY,
+            PotionEffectType.JUMP,
+            PotionEffectType.LUCK,
+            PotionEffectType.NIGHT_VISION,
+            PotionEffectType.REGENERATION,
+            PotionEffectType.SATURATION,
+            PotionEffectType.SLOW_FALLING,
+            PotionEffectType.SPEED,
+            PotionEffectType.WATER_BREATHING
+    ));
+
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return;
@@ -135,7 +153,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         Collection<PotionEffect> effects = potion.getEffects();
         boolean hasNegativeEffect = false;
         for (PotionEffect effect : effects) {
-            if (!EntityEventHandler.positiveEffects.contains(effect.getType())) {
+            if (!POSITIVE_EFFECTS.contains(effect.getType())) {
                 hasNegativeEffect = true;
                 break;
             }
