@@ -14,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.DoubleChestInventory;
@@ -66,7 +67,9 @@ public class FlagDef_ViewContainers extends FlagDefinition {
         if (original instanceof DoubleChestInventory) {
             copy = Bukkit.createInventory(original.getHolder(), 54);
         } else {
-            copy = Bukkit.createInventory(original.getHolder(), original.getType());
+            InventoryType type = original.getType();
+            if (!type.isCreatable()) return;
+            copy = Bukkit.createInventory(original.getHolder(), type);
         }
         
         copy.setContents(original.getContents());
