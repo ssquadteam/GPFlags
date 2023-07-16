@@ -38,8 +38,7 @@ public class FlagDef_ProtectNamedMobs extends FlagDefinition {
 
         Player player = (Player) damager;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(entity.getLocation(), false, null);
-        if (claim == null) return;
-        if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
+        if (claim != null && claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         event.setCancelled(true);
     }
 
