@@ -24,45 +24,39 @@ public class CommandBuySubclaim implements CommandExecutor {
         }
         Player player = (Player) sender;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        if (claim == null || claim.parent == null) {
+        FlagDefinition def = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("BuySubclaim");
+        Flag flag = def.getFlagInstanceAtLocation(player.getLocation(), null);
+        if (flag == null || claim == null || claim.parent == null) {
             Util.sendMessage(sender, TextMode.Err, Messages.CannotBuyTrustHere);
             return true;
         }
-
-        Collection<Flag> flags = GPFlags.getInstance().getFlagManager().getFlags(claim.getID().toString());
-        for (Flag flag : flags) {
-            if (flag.getFlagDefinition().getName().equalsIgnoreCase("BuySubclaim")) {
-                if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build
-                        || player.getUniqueId().equals(claim.getOwnerID())) {
-                    Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
-                    return true;
-                }
-                if (flag.parameters == null || flag.parameters.isEmpty()) {
-                    Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
-                    return true;
-                }
-                double cost;
-                try {
-                    cost = Double.parseDouble(flag.parameters);
-                } catch (NumberFormatException e) {
-                    Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
-                    return true;
-                }
-                if (!VaultHook.takeMoney(player, cost)) {
-                    Util.sendMessage(sender, TextMode.Err, Messages.NotEnoughMoney);
-                    return true;
-                }
-                if (claim.getOwnerID() != null) {
-                    VaultHook.giveMoney(claim.getOwnerID(), cost);
-                }
-                claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
-                claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
-                GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition());
-                Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
-                return true;
-            }
+        if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build
+                || player.getUniqueId().equals(claim.getOwnerID())) {
+            Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
+            return true;
         }
-        Util.sendMessage(sender, TextMode.Err, Messages.CannotBuyTrustHere);
+        if (flag.parameters == null || flag.parameters.isEmpty()) {
+            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            return true;
+        }
+        double cost;
+        try {
+            cost = Double.parseDouble(flag.parameters);
+        } catch (NumberFormatException e) {
+            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            return true;
+        }
+        if (!VaultHook.takeMoney(player, cost)) {
+            Util.sendMessage(sender, TextMode.Err, Messages.NotEnoughMoney);
+            return true;
+        }
+        if (claim.getOwnerID() != null) {
+            VaultHook.giveMoney(claim.getOwnerID(), cost);
+        }
+        claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
+        claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
+        GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition());
+        Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
         return true;
     }
 }
