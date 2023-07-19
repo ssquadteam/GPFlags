@@ -18,7 +18,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,18 +40,15 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         int i = 0;
         for (int x = lX; x < gX; x++) {
             int finalX = x;
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    for (int z = lZ; z < gZ; z++) {
-                        Location loadLoc = new Location(world, finalX, 100, z);
-                        Chunk loadChunk = loadLoc.getChunk();
-                        if (!(loadChunk.isLoaded())) {
-                            loadChunk.load();
-                        }
-                        for (int y = 0; y <= 255; y++) {
-                            world.setBiome(finalX, y, z, biome);
-                        }
+            final Runnable runnable = () -> {
+                for (int z = lZ; z < gZ; z++) {
+                    Location loadLoc = new Location(world, finalX, 100, z);
+                    Chunk loadChunk = loadLoc.getChunk();
+                    if (!(loadChunk.isLoaded())) {
+                        loadChunk.load();
+                    }
+                    for (int y = 0; y <= 255; y++) {
+                        world.setBiome(finalX, y, z, biome);
                     }
                 }
             };
@@ -65,13 +61,13 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         Location greater = claim.getGreaterBoundaryCorner();
         Location lesser = claim.getLesserBoundaryCorner();
         int i = changeBiome(greater, lesser, biome);
-        BukkitRunnable runnable = new BukkitRunnable() {
+        Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 refreshChunks(claim);
             }
         };
-        runnable.runTaskLater(GPFlags.getInstance(), i);
+        GPFlags.getScheduler().getImpl().runAtLocationLater(lesser, runnable, 50L, TimeUnit.MILLISECONDS);
     }
 
     @SuppressWarnings("deprecation")
