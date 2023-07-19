@@ -19,6 +19,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.concurrent.TimeUnit;
+
 public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition implements Listener {
 
     public FlagDef_OwnerMemberFly(FlagManager manager, GPFlags plugin) {
@@ -95,12 +97,12 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
 
         // If you have trust in the claim, enable flight
         if (Util.canAccess(claim, player)) {
-            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+            GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> {
                 if (!player.getAllowFlight()) {
                     Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
                 }
                 player.setAllowFlight(true);
-            }, 1);
+            }, 50L, TimeUnit.MILLISECONDS);
             return;
         }
 
@@ -125,7 +127,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
     @EventHandler(priority = EventPriority.MONITOR)
     private void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> handleFlight(player), 1);
+        GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> handleFlight(player), 50L, TimeUnit.MILLISECONDS);
     }
 
     private void handleFlight(Player player) {

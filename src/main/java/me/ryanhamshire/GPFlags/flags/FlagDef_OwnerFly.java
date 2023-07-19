@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Listener {
 
@@ -94,12 +95,12 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
             return;
         }
 
-        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+        GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> {
             if (!player.getAllowFlight()) {
                 Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
             }
             player.setAllowFlight(true);
-        }, 1);
+        }, 50L, TimeUnit.MILLISECONDS);
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -116,7 +117,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
     @EventHandler(priority = EventPriority.MONITOR)
     private void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        Bukkit.getScheduler().runTaskLater(plugin, () -> handleFlight(player), 1);
+        GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> handleFlight(player), 50L, TimeUnit.MILLISECONDS);
     }
 
     private void handleFlight(Player player) {

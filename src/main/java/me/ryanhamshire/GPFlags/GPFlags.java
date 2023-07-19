@@ -1,22 +1,19 @@
 package me.ryanhamshire.GPFlags;
 
-import java.util.*;
-
+import com.tcoded.folialib.FoliaLib;
 import me.ryanhamshire.GPFlags.commands.*;
-import me.ryanhamshire.GPFlags.flags.FlagDefinition;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
 import me.ryanhamshire.GPFlags.listener.ClaimModifiedListener;
 import me.ryanhamshire.GPFlags.listener.ClaimResizeListener;
 import me.ryanhamshire.GPFlags.listener.EntityMoveListener;
-import me.ryanhamshire.GPFlags.metrics.Metrics;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GPFlags.listener.PlayerListener;
+import me.ryanhamshire.GPFlags.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
-import me.ryanhamshire.GPFlags.listener.PlayerListener;
-import me.ryanhamshire.GPFlags.util.Util;
+import java.util.ArrayList;
 
 /**
  * <b>Main GriefPrevention Flags class</b>
@@ -24,6 +21,8 @@ import me.ryanhamshire.GPFlags.util.Util;
 public class GPFlags extends JavaPlugin {
 
     private static GPFlags instance;
+    private static FoliaLib scheduler;
+
     private FlagsDataStore flagsDataStore;
     private final FlagManager flagManager = new FlagManager();
     private WorldSettingsManager worldSettingsManager;
@@ -35,6 +34,7 @@ public class GPFlags extends JavaPlugin {
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
+        scheduler = new FoliaLib(this);
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -69,18 +69,18 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
 
-        Metrics metrics = new Metrics(this, 17786);
-        Set<String> usedFlags = GPFlags.getInstance().getFlagManager().getUsedFlags();
-        Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
-        for (FlagDefinition def : defs) {
-            metrics.addCustomChart(new Metrics.SimplePie("using_" + def.getName().toLowerCase(), () -> {
-                return String.valueOf(usedFlags.contains(def.getName().toLowerCase()));
-            }));
-        }
-
-        metrics.addCustomChart(new Metrics.SimplePie("griefprevention_version", () -> {
-            return GriefPrevention.instance.getDescription().getVersion();
-        }));
+//        Metrics metrics = new Metrics(this, 17786);
+//        Set<String> usedFlags = GPFlags.getInstance().getFlagManager().getUsedFlags();
+//        Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
+//        for (FlagDefinition def : defs) {
+//            metrics.addCustomChart(new Metrics.SimplePie("using_" + def.getName().toLowerCase(), () -> {
+//                return String.valueOf(usedFlags.contains(def.getName().toLowerCase()));
+//            }));
+//        }
+//
+//        metrics.addCustomChart(new Metrics.SimplePie("griefprevention_version", () -> {
+//            return GriefPrevention.instance.getDescription().getVersion();
+//        }));
 
         UpdateChecker.checkForUpdates(this);
 
@@ -116,6 +116,15 @@ public class GPFlags extends JavaPlugin {
      */
     public static GPFlags getInstance() {
         return instance;
+    }
+
+    /**
+     * Get the scheduler instance.
+     *
+     * @return Instance for the scheduler.
+     */
+    public static FoliaLib getScheduler() {
+        return scheduler;
     }
 
     /**

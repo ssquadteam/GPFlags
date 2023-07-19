@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Base flag definition for time based flags
@@ -15,7 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public abstract class TimedPlayerFlagDefinition extends FlagDefinition implements Listener, Runnable {
 
-    private static long tickOffset = 0L;
+    private static long tickOffset = 1L;
     private ConcurrentLinkedQueue<ConcurrentLinkedQueue<Player>> playerQueueQueue = new ConcurrentLinkedQueue<>();
     private long taskIntervalTicks;
 
@@ -36,7 +37,7 @@ public abstract class TimedPlayerFlagDefinition extends FlagDefinition implement
         
         this.taskIntervalTicks = this.getPlayerCheckFrequency_Ticks() / Bukkit.getServer().getMaxPlayers();
         if (this.taskIntervalTicks < 1) this.taskIntervalTicks = 1;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this.plugin, this, TimedPlayerFlagDefinition.tickOffset++, Math.max(this.taskIntervalTicks, 1));
+        GPFlags.getScheduler().getImpl().runTimer(this, 50L * TimedPlayerFlagDefinition.tickOffset++, 50 * Math.max(this.taskIntervalTicks, 1), TimeUnit.MILLISECONDS);
         isSetup = true;
     }
 

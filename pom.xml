@@ -6,7 +6,7 @@
 
     <groupId>me.ryanhamshire</groupId>
     <artifactId>GPFlags</artifactId>
-    <version>5.12.9-SNAPSHOT</version>
+    <version>5.12.10-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -41,6 +41,10 @@
         <repository>
             <id>akiradev-repo</id>
             <url>https://repo.akiradev.xyz/repository/public/</url>
+        </repository>
+        <repository>
+            <id>devmart-other</id>
+            <url>https://nexuslite.gcnt.net/repos/other/</url>
         </repository>
     </repositories>
 
@@ -81,6 +85,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>23.0.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -98,11 +103,19 @@
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
             <version>8.0.2</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-artifact</artifactId>
             <version>3.6.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.tcoded</groupId>
+            <artifactId>FoliaLib</artifactId>
+            <version>0.2.3</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
@@ -149,6 +162,20 @@
                         <link>http://shanebeestudios.tk/docs/plugins/GriefPrevention/</link>
                     </links>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

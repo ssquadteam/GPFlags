@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class FlagDef_ChangeBiome extends FlagDefinition {
@@ -40,7 +41,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         int i = 0;
         for (int x = lX; x < gX; x++) {
             int finalX = x;
-            BukkitRunnable runnable = new BukkitRunnable() {
+            final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     for (int z = lZ; z < gZ; z++) {
@@ -55,7 +56,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
                     }
                 }
             };
-            runnable.runTaskLater(GPFlags.getInstance(), i++);
+            GPFlags.getScheduler().getImpl().runAtLocationLater(lesser, runnable, 50L, TimeUnit.MILLISECONDS);
         }
         return i;
     }
