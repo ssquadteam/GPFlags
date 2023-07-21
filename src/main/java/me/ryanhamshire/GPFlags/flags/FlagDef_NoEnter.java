@@ -27,7 +27,7 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
         World world = claim.getLesserBoundaryCorner().getWorld();
         for (Player p : world.getPlayers()) {
             if (claim.contains(Util.getInBoundsLocation(p), false, false)) {
-                if (Util.canAccess(claim, p) && !p.hasPermission("gpflags.bypass.noenter")) {
+                if (!Util.canAccess(claim, p) && !p.hasPermission("gpflags.bypass.noenter")) {
                     GriefPrevention.instance.ejectPlayer(p);
                 }
             }
