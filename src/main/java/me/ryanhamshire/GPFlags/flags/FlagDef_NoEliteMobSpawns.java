@@ -18,6 +18,7 @@ public class FlagDef_NoEliteMobSpawns extends FlagDefinition {
     @EventHandler
     public void onEntitySpawn(EliteMobSpawnEvent event) {
         Entity e = event.getEntity();
+        if (e == null) return;
         Flag flag = this.getFlagInstanceAtLocation(e.getLocation(), null);
         if (flag == null) return;
         event.setCancelled(true);
