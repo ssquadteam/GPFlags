@@ -9,12 +9,16 @@
     <version>5.12.10-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <repositories>
+        <repository>
+            <id>lemongaming-repo</id>
+            <url>https://repo.lemongaming.ltd/repository/maven-public/</url>
+        </repository>
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
@@ -56,9 +60,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.TechFortress</groupId>
+            <groupId>com.griefprevention</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.18.2-beta1</version>
+            <version>16.18.3-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

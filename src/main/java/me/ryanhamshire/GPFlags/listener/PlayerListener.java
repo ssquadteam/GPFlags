@@ -90,7 +90,7 @@ public class PlayerListener implements Listener {
                         vehicle.getWorld().dropItem(locFrom, itemStack);
                     }
                     vehicle.remove();
-                    player.teleport(locFrom);
+                    player.teleportAsync(locFrom);
                 }
             }
         }

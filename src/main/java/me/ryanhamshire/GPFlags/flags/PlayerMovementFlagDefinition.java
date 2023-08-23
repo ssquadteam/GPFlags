@@ -67,11 +67,11 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     public void undoMovement(Player player, Location lastLocation) {
         Bukkit.broadcastMessage("Undoing movement");
         if (lastLocation != null) {
-            player.teleport(lastLocation);
+            player.teleportAsync(lastLocation);
         } else if (player.getBedSpawnLocation() != null) {
-            player.teleport(player.getBedSpawnLocation());
+            player.teleportAsync(player.getBedSpawnLocation());
         } else {
-            player.teleport(player.getWorld().getSpawnLocation());
+            player.teleportAsync(player.getWorld().getSpawnLocation());
         }
     }
 

@@ -48,7 +48,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
                 while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
                     block = block.getRelative(BlockFace.DOWN);
                 }
-                player.teleport(block.getRelative(BlockFace.UP).getLocation());
+                player.teleportAsync(block.getRelative(BlockFace.UP).getLocation());
             }
             return;
         }

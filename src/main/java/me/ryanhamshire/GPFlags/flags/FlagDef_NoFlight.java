@@ -100,7 +100,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
             floor = floor.subtract(0, 0.4, 0);
         }
         player.setFallDistance(0);
-        player.teleport(floor.add(0, 0.5, 0));
+        player.teleportAsync(floor.add(0, 0.5, 0));
     }
 
     @Override
