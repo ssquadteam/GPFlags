@@ -82,7 +82,9 @@ public class GPFlags extends JavaPlugin {
             return GriefPrevention.instance.getDescription().getVersion();
         }));
 
-        UpdateChecker.checkForUpdates(this);
+        try {
+            UpdateChecker.checkForUpdates(this);
+        } catch (NoClassDefFoundError ignored) {}
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
