@@ -447,11 +447,36 @@ public class Util {
         return Collections.emptyList();
     }
 
+    public static int getMaxHeight(Location l) {
+        return getMaxHeight(l.getWorld());
+    }
+
+    public static int getMinHeight(Location l) {
+        return getMinHeight(l.getWorld());
+    }
+
+    public static int getMaxHeight(World w) {
+        try {
+            return w.getMaxHeight();
+        } catch (NoSuchMethodError e) {
+            return 256;
+        }
+    }
+
+    public static int getMinHeight(World w) {
+        try {
+            return w.getMinHeight();
+        } catch (NoSuchMethodError e) {
+            return 0;
+        }
+    }
+
     public static Location getInBoundsLocation(Player p) {
         Location loc = p.getLocation();
         World world = loc.getWorld();
-        if (loc.getBlockY() >= world.getMaxHeight()) {
-            loc.setY(world.getMaxHeight() - 1);
+        int maxHeight = Util.getMaxHeight(world);
+        if (loc.getBlockY() >= maxHeight) {
+            loc.setY(maxHeight - 1);
         }
         return loc;
     }

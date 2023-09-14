@@ -48,7 +48,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         for (Chunk chunk : chunks) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    for (int y = 0; y < location.getWorld().getMaxHeight() - data.differenceY; y++) {
+                    for (int y = 0; y < Util.getMaxHeight(location) - data.differenceY; y++) {
                         if (claim.contains(Util.getInBoundsLocation(player), false, false)) {
                             Block block = chunk.getBlock(x, y, z);
                             if (data.IsSupport(block)) {

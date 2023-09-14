@@ -4,6 +4,7 @@ import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.event.PlayerPostClaimBorderEvent;
 import me.ryanhamshire.GPFlags.event.PlayerPreClaimBorderEvent;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -32,20 +33,20 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     public void onMove(PlayerPreClaimBorderEvent event) {
         Player player = event.getPlayer();
         Location from = event.getLocFrom().clone();
-        int fromMaxHeight = from.getWorld().getMaxHeight();
+        int fromMaxHeight = Util.getMaxHeight(from);
         if (from.getY() > fromMaxHeight) {
             from.setY(fromMaxHeight);
         }
-        int fromMinHeight = from.getWorld().getMinHeight();
+        int fromMinHeight = Util.getMinHeight(from);
         if (from.getY() < fromMinHeight) {
             from.setY(fromMinHeight);
         }
         Location to = event.getLocTo().clone();
-        int toMaxHeight = to.getWorld().getMaxHeight();
+        int toMaxHeight = Util.getMaxHeight(to);
         if (to.getY() > toMaxHeight) {
             to.setY(toMaxHeight);
         }
-        int toMinHeight = to.getWorld().getMinHeight();
+        int toMinHeight = Util.getMinHeight(to);
         if (to.getY() < toMinHeight) {
             to.setY(toMaxHeight);
         }

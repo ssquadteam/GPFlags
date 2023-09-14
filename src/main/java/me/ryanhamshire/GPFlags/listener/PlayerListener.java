@@ -112,12 +112,12 @@ public class PlayerListener implements Listener {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;
         Location locFrom2 = locFrom.clone();
-        int maxWorldHeightFrom = locFrom2.getWorld().getMaxHeight();
+        int maxWorldHeightFrom = Util.getMaxHeight(locFrom2);
         if (locFrom2.getY() >= maxWorldHeightFrom) {
             locFrom2.setY(maxWorldHeightFrom - 1);
         }
         Location locTo2 = locTo.clone();
-        int maxWorldHeightTo = locTo2.getWorld().getMaxHeight();
+        int maxWorldHeightTo = Util.getMaxHeight(locTo2);
         if (locTo2.getY() >= maxWorldHeightTo) {
             locTo2.setY(maxWorldHeightTo - 1);
         }
