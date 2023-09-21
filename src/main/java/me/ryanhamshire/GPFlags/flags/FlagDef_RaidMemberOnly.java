@@ -25,7 +25,7 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
 
     @EventHandler
     private void onRaidTrigger(RaidTriggerEvent event) {
-        Flag flag = this.getFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getRaid().getLocation(), null);
         if (flag == null) return;
         Player player = event.getPlayer();
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
