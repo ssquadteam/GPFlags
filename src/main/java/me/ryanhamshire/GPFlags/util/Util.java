@@ -114,6 +114,11 @@ public class Util {
         }
     }
 
+    /**
+     *
+     * @param player the player to check
+     * @return if the player is spectator/creative or has bypass perms to fly anywhere
+     */
     public static boolean canFly(Player player) {
         GameMode mode = player.getGameMode();
         return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE || player.hasPermission("gpflags.bypass.fly");

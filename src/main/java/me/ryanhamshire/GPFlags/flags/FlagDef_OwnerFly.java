@@ -50,6 +50,7 @@ public class FlagDef_OwnerFly extends PlayerMovementFlagDefinition implements Li
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return;
+        if (Util.canFly(player)) return;
         Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerMember = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
 

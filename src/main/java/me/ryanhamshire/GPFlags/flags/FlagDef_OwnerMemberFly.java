@@ -54,9 +54,9 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claim) {
         if (lastLocation == null) return;
+        if (Util.canFly(player)) return;
         Flag flag = getFlagInstanceAtLocation(to, player);
         Flag ownerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
-        if (Util.canFly(player)) return;
 
         // When entering a new region without the flags set
         if (flag == null && ownerFly == null) {
