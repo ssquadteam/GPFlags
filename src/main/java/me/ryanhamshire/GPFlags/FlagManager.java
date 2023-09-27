@@ -78,19 +78,6 @@ public class FlagManager {
     }
 
     /**
-     * Set a flag for a claim
-     *
-     * @param claim    {@link Claim} which this flag will be attached to
-     * @param def      Flag definition to set
-     * @param isActive Whether the flag will be active or not
-     * @param args     Message parameters
-     * @return Result of setting flag
-     */
-    public SetFlagResult setFlag(Claim claim, FlagDefinition def, boolean isActive, String... args) {
-        return setFlag(claim.getID().toString(), def, isActive, args);
-    }
-
-    /**
      * Set a flag for a claim. This is called on startup to load the datastore and when setting or unsetting a flag
      *
      * @param claimId  ID of {@link Claim} which this flag will be attached to
