@@ -79,7 +79,6 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                     GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
                 Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
-                return;
             }
             // Disable their flight
             if (player.getAllowFlight()) {
