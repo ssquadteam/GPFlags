@@ -25,10 +25,10 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
         // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
         Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
         Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("NotifyEnter"));
-        if (claimTo == null) return;
+
 
         // Don't repeat the exit message of a claim in certain cases
-        if (claimFrom != null) {
+        if (claimFrom != null && claimTo != null) {
             // moving to parent claim, and the sub claim does not have its own exit message
             if (claimFrom.parent == claimTo && (flagFrom == null || !flagFrom.getSet())) {
                 return;
@@ -39,7 +39,8 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
             }
         }
 
-        UUID ownerID = claimTo.getOwnerID();
+        if (claimFrom == null) return;
+        UUID ownerID = claimFrom.getOwnerID();
         if (ownerID == null) return;
         Player owner = Bukkit.getPlayer(ownerID);
         if (owner == null) return;
@@ -49,9 +50,9 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
         if (player.hasPermission("gpflags.bypass.notifyexit")) return;
         String param = flag.parameters;
         if (param == null || param.isEmpty()) {
-            param = "claim " + claimTo.getID();
+            param = "claim " + claimFrom.getID();
         }
-        Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyEnter, player.getName(), param);
+        Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyExit, player.getName(), param);
     }
 
 
