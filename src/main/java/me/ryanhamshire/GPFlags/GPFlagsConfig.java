@@ -137,7 +137,8 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_CommandWhiteList(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_CommandBlackList(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoStructureGrowth(this.flagManager, plugin));
-            this.flagManager.registerFlagDefinition(new FlagDef_NoBlockFade(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_NoBlockFade(this.flagManager, plugin));            this.flagManager.registerFlagDefinition(new FlagDef_NoBlockFade(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_AllowInfest(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoCoralDeath(this.flagManager, plugin));
 
             FlagDef_NoFlight noFlight = new FlagDef_NoFlight(this.flagManager, plugin);

@@ -172,6 +172,8 @@ public enum Messages {
     DisabledNoExplosionDamage,
     EnabledAllowBlockExplosions,
     DisabledAllowBlockExplosions,
+    EnabledAllowInfest,
+    DisabledAllowInfest,
     NoOwnerFlag,
     EnableNoElytra,
     DisableNoElytra,
