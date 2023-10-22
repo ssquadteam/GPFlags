@@ -29,17 +29,17 @@ public class FlagDef_NoCoralDeath extends FlagDefinition {
 
     @Override
     public String getName() {
-        return "NoBlockFade";
+        return "NoCoralDeath";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.EnableNoBlockFade);
+        return new MessageSpecifier(Messages.EnableNoCoralDeath);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.DisableNoBlockFade);
+        return new MessageSpecifier(Messages.DisableNoCoralDeath);
     }
 
     @Override
