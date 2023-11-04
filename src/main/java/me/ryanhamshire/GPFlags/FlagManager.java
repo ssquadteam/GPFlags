@@ -197,6 +197,16 @@ public class FlagManager {
                 return claimFlags.get(flagString);
             }
         }
+        Claim parentClaim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimID)).parent;
+        if (parentClaim != null) {
+            String parentClaimID =  parentClaim.getID().toString();
+            ConcurrentHashMap<String, Flag> parentClaimFlags = this.flags.get(parentClaimID);
+            if (parentClaimFlags != null) {
+                if (parentClaimFlags.containsKey(flagString)) {
+                    return parentClaimFlags.get(flagString);
+                }
+            }
+        }
         if (claimID.equalsIgnoreCase("everywhere") || worlds.contains(claimID)) return null;
         ConcurrentHashMap<String, Flag> defaultFlags = this.flags.get(DEFAULT_FLAG_ID);
         if (defaultFlags != null) {
