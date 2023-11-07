@@ -197,7 +197,10 @@ public class FlagManager {
                 return claimFlags.get(flagString);
             }
         }
-        Claim parentClaim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimID)).parent;
+        Claim parentClaim = null;
+        try {
+            parentClaim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimID)).parent;
+        } catch (Exception ignored) {}
         if (parentClaim != null) {
             String parentClaimID =  parentClaim.getID().toString();
             ConcurrentHashMap<String, Flag> parentClaimFlags = this.flags.get(parentClaimID);
