@@ -492,7 +492,7 @@ public class Util {
         return c.getOwnerID().equals(p.getUniqueId());
     }
 
-    public static boolean shouldBypass(Player p, Claim c, String basePerm) {
+    public static boolean shouldBypass(@NotNull Player p, @Nullable Claim c, @NotNull String basePerm) {
         if (p.hasPermission(basePerm)) return true;
         if (c == null) return p.hasPermission(basePerm + ".nonclaim");
         if (c.getOwnerID() == null && p.hasPermission(basePerm + ".adminclaim")) return true;

@@ -20,20 +20,20 @@ import java.util.List;
 public class CommandListClaimFlags implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        if (!commandSender.hasPermission("gpflags.command.listclaimflags")) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
-            return true;
-        }
         if (!(commandSender instanceof Player)) {
             Util.sendMessage(commandSender, TextMode.Warn, Messages.PlayerOnlyCommand, command.toString());
             return true;
         }
+        Player player = (Player) commandSender;
 
         GPFlags gpflags = GPFlags.getInstance();
-        Player player = ((Player) commandSender);
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+
+        if (!Util.shouldBypass(player, claim, "gpflags.command.listclaimflags")) {
+            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            return true;
+        }
 
         Collection<Flag> flags;
         boolean flagsFound = false;
@@ -41,12 +41,14 @@ public class CommandListClaimFlags implements TabExecutor {
         StringBuilder builder2 = new StringBuilder();
         StringBuilder builder3 = new StringBuilder();
         if (claim != null) {
+            // Subclaim or Claim
             flags = gpflags.getFlagManager().getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 flagsFound = true;
                 builder1.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.getFriendlyParameters() + "&7)" : "").append(" ");
             }
 
+            // Claim if previous was subclaim, else none
             if (claim.parent != null) {
                 flags = gpflags.getFlagManager().getFlags(claim.parent.getID().toString());
                 for (Flag flag : flags) {
@@ -55,6 +57,7 @@ public class CommandListClaimFlags implements TabExecutor {
                 }
             }
 
+            // Default flags
             flags = gpflags.getFlagManager().getFlags(FlagManager.DEFAULT_FLAG_ID);
             for (Flag flag2 : flags) {
                 flagsFound = true;
@@ -62,6 +65,7 @@ public class CommandListClaimFlags implements TabExecutor {
             }
         }
 
+        // World
         StringBuilder builder4 = new StringBuilder();
         flags = gpflags.getFlagManager().getFlags(player.getWorld().getName());
         for (Flag flag3 : flags) {
@@ -69,6 +73,7 @@ public class CommandListClaimFlags implements TabExecutor {
             builder4.append(flag3.getSet() ? "&a" : "&c").append(flag3.getFlagDefinition().getName()).append(flag3.parameters.length() > 0 ? "&7(" + flag3.getFriendlyParameters() + "&7)" : "").append(" ");
         }
 
+        // Server
         StringBuilder builder5 = new StringBuilder();
         flags = gpflags.getFlagManager().getFlags("everywhere");
         for (Flag flag4 : flags) {
