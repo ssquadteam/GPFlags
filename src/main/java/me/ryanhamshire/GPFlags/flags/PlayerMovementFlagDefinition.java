@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.util.Vector;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,6 +55,7 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         Claim claimTo = event.getClaimTo();
         if (!this.allowMovement(player, from, to, claimFrom, claimTo)) {
             event.setCancelled(true);
+            event.getPlayer().setVelocity(new Vector());
         }
     }
 
