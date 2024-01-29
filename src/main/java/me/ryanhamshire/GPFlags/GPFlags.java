@@ -68,6 +68,9 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetdefaultclaimflag").setExecutor(new CommandUnsetDefaultClaimFlag());
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
+        getCommand("bulksetflag").setExecutor(new CommandBulkSetFlag());
+        getCommand("bulkunsetflag").setExecutor(new CommandBulkUnsetFlag());
+
 
         Metrics metrics = new Metrics(this, 17786);
         Set<String> usedFlags = GPFlags.getInstance().getFlagManager().getUsedFlags();

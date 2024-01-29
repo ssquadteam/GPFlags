@@ -88,6 +88,14 @@ commands:
     description: Buy the subclaim
     usage: /buysubclaim
     permission: gpflags.command.buysubclaim
+  bulksetflag:
+    description: Sets a flag for all of the player's claims
+    usage: /bulksetflag <player> <flag>
+    permission: gpflags.command.bulksetflag
+  bulkunsetflag:
+    description: Unsets a flag for all of the player's claims
+    usage: /bulkunsetflag <player> <flag>
+    permission: gpflags.command.bulkunsetflag
 permissions:
   gpflags.admin.*:
     description: Grants all administrative functionality. (depreciated)
