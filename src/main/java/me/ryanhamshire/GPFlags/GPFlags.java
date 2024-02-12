@@ -87,7 +87,7 @@ public class GPFlags extends JavaPlugin {
 
         try {
             UpdateChecker.checkForUpdates(this);
-        } catch (NoClassDefFoundError ignored) {}
+        } catch (Error ignored) {}
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);
