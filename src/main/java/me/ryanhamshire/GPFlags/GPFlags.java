@@ -50,7 +50,6 @@ public class GPFlags extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new ClaimModifiedListener(), this);
         }
 
-
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
 
