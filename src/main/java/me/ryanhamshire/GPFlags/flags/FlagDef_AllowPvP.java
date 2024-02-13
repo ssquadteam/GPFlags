@@ -5,6 +5,8 @@ import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -17,13 +19,8 @@ import org.bukkit.entity.Trident;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityCombustByEntityEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.LingeringPotionSplashEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
@@ -192,28 +189,27 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         Util.sendClaimMessage(thrower, TextMode.Err, settings.pvpDeniedMessage);
     }
 
-    //when an entity is set on fire
+    // when an entity is set on fire
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityCombustByEntity(EntityCombustByEntityEvent event) {
-        //handle it just like we would an entity damge by entity event, except don't send player messages to avoid double messages
-        //in cases like attacking with a flame sword or flame arrow, which would ALSO trigger the direct damage event handler
-        EntityDamageByEntityEvent eventWrapper = new EntityDamageByEntityEvent(event.getCombuster(), event.getEntity(),
-                DamageCause.FIRE_TICK, event.getDuration());
-        this.handleEntityDamageEvent(eventWrapper, false);
-        event.setCancelled(eventWrapper.isCancelled());
+        // handle it just like we would an entity damage by entity event, except don't send player messages to avoid double messages
+        // in cases like attacking with a flame sword or flame arrow, which would ALSO trigger the direct damage event handler
+        this.handleEntityDamageEvent(event, false, event.getCombuster(), event.getEntity(), DamageCause.FIRE_TICK);
     }
 
-    private void handleEntityDamageEvent(EntityDamageByEntityEvent event, boolean sendErrorMessagesToPlayers) {
-        //if the pet is not tamed, we don't care
-        if (event.getEntityType() != EntityType.PLAYER) {
-            Entity entity = event.getEntity();
-            if (entity instanceof Tameable) {
-                Tameable pet = (Tameable) entity;
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        this.handleEntityDamageEvent(event, true, event.getDamager(), event.getEntity(), event.getCause());
+    }
+
+    private void handleEntityDamageEvent(Cancellable event, boolean sendErrorMessagesToPlayers, Entity damager, Entity defender, DamageCause cause) {
+        // if the pet is not tamed, we don't care
+        if (defender.getType() != EntityType.PLAYER) {
+            if (defender instanceof Tameable) {
+                Tameable pet = (Tameable) defender;
                 if (!pet.isTamed() || pet.getOwner() == null) return;
             }
         }
-
-        Entity damager = event.getDamager();
 
         //if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.get(damager.getWorld());
@@ -231,13 +227,13 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         //if in a flagged-for-pvp area, allow
         Flag flag = this.getFlagInstanceAtLocation(damager.getLocation(), null);
-        Flag flag2 = this.getFlagInstanceAtLocation(event.getEntity().getLocation(), null);
+        Flag flag2 = this.getFlagInstanceAtLocation(defender.getLocation(), null);
         if (flag != null && flag2 != null) return;
 
         //if damaged entity is not a player, ignore, this is a PVP flag
-        if (event.getEntityType() != EntityType.PLAYER) return;
+        if (defender.getType() != EntityType.PLAYER) return;
         // Enderpearl are considered as FALL with event.getEntityType() = player...
-        if (event.getCause() == DamageCause.FALL) return;
+        if (cause == DamageCause.FALL) return;
 
         //otherwise disallow
         event.setCancelled(true);
@@ -262,13 +258,9 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                 projectile.remove();
             }
         }
-        if (sendErrorMessagesToPlayers && damager instanceof Player)
+        if (sendErrorMessagesToPlayers && damager instanceof Player) {
             Util.sendClaimMessage(damager, TextMode.Err, settings.pvpDeniedMessage);
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        this.handleEntityDamageEvent(event, true);
+        }
     }
     
     @EventHandler
