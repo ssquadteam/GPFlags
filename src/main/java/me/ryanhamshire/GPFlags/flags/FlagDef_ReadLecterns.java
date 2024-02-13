@@ -3,6 +3,7 @@ package me.ryanhamshire.GPFlags.flags;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Lectern;
@@ -21,6 +22,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.inventory.meta.BookMeta;
 
 public class FlagDef_ReadLecterns extends FlagDefinition {
     
@@ -34,6 +36,8 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
         
         Block block = event.getClickedBlock();
         if (block == null) return;
+        BlockState state = block.getState();
+        if (!(state instanceof Lectern)) return;
         
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
@@ -44,19 +48,26 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), false, playerData.lastClaim);
         if (claim == null) return;
         if (claim.ownerID == null) return;
-        
-        if (claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) {
-            return;
-        }
-        
-        BlockState state = block.getState();
-        if(! (state instanceof Lectern)) return;
+        if (claim.ownerID.equals(player.getUniqueId()) || claim.hasExplicitPermission(player, ClaimPermission.Inventory)) return;
         
         Lectern lectern = (Lectern) state;
         ItemStack book = lectern.getInventory().getItem(0);
-        if(book != null) {
-            player.openBook(book);
+        if (book == null) return;
+
+        // If it's a book and quill, pretend it's signed
+        if (book.getType() == Material.WRITABLE_BOOK) {
+            ItemStack writtenBook = new ItemStack(Material.WRITTEN_BOOK);
+            BookMeta fauxMeta = (BookMeta) writtenBook.getItemMeta();
+            fauxMeta.setAuthor("GPFlags");
+            fauxMeta.setTitle("Book and Quill");
+            BookMeta meta = (BookMeta) book.getItemMeta();
+            fauxMeta.pages(meta.pages());
+            writtenBook.setItemMeta(fauxMeta);
+            player.openBook(writtenBook);
+            return;
         }
+
+        player.openBook(book);
     }
 
     @Override
