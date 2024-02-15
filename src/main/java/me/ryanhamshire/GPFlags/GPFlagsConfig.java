@@ -87,8 +87,8 @@ public class GPFlagsConfig {
             settings.noMobSpawnIgnoreSpawners = inConfig.getBoolean("World Flags." + worldName + ".NoMobSpawn Flag Ignores Spawners and Eggs", true);
             outConfig.set("World Flags." + worldName + ".NoMobSpawn Flag Ignores Spawners and Eggs", settings.noMobSpawnIgnoreSpawners);
 
-            settings.resetFlagsOnTransferClaim = inConfig.getBoolean("World Flags." + worldName + ".Reset Flags On Transfer Claim", false);
-            outConfig.set("World Flags." + worldName + ".Reset Flags On Transfer Claim", settings.resetFlagsOnTransferClaim);
+            settings.clearFlagsOnTransferClaim = inConfig.getBoolean("World Flags." + worldName + ".Reset Flags On Transfer Claim", false);
+            outConfig.set("World Flags." + worldName + ".Clear Flags On Transfer Claim", settings.clearFlagsOnTransferClaim);
 
             outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + plugin.getDescription().getVersion() +
                     "\nServer Version: " + plugin.getServer().getVersion() + "\n\n");
