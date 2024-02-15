@@ -4,9 +4,7 @@ import java.util.*;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
-import me.ryanhamshire.GPFlags.listener.ClaimModifiedListener;
-import me.ryanhamshire.GPFlags.listener.ClaimResizeListener;
-import me.ryanhamshire.GPFlags.listener.EntityMoveListener;
+import me.ryanhamshire.GPFlags.listener.*;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
@@ -15,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
-import me.ryanhamshire.GPFlags.listener.PlayerListener;
 import me.ryanhamshire.GPFlags.util.Util;
 
 /**
@@ -49,6 +46,7 @@ public class GPFlags extends JavaPlugin {
         } catch (ClassNotFoundException e) {
             Bukkit.getPluginManager().registerEvents(new ClaimModifiedListener(), this);
         }
+        Bukkit.getPluginManager().registerEvents(new ClaimTransferListener(), this);
 
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
