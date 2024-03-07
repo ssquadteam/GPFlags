@@ -111,6 +111,9 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_EnterActionbar(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitActionbar(this.flagManager, plugin));
 
+            this.flagManager.registerFlagDefinition(new FlagDef_EnterTitle(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_ExitTitle(this.flagManager, plugin));
+
             this.flagManager.registerFlagDefinition(new FlagDef_EnterMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_ExitMessage(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_EnterCommand(this.flagManager, plugin));
