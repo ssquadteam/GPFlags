@@ -27,35 +27,36 @@ public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
+        Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
         if (flag == null) return;
-        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == oldFlag) return;
-        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) {
-            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
+
+        // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
+        Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
+        Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
+
+        // Don't repeat the exit message of a claim in certain cases
+        if (claimFrom != null && claimTo != null) {
+            // moving to parent claim, and the sub claim does not have its own exit message
+            if (claimFrom.parent == claimTo && (flagFrom == null || !flagFrom.getSet())) {
+                return;
+            }
+            // moving to sub-claim, and the sub claim does not have its own exit message
+            if (claimTo.parent == claimFrom && (flagTo == null || !flagTo.getSet())) {
+                return;
+            }
+
+            // moving to different claim with an entertitle
+            Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("EnterTitle"));
+            if (flagToEnter != null) {
+                return;
+            }
         }
 
         final PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         final String owner = playerData.lastClaim != null ? playerData.lastClaim.getOwnerName() : "N/A";
 
         final Title title = Title.title(
-            Component.text("Leaving Claim", NamedTextColor.GREEN),
-            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204))
-        );
-        player.showTitle(title);
-    }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e) {
-        Player player = e.getPlayer();
-        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim lastClaim = playerData.lastClaim;
-
-        final String owner = lastClaim != null ? lastClaim.getOwnerName() : "N/A";
-        final Title title = Title.title(
-            Component.text("Leaving Claim", NamedTextColor.GREEN),
+            Component.text("Leaving Claim", NamedTextColor.RED),
             Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204))
         );
         player.showTitle(title);
