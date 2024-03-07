@@ -13,6 +13,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -40,7 +41,8 @@ public class FlagDef_EnterTitle extends PlayerMovementFlagDefinition {
 
         final Title title = Title.title(
             Component.text("Entering Claim", NamedTextColor.GREEN),
-            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204))
+            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204)),
+            Title.Times.times(Ticks.duration(10L), Ticks.duration(25L), Ticks.duration(10L))
         );
         player.showTitle(title);
     }
@@ -56,7 +58,8 @@ public class FlagDef_EnterTitle extends PlayerMovementFlagDefinition {
         final String owner = lastClaim != null ? lastClaim.getOwnerName() : "N/A";
         final Title title = Title.title(
             Component.text("Entering Claim", NamedTextColor.GREEN),
-            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204))
+            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204)),
+            Title.Times.times(Ticks.duration(10L), Ticks.duration(25L), Ticks.duration(10L))
         );
         player.showTitle(title);
     }

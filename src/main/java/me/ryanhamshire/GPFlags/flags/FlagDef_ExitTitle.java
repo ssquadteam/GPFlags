@@ -13,10 +13,9 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
+import net.kyori.adventure.util.Ticks;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
 
@@ -57,7 +56,8 @@ public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
 
         final Title title = Title.title(
             Component.text("Leaving Claim", NamedTextColor.RED),
-            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204))
+            Component.text(String.format("Owned by: %s", owner), TextColor.color(204, 204, 204)),
+            Title.Times.times(Ticks.duration(10L), Ticks.duration(25L), Ticks.duration(10L))
         );
         player.showTitle(title);
     }
