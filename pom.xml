@@ -71,10 +71,6 @@
                     <groupId>com.sk89q.worldguard</groupId>
                     <artifactId>worldguard-legacy</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>org.apache.maven.scm</groupId>
-                    <artifactId>maven-scm-provider-gitexe</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
