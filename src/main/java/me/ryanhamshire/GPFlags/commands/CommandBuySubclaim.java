@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -68,7 +69,13 @@ public class CommandBuySubclaim implements CommandExecutor {
         GriefPrevention.instance.dataStore.saveClaim(claim);
         
         // Remove the flag from the subclaim so it can't be re-bought
-        GPFlags.getInstance().getFlagManager().setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
+        FlagManager flagManager = GPFlags.getInstance().getFlagManager();
+        SetFlagResult result = flagManager.setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
+        if (!result.isSuccess()) {
+            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            return true;
+        }
+        flagManager.save();
         Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
         return true;
     }
