@@ -67,7 +67,7 @@ public class CommandBuySubclaim implements CommandExecutor {
         claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
         
         // Remove the flag from the subclaim so it can't be re-bought
-        GPFlags.getInstance().getFlagManager().unSetFlag(claim, flag.getFlagDefinition());
+        GPFlags.getInstance().getFlagManager().setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
         Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
         return true;
     }
