@@ -55,6 +55,7 @@ public class CommandBuyBuildTrust implements CommandExecutor {
                     VaultHook.giveMoney(claim.getOwnerID(), cost);
                 }
                 claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
+                GriefPrevention.instance.dataStore.saveClaim(claim);
                 Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
                 return true;
             }

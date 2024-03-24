@@ -65,6 +65,7 @@ public class CommandBuySubclaim implements CommandExecutor {
         // Give the player build trust and managetrust in the subclaim
         claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Build);
         claim.setPermission(player.getUniqueId().toString(), ClaimPermission.Manage);
+        GriefPrevention.instance.dataStore.saveClaim(claim);
         
         // Remove the flag from the subclaim so it can't be re-bought
         GPFlags.getInstance().getFlagManager().setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
