@@ -32,9 +32,11 @@ public class UpdateChecker {
         final HttpURLConnection connection;
         final JsonElement json;
         try {
+
             connection = (HttpURLConnection) new URL("https://api.modrinth.com/v2/project/Z0NVSlL6/version").openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", userAgent);
+            connection.setConnectTimeout(5000);
             if (connection.getResponseCode() == 404) return null;
             json = new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
         } catch (final IOException e) {
