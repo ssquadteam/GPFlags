@@ -9,38 +9,44 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static org.bukkit.Bukkit.getLogger;
-
 public class UpdateChecker {
 
-    public static void checkForUpdates(JavaPlugin plugin) {
+    public static void run(JavaPlugin plugin, String projectName) {
+        new Thread(() -> {
+            try {
+                checkForUpdates(plugin, projectName);
+            } catch (Error ignored) {}
+        }).start();
+    }
+
+    public static void checkForUpdates(JavaPlugin plugin, String projectName) {
         // Get current version
         String usingVersion = plugin.getDescription().getVersion();
+        String pluginName = plugin.getName();
 
         // Get latest version from Modrinth
-        final JsonElement json = getJsonAs("gpflags/" + usingVersion);
+        final JsonElement json = getJsonAs( projectName, usingVersion);
         if (json == null) return;
         String latestVersion = json.getAsJsonArray().get(0).getAsJsonObject().get("version_number").getAsString();
 
         // Compare versions
         if (compareVersions(usingVersion,latestVersion) < 0) {
-            getLogger().warning("You are using GPFlags version " + usingVersion + " which is outdated. Please update to version " + latestVersion + " at https://modrinth.com/plugin/gpflags.");
+            plugin.getLogger().warning("You are using " + pluginName + " version " + usingVersion + " which is outdated. Please update to version " + latestVersion + " at https://modrinth.com/plugin/" + projectName + ".");
         }
     }
 
-    private static JsonElement getJsonAs(String userAgent) {
+    private static JsonElement getJsonAs(String projectName, String usingVersion) {
+        String userAgent = projectName + "/" + usingVersion;
         final HttpURLConnection connection;
         final JsonElement json;
         try {
-
-            connection = (HttpURLConnection) new URL("https://api.modrinth.com/v2/project/Z0NVSlL6/version").openConnection();
+            connection = (HttpURLConnection) new URL("https://api.modrinth.com/v2/project/" + projectName + "/version").openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", userAgent);
             connection.setConnectTimeout(5000);
             if (connection.getResponseCode() == 404) return null;
-            json = new JsonParser().parse(new InputStreamReader(connection.getInputStream()));
+            json = JsonParser.parseReader(new InputStreamReader(connection.getInputStream()));
         } catch (final IOException e) {
-            e.printStackTrace();
             return null;
         }
         connection.disconnect();

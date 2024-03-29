@@ -1,6 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
@@ -82,9 +83,7 @@ public class GPFlags extends JavaPlugin {
             return GriefPrevention.instance.getDescription().getVersion();
         }));
 
-        try {
-            UpdateChecker.checkForUpdates(this);
-        } catch (Error ignored) {}
+        UpdateChecker.run(this, "gpflags");
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
         Util.log("Successfully loaded in &b%.2f seconds", finish);

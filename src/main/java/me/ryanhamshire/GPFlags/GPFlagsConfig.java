@@ -27,6 +27,7 @@ public class GPFlagsConfig {
     private final FlagManager flagManager;
 
     public static boolean LOG_ENTER_EXIT_COMMANDS = true;
+    public static boolean DEBUG = false;
 
     public GPFlagsConfig(GPFlags plugin) {
         this.plugin = plugin;
@@ -41,6 +42,12 @@ public class GPFlagsConfig {
         FileConfiguration inConfig = YamlConfiguration.loadConfiguration(new File(FlagsDataStore.configFilePath));
         FileConfiguration outConfig = new YamlConfiguration();
 
+        LOG_ENTER_EXIT_COMMANDS = inConfig.getBoolean("Settings.Log Enter/Exit Messages To Console", true);
+        outConfig.set("Settings.Log Enter/Exit Messages To Console", LOG_ENTER_EXIT_COMMANDS);
+
+        DEBUG = inConfig.getBoolean("Settings.Debug", false);
+        outConfig.set("Settings.Debug", DEBUG);
+
         List<World> worlds = plugin.getServer().getWorlds();
         ArrayList<String> worldSettingsKeys = new ArrayList<>();
         for (World world : worlds) {
@@ -49,9 +56,6 @@ public class GPFlagsConfig {
 
         for (String worldName : worldSettingsKeys) {
             WorldSettings settings = plugin.getWorldSettingsManager().create(worldName);
-
-            LOG_ENTER_EXIT_COMMANDS = inConfig.getBoolean("Settings.Log Enter/Exit Messages To Console", true);
-            outConfig.set("Settings.Log Enter/Exit Messages To Console", LOG_ENTER_EXIT_COMMANDS);
 
             settings.worldGamemodeDefault = inConfig.getString("World Flags." + worldName + ".Default Gamemode", "survival");
             String worldGMDefault = settings.worldGamemodeDefault;
