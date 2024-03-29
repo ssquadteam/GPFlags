@@ -22,7 +22,6 @@ public class UpdateChecker {
     public static void checkForUpdates(JavaPlugin plugin, String projectName) {
         // Get current version
         String usingVersion = plugin.getDescription().getVersion();
-        String pluginName = plugin.getName();
 
         // Get latest version from Modrinth
         final JsonElement json = getJsonAs( projectName, usingVersion);
@@ -31,23 +30,27 @@ public class UpdateChecker {
 
         // Compare versions
         if (compareVersions(usingVersion,latestVersion) < 0) {
-            plugin.getLogger().warning("You are using " + pluginName + " version " + usingVersion + " which is outdated. Please update to version " + latestVersion + " at https://modrinth.com/plugin/" + projectName + ".");
+            plugin.getLogger().warning("You are using " + plugin.getName() + " version " + usingVersion + " which is outdated. Please update to version " + latestVersion + " at https://modrinth.com/plugin/" + projectName + ".");
         }
     }
 
     private static JsonElement getJsonAs(String projectName, String usingVersion) {
         String userAgent = projectName + "/" + usingVersion;
-        final HttpURLConnection connection;
+        HttpURLConnection connection = null;
         final JsonElement json;
         try {
             connection = (HttpURLConnection) new URL("https://api.modrinth.com/v2/project/" + projectName + "/version").openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("User-Agent", userAgent);
             connection.setConnectTimeout(5000);
-            if (connection.getResponseCode() == 404) return null;
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
             json = JsonParser.parseReader(new InputStreamReader(connection.getInputStream()));
         } catch (final IOException e) {
             return null;
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         connection.disconnect();
         return json;
