@@ -10,7 +10,6 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimModifiedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,12 +29,53 @@ import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
-public class PlayerListener implements Listener {
+public class PlayerListener implements Listener, Runnable {
 
     private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
     private static final DataStore dataStore = GriefPrevention.instance.dataStore;
     private final FlagManager FLAG_MANAGER = GPFlags.getInstance().getFlagManager();
+
+    private static final long TASK_PERIOD_SECONDS = 1L;
+    private static final int DISTANCE_THRESHOLD_SQUARED = (int) Math.pow(3, 2);
+
+    private final ConcurrentMap<UUID, Location> lastLocation = new ConcurrentHashMap<>();
+
+    public PlayerListener() {
+        GPFlags.getScheduler().getImpl().runTimer(this, TASK_PERIOD_SECONDS, TASK_PERIOD_SECONDS, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void run() {
+        for (final Player player : Bukkit.getOnlinePlayers()) {
+            final UUID playerId = player.getUniqueId();
+
+            final Location location = player.getLocation();
+            final Location lastLocation = this.lastLocation.get(playerId);
+
+            this.lastLocation.put(playerId, location);
+
+            if (lastLocation == null) {
+                return;
+            }
+
+            if (location.getWorld().equals(lastLocation.getWorld()) &&
+                location.distanceSquared(lastLocation) <= DISTANCE_THRESHOLD_SQUARED) {
+                return;
+            }
+
+            GPFlags.getScheduler().getImpl().runAtEntity(player, () -> {
+                if (processMovement(location, lastLocation, player, null)) {
+                    return;
+                }
+                player.teleportAsync(lastLocation);
+            });
+        }
+    }
 
     @EventHandler
     private void onFall(EntityDamageEvent e) {

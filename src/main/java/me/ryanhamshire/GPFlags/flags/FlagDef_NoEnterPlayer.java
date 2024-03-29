@@ -25,7 +25,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition implemen
 
     public FlagDef_NoEnterPlayer(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
-        GPFlags.getScheduler().getImpl().runTimer(this, TASK_PERIOD_SECONDS, TASK_PERIOD_SECONDS, TimeUnit.SECONDS);
+//        GPFlags.getScheduler().getImpl().runTimer(this, TASK_PERIOD_SECONDS, TASK_PERIOD_SECONDS, TimeUnit.SECONDS);
     }
 
     @Override
