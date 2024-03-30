@@ -153,7 +153,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         if (!(projectileSource instanceof Player)) return;
         Player thrower = (Player) projectileSource;
 
-        // ignore positive potions
+        // ignore potions without any negative effects
         Collection<PotionEffect> effects = potion.getEffects();
         boolean hasNegativeEffect = false;
         for (PotionEffect effect : effects) {
