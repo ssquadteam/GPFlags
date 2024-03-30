@@ -5,8 +5,6 @@ import java.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.damage.DamageSource;
-import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -115,10 +113,20 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
     }
 
+    /***
+     * Depending on the claim flag, possibly cancels GP from preventing PvP.
+     * @param event GP found a PVP event within a claim and will prevent it
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreventPvP(PreventPvPEvent event) {
-        Flag flag = this.getFlagInstanceAtLocation(event.getClaim().getLesserBoundaryCorner(), null);
-        if (flag == null) return;
+        Flag defenderFlag = this.getFlagInstanceAtLocation(event.getDefender().getLocation(), null);
+        if (defenderFlag == null) {
+            // allowPvp is off
+            // Let GP handle protect the player
+            return;
+        }
+        // AllowPvp is enabled.
+        // Don't let GP protect the player.
         event.setCancelled(true);
     }
 
@@ -202,7 +210,11 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         this.handleEntityDamageEvent(event, true, event.getDamager(), event.getEntity(), event.getCause());
     }
 
-    private void handleEntityDamageEvent(Cancellable event, boolean sendErrorMessagesToPlayers, Entity damager, Entity defender, DamageCause cause) {
+    private void handleEntityDamageEvent(Cancellable event, boolean sendErrorMessagesToPlayers, Entity attacker, Entity defender, DamageCause cause) {
+        if (defender.getType() != EntityType.PLAYER) return;
+        // Enderpearl are considered as FALL with event.getEntityType() = player...
+        if (cause == DamageCause.FALL) return;
+
         // if the pet is not tamed, we don't care
         if (defender.getType() != EntityType.PLAYER) {
             if (defender instanceof Tameable) {
@@ -212,28 +224,25 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         }
 
         //if not in a no-pvp world, we don't care
-        WorldSettings settings = this.settingsManager.get(damager.getWorld());
+        WorldSettings settings = this.settingsManager.get(attacker.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
 
         Projectile projectile = null;
-        if (damager instanceof Projectile) {
-            projectile = (Projectile) damager;
+        if (attacker instanceof Projectile) {
+            projectile = (Projectile) attacker;
             if (projectile.getShooter() instanceof Player) {
-                damager = (Player) projectile.getShooter();
+                attacker = (Player) projectile.getShooter();
             }
         }
 
-        if (damager.getType() != EntityType.PLAYER) return;
+        if (attacker.getType() != EntityType.PLAYER) return;
 
-        //if in a flagged-for-pvp area, allow
-        Flag flag = this.getFlagInstanceAtLocation(damager.getLocation(), null);
+        // If both players are in an allowPvp area, let them get hurt
+        Flag flag = this.getFlagInstanceAtLocation(attacker.getLocation(), null);
         Flag flag2 = this.getFlagInstanceAtLocation(defender.getLocation(), null);
         if (flag != null && flag2 != null) return;
 
-        //if damaged entity is not a player, ignore, this is a PVP flag
-        if (defender.getType() != EntityType.PLAYER) return;
-        // Enderpearl are considered as FALL with event.getEntityType() = player...
-        if (cause == DamageCause.FALL) return;
+        // At this point, we know we will prevent the damage
 
         //otherwise disallow
         event.setCancelled(true);
@@ -247,7 +256,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                     assert item != null;
                     if (item.getType() != Material.AIR) {
                         item.setAmount(1);
-                        ((Player) damager).getInventory().addItem(item);
+                        ((Player) attacker).getInventory().addItem(item);
                     }
                 }
                 // Remove metadata in case the projectile is to damage multiple entities
@@ -258,8 +267,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                 projectile.remove();
             }
         }
-        if (sendErrorMessagesToPlayers && damager instanceof Player) {
-            Util.sendClaimMessage(damager, TextMode.Err, settings.pvpDeniedMessage);
+        if (sendErrorMessagesToPlayers && attacker instanceof Player) {
+            Util.sendClaimMessage(attacker, TextMode.Err, settings.pvpDeniedMessage);
         }
     }
     
@@ -279,8 +288,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                     
                     // EntityShootBowEvent is still fired for each projectile
                     // Only add the metadata to the first projectile launched within a short time
-                    if(projs.size() > 1) {
-                        if(justFiredCrossbow.contains(player)) return;
+                    if (projs.size() > 1) {
+                        if (justFiredCrossbow.contains(player)) return;
                         justFiredCrossbow.add(player);
                         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                             justFiredCrossbow.remove(player);
@@ -337,6 +346,6 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
     @Override
     public List<FlagType> getFlagType() {
-        return Collections.singletonList(FlagType.CLAIM);
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
 }
