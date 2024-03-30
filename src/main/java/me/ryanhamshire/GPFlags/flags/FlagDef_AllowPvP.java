@@ -119,14 +119,9 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPreventPvP(PreventPvPEvent event) {
         Flag defenderFlag = this.getFlagInstanceAtLocation(event.getDefender().getLocation(), null);
-        if (defenderFlag == null) {
-            // allowPvp is off
-            // Let GP handle protect the player
-            return;
-        }
-        // AllowPvp is enabled.
+        // If AllowPvp is enabled,
         // Don't let GP protect the player.
-        event.setCancelled(true);
+        if (defenderFlag != null) event.setCancelled(true);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
