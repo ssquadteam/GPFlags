@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -210,19 +209,16 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         this.handleEntityDamageEvent(event, true, event.getDamager(), event.getEntity(), event.getCause());
     }
 
+    public boolean isPlayerOrPet(Entity entity) {
+        if (entity instanceof Player) return true;
+        if (!(entity instanceof Tameable)) return false;
+        Tameable pet = (Tameable) entity;
+        if (pet.isTamed()) return true;
+        if (pet.getOwner() != null) return true;
+        return false;
+    }
+
     private void handleEntityDamageEvent(Cancellable event, boolean sendErrorMessagesToPlayers, Entity attacker, Entity defender, DamageCause cause) {
-        if (defender.getType() != EntityType.PLAYER) return;
-        // Enderpearl are considered as FALL with event.getEntityType() = player...
-        if (cause == DamageCause.FALL) return;
-
-        // if the pet is not tamed, we don't care
-        if (defender.getType() != EntityType.PLAYER) {
-            if (defender instanceof Tameable) {
-                Tameable pet = (Tameable) defender;
-                if (!pet.isTamed() || pet.getOwner() == null) return;
-            }
-        }
-
         //if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.get(attacker.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
@@ -235,41 +231,42 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             }
         }
 
-        if (attacker.getType() != EntityType.PLAYER) return;
+        if (!isPlayerOrPet(attacker)) return;
+        if (!isPlayerOrPet(defender)) return;
 
         // If both players are in an allowPvp area, let them get hurt
         Flag flag = this.getFlagInstanceAtLocation(attacker.getLocation(), null);
         Flag flag2 = this.getFlagInstanceAtLocation(defender.getLocation(), null);
         if (flag != null && flag2 != null) return;
 
+        // Enderpearl are considered as FALL with event.getEntityType() = player...
+        if (cause == DamageCause.FALL) return;
+
         // At this point, we know we will prevent the damage
-
-        //otherwise disallow
         event.setCancelled(true);
-
-        // give the shooter back their projectile
-        if (projectile != null) {
-            if (projectile.hasMetadata("item-stack")) {
-                MetadataValue meta = projectile.getMetadata("item-stack").get(0);
-                if (meta != null) {
-                    ItemStack item = ((ItemStack) meta.value());
-                    assert item != null;
-                    if (item.getType() != Material.AIR) {
-                        item.setAmount(1);
-                        ((Player) attacker).getInventory().addItem(item);
-                    }
-                }
-                // Remove metadata in case the projectile is to damage multiple entities
-                // i.e. firework aoe
-                projectile.removeMetadata("item-stack", GPFlags.getInstance());
-            }
-            if (!(projectile instanceof Trident)) {
-                projectile.remove();
-            }
-        }
         if (sendErrorMessagesToPlayers && attacker instanceof Player) {
             Util.sendClaimMessage(attacker, TextMode.Err, settings.pvpDeniedMessage);
         }
+
+        // give the shooter back their projectile
+        if (projectile == null) return;
+        if (projectile.hasMetadata("item-stack")) {
+            MetadataValue meta = projectile.getMetadata("item-stack").get(0);
+            if (meta != null) {
+                ItemStack item = ((ItemStack) meta.value());
+                if (item != null && item.getType() != Material.AIR) {
+                    item.setAmount(1);
+                    ((Player) attacker).getInventory().addItem(item);
+                }
+            }
+            // Remove metadata in case the projectile is to damage multiple entities
+            // i.e. firework aoe
+            projectile.removeMetadata("item-stack", GPFlags.getInstance());
+        }
+        if (!(projectile instanceof Trident)) {
+            projectile.remove();
+        }
+
     }
     
     @EventHandler
