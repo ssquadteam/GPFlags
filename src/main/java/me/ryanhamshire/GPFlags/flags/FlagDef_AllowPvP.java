@@ -162,22 +162,21 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                 break;
             }
         }
-
         if (!hasNegativeEffect) return;
 
         // if not in a no-pvp world, we don't care
         WorldSettings settings = this.settingsManager.get(potion.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
 
-        // ignore potions not effecting players or pets
+        // ignore potions not affecting players or pets
         if (event instanceof PotionSplashEvent) {
             boolean hasProtectableTarget = false;
-            for (LivingEntity effected : ((PotionSplashEvent) event).getAffectedEntities()) {
-                if (effected instanceof Player && effected != thrower) {
+            for (LivingEntity affected : ((PotionSplashEvent) event).getAffectedEntities()) {
+                if (affected instanceof Player && affected != thrower) {
                     hasProtectableTarget = true;
                     break;
-                } else if (effected instanceof Tameable) {
-                    Tameable pet = (Tameable) effected;
+                } else if (affected instanceof Tameable) {
+                    Tameable pet = (Tameable) affected;
                     if (pet.isTamed() && pet.getOwner() != null) {
                         hasProtectableTarget = true;
                         break;
