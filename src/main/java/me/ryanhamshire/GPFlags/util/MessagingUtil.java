@@ -4,16 +4,16 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-
-
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,6 +41,7 @@ public class MessagingUtil {
             return ChatColor.translateAlternateColorCodes('&', string);
         }
 
+        /*
         Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
         Matcher matcher = hexPattern.matcher(string);
         while (matcher.find()) {
@@ -49,7 +50,7 @@ public class MessagingUtil {
             ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
             string = before + hexColor + after;
             matcher = hexPattern.matcher(string);
-        }
+        } */
         string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
     }
@@ -86,30 +87,27 @@ public class MessagingUtil {
         message = PlaceholderApiHook.addPlaceholders(player, message);
         message = getColString(message);
         try {
-            MiniMessage mm = MiniMessage.miniMessage();
-            Component component = mm.deserialize(message);
+            Component component = MiniMessage.miniMessage().deserialize(message);
             player.sendMessage(component);
-        } catch (Exception exception) {
+        } catch (Error e) {
             player.sendMessage(message);
         }
     }
 
     private static void logToConsole(String message) {
         try {
-            MiniMessage mm = MiniMessage.miniMessage();
-            Component component = mm.deserialize(message);
+            Component component = MiniMessage.miniMessage().deserialize(message);
             Bukkit.getConsoleSender().sendMessage(component);
-        } catch (Exception exception) {
+        } catch (Error e) {
             Bukkit.getLogger().info(message);
         }
     }
 
     public static void sendActionbar(Player player, String message) {
         try {
-            MiniMessage mm = MiniMessage.miniMessage();
-            Component component = mm.deserialize(message);
+            Component component = MiniMessage.miniMessage().deserialize(message);
             player.sendActionBar(component);
-        } catch (Exception exception) {
+        } catch (Error e) {
             player.sendActionBar(message);
         }
     }
