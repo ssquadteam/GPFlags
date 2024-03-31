@@ -9,6 +9,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
 
+
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,8 +63,9 @@ public class MessagingUtil {
             string = before + hexColor + after;
             matcher = hexPattern2.matcher(string);
         }
+        string = ChatColor.translateAlternateColorCodes('&', string);
+        return string;
 
-        return ChatColor.translateAlternateColorCodes('&', string);
     }
 
     /**
@@ -93,7 +99,13 @@ public class MessagingUtil {
         OfflinePlayer player = (OfflinePlayer) receiver;
         message = PlaceholderApiHook.addPlaceholders(player, message);
         message = getColString(message);
-        receiver.sendMessage(message);
+        try {
+            MiniMessage mm = MiniMessage.miniMessage();
+            Component component = mm.deserialize(message);
+            Audience.audience(receiver).sendMessage(component);
+        } catch (Exception exception) {
+            receiver.sendMessage(message);
+        }
     }
 
     public static void logToConsole(String message) {
