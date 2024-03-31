@@ -4,7 +4,7 @@ depend: [GriefPrevention]
 softdepend: [mcMMO, Vault, MythicMobs, EliteMobs, PlaceholderAPI]
 authors: [Big_Scary, ShaneBee, DmitryRendov, DrBot]
 description: GriefPrevention add-on to set flags in claims.
-website: https://www.spigotmc.org/resources/griefprevention-flags.55773/
+website: https://modrinth.com/plugin/gpflags
 version: '${project.version}'
 api-version: '1.13'
 commands:
