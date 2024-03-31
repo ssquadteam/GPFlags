@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -24,7 +24,7 @@ public class FlagDef_SpawnReasonWhitelist extends FlagDefinition implements List
             try {
                 reason = CreatureSpawnEvent.SpawnReason.valueOf(string.toUpperCase());
             } catch (IllegalArgumentException ex) {
-                Util.log("Error with SpawnReasonWhitelist params at " + event.getLocation());
+                MessagingUtil.logToConsole("Error with SpawnReasonWhitelist params at " + event.getLocation());
                 return;
             }
             if (reason != event.getSpawnReason()) {

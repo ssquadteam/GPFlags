@@ -1,6 +1,7 @@
 package me.ryanhamshire.GPFlags.commands;
 
 import me.ryanhamshire.GPFlags.*;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -9,11 +10,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class CommandListClaimFlags implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!(commandSender instanceof Player)) {
-            Util.sendMessage(commandSender, TextMode.Warn, Messages.PlayerOnlyCommand, command.toString());
+            MessagingUtil.sendMessage(commandSender, TextMode.Warn, Messages.PlayerOnlyCommand, command.toString());
             return true;
         }
         Player player = (Player) commandSender;
@@ -31,7 +30,7 @@ public class CommandListClaimFlags implements TabExecutor {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
 
         if (!Util.shouldBypass(player, claim, "gpflags.command.listclaimflags")) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
             return true;
         }
 
@@ -82,18 +81,18 @@ public class CommandListClaimFlags implements TabExecutor {
         }
 
         if (builder1.length() > 0)
-            Util.sendMessage(player, TextMode.Info, Messages.FlagsClaim, builder1.toString());
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.FlagsClaim, builder1.toString());
         if (builder2.length() > 0)
-            Util.sendMessage(player, TextMode.Info, Messages.FlagsParent, builder2.toString());
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.FlagsParent, builder2.toString());
         if (builder3.length() > 0)
-            Util.sendMessage(player, TextMode.Info, Messages.FlagsDefault, builder3.toString());
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.FlagsDefault, builder3.toString());
         if (builder4.length() > 0)
-            Util.sendMessage(player, TextMode.Info, Messages.FlagsWorld, builder4.toString());
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.FlagsWorld, builder4.toString());
         if (builder5.length() > 0)
-            Util.sendMessage(player, TextMode.Info, Messages.FlagsServer, builder5.toString());
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.FlagsServer, builder5.toString());
 
         if (!flagsFound) {
-            Util.sendMessage(player, TextMode.Info, Messages.NoFlagsHere);
+            MessagingUtil.sendMessage(player, TextMode.Info, Messages.NoFlagsHere);
         }
 
         return true;

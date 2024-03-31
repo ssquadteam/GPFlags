@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -33,7 +34,7 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
         if (!Util.canAccess(claim, player)) {
             event.setCancelled(true);
             player.removePotionEffect(PotionEffectType.BAD_OMEN);
-            Util.sendClaimMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
         }
     }
 

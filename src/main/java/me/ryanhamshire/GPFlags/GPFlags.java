@@ -1,12 +1,12 @@
 package me.ryanhamshire.GPFlags;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 import me.ryanhamshire.GPFlags.commands.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.listener.*;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
-import me.ryanhamshire.GPFlags.util.Util;
 
 /**
  * <b>Main GriefPrevention Flags class</b>
@@ -86,7 +85,7 @@ public class GPFlags extends JavaPlugin {
         UpdateChecker.run(this, "gpflags");
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
-        Util.log("Successfully loaded in &b%.2f seconds", finish);
+        MessagingUtil.logToConsole("Successfully loaded in " + String.format("%.2f", finish) + " seconds");
     }
 
     public void onDisable() {
@@ -95,7 +94,6 @@ public class GPFlags extends JavaPlugin {
             new ArrayList<>(inv.getViewers()).forEach(HumanEntity::closeInventory);
         });
         if (flagsDataStore != null) {
-            flagsDataStore.close();
             flagsDataStore = null;
         }
         instance = null;

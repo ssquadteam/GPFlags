@@ -5,6 +5,7 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -27,7 +28,7 @@ public class CommandBulkUnsetFlag implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         // Check perms
         if (!commandSender.hasPermission("gpflags.command.bulkunsetflag")) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
             return true;
         }
 
@@ -40,13 +41,13 @@ public class CommandBulkUnsetFlag implements TabExecutor {
         GPFlags gpflags = GPFlags.getInstance();
         FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            Util.sendMessage(commandSender, TextMode.Warn, Util.getFlagDefsMessage(commandSender));
+            MessagingUtil.sendMessage(commandSender, TextMode.Warn, Messages.InvalidFlagDefName, Util.getAvailableFlags(commandSender));
             return true;
         }
 
         // Check that the flag can be used in claims
         if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagInClaim);
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoFlagInClaim);
             return true;
         }
 
@@ -55,8 +56,8 @@ public class CommandBulkUnsetFlag implements TabExecutor {
         for (Claim claim : playerClaims) {
             SetFlagResult result = gpflags.getFlagManager().unSetFlag(claim.getID().toString(), def);
             if (result.isSuccess()) gpflags.getFlagManager().save();
-            ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
-            Util.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
+            String color = result.isSuccess() ? TextMode.Success : TextMode.Err;
+            MessagingUtil.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         }
 
         return true;

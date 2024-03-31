@@ -2,6 +2,7 @@ package me.ryanhamshire.GPFlags.flags;
 
 import java.util.*;
 
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -79,7 +80,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             if (this.getFlagInstanceAtLocation(lastLocation, player) != null) {
                 if (!settings.pvpRequiresClaimFlag) return;
                 if (!settings.pvpExitClaimMessageEnabled) return;
-                Util.sendClaimMessage(player, TextMode.Success, settings.pvpExitClaimMessage);
+                MessagingUtil.sendMessage(player, TextMode.Success + settings.pvpExitClaimMessage);
             }
             return;
         }
@@ -89,7 +90,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         if (!settings.pvpRequiresClaimFlag) return;
         if (!settings.pvpEnterClaimMessageEnabled) return;
 
-        Util.sendClaimMessage(player, TextMode.Warn, settings.pvpEnterClaimMessage);
+        MessagingUtil.sendMessage(player, TextMode.Warn + settings.pvpEnterClaimMessage);
     }
 
     // bandaid
@@ -108,7 +109,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         WorldSettings settings = this.settingsManager.get(player.getWorld());
         if (!settings.pvpRequiresClaimFlag) return;
         if (!settings.pvpEnterClaimMessageEnabled) return;
-        Util.sendClaimMessage(player, TextMode.Warn, settings.pvpEnterClaimMessage);
+        MessagingUtil.sendMessage(player, TextMode.Warn + settings.pvpEnterClaimMessage);
 
     }
 
@@ -187,7 +188,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
         // otherwise disallow
         ((Cancellable) event).setCancelled(true);
-        Util.sendClaimMessage(thrower, TextMode.Err, settings.pvpDeniedMessage);
+        MessagingUtil.sendMessage(thrower, TextMode.Err + settings.pvpDeniedMessage);
     }
 
     // when an entity is set on fire
@@ -239,7 +240,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         // At this point, we know we will prevent the damage
         event.setCancelled(true);
         if (sendErrorMessagesToPlayers && attacker instanceof Player) {
-            Util.sendClaimMessage(attacker, TextMode.Err, settings.pvpDeniedMessage);
+            MessagingUtil.sendMessage(attacker, TextMode.Err + settings.pvpDeniedMessage);
         }
 
         // give the shooter back their projectile

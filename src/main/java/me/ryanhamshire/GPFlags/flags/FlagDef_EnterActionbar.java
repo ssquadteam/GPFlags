@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
@@ -35,7 +35,7 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
         if (playerData.lastClaim != null) {
             message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
         }
-        player.sendActionBar(Util.getColString(message));
+        player.sendActionBar(MessagingUtil.getColString(message));
     }
 
     @EventHandler
@@ -51,7 +51,7 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
         if (lastClaim != null) {
                 message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
         }
-        player.sendActionBar(Util.getColString(message));
+        player.sendActionBar(MessagingUtil.getColString(message));
     }
 
     @Override

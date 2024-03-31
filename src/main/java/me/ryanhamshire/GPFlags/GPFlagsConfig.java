@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.commands.CommandBuyBuildTrust;
 import me.ryanhamshire.GPFlags.commands.CommandBuyContainerTrust;
 import me.ryanhamshire.GPFlags.commands.CommandBuySubclaim;
 import me.ryanhamshire.GPFlags.flags.*;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -100,9 +101,9 @@ public class GPFlagsConfig {
 
         try {
             outConfig.save(FlagsDataStore.configFilePath);
-            Util.log("Finished loading configuration.");
+            MessagingUtil.logToConsole("Finished loading configuration.");
         } catch (IOException exception) {
-            Util.log("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
+            MessagingUtil.logToConsole("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
 
         //register flag definitions
@@ -207,8 +208,8 @@ public class GPFlagsConfig {
                 this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, plugin));
             } catch (ClassNotFoundException e) {
                 if (Util.isRunningMinecraft(1, 14)) {
-                    Util.log("&cRaidEvent classes not found:");
-                    Util.log("&7  - Update to latest Minecraft version for raid flag to work");
+                    MessagingUtil.logToConsole("&cRaidEvent classes not found:");
+                    MessagingUtil.logToConsole("&7  - Update to latest Minecraft version for raid flag to work");
                 }
             }
 
@@ -265,14 +266,14 @@ public class GPFlagsConfig {
                 //noinspection UnstableApiUsage
                 Files.copy(flagsFile, errorFile);
                 for (MessageSpecifier error : errors) {
-                    Util.log("Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
+                    MessagingUtil.logToConsole("Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
                 }
-                Util.log("Problems encountered reading the flags data file! " +
+                MessagingUtil.logToConsole("Problems encountered reading the flags data file! " +
                         "Please share this log and your 'flagsError.yml' file with the developer.");
             }
         } catch (Exception e) {
-            Util.log("Unable to initialize the file system data store.  Details:");
-            Util.log(e.getMessage());
+            MessagingUtil.logToConsole("Unable to initialize the file system data store.  Details:");
+            MessagingUtil.logToConsole(e.getMessage());
             e.printStackTrace();
         }
 
@@ -286,7 +287,7 @@ public class GPFlagsConfig {
             }
         }
         this.flagManager.removeExceptClaimIDs(validIDs);
-        Util.log("Finished loading data.");
+        MessagingUtil.logToConsole("Finished loading data.");
     }
     
 }

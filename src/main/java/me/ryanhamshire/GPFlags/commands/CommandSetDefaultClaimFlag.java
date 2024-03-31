@@ -2,6 +2,7 @@ package me.ryanhamshire.GPFlags.commands;
 
 import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,7 +18,7 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
         if (!commandSender.hasPermission("gpflags.command.setdefaultclaimflag")) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
             return true;
         }
         if (args.length < 1) return false;
@@ -27,17 +28,17 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         GPFlags gpFlags = GPFlags.getInstance();
         FlagDefinition def = gpFlags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            Util.sendMessage(commandSender, TextMode.Err, Util.getFlagDefsMessage(commandSender));
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.InvalidFlagDefName, Util.getAvailableFlags(commandSender));
             return true;
         }
 
         if (!commandSender.hasPermission("gpflags.flag." + def.getName())) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagPermission, def.getName());
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoFlagPermission, def.getName());
             return true;
         }
 
         if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
-            Util.sendMessage(commandSender, TextMode.Err, Messages.NoFlagInClaim);
+            MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoFlagInClaim);
             return true;
         }
 
@@ -45,12 +46,12 @@ public class CommandSetDefaultClaimFlag implements TabExecutor {
         System.arraycopy(args, 1, params, 0, args.length - 1);
 
         SetFlagResult result = gpFlags.getFlagManager().setFlag(FlagManager.DEFAULT_FLAG_ID, def, true, params);
-        ChatColor color = result.isSuccess() ? TextMode.Success : TextMode.Err;
+        String color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
-            Util.sendMessage(commandSender, color, Messages.DefaultFlagSet);
+            MessagingUtil.sendMessage(commandSender, color, Messages.DefaultFlagSet);
             gpFlags.getFlagManager().save();
         } else {
-            Util.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
+            MessagingUtil.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         }
 
         return true;

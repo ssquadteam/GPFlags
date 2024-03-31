@@ -1,7 +1,7 @@
 name: GPFlags
 main: me.ryanhamshire.GPFlags.GPFlags
 depend: [GriefPrevention]
-softdepend: [mcMMO, Vault, MythicMobs, EliteMobs]
+softdepend: [mcMMO, Vault, MythicMobs, EliteMobs, PlaceholderAPI]
 authors: [Big_Scary, ShaneBee, DmitryRendov, DrBot]
 description: GriefPrevention add-on to set flags in claims.
 website: https://www.spigotmc.org/resources/griefprevention-flags.55773/

@@ -1,6 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -171,12 +171,12 @@ public class FlagsDataStore {
 
         this.addDefault(defaults, Messages.EnableNoEnderPearl, "Now blocking ender pearl teleportation to/from this area.", null);
         this.addDefault(defaults, Messages.DisableNoEnderPearl, "Stopped blocking ender pearl teleportation to/from this area.", null);
-        this.addDefault(defaults, Messages.NoEnderPearlInClaim, "{p}, you cannot use enderpearls in {o}'s claim",
-                "o: owner of claim" + " p: event player");
-        this.addDefault(defaults, Messages.NoEnderPearlToClaim, "{p}, you cannot use enderpearls to teleport into {o}'s claim",
-                "o: owner of claim" + " p: event player");
-        this.addDefault(defaults, Messages.NoEnderPearlInWorld, "{p}, you cannot use enderpearls in this world",
-                "p: event player");
+        this.addDefault(defaults, Messages.NoEnderPearlInClaim, "{0}, you cannot use enderpearls in {1}'s claim",
+                " 0: event player, 1: owner of claim");
+        this.addDefault(defaults, Messages.NoEnderPearlToClaim, "{0}, you cannot use enderpearls to teleport into {1}'s claim",
+                " 0: event player, 1: owner of claim");
+        this.addDefault(defaults, Messages.NoEnderPearlInWorld, "{0}, you cannot use enderpearls in this world",
+                "0: event player");
 
         this.addDefault(defaults, Messages.EnableNoMcMMOSkills, "Now blocking McMMO skill use in this area.", null);
         this.addDefault(defaults, Messages.DisableNoMcMMOSkills, "Stopped blocking McMMO skill use in this area.", null);
@@ -392,7 +392,7 @@ public class FlagsDataStore {
 
             //if default is missing, log an error and use some fake data for now so that the plugin can run
             if (messageData == null) {
-                Util.log("Missing message for " + messageID.name() + ".  Please contact the developer.");
+                MessagingUtil.logToConsole("Missing message for " + messageID.name() + ".  Please contact the developer.");
                 messageData = new CustomizableMessage(messageID, "Missing message!  ID: " + messageID.name() + ".  Please contact a server admin.", null);
             }
 
@@ -410,7 +410,7 @@ public class FlagsDataStore {
         try {
             config.save(FlagsDataStore.messagesFilePath);
         } catch (IOException exception) {
-            Util.log("Unable to write to the configuration file at \"" + FlagsDataStore.messagesFilePath + "\"");
+            MessagingUtil.logToConsole("Unable to write to the configuration file at \"" + FlagsDataStore.messagesFilePath + "\"");
         }
 
         defaults.clear();
@@ -430,9 +430,6 @@ public class FlagsDataStore {
             message = message.replace("{" + i + "}", param);
         }
         return message;
-    }
-
-    void close() {
     }
 
 }

@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public class FlagDef_ExitActionbar extends PlayerMovementFlagDefinition {
         }
         message = message.replace("%name%", player.getName());
 
-        player.sendActionBar(Util.getColString(message));
+        player.sendActionBar(MessagingUtil.getColString(message));
     }
 
     @Override

@@ -2,18 +2,15 @@ package me.ryanhamshire.GPFlags.commands;
 
 import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
 
 public class CommandBuySubclaim implements CommandExecutor {
 
@@ -21,7 +18,7 @@ public class CommandBuySubclaim implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         // Check that it was a player who ran the command
         if (!(sender instanceof Player)) {
-            Util.sendMessage(sender, TextMode.Err, Messages.PlayerOnlyCommand, command.toString());
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.PlayerOnlyCommand, command.toString());
             return true;
         }
         Player player = (Player) sender;
@@ -32,18 +29,18 @@ public class CommandBuySubclaim implements CommandExecutor {
         FlagDefinition def = GPFlags.getInstance().getFlagManager().getFlagDefinitionByName("BuySubclaim");
         Flag flag = def.getFlagInstanceAtLocation(player.getLocation(), null);
         if (flag == null || claim == null || claim.parent == null) {
-            Util.sendMessage(sender, TextMode.Err, Messages.CannotBuyTrustHere);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.CannotBuyTrustHere);
             return true;
         }
         // If the player already has build permission, error
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build
                 || player.getUniqueId().equals(claim.getOwnerID())) {
-            Util.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.AlreadyHaveTrust);
             return true;
         }
         // If the flag doesn't have a cost set up, error
         if (flag.parameters == null || flag.parameters.isEmpty()) {
-            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
             return true;
         }
         // If the cost isn't a number, error
@@ -51,12 +48,12 @@ public class CommandBuySubclaim implements CommandExecutor {
         try {
             cost = Double.parseDouble(flag.parameters);
         } catch (NumberFormatException e) {
-            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
             return true;
         }
         // Remove money from the player and give it to the claim owner
         if (!VaultHook.takeMoney(player, cost)) {
-            Util.sendMessage(sender, TextMode.Err, Messages.NotEnoughMoney);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.NotEnoughMoney);
             return true;
         }
         if (claim.getOwnerID() != null) {
@@ -72,11 +69,11 @@ public class CommandBuySubclaim implements CommandExecutor {
         FlagManager flagManager = GPFlags.getInstance().getFlagManager();
         SetFlagResult result = flagManager.setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
         if (!result.isSuccess()) {
-            Util.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
+            MessagingUtil.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
             return true;
         }
         flagManager.save();
-        Util.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
+        MessagingUtil.sendMessage(sender, TextMode.Info, Messages.BoughtTrust, flag.parameters);
         return true;
     }
 }

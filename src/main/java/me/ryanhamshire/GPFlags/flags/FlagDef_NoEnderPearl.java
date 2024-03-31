@@ -7,6 +7,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -37,9 +38,12 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
             if (!Util.shouldBypass(player, claim, flag)) {
                 event.setCancelled(true);
                 String owner = claim.getOwnerName();
+                String playerName = player.getName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
-                Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
+                msg = msg.replace("{p}", playerName).replace("{o}", owner);
+                msg = msg.replace("{1}", playerName).replace("{0}", owner);
+                MessagingUtil.sendMessage(player, TextMode.Warn + msg);
                 return;
             }
         }
@@ -52,7 +56,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
                 String owner = claim.getOwnerName();
 
                 String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
-                Util.sendClaimMessage(player, TextMode.Warn, msg.replace("{o}", owner).replace("{p}", player.getName()));
+                MessagingUtil.sendMessage(player, TextMode.Warn + msg.replace("{o}", owner).replace("{p}", player.getName()));
             }
         }
 

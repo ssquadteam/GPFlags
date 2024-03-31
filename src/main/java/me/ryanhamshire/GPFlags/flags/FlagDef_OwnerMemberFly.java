@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -46,7 +47,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                     }
                 }
                 p.setAllowFlight(false);
-                Util.sendClaimMessage(p, TextMode.Warn, Messages.ExitFlightDisabled);
+                MessagingUtil.sendMessage(p, TextMode.Warn, Messages.ExitFlightDisabled);
             }
         }
     }
@@ -78,12 +79,12 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
                 if (player.getLocation().getY() - block.getY() >= 4) {
                     GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
                 }
-                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             // Disable their flight
             if (player.getAllowFlight()) {
                 player.setAllowFlight(false);
-                Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+                MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
             }
             return;
         }
@@ -96,7 +97,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (Util.canAccess(claim, player)) {
             Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
                 if (!player.getAllowFlight()) {
-                    Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+                    MessagingUtil.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
                 }
                 player.setAllowFlight(true);
             }, 1);
@@ -107,11 +108,11 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (player.isFlying()) {
             GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
             player.setAllowFlight(false);
-            Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
         }
         if (player.getAllowFlight()) {
             player.setAllowFlight(false);
-            Util.sendClaimMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
         }
 
     }
@@ -137,7 +138,7 @@ public class FlagDef_OwnerMemberFly extends PlayerMovementFlagDefinition impleme
         if (!Util.canAccess(claim, player)) return;
 
         if (!player.getAllowFlight()) {
-            Util.sendClaimMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+            MessagingUtil.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
         }
         player.setAllowFlight(true);
         if (below == Material.AIR) {

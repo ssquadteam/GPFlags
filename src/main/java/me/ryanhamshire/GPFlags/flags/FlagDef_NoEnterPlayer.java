@@ -7,11 +7,11 @@ import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,7 +29,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         for (Player player : Util.getPlayersIn(claim)) {
             if (!isAllowed(player, claim, flag)) {
                 GriefPrevention.instance.ejectPlayer(player);
-                Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
+                MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
             }
         }
     }
@@ -41,7 +41,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
         if (isAllowed(player, claimTo, flag)) return true;
 
-        Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
+        MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         return false;
     }
 
@@ -56,7 +56,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (isAllowed(player, claim, flag)) return;
 
-        Util.sendClaimMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
+        MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoEnterPlayerMessage);
         GriefPrevention.instance.ejectPlayer(player);
     }
 

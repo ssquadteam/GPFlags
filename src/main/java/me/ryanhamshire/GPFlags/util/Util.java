@@ -6,7 +6,6 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -31,10 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.bukkit.ChatColor.COLOR_CHAR;
 
 @SuppressWarnings("WeakerAccess")
 public class Util {
@@ -81,15 +76,6 @@ public class Util {
     }
 
     /**
-     * Get the prefix stored in messages.yml
-     *
-     * @return prefix stored in messages.yml
-     */
-    private static String getPrefix() {
-        return getColString(GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix));
-    }
-
-    /**
      * Disable the flight mode of a player whom cant fly
      * <p>This is mainly used when a player deletes their claim.</p>
      *
@@ -106,11 +92,11 @@ public class Util {
             if (loc.getY() - block.getY() >= 4) {
                 GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
             }
-            Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
         }
         if (player.getAllowFlight() && !canFly(player)) {
             player.setAllowFlight(false);
-            Util.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
         }
     }
 
@@ -204,118 +190,6 @@ public class Util {
                 || type == EntityType.PHANTOM || type == EntityType.SLIME || type == EntityType.HOGLIN);
     }
 
-    /**
-     * Shortcut for adding color to a string
-     *
-     * @param string String including color codes
-     * @return Formatted string
-     */
-    public static String getColString(String string) {
-        if (isRunningMinecraft(1, 16)) {
-            string = string.replace(COLOR_CHAR, '&');
-
-            Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
-            Matcher matcher = hexPattern.matcher(string);
-            while (matcher.find()) {
-                final String before = string.substring(0, matcher.start());
-                final String after = string.substring(matcher.end());
-                ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-                string = before + hexColor + after;
-                matcher = hexPattern.matcher(string);
-            }
-
-            Pattern hexPattern2 = Pattern.compile("<#([A-Fa-f0-9]){6}>");
-            matcher = hexPattern2.matcher(string);
-            while (matcher.find()) {
-                ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
-                final String before = string.substring(0, matcher.start());
-                final String after = string.substring(matcher.end());
-                string = before + hexColor + after;
-                matcher = hexPattern2.matcher(string);
-            }
-        }
-        return ChatColor.translateAlternateColorCodes('&', string);
-    }
-
-    /**
-     * Send a {@link MessageSpecifier} to a player, or console if player is null
-     *
-     * @param player    Player to send message to, or null if to console
-     * @param color     Color of message
-     * @param specifier Message specifier to send
-     */
-    public static void sendMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, MessageSpecifier specifier) {
-        sendMessage(player, color, specifier.getMessageID(), specifier.getMessageParams());
-    }
-
-    /**
-     * Send a {@link Messages Message} to a player, or console if player is null
-     *
-     * @param player    Player to send message to, or null if to console
-     * @param color     Color of message
-     * @param messageID Message to send
-     * @param args      Message parameters
-     */
-    public static void sendMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, Messages messageID, String... args) {
-        String message = GPFlags.getInstance().getFlagsDataStore().getMessage(messageID, args);
-        sendMessage(player != null ? player : Bukkit.getConsoleSender(), color + message);
-    }
-
-    public static void sendMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, String message) {
-        sendMessage(player, color + message);
-    }
-
-    public static void sendMessage(@Nullable CommandSender receiver, String format, Object... objects) {
-        sendMessage(receiver, String.format(format, objects));
-    }
-
-    public static void sendMessage(@Nullable CommandSender receiver, String message) {
-        if (receiver != null) {
-            receiver.sendMessage(getColString(getPrefix() + message));
-        } else {
-            log(message);
-        }
-    }
-
-    public static void sendClaimMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, MessageSpecifier specifier) {
-        sendClaimMessage(player, color, specifier.getMessageID(), specifier.getMessageParams());
-    }
-
-    public static void sendClaimMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, Messages messageID, String... args) {
-        String message = GPFlags.getInstance().getFlagsDataStore().getMessage(messageID, args);
-        sendClaimMessage(player, color, message);
-    }
-
-    public static void sendClaimMessage(@Nullable CommandSender player, org.bukkit.ChatColor color, String message) {
-        sendClaimMessage(player, color + message);
-    }
-
-    public static void sendClaimMessage(@Nullable CommandSender receiver, String format, Object... args) {
-        sendClaimMessage(receiver, String.format(format, args));
-    }
-
-    public static void sendClaimMessage(@Nullable CommandSender receiver, String message) {
-        if (receiver != null) {
-            receiver.sendMessage(Util.getColString(message));
-        } else {
-            log(Util.getColString(message));
-        }
-    }
-
-    public static void log(String message) {
-        Bukkit.getConsoleSender().sendMessage(getColString(getPrefix() + message));
-    }
-
-    public static void log(String format, Object... objects) {
-        log(String.format(format, objects));
-    }
-
-    public static void logFlagCommands(String log) {
-        if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) {
-            Util.log(log);
-        }
-    }
-
     public static boolean canBuild(Claim claim, Player player) {
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         if (playerData.ignoreClaims) return true;
@@ -354,22 +228,6 @@ public class Util {
         } catch (NoSuchMethodError e) {
             return claim.allowAccess(player) == null;
         }
-    }
-
-    public static MessageSpecifier getFlagDefsMessage(Permissible player) {
-        StringBuilder flagDefsList = new StringBuilder();
-        Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
-        flagDefsList.append("&b");
-        for (FlagDefinition def : defs) {
-            if (player.hasPermission("gpflags.flag." + def.getName())) {
-                flagDefsList.append(def.getName()).append("&7,&b ");
-            }
-        }
-        String def = flagDefsList.toString();
-        if (def.length() > 5) {
-            def = def.substring(0, def.length() - 4);
-        }
-        return new MessageSpecifier(Messages.InvalidFlagDefName, def);
     }
 
     public static List<String> flagTab(CommandSender sender, String arg) {
@@ -542,6 +400,27 @@ public class Util {
             }
         }
         return players;
+    }
+
+    /**
+     * Gets a list of all flags the user has permission for
+     * @param player The player whose perms we want to check
+     * @return A message showing all the flags player can use
+     */
+    public static String getAvailableFlags(Permissible player) {
+        StringBuilder flagDefsList = new StringBuilder();
+        Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
+        flagDefsList.append("&b");
+        for (FlagDefinition def : defs) {
+            if (player.hasPermission("gpflags.flag." + def.getName())) {
+                flagDefsList.append(def.getName()).append("&7,&b ");
+            }
+        }
+        String def = flagDefsList.toString();
+        if (def.length() > 5) {
+            def = def.substring(0, def.length() - 4);
+        }
+        return def;
     }
 
 }

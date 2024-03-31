@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -63,7 +63,7 @@ public class FlagDef_BuyBuildTrust extends PlayerMovementFlagDefinition {
 
         if (claimTo == null) return;
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
-        Util.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
     }
 
     @EventHandler
@@ -73,6 +73,6 @@ public class FlagDef_BuyBuildTrust extends PlayerMovementFlagDefinition {
         if (flag == null) return;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
         if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Build) return;
-        Util.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.BuildTrustPrice, flag.parameters);
     }
 }

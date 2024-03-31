@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -66,7 +66,7 @@ public class FlagDef_BuySubclaim extends PlayerMovementFlagDefinition {
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (player.getUniqueId().equals(claimTo.getOwnerID())) return;
 
-        Util.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
     }
 
     @EventHandler
@@ -81,6 +81,6 @@ public class FlagDef_BuySubclaim extends PlayerMovementFlagDefinition {
         if (claim.getPermission(e.getPlayer().getUniqueId().toString()) == ClaimPermission.Build) return;
         if (player.getUniqueId().equals(claim.getOwnerID())) return;
 
-        Util.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.SubclaimPrice, flag.parameters);
     }
 }

@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -52,7 +52,7 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
         if (param == null || param.isEmpty()) {
             param = "claim " + claimFrom.getID();
         }
-        Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyExit, player.getName(), param);
+        MessagingUtil.sendMessage(owner, TextMode.Info, Messages.NotifyExit, player.getName(), param);
     }
 
 

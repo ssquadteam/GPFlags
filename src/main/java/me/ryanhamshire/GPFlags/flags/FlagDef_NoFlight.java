@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -86,7 +87,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
             return false;
         }
         
-        Util.sendClaimMessage(player, TextMode.Err, Messages.CantFlyHere);
+        MessagingUtil.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
         
         player.setFlying(false);
         teleportToFloor(player);

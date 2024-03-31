@@ -1,7 +1,7 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -65,7 +65,7 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         if (player.getUniqueId().equals(claimTo.getOwnerID())) return;
-        Util.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
     }
 
     @EventHandler
@@ -78,6 +78,6 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         if (player.getUniqueId().equals(claim.getOwnerID())) return;
-        Util.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
     }
 }
