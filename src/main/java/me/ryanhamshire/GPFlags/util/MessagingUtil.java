@@ -5,19 +5,18 @@ import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static org.bukkit.ChatColor.COLOR_CHAR;
 
 public class MessagingUtil {
 
@@ -27,7 +26,7 @@ public class MessagingUtil {
      * @return prefix stored in messages.yml
      */
     private static String getPrefix() {
-        return getColString(GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix));
+        return GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix);
     }
 
     /**
@@ -36,13 +35,11 @@ public class MessagingUtil {
      * @param string String including color codes
      * @return Formatted string
      */
-    public static String getColString(String string) {
+    private static String getColString(String string) {
         // If you don't have hex colors, you get the basics
         if (!Util.isRunningMinecraft(1, 16)) {
             return ChatColor.translateAlternateColorCodes('&', string);
         }
-
-        string = string.replace(COLOR_CHAR, '&');
 
         Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
         Matcher matcher = hexPattern.matcher(string);
@@ -53,19 +50,8 @@ public class MessagingUtil {
             string = before + hexColor + after;
             matcher = hexPattern.matcher(string);
         }
-
-        Pattern hexPattern2 = Pattern.compile("<#([A-Fa-f0-9]){6}>");
-        matcher = hexPattern2.matcher(string);
-        while (matcher.find()) {
-            ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
-            final String before = string.substring(0, matcher.start());
-            final String after = string.substring(matcher.end());
-            string = before + hexColor + after;
-            matcher = hexPattern2.matcher(string);
-        }
         string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
-
     }
 
     /**
@@ -90,31 +76,47 @@ public class MessagingUtil {
     }
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
-
         if (!(receiver instanceof OfflinePlayer)) {
+            message = PlaceholderApiHook.addPlaceholders(null, getPrefix() + message);
             message = getColString(message);
             logToConsole(message);
             return;
         }
-        OfflinePlayer player = (OfflinePlayer) receiver;
+        Player player = (Player) receiver;
         message = PlaceholderApiHook.addPlaceholders(player, message);
         message = getColString(message);
         try {
             MiniMessage mm = MiniMessage.miniMessage();
             Component component = mm.deserialize(message);
-            Audience.audience(receiver).sendMessage(component);
+            player.sendMessage(component);
         } catch (Exception exception) {
-            receiver.sendMessage(message);
+            player.sendMessage(message);
         }
     }
 
-    public static void logToConsole(String message) {
-        GPFlags.getInstance().getLogger().info(getColString(getPrefix() + message));
+    private static void logToConsole(String message) {
+        try {
+            MiniMessage mm = MiniMessage.miniMessage();
+            Component component = mm.deserialize(message);
+            Bukkit.getConsoleSender().sendMessage(component);
+        } catch (Exception exception) {
+            Bukkit.getLogger().info(message);
+        }
+    }
+
+    public static void sendActionbar(Player player, String message) {
+        try {
+            MiniMessage mm = MiniMessage.miniMessage();
+            Component component = mm.deserialize(message);
+            player.sendActionBar(component);
+        } catch (Exception exception) {
+            player.sendActionBar(message);
+        }
     }
 
     public static void logFlagCommands(String log) {
         if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) {
-            logToConsole(log);
+            logToConsole(getPrefix() + log);
         }
     }
 }

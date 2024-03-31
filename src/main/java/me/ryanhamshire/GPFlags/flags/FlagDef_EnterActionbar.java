@@ -35,7 +35,7 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
         if (playerData.lastClaim != null) {
             message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
         }
-        player.sendActionBar(MessagingUtil.getColString(message));
+        MessagingUtil.sendActionbar(player, message);
     }
 
     @EventHandler
@@ -49,9 +49,9 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
                 .replace("%name%", player.getName())
                 .replace("%uuid%", player.getUniqueId().toString());
         if (lastClaim != null) {
-                message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
+            message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
         }
-        player.sendActionBar(MessagingUtil.getColString(message));
+        MessagingUtil.sendActionbar(player, message);
     }
 
     @Override

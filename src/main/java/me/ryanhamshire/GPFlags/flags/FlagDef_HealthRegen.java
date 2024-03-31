@@ -36,8 +36,8 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
         if (flag.parameters != null && !flag.parameters.isEmpty()) {
             try {
                 healAmount = Integer.parseInt(flag.parameters);
-            } catch (NumberFormatException e) {
-                MessagingUtil.logToConsole("Problem with health regen amount @ " + player.getLocation().getBlock().getLocation().toString());
+            } catch (NumberFormatException ignored) {
+                // Simply don't heal if amount is invalid
             }
         }
 

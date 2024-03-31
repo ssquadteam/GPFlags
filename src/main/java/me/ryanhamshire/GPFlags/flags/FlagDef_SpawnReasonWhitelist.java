@@ -24,7 +24,6 @@ public class FlagDef_SpawnReasonWhitelist extends FlagDefinition implements List
             try {
                 reason = CreatureSpawnEvent.SpawnReason.valueOf(string.toUpperCase());
             } catch (IllegalArgumentException ex) {
-                MessagingUtil.logToConsole("Error with SpawnReasonWhitelist params at " + event.getLocation());
                 return;
             }
             if (reason != event.getSpawnReason()) {

@@ -85,7 +85,7 @@ public class GPFlags extends JavaPlugin {
         UpdateChecker.run(this, "gpflags");
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
-        MessagingUtil.logToConsole("Successfully loaded in " + String.format("%.2f", finish) + " seconds");
+        MessagingUtil.sendMessage(null, "Successfully loaded in " + String.format("%.2f", finish) + " seconds");
     }
 
     public void onDisable() {

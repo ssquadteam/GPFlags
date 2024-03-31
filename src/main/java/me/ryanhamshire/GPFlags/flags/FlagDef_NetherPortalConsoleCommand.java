@@ -37,7 +37,6 @@ public class FlagDef_NetherPortalConsoleCommand extends FlagDefinition {
         event.setCancelled(true);
         String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
         for (String commandLine : commandLines) {
-            MessagingUtil.logToConsole("Nether portal command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
         }
     }

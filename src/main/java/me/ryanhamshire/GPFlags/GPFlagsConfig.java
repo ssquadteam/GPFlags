@@ -101,9 +101,9 @@ public class GPFlagsConfig {
 
         try {
             outConfig.save(FlagsDataStore.configFilePath);
-            MessagingUtil.logToConsole("Finished loading configuration.");
+            MessagingUtil.sendMessage(null, "Finished loading configuration.");
         } catch (IOException exception) {
-            MessagingUtil.logToConsole("Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
+            MessagingUtil.sendMessage(null, "Unable to write to the configuration file at \"" + FlagsDataStore.configFilePath + "\"");
         }
 
         //register flag definitions
@@ -206,11 +206,7 @@ public class GPFlagsConfig {
             try {
                 Class.forName("org.bukkit.event.raid.RaidTriggerEvent");
                 this.flagManager.registerFlagDefinition(new FlagDef_RaidMemberOnly(this.flagManager, plugin));
-            } catch (ClassNotFoundException e) {
-                if (Util.isRunningMinecraft(1, 14)) {
-                    MessagingUtil.logToConsole("&cRaidEvent classes not found:");
-                    MessagingUtil.logToConsole("&7  - Update to latest Minecraft version for raid flag to work");
-                }
+            } catch (ClassNotFoundException ignored) {
             }
 
             try {
@@ -266,15 +262,14 @@ public class GPFlagsConfig {
                 //noinspection UnstableApiUsage
                 Files.copy(flagsFile, errorFile);
                 for (MessageSpecifier error : errors) {
-                    MessagingUtil.logToConsole("Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
+                    MessagingUtil.sendMessage(null, "Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
                 }
-                MessagingUtil.logToConsole("Problems encountered reading the flags data file! " +
+                MessagingUtil.sendMessage(null, "Problems encountered reading the flags data file! " +
                         "Please share this log and your 'flagsError.yml' file with the developer.");
             }
         } catch (Exception e) {
-            MessagingUtil.logToConsole("Unable to initialize the file system data store.  Details:");
-            MessagingUtil.logToConsole(e.getMessage());
-            e.printStackTrace();
+            MessagingUtil.sendMessage(null, "Unable to initialize the file system data store.  Details:");
+            MessagingUtil.sendMessage(null, e.getMessage());
         }
 
         //drop any flags which no longer correspond to existing land claims (maybe they were deleted)
@@ -287,7 +282,7 @@ public class GPFlagsConfig {
             }
         }
         this.flagManager.removeExceptClaimIDs(validIDs);
-        MessagingUtil.logToConsole("Finished loading data.");
+        MessagingUtil.sendMessage(null, "Finished loading data.");
     }
     
 }

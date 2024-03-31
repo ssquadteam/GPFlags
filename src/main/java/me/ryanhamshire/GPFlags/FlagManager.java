@@ -311,7 +311,6 @@ public class FlagManager {
         try {
             this.save(FlagsDataStore.flagsFilePath);
         } catch (Exception e) {
-            MessagingUtil.logToConsole("Failed to save flag data.  Details:");
             e.printStackTrace();
         }
     }

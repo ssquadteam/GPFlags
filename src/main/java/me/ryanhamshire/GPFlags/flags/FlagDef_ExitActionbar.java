@@ -50,8 +50,7 @@ public class FlagDef_ExitActionbar extends PlayerMovementFlagDefinition {
             message = message.replace("%owner%", claimFrom.getOwnerName());
         }
         message = message.replace("%name%", player.getName());
-
-        player.sendActionBar(MessagingUtil.getColString(message));
+        MessagingUtil.sendActionbar(player, message);
     }
 
     @Override
