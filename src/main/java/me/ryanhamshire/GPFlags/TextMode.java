@@ -18,7 +18,7 @@
 
 package me.ryanhamshire.GPFlags;
 
-import org.bukkit.ChatColor;
+;
 
 /**
  * Text color modifiers

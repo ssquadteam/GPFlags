@@ -12,7 +12,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -33,13 +33,13 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
         if (args.length < 2) return false;
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            MessagingUtil.sendMessage(commandSender, "&c"+args[0]+" &7is not online");
+            MessagingUtil.sendMessage(commandSender, "<red>"+args[0]+" <grey>is not online");
             return false;
         }
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
         if (claim == null || !Util.canBuild(claim, player)) {
-            MessagingUtil.sendMessage(commandSender, "&cThis player is not standing in a claim they own");
+            MessagingUtil.sendMessage(commandSender, "<red>This player is not standing in a claim they own");
             return false;
         }
 
@@ -47,7 +47,7 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
         GPFlags gpflags = GPFlags.getInstance();
         FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            MessagingUtil.sendMessage(commandSender, "&c" + flagName + "&7 is not a valid flag");
+            MessagingUtil.sendMessage(commandSender, "<red>" + flagName + "<grey> is not a valid flag");
             return false;
         }
         if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
@@ -71,7 +71,7 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
         MessagingUtil.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         if (result.isSuccess()) {
             gpflags.getFlagManager().save();
-            MessagingUtil.sendMessage(commandSender, "&7Flag " + def.getName() + " &7successfully set in " + player.getName() + "&7's claim." );
+            MessagingUtil.sendMessage(commandSender, "<grey>Flag " + def.getName() + " <grey>successfully set in " + player.getName() + "<grey>'s claim." );
             return true;
         }
 

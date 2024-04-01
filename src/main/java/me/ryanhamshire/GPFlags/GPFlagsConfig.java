@@ -28,7 +28,6 @@ public class GPFlagsConfig {
     private final FlagManager flagManager;
 
     public static boolean LOG_ENTER_EXIT_COMMANDS = true;
-    public static boolean DEBUG = false;
 
     public GPFlagsConfig(GPFlags plugin) {
         this.plugin = plugin;
@@ -45,9 +44,6 @@ public class GPFlagsConfig {
 
         LOG_ENTER_EXIT_COMMANDS = inConfig.getBoolean("Settings.Log Enter/Exit Messages To Console", true);
         outConfig.set("Settings.Log Enter/Exit Messages To Console", LOG_ENTER_EXIT_COMMANDS);
-
-        DEBUG = inConfig.getBoolean("Settings.Debug", false);
-        outConfig.set("Settings.Debug", DEBUG);
 
         List<World> worlds = plugin.getServer().getWorlds();
         ArrayList<String> worldSettingsKeys = new ArrayList<>();
@@ -259,7 +255,6 @@ public class GPFlagsConfig {
             List<MessageSpecifier> errors = this.flagManager.load(flagsFile);
             if (errors.size() > 0) {
                 File errorFile = new File(FlagsDataStore.flagsErrorFilePath);
-                //noinspection UnstableApiUsage
                 Files.copy(flagsFile, errorFile);
                 for (MessageSpecifier error : errors) {
                     MessagingUtil.sendMessage(null, "Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
@@ -284,5 +279,4 @@ public class GPFlagsConfig {
         this.flagManager.removeExceptClaimIDs(validIDs);
         MessagingUtil.sendMessage(null, "Finished loading data.");
     }
-    
 }

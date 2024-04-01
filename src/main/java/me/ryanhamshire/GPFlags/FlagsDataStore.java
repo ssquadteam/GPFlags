@@ -1,6 +1,8 @@
 package me.ryanhamshire.GPFlags;
 
-import me.ryanhamshire.GPFlags.util.MessagingUtil;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -14,6 +16,7 @@ import java.util.HashMap;
 //singleton class which manages all GriefPrevention data (except for config options)
 public class FlagsDataStore {
 
+    public static int CONFIG_VERSION = 0;
     private final static String dataLayerFolderPath = "plugins" + File.separator + "GPFlags";
     final static String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
     final static String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
@@ -34,9 +37,9 @@ public class FlagsDataStore {
         HashMap<String, CustomizableMessage> defaults = new HashMap<>();
 
         //initialize defaults
-        this.addDefault(defaults, Messages.NoCommandPermission, "You do not have permission to use command: &7/gpflags &b{0}", "0:subcommand");
-        this.addDefault(defaults, Messages.UnknownCommand, "Unknown Command: &7/gpflags &c{0}", "0:subcommand");
-        this.addDefault(defaults, Messages.PlayerOnlyCommand, "Player Only Command: &7/gpflags &c{0}", "0:subcommand");
+        this.addDefault(defaults, Messages.NoCommandPermission, "You do not have permission to use command: <grey>/gpflags <aqua>{0}", "0:subcommand");
+        this.addDefault(defaults, Messages.UnknownCommand, "Unknown Command: <grey>/gpflags <red>{0}", "0:subcommand");
+        this.addDefault(defaults, Messages.PlayerOnlyCommand, "Player Only Command: <grey>/gpflags <red>{0}", "0:subcommand");
         this.addDefault(defaults, Messages.ReloadComplete, "Reloaded config settings, messages, and flags from disk.  If you've updated your GPFlags jar file, you MUST restart your server to activate the update.", null);
         this.addDefault(defaults, Messages.NoFlagsInThisClaim, "This claim doesn't have any flags.", null);
         this.addDefault(defaults, Messages.ThatFlagNotSet, "That flag isn't set here.", null);
@@ -48,7 +51,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.FlagsDefault, "All Claims: {0}", "0:list of active default flags in all land claims");
         this.addDefault(defaults, Messages.FlagsWorld, "This World: {0}", "0:list of active flags in this world");
         this.addDefault(defaults, Messages.FlagsServer, "Entire Server: {0}", "0:list of flags which are active everywhere on the server");
-        this.addDefault(defaults, Messages.NoFlagPermission, "You don't have permission to use flag: &b{0}", "0:flag name");
+        this.addDefault(defaults, Messages.NoFlagPermission, "You don't have permission to use flag: <aqua>{0}", "0:flag name");
         this.addDefault(defaults, Messages.DefaultFlagSet, "Set flag for all land claims.  To make exceptions, move to specific land claims and use '/UnSetClaimFlag'.  Undo with '/UnSetDefaultClaimFlag'.", null);
         this.addDefault(defaults, Messages.DefaultFlagUnSet, "That flag is no longer set by default in any land claims.", null);
         this.addDefault(defaults, Messages.ServerFlagSet, "Set flag for entire server (all worlds).", null);
@@ -82,16 +85,16 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.CommandRequired, "Please specify a command line to execute.", null);
         this.addDefault(defaults, Messages.ConsoleCommandRequired, "Please specify a command line(s) to execute.  You may find the %owner%, %name% and %uuid% placeholders useful.  Separate multiple command lines with a semicolon (;).", null);
         this.addDefault(defaults, Messages.PlayerCommandRequired, "Please specify a player command line(s) to execute.  You may find the %owner%, %name% and %uuid% placeholders useful.  Separate multiple command lines with a semicolon (;).\"", null);
-        this.addDefault(defaults, Messages.AddedEnterMessage, "Players entering this land claim will now receive this message:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedEnterMessage, "Players entering this land claim will now receive this message:<aqua> {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedEnterMessage, "Players entering this land claim will not receive any message.", null);
 
-        this.addDefault(defaults, Messages.AddedEnterActionbar, "Players entering this land claim will now receive this actionbar:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedEnterActionbar, "Players entering this land claim will now receive this actionbar:<aqua> {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedEnterActionbar, "Players entering this land claim will not receive any actionbar.", null);
         this.addDefault(defaults, Messages.ActionbarRequired, "Please specify an actionbar to send.", null);
-        this.addDefault(defaults, Messages.AddedExitActionbar, "Players exiting this land claim will now receive this actionbar:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedExitActionbar, "Players exiting this land claim will now receive this actionbar:<aqua> {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedExitActionbar, "Players exiting this land claim will not receive any actionbar.", null);
 
-        this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message:&b {0}", "0: message to send");
+        this.addDefault(defaults, Messages.AddedExitMessage, "Players exiting this land claim will now receive this message:<aqua> {0}", "0: message to send");
         this.addDefault(defaults, Messages.RemovedExitMessage, "Players exiting this land claim will not receive any message.", null);
         this.addDefault(defaults, Messages.EnterExitPrefix, "", "This prefix will be added to all enter/exit message flags");
 
@@ -379,10 +382,13 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.DisableBuySubclaim, "This subclaim can no longer be purchased.", null);
         this.addDefault(defaults, Messages.SubclaimPrice, "You can buy this subclaim for {0}. If you wish to do so, use /buysubclaim.", "0: cost");
 
-        this.addDefault(defaults, Messages.Prefix, "&7[&bGP&3Flags&7] &r", null);
+        this.addDefault(defaults, Messages.Prefix, "<grey>[<aqua>GP<dark_aqua>Flags<grey>] <reset>", null);
 
         //load the config file
         FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
+        // read the config version for conversions
+        CONFIG_VERSION = config.getInt("Version (Don't change this)", 0);
+        config.set("Version (Don't change this)", CONFIG_VERSION);
 
         //for each message ID
         for (int i = 0; i < messageIDs.length; i++) {
@@ -397,6 +403,10 @@ public class FlagsDataStore {
 
             //read the message from the file, use default if necessary
             this.messages[messageID.ordinal()] = config.getString("Messages." + messageID.name() + ".Text", messageData.text);
+            if (CONFIG_VERSION == 0) {
+                Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(this.messages[messageID.ordinal()]);
+                this.messages[messageID.ordinal()] = MiniMessage.miniMessage().serialize(component);
+            }
             config.set("Messages." + messageID.name() + ".Text", this.messages[messageID.ordinal()]);
 
             if (messageData.notes != null) {
@@ -407,8 +417,11 @@ public class FlagsDataStore {
 
         //save any changes
         try {
+            if (CONFIG_VERSION == 0) {
+                config.set("Version (Don't change this)", 1);
+            }
             config.save(FlagsDataStore.messagesFilePath);
-        } catch (IOException exception) {
+        } catch (IOException ignored) {
         }
 
         defaults.clear();

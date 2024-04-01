@@ -44,7 +44,7 @@ public class CommandListClaimFlags implements TabExecutor {
             flags = gpflags.getFlagManager().getFlags(claim.getID().toString());
             for (Flag flag : flags) {
                 flagsFound = true;
-                builder1.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.getFriendlyParameters() + "&7)" : "").append(" ");
+                builder1.append(flag.getSet() ? "<green>" : "<red>").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "<grey>(" + flag.getFriendlyParameters() + "<grey>)" : "").append(" ");
             }
 
             // Claim if previous was subclaim, else none
@@ -52,7 +52,7 @@ public class CommandListClaimFlags implements TabExecutor {
                 flags = gpflags.getFlagManager().getFlags(claim.parent.getID().toString());
                 for (Flag flag : flags) {
                     flagsFound = true;
-                    builder2.append(flag.getSet() ? "&a" : "&c").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "&7(" + flag.getFriendlyParameters() + "&7)" : "").append(" ");
+                    builder2.append(flag.getSet() ? "<green>" : "<red>").append(flag.getFlagDefinition().getName()).append(flag.parameters.length() > 0 ? "<grey>(" + flag.getFriendlyParameters() + "<grey>)" : "").append(" ");
                 }
             }
 
@@ -60,7 +60,7 @@ public class CommandListClaimFlags implements TabExecutor {
             flags = gpflags.getFlagManager().getFlags(FlagManager.DEFAULT_FLAG_ID);
             for (Flag flag2 : flags) {
                 flagsFound = true;
-                builder3.append(flag2.getSet() ? "&a" : "&c").append(flag2.getFlagDefinition().getName()).append(flag2.parameters.length() > 0 ? "&7(" + flag2.getFriendlyParameters() + "&7)" : "").append(" ");
+                builder3.append(flag2.getSet() ? "<green>" : "<red>").append(flag2.getFlagDefinition().getName()).append(flag2.parameters.length() > 0 ? "<grey>(" + flag2.getFriendlyParameters() + "<grey>)" : "").append(" ");
             }
         }
 
@@ -69,7 +69,7 @@ public class CommandListClaimFlags implements TabExecutor {
         flags = gpflags.getFlagManager().getFlags(player.getWorld().getName());
         for (Flag flag3 : flags) {
             flagsFound = true;
-            builder4.append(flag3.getSet() ? "&a" : "&c").append(flag3.getFlagDefinition().getName()).append(flag3.parameters.length() > 0 ? "&7(" + flag3.getFriendlyParameters() + "&7)" : "").append(" ");
+            builder4.append(flag3.getSet() ? "<green>" : "<red>").append(flag3.getFlagDefinition().getName()).append(flag3.parameters.length() > 0 ? "<grey>(" + flag3.getFriendlyParameters() + "<grey>)" : "").append(" ");
         }
 
         // Server
@@ -77,7 +77,7 @@ public class CommandListClaimFlags implements TabExecutor {
         flags = gpflags.getFlagManager().getFlags("everywhere");
         for (Flag flag4 : flags) {
             flagsFound = true;
-            builder5.append(flag4.getSet() ? "&a" : "&c").append(flag4.getFlagDefinition().getName()).append(flag4.parameters.length() > 0 ? "&7(" + flag4.getFriendlyParameters() + "&7)" : "").append(" ");
+            builder5.append(flag4.getSet() ? "<green>" : "<red>").append(flag4.getFlagDefinition().getName()).append(flag4.parameters.length() > 0 ? "<grey>(" + flag4.getFriendlyParameters() + "<grey>)" : "").append(" ");
         }
 
         if (builder1.length() > 0)

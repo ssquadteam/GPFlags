@@ -10,7 +10,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -125,15 +125,15 @@ public abstract class FlagDefinition implements Listener {
         /**
          * Flag can be set in a claim
          */
-        CLAIM("&aCLAIM"),
+        CLAIM("<green>CLAIM"),
         /**
          * Flag can be set for an entire world
          */
-        WORLD("&6WORLD"),
+        WORLD("<gold>WORLD"),
         /**
          * Flag can bet set for the entire server
          */
-        SERVER("&3SERVER");
+        SERVER("<dark_aqua>SERVER");
 
         String name;
 
@@ -143,7 +143,7 @@ public abstract class FlagDefinition implements Listener {
 
         @Override
         public String toString() {
-            return ChatColor.translateAlternateColorCodes('&', name + "&7");
+            return name + "<grey>";
         }
     }
 

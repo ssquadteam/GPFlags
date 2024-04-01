@@ -8,7 +8,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -30,13 +30,13 @@ public class CommandUnsetClaimFlagPlayer implements TabExecutor {
         if (args.length < 2) return false;
         Player player = Bukkit.getPlayer(args[0]);
         if (player == null) {
-            MessagingUtil.sendMessage(sender, "&c" + args[0] + " &7is not online");
+            MessagingUtil.sendMessage(sender, "<red>" + args[0] + " <grey>is not online");
             return false;
         }
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
         if (claim == null || !Util.canBuild(claim, player)) {
-            MessagingUtil.sendMessage(sender, "&cThis player is not standing in a claim they own");
+            MessagingUtil.sendMessage(sender, "<red>This player is not standing in a claim they own");
             return false;
         }
 
@@ -44,7 +44,7 @@ public class CommandUnsetClaimFlagPlayer implements TabExecutor {
         String flagName = args[1];
         FlagDefinition def = gpflags.getFlagManager().getFlagDefinitionByName(flagName);
         if (def == null) {
-            MessagingUtil.sendMessage(sender, "&c " + flagName + "&7 is not a valid flag");
+            MessagingUtil.sendMessage(sender, "<red> " + flagName + "<grey> is not a valid flag");
             return false;
         }
         if (!def.getFlagType().contains(FlagDefinition.FlagType.CLAIM)) {
@@ -58,10 +58,10 @@ public class CommandUnsetClaimFlagPlayer implements TabExecutor {
         String message;
         if (result.isSuccess()) {
             gpflags.getFlagManager().save();
-            message = "&7Flag &b" + def.getName() + " &7successfully unset in &b" + player.getName() + "&7's claim.";
+            message = "<grey>Flag <aqua>" + def.getName() + " <grey>successfully unset in <aqua>" + player.getName() + "<grey>'s claim.";
 
         } else {
-            message = "&cFlag &b " + def.getName() + " &cfailed to unset in &b " + player.getName() + "&c's claim.";
+            message = "<red>Flag <aqua> " + def.getName() + " <red>failed to unset in <aqua> " + player.getName() + "<red>'s claim.";
         }
         MessagingUtil.sendMessage(sender, message);
 

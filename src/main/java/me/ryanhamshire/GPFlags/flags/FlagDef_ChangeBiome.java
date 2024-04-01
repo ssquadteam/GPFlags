@@ -5,11 +5,12 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -96,14 +97,13 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         try {
             b = Biome.valueOf(biome);
         } catch (Exception e) {
-            sender.sendMessage(ChatColor.RED + "Invalid biome");
+            sender.sendMessage("<red>Invalid biome");
             return false;
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
         assert world != null;
         if (!sender.hasPermission("gpflags.flag.changebiome." + biome)) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&cYou do not have permissions for the biome &b" + biome + " &c."));
+            MessagingUtil.sendMessage(sender,"<red>You do not have permissions for the biome <aqua>" + biome + " <red>." );
             return false;
         }
         changeBiome(claim, b);

@@ -410,10 +410,10 @@ public class Util {
     public static String getAvailableFlags(Permissible player) {
         StringBuilder flagDefsList = new StringBuilder();
         Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
-        flagDefsList.append("&b");
+        flagDefsList.append("<aqua>");
         for (FlagDefinition def : defs) {
             if (player.hasPermission("gpflags.flag." + def.getName())) {
-                flagDefsList.append(def.getName()).append("&7,&b ");
+                flagDefsList.append(def.getName()).append("<grey>,<aqua> ");
             }
         }
         String def = flagDefsList.toString();

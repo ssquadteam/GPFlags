@@ -4,19 +4,13 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class MessagingUtil {
 
@@ -27,32 +21,6 @@ public class MessagingUtil {
      */
     private static String getPrefix() {
         return GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix);
-    }
-
-    /**
-     * Shortcut for adding color to a string
-     *
-     * @param string String including color codes
-     * @return Formatted string
-     */
-    private static String getColString(String string) {
-        // If you don't have hex colors, you get the basics
-        if (!Util.isRunningMinecraft(1, 16)) {
-            return ChatColor.translateAlternateColorCodes('&', string);
-        }
-
-        /*
-        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
-        Matcher matcher = hexPattern.matcher(string);
-        while (matcher.find()) {
-            final String before = string.substring(0, matcher.start());
-            final String after = string.substring(matcher.end());
-            ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-            string = before + hexColor + after;
-            matcher = hexPattern.matcher(string);
-        } */
-        string = ChatColor.translateAlternateColorCodes('&', string);
-        return string;
     }
 
     /**
@@ -79,13 +47,11 @@ public class MessagingUtil {
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
         if (!(receiver instanceof OfflinePlayer)) {
             message = PlaceholderApiHook.addPlaceholders(null, getPrefix() + message);
-            message = getColString(message);
             logToConsole(message);
             return;
         }
         Player player = (Player) receiver;
         message = PlaceholderApiHook.addPlaceholders(player, message);
-        message = getColString(message);
         try {
             Component component = MiniMessage.miniMessage().deserialize(message);
             player.sendMessage(component);
