@@ -1,5 +1,7 @@
 package me.ryanhamshire.GPFlags.hooks;
 
+import me.ryanhamshire.GPFlags.GPFlags;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -11,17 +13,18 @@ public class MinimessageHook {
 
     public static void sendPlayerMessage(@NotNull Player player, String message) {
         Component component = MiniMessage.miniMessage().deserialize(message);
-        player.sendMessage(component);
+        Audience.audience(player).sendMessage(component);
     }
 
     public static void sendConsoleMessage(String message) {
         Component component = MiniMessage.miniMessage().deserialize(message);
-        Bukkit.getConsoleSender().sendMessage(component);
+        Audience audience = Bukkit.getConsoleSender();
+        audience.sendMessage(component);
     }
 
     public static void sendActionbar(Player player, String message) {
         Component component = MiniMessage.miniMessage().deserialize(message);
-        player.sendActionBar(component);
+        Audience.audience(player).sendMessage(component);
     }
 
     public static String reserialize(String ampersandMessage) {

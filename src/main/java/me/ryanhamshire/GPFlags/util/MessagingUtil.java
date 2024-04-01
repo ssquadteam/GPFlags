@@ -5,7 +5,6 @@ import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.hooks.MinimessageHook;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
-import org.bukkit.Bukkit;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,11 +64,11 @@ public class MessagingUtil {
     }
 
     private static void logToConsole(String message) {
-        try {
+//        try {
             MinimessageHook.sendConsoleMessage(message);
-        } catch (Throwable e) {
-            Bukkit.getLogger().info(addLegacyColoring(message));
-        }
+//        } catch (Throwable e) {
+//            Bukkit.getLogger().info(addLegacyColoring(message));
+//        }
     }
 
     public static void sendActionbar(Player player, String message) {
