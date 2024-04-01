@@ -18,15 +18,6 @@ import static org.bukkit.ChatColor.COLOR_CHAR;
 public class MessagingUtil {
 
     /**
-     * Get the prefix stored in messages.yml
-     *
-     * @return prefix stored in messages.yml
-     */
-    private static String getPrefix() {
-        return GPFlags.getInstance().getFlagsDataStore().getMessage(Messages.Prefix);
-    }
-
-    /**
      * Fills in message params, adds formatting, and sends it to the receiver.
      */
     public static void sendMessage(@Nullable CommandSender receiver, Messages messageID, String... args) {
@@ -49,7 +40,7 @@ public class MessagingUtil {
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
         if (!(receiver instanceof Player)) {
-            logToConsole(getPrefix() + message);
+            logToConsole(message);
             return;
         }
         Player player = (Player) receiver;
@@ -64,11 +55,7 @@ public class MessagingUtil {
     }
 
     private static void logToConsole(String message) {
-//        try {
-            MinimessageHook.sendConsoleMessage(message);
-//        } catch (Throwable e) {
-//            Bukkit.getLogger().info(addLegacyColoring(message));
-//        }
+        MinimessageHook.sendConsoleMessage(message);
     }
 
     public static void sendActionbar(Player player, String message) {
@@ -81,7 +68,7 @@ public class MessagingUtil {
 
     public static void logFlagCommands(String log) {
         if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) {
-            logToConsole(getPrefix() + log);
+            logToConsole(log);
         }
     }
 

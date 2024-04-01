@@ -5,7 +5,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,9 +16,8 @@ public class MinimessageHook {
     }
 
     public static void sendConsoleMessage(String message) {
-        Component component = MiniMessage.miniMessage().deserialize(message);
-        Audience audience = Bukkit.getConsoleSender();
-        audience.sendMessage(component);
+        String stripped = MiniMessage.miniMessage().stripTags(message);
+        GPFlags.getInstance().getLogger().info(stripped);
     }
 
     public static void sendActionbar(Player player, String message) {
