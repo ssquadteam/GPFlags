@@ -2,7 +2,6 @@ package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
-import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;

@@ -3,11 +3,9 @@ package me.ryanhamshire.GPFlags.util;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
+import me.ryanhamshire.GPFlags.hooks.MinimessageHook;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -45,35 +43,33 @@ public class MessagingUtil {
     }
 
     public static void sendMessage(@Nullable CommandSender receiver, String message) {
-        if (!(receiver instanceof OfflinePlayer)) {
-            message = PlaceholderApiHook.addPlaceholders(null, getPrefix() + message);
-            logToConsole(message);
+        if (!(receiver instanceof Player)) {
+            logToConsole(getPrefix() + message);
             return;
         }
         Player player = (Player) receiver;
-        message = PlaceholderApiHook.addPlaceholders(player, message);
         try {
-            Component component = MiniMessage.miniMessage().deserialize(message);
-            player.sendMessage(component);
-        } catch (Error e) {
+            message = PlaceholderApiHook.addPlaceholders(player, message);
+        } catch (Throwable ignored) {}
+        try {
+            MinimessageHook.sendPlayerMessage(player, message);
+        } catch (Throwable e) {
             player.sendMessage(message);
         }
     }
 
     private static void logToConsole(String message) {
         try {
-            Component component = MiniMessage.miniMessage().deserialize(message);
-            Bukkit.getConsoleSender().sendMessage(component);
-        } catch (Error e) {
+            MinimessageHook.sendConsoleMessage(message);
+        } catch (Throwable e) {
             Bukkit.getLogger().info(message);
         }
     }
 
     public static void sendActionbar(Player player, String message) {
         try {
-            Component component = MiniMessage.miniMessage().deserialize(message);
-            player.sendActionBar(component);
-        } catch (Error e) {
+            MinimessageHook.sendActionbar(player, message);
+        } catch (Throwable e) {
             player.sendActionBar(message);
         }
     }

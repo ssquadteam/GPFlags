@@ -1,8 +1,6 @@
 package me.ryanhamshire.GPFlags;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import me.ryanhamshire.GPFlags.hooks.MinimessageHook;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -404,8 +402,10 @@ public class FlagsDataStore {
             //read the message from the file, use default if necessary
             this.messages[messageID.ordinal()] = config.getString("Messages." + messageID.name() + ".Text", messageData.text);
             if (CONFIG_VERSION == 0) {
-                Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(this.messages[messageID.ordinal()]);
-                this.messages[messageID.ordinal()] = MiniMessage.miniMessage().serialize(component);
+                try {
+                    this.messages[messageID.ordinal()] = MinimessageHook.reserialize(this.messages[messageID.ordinal()]);
+                } catch (Throwable ignored) {
+                }
             }
             config.set("Messages." + messageID.name() + ".Text", this.messages[messageID.ordinal()]);
 
@@ -417,12 +417,15 @@ public class FlagsDataStore {
 
         //save any changes
         try {
+            // If config updating was success, update version to 1
             if (CONFIG_VERSION == 0) {
-                config.set("Version (Don't change this)", 1);
+                try {
+                    Class.forName("net.kyori.adventure.text.minimessage.MiniMessage");
+                    config.set("Version (Don't change this)", 1);
+                } catch (Throwable ignored) {}
             }
             config.save(FlagsDataStore.messagesFilePath);
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
 
         defaults.clear();
         System.gc();
