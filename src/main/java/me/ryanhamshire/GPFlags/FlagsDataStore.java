@@ -14,7 +14,7 @@ import java.util.HashMap;
 //singleton class which manages all GriefPrevention data (except for config options)
 public class FlagsDataStore {
 
-    public static int CONFIG_VERSION = 0;
+    public static int CONFIG_VERSION = 1;
     private final static String dataLayerFolderPath = "plugins" + File.separator + "GPFlags";
     final static String configFilePath = dataLayerFolderPath + File.separator + "config.yml";
     final static String messagesFilePath = dataLayerFolderPath + File.separator + "messages.yml";
@@ -383,15 +383,18 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.Prefix, "<grey>[<aqua>GP<dark_aqua>Flags<grey>] <reset>", null);
 
         //load the config file
-        FileConfiguration config = YamlConfiguration.loadConfiguration(new File(messagesFilePath));
+        File file = new File(messagesFilePath);
+        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
         // read the config version for conversions
-        CONFIG_VERSION = config.getInt("Version (Don't change this)", 0);
+        if (file.exists()) {
+            CONFIG_VERSION = config.getInt("Version (Don't change this)", 0);
+        }
         config.set("Version (Don't change this)", CONFIG_VERSION);
 
         //for each message ID
-        for (int i = 0; i < messageIDs.length; i++) {
+        for (Messages messageID : messageIDs) {
             //get default for this message
-            Messages messageID = messageIDs[i];
             CustomizableMessage messageData = defaults.get(messageID.name());
 
             //if default is missing, log an error and use some fake data for now so that the plugin can run
