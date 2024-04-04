@@ -2,6 +2,7 @@ package me.ryanhamshire.GPFlags;
 
 import com.google.common.io.Files;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
@@ -293,6 +294,9 @@ public class FlagManager {
             for (String flagName : flagNames) {
                 String paramsDefault = yaml.getString(claimID + "." + flagName);
                 String params = yaml.getString(claimID + "." + flagName + ".params", paramsDefault);
+                if (FlagsDataStore.PRIOR_CONFIG_VERSION == 0) {
+                    params = MessagingUtil.reserialize(params);
+                }
                 boolean set = yaml.getBoolean(claimID + "." + flagName + ".value", true);
                 FlagDefinition def = this.getFlagDefinitionByName(flagName);
                 if (def != null) {
@@ -303,6 +307,7 @@ public class FlagManager {
                 }
             }
         }
+        if (errors.size() == 0 && FlagsDataStore.PRIOR_CONFIG_VERSION == 0) save();
         return errors;
     }
 

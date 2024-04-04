@@ -91,7 +91,7 @@ public class GPFlagsConfig {
             settings.clearFlagsOnTransferClaim = inConfig.getBoolean("World Flags." + worldName + ".Reset Flags On Transfer Claim", false);
             outConfig.set("World Flags." + worldName + ".Clear Flags On Transfer Claim", settings.clearFlagsOnTransferClaim);
 
-            outConfig.options().header("GriefPrevention Flags\n" + "Plugin Version: " + plugin.getDescription().getVersion() +
+            outConfig.options().header("GP Flags\n" + "Plugin Version: " + plugin.getDescription().getVersion() +
                     "\nServer Version: " + plugin.getServer().getVersion() + "\n\n");
         }
 
@@ -259,11 +259,11 @@ public class GPFlagsConfig {
                 for (MessageSpecifier error : errors) {
                     MessagingUtil.sendMessage(null, "Load Error: " + plugin.getFlagsDataStore().getMessage(error.messageID, error.messageParams));
                 }
-                MessagingUtil.sendMessage(null, "Problems encountered reading the flags data file! " +
-                        "Please share this log and your 'flagsError.yml' file with the developer.");
+                MessagingUtil.sendMessage(null, "<red>Problems encountered reading the flags data file! " +
+                        "Please share this log and your 'flagsError.yml' and 'flags.yml' files with the developer.");
             }
         } catch (Exception e) {
-            MessagingUtil.sendMessage(null, "Unable to initialize the file system data store.  Details:");
+            MessagingUtil.sendMessage(null, "<red>Unable to initialize the file system data store.  Details:");
             MessagingUtil.sendMessage(null, e.getMessage());
         }
 

@@ -8,7 +8,6 @@ import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -20,8 +19,11 @@ import static org.bukkit.ChatColor.COLOR_CHAR;
 
 public class MessagingUtil {
 
-    /**
-     * Fills in message params, adds formatting, and sends it to the receiver.
+     /**
+      * Fills in message params, adds formatting, and sends it to the receiver.
+     * @param receiver person to get message or null if console
+     * @param messageID
+     * @param args
      */
     public static void sendMessage(@Nullable CommandSender receiver, Messages messageID, String... args) {
         String message = GPFlags.getInstance().getFlagsDataStore().getMessage(messageID, args);
@@ -65,18 +67,16 @@ public class MessagingUtil {
     }
 
     public static void logFlagCommands(String log) {
-        if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) {
-            logToConsole(log);
-        }
+        if (GPFlagsConfig.LOG_ENTER_EXIT_COMMANDS) logToConsole(log);
     }
 
     /**
      * We used to use <#rrggbb> but minimessage converter wont recognize that as a chatcolor
-     * This covnverts <#rrggbb> to &#rrggbb
+     * This converts <#rrggbb> to &#rrggbb
      * @param string
      * @return
      */
-    public static String convertOriginalHexColors(String string) {
+    private static String convertOriginalHexColors(String string) {
         string = string.replace(COLOR_CHAR, '&');
         Pattern hexPattern2 = Pattern.compile("<#([A-Fa-f0-9]){6}>");
         Matcher matcher = hexPattern2.matcher(string);
