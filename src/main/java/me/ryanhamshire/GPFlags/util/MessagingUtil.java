@@ -70,35 +70,28 @@ public class MessagingUtil {
         }
     }
 
-    public static String addLegacyColoring(String string) {
-        // If you don't have hex colors, you get the basics
-        if (!Util.isRunningMinecraft(1, 16)) {
-            return ChatColor.translateAlternateColorCodes('&', string);
-        }
+    /**
+     * We used to use <#rrggbb> but minimessage converter wont recognize that as a chatcolor
+     * This covnverts <#rrggbb> to &#rrggbb
+     * @param string
+     * @return
+     */
+    public static String convertOriginalHexColors(String string) {
         string = string.replace(COLOR_CHAR, '&');
-        Pattern hexPattern = Pattern.compile("&#([A-Fa-f0-9]{6})");
-        Matcher matcher = hexPattern.matcher(string);
-        while (matcher.find()) {
-            final String before = string.substring(0, matcher.start());
-            final String after = string.substring(matcher.end());
-            ChatColor hexColor = ChatColor.of(matcher.group().substring(1));
-            string = before + hexColor + after;
-            matcher = hexPattern.matcher(string);
-        }
         Pattern hexPattern2 = Pattern.compile("<#([A-Fa-f0-9]){6}>");
-        matcher = hexPattern2.matcher(string);
+        Matcher matcher = hexPattern2.matcher(string);
         while (matcher.find()) {
-            ChatColor hexColor = ChatColor.of(matcher.group().substring(1, matcher.group().length() - 1));
+            String hexColor = "&#" + matcher.group().substring(1, matcher.group().length() - 1);
             final String before = string.substring(0, matcher.start());
             final String after = string.substring(matcher.end());
             string = before + hexColor + after;
             matcher = hexPattern2.matcher(string);
         }
-        string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
     }
 
     public static String reserialize(String ampersandMessage) {
+        ampersandMessage = convertOriginalHexColors(ampersandMessage);
         Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(ampersandMessage);
         return MiniMessage.miniMessage().serialize(component);
     }
