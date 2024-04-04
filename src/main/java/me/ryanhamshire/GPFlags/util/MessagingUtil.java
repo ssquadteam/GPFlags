@@ -3,8 +3,11 @@ package me.ryanhamshire.GPFlags.util;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
-import me.ryanhamshire.GPFlags.hooks.MinimessageHook;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -47,23 +50,18 @@ public class MessagingUtil {
         try {
             message = PlaceholderApiHook.addPlaceholders(player, message);
         } catch (Throwable ignored) {}
-        try {
-            MinimessageHook.sendPlayerMessage(player, message);
-        } catch (Throwable e) {
-            player.sendMessage(addLegacyColoring(message));
-        }
+        Component component = MiniMessage.miniMessage().deserialize(message);
+        Audience.audience(player).sendMessage(component);
     }
 
     private static void logToConsole(String message) {
-        MinimessageHook.sendConsoleMessage(message);
+        String stripped = MiniMessage.miniMessage().stripTags(message);
+        GPFlags.getInstance().getLogger().info(stripped);
     }
 
     public static void sendActionbar(Player player, String message) {
-        try {
-            MinimessageHook.sendActionbar(player, message);
-        } catch (Throwable e) {
-            player.sendActionBar(addLegacyColoring(message));
-        }
+        Component component = MiniMessage.miniMessage().deserialize(message);
+        Audience.audience(player).sendMessage(component);
     }
 
     public static void logFlagCommands(String log) {
@@ -98,5 +96,10 @@ public class MessagingUtil {
         }
         string = ChatColor.translateAlternateColorCodes('&', string);
         return string;
+    }
+
+    public static String reserialize(String ampersandMessage) {
+        Component component = LegacyComponentSerializer.legacyAmpersand().deserialize(ampersandMessage);
+        return MiniMessage.miniMessage().serialize(component);
     }
 }
