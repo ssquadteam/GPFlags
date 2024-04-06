@@ -70,6 +70,7 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 
+        // Can be bypassed with gpflags.bypass.noflight.x
         if (Util.shouldBypass(player, claim, flag)) return false;
 
         Flag ownerFly = GPFlags.getInstance().getFlagManager()
@@ -78,12 +79,13 @@ public class FlagDef_NoFlight extends TimedPlayerFlagDefinition {
         Flag ownerMember = GPFlags.getInstance().getFlagManager()
                 .getFlagDefinitionByName("OwnerMemberFly")
                 .getFlagInstanceAtLocation(player.getLocation(), player);
-        
+
+        // Ownerfly and ownermemberfly trump it
         if (ownerFly != null && claim.ownerID.equals(player.getUniqueId())) {
             return false;
         }
         
-        if (ownerMember != null)  {
+        if (ownerMember != null && Util.canAccess(claim, player))  {
             return false;
         }
         
