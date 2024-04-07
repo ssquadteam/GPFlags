@@ -47,6 +47,7 @@ public class GPFlags extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new ClaimModifiedListener(), this);
         }
         Bukkit.getPluginManager().registerEvents(new ClaimTransferListener(), this);
+        Bukkit.getPluginManager().registerEvents(new FlightManager(), this);
 
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();

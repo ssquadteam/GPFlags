@@ -23,7 +23,5 @@ public class ClaimTransferListener implements Listener {
         if (settings.clearFlagsOnTransferClaim) return;
         Collection<Flag> flags = GPFlags.getInstance().getFlagManager().getFlags(claim);
         flags.clear();
-
-
     }
 }

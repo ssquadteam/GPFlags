@@ -229,6 +229,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.OwnerMemberFlightEnabled, "The owner and members with access trust or higher can now fly in this claim.", null);
         this.addDefault(defaults, Messages.OwnerMemberFlightDisabled, "The owner and members of this claim can no longer fly in this claim.", null);
 
+        this.addDefault(defaults, Messages.PermissionFlightEnabled, "PermissionFly has been enabled in this region.", null);
+        this.addDefault(defaults, Messages.PermissionFlightDisabled, "PermissionFly has been disabled in this region.", null);
+
         this.addDefault(defaults, Messages.EnabledNoEnterPlayer, "Enabled NoEnterPlayer for: {0}", "0: players to block");
         this.addDefault(defaults, Messages.DisabledNoEnterPlayer, "Disabled NoEnterPlayer.", null);
         this.addDefault(defaults, Messages.NoEnterPlayerMessage, "You have been blocked from entering this claim.", null);

@@ -66,18 +66,6 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
 
     public void onChangeClaim(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {}
 
-    // This is being removed, but we are keeping it for a bit just in case
-    public void undoMovement(Player player, Location lastLocation) {
-        Bukkit.broadcastMessage("Undoing movement");
-        if (lastLocation != null) {
-            player.teleport(lastLocation);
-        } else if (player.getBedSpawnLocation() != null) {
-            player.teleport(player.getBedSpawnLocation());
-        } else {
-            player.teleport(player.getWorld().getSpawnLocation());
-        }
-    }
-
     @Override
     public List<FlagType> getFlagType() {
         return Collections.singletonList(FlagType.CLAIM);

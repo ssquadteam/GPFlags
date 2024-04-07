@@ -163,6 +163,7 @@ public class GPFlagsConfig {
             this.flagManager.registerFlagDefinition(new FlagDef_NoGrowth(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_OwnerFly(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_OwnerMemberFly(this.flagManager, plugin));
+            this.flagManager.registerFlagDefinition(new FlagDef_PermissionFly(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_NoEnterPlayer(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerWeather(this.flagManager, plugin));
             this.flagManager.registerFlagDefinition(new FlagDef_PlayerTime(this.flagManager, plugin));

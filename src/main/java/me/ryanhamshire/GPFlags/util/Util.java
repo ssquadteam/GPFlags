@@ -76,41 +76,6 @@ public class Util {
     }
 
     /**
-     * Disable the flight mode of a player whom cant fly
-     * <p>This is mainly used when a player deletes their claim.</p>
-     *
-     * @param player Player to disable flight for
-     */
-    public static void disableFlight(Player player) {
-        if (player.isFlying() && !canFly(player)) {
-            Location loc = player.getLocation();
-            Block block = loc.getBlock();
-            while (block.getY() > 2 && !block.getType().isSolid() && block.getType() != Material.WATER) {
-                block = block.getRelative(BlockFace.DOWN);
-            }
-            player.setAllowFlight(false);
-            if (loc.getY() - block.getY() >= 4) {
-                GPFlags.getInstance().getPlayerListener().addFallingPlayer(player);
-            }
-            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
-        }
-        if (player.getAllowFlight() && !canFly(player)) {
-            player.setAllowFlight(false);
-            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.ExitFlightDisabled);
-        }
-    }
-
-    /**
-     *
-     * @param player the player to check
-     * @return if the player is spectator/creative or has bypass perms to fly anywhere
-     */
-    public static boolean canFly(Player player) {
-        GameMode mode = player.getGameMode();
-        return mode == GameMode.SPECTATOR || mode == GameMode.CREATIVE || player.hasPermission("gpflags.bypass.fly");
-    }
-
-    /**
      * Get the ItemStack form of a vehicle
      * <p>Specifically a boat or minecart</p>
      *

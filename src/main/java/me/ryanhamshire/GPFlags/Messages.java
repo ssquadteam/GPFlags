@@ -142,6 +142,8 @@ public enum Messages {
     OwnerMemberFlightDisabled,
     EnterFlightEnabled,
     ExitFlightDisabled,
+    PermissionFlightEnabled,
+    PermissionFlightDisabled,
     EnabledNoEnterPlayer,
     DisabledNoEnterPlayer,
     NoEnterPlayerMessage,

@@ -5,10 +5,13 @@ import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -225,6 +228,34 @@ public class FlagManager {
             }
         }
         return null;
+    }
+
+    public Flag getFlag(Location location, String flagname) {
+        Flag flag = null;
+        if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
+            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
+            if (claim != null) {
+                flag = getFlag(claim.getID().toString(), flagname);
+                if (flag != null && !flag.getSet()) return null;
+
+                if (flag == null && claim.parent != null) {
+                    flag = getFlag(claim.parent.getID().toString(), flagname);
+                    if (flag != null && !flag.getSet()) return null;
+                }
+            }
+        }
+
+        if (flag == null) {
+            flag = getFlag(location.getWorld().getName(), flagname);
+            if (flag != null && !flag.getSet()) return null;
+        }
+
+        if (flag == null) {
+            flag = getFlag("everywhere", flagname);
+            if (flag != null && !flag.getSet()) return null;
+        }
+
+        return flag;
     }
 
     /**
