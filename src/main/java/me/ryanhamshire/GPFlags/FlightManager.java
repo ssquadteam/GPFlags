@@ -1,10 +1,7 @@
 package me.ryanhamshire.GPFlags;
 
 import me.ryanhamshire.GPFlags.event.PlayerPostClaimBorderEvent;
-import me.ryanhamshire.GPFlags.flags.FlagDef_NoFlight;
-import me.ryanhamshire.GPFlags.flags.FlagDef_OwnerFly;
-import me.ryanhamshire.GPFlags.flags.FlagDef_OwnerMemberFly;
-import me.ryanhamshire.GPFlags.flags.FlagDef_PermissionFly;
+import me.ryanhamshire.GPFlags.flags.*;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -105,8 +102,18 @@ public class FlightManager implements Listener {
         }
     }
 
+
+
+    public static boolean allowedEntry(Player player, Location location) {
+        if (!FlagDef_NoEnter.allowedEntry(player, location)) return false;
+        if (!FlagDef_NoEnterPlayer.allowedEntry(player, location)) return false;
+        return true;
+    }
+
     public static void managePlayerFlight(Player player, Location location) {
         boolean manageFlight = gpfManagesFlight(player);
+
+        if (!allowedEntry(player, location)) return;
 
         // If you could already fly
         if (player.getAllowFlight()) {

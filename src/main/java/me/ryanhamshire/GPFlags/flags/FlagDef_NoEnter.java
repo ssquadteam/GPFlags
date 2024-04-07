@@ -35,6 +35,16 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition {
         }
     }
 
+    public static boolean allowedEntry(Player player, Location location) {
+        if (player.hasPermission("gpflags.bypass.noenter")) return true;
+        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(location, "NoEnter");
+        if (flag == null) return true;
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
+        if (Util.canAccess(claim, player)) return true;
+        return false;
+    }
+
     @Override
     public boolean allowMovement(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
         if (player.hasPermission("gpflags.bypass.noenter")) return true;
