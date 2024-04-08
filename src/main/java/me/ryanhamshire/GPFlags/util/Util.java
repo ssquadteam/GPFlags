@@ -156,6 +156,7 @@ public class Util {
     }
 
     public static boolean canAccess(Claim claim, Player player) {
+        if (claim == null) return true;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         if (playerData.ignoreClaims) return true;
         try {
