@@ -75,6 +75,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         if (playername.equalsIgnoreCase(c.getOwnerName())) return true;
 
         String[] paramArray = f.getParametersArray();
+        if (paramArray == null) return true;
         for (String nameOrUUID : paramArray) {
             if (nameOrUUID.equalsIgnoreCase(playername)) return false;
             if (nameOrUUID.equalsIgnoreCase(String.valueOf(p.getUniqueId()))) return false;
