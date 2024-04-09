@@ -33,8 +33,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     private int changeBiome(Location greater, Location lesser, Biome biome) {
         int lX = (int) lesser.getX();
+        int lY = (int) lesser.getY();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
+        int gY = (int) greater.getY()
         int gZ = (int) greater.getZ();
         World world = lesser.getWorld();
         assert world != null;
@@ -50,7 +52,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
                         if (!(loadChunk.isLoaded())) {
                             loadChunk.load();
                         }
-                        for (int y = 0; y <= 255; y++) {
+                        for (int y = lY; y <= gY; y++) {
                             world.setBiome(finalX, y, z, biome);
                         }
                     }
