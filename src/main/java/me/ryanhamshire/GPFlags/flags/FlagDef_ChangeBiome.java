@@ -36,7 +36,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         int lY = (int) lesser.getY();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
-        int gY = (int) greater.getY()
+        int gY = (int) greater.getY();
         int gZ = (int) greater.getZ();
         World world = lesser.getWorld();
         assert world != null;
