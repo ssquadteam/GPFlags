@@ -111,7 +111,6 @@ public class FlagManager {
         internalParameters = new StringBuilder(internalParameters.toString().trim());
         friendlyParameters = new StringBuilder(friendlyParameters.toString().trim());
 
-        System.out.println("got to line 117");
         SetFlagResult result;
         if (isActive) {
             result = def.validateParameters(friendlyParameters.toString());
@@ -119,7 +118,6 @@ public class FlagManager {
         } else {
             result = new SetFlagResult(true, def.getUnSetMessage());
         }
-        System.out.println("got to line 125");
 
         Flag flag = new Flag(def, internalParameters.toString());
         flag.setSet(isActive);
@@ -133,7 +131,6 @@ public class FlagManager {
         if (!claimFlags.containsKey(key) && isActive) {
             def.incrementInstances();
         }
-        System.out.println("putting in claimflags");
         claimFlags.put(key, flag);
         Claim claim;
         try {
@@ -141,7 +138,6 @@ public class FlagManager {
         } catch (Exception ignored) {
             return result;
         }
-        System.out.println("claim is " + claim);
         if (claim != null) {
             if (isActive) {
                 def.onFlagSet(claim, internalParameters.toString());

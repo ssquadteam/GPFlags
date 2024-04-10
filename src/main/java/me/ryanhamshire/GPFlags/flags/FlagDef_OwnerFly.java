@@ -49,7 +49,7 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         if (!claim.contains(location, false, false)) {
             return;
         }
-        // todo readd this FlightManager.manageFlightLater(owner, 1);
+        FlightManager.managePlayerFlight(owner, owner.getLocation());
     }
 
     public static boolean letPlayerFly(Player player, Location location) {
@@ -58,7 +58,6 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
         if (flag == null) return false;
         if (!flag.getSet()) return false;
-        System.out.println(Util.canEdit(player, claim));
         return Util.canEdit(player, claim);
     }
 
