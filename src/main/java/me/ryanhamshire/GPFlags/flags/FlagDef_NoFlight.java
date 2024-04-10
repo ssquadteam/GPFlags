@@ -34,6 +34,7 @@ public class FlagDef_NoFlight extends FlagDefinition {
     public static boolean letPlayerFly(Player player, Location location) {
         Flag flag = GPFlags.getInstance().getFlagManager().getFlag(location, "NoFlight");
         if (flag == null) return true;
+        if (!flag.getSet()) return false;
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
         return Util.shouldBypass(player, claim, flag);
     }

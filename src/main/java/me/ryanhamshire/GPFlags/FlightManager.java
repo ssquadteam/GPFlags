@@ -15,6 +15,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -38,10 +39,10 @@ public class FlightManager implements Listener {
         fallImmune.remove(p);
     }
 
-    private void manageFlightLater(Player player) {
+    public static void manageFlightLater(Player player, int ticks) {
         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
             managePlayerFlight(player, player.getLocation());
-        }, 1);
+        }, ticks);
     }
 
 
@@ -54,7 +55,7 @@ public class FlightManager implements Listener {
             Collection<Claim> claims = event.getClaims();
             for (Claim claim : claims) {
                 for (Player player : Util.getPlayersIn(claim)) {
-                    manageFlightLater(player);
+                    manageFlightLater(player, 1);
                 }
             }
             return;
@@ -65,7 +66,7 @@ public class FlightManager implements Listener {
             UUID uuid = UUID.fromString(identifier);
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                manageFlightLater(player);
+                manageFlightLater(player, 1);
             }
             return;
         } catch (IllegalArgumentException ignored) {}
@@ -73,7 +74,7 @@ public class FlightManager implements Listener {
         // Otherwise, its a permission
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission(identifier)) {
-                manageFlightLater(player);
+                manageFlightLater(player, 1);
             }
         }
     }
@@ -102,8 +103,6 @@ public class FlightManager implements Listener {
         }
     }
 
-
-
     public static boolean allowedEntry(Player player, Location location) {
         if (!FlagDef_NoEnter.allowedEntry(player, location)) return false;
         if (!FlagDef_NoEnterPlayer.allowedEntry(player, location)) return false;
@@ -112,7 +111,6 @@ public class FlightManager implements Listener {
 
     public static void managePlayerFlight(Player player, Location location) {
         boolean manageFlight = gpfManagesFlight(player);
-
         if (!allowedEntry(player, location)) return;
 
         // If you could already fly
@@ -135,6 +133,7 @@ public class FlightManager implements Listener {
                 }
                 turnOffFlight(player);
             }
+            return;
         }
 
         // If you couldn't already fly

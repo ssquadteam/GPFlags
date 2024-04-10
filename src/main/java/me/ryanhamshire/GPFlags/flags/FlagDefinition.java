@@ -48,9 +48,11 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract List<FlagType> getFlagType();
 
+    // Called when a flag is set to false/true, etc.
     public void onFlagSet(Claim claim, String params) {
     }
 
+    // Called when the flag is killed
     public void onFlagUnset(Claim claim) {
     }
 

@@ -42,10 +42,14 @@ public class FlagDef_OwnerFly extends FlagDefinition {
     public void onFlagUnset(Claim claim) {
         UUID uuid = claim.getOwnerID();
         Player owner = Bukkit.getPlayer(uuid);
-        if (owner == null) return;
+        if (owner == null) {
+            return;
+        };
         Location location = owner.getLocation();
-        if (!claim.contains(location, false, false)) return;
-        FlightManager.managePlayerFlight(owner, location);
+        if (!claim.contains(location, false, false)) {
+            return;
+        }
+        // todo readd this FlightManager.manageFlightLater(owner, 1);
     }
 
     public static boolean letPlayerFly(Player player, Location location) {
@@ -53,6 +57,8 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         if (claim == null) return false;
         Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
         if (flag == null) return false;
+        if (!flag.getSet()) return false;
+        System.out.println(Util.canEdit(player, claim));
         return Util.canEdit(player, claim);
     }
 

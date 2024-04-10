@@ -81,7 +81,7 @@ public class FlagManager {
     }
 
     /**
-     * Set a flag for a claim. This is called on startup to load the datastore and when setting or unsetting a flag
+     * Set a flag for a claim. This is called on startup to load the datastore and when setting a flag to a value including false
      *
      * @param claimId  ID of {@link Claim} which this flag will be attached to
      * @param def      Flag definition to set
@@ -111,6 +111,7 @@ public class FlagManager {
         internalParameters = new StringBuilder(internalParameters.toString().trim());
         friendlyParameters = new StringBuilder(friendlyParameters.toString().trim());
 
+        System.out.println("got to line 117");
         SetFlagResult result;
         if (isActive) {
             result = def.validateParameters(friendlyParameters.toString());
@@ -118,6 +119,7 @@ public class FlagManager {
         } else {
             result = new SetFlagResult(true, def.getUnSetMessage());
         }
+        System.out.println("got to line 125");
 
         Flag flag = new Flag(def, internalParameters.toString());
         flag.setSet(isActive);
@@ -131,6 +133,7 @@ public class FlagManager {
         if (!claimFlags.containsKey(key) && isActive) {
             def.incrementInstances();
         }
+        System.out.println("putting in claimflags");
         claimFlags.put(key, flag);
         Claim claim;
         try {
@@ -138,6 +141,7 @@ public class FlagManager {
         } catch (Exception ignored) {
             return result;
         }
+        System.out.println("claim is " + claim);
         if (claim != null) {
             if (isActive) {
                 def.onFlagSet(claim, internalParameters.toString());
@@ -299,15 +303,19 @@ public class FlagManager {
     /**
      * Unset a flag in a claim
      *
-     * @param claimID ID of claim
+     * @param claimId ID of claim
      * @param def     Flag definition to remove
      * @return Flag result
      */
-    public SetFlagResult unSetFlag(String claimID, FlagDefinition def) {
-        ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimID);
+    public SetFlagResult unSetFlag(String claimId, FlagDefinition def) {
+        ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimId);
         if (claimFlags == null || !claimFlags.containsKey(def.getName().toLowerCase())) {
-            return this.setFlag(claimID, def, false);
+            return this.setFlag(claimId, def, false);
         } else {
+            try {
+                Claim claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
+                def.onFlagUnset(claim);
+            } catch (Exception ignored) {}
             claimFlags.remove(def.getName().toLowerCase());
             return new SetFlagResult(true, def.getUnSetMessage());
         }

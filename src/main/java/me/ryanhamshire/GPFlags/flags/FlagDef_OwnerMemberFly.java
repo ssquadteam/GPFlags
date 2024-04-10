@@ -34,6 +34,7 @@ public class FlagDef_OwnerMemberFly extends FlagDefinition {
         if (claim == null) return false;
         Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
         if (flag == null) return false;
+        if (!flag.getSet()) return false;
         return Util.canAccess(claim, player);
     }
 
