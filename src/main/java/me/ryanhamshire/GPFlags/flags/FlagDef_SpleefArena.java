@@ -14,6 +14,7 @@ import me.ryanhamshire.GriefPrevention.events.PreventBlockBreakEvent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -48,7 +49,7 @@ public class FlagDef_SpleefArena extends FlagDefinition {
         for (Chunk chunk : chunks) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    for (int y = 0; y < Util.getMaxHeight(location) - data.differenceY; y++) {
+                    for (int y = Util.getMinHeight(location); y < Util.getMaxHeight(location) - data.differenceY; y++) {
                         if (claim.contains(Util.getInBoundsLocation(player), false, false)) {
                             Block block = chunk.getBlock(x, y, z);
                             if (data.IsSupport(block)) {
