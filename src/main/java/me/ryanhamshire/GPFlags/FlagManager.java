@@ -5,13 +5,11 @@ import me.ryanhamshire.GPFlags.flags.FlagDefinition;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
