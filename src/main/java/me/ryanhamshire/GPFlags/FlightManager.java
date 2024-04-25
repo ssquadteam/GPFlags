@@ -81,7 +81,7 @@ public class FlightManager implements Listener {
 
     @EventHandler
     public void onChangeClaim(PlayerPostClaimBorderEvent event) {
-        managePlayerFlight(event.getPlayer(), event.getLocTo());
+        manageFlightLater(event.getPlayer(), 1);
     }
 
     @EventHandler
