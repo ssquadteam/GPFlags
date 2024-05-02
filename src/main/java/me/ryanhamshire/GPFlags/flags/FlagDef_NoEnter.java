@@ -17,8 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import java.util.concurrent.TimeUnit;
-
 public class FlagDef_NoEnter extends PlayerMovementFlagDefinition implements Runnable {
 
     private static final long TASK_PERIOD_SECONDS = 5L;

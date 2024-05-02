@@ -497,9 +497,9 @@ public class Util {
 
     public static boolean canManageFlags(Player player, Claim claim) {
         try {
-            return claim.checkPermission(player, ClaimPermission.Edit, null) == null;
+            return claim.checkPermission(player, ClaimPermission.Manage, null) == null;
         } catch (NoSuchFieldError e) {
-            return claim.allowEdit(player) == null;
+            return claim.allowGrantPermission(player) == null;
         }
     }
 
