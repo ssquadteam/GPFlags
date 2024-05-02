@@ -496,11 +496,7 @@ public class Util {
     }
 
     public static boolean canManageFlags(Player player, Claim claim) {
-        try {
-            return claim.checkPermission(player, ClaimPermission.Manage, null) == null;
-        } catch (NoSuchFieldError e) {
-            return claim.allowGrantPermission(player) == null;
-        }
+        return canManage(claim, player);
     }
 
     public static HashSet<Player> getPlayersIn(Claim claim) {
