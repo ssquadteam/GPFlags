@@ -3,9 +3,7 @@ package me.ryanhamshire.GPFlags.flags;
 import java.util.*;
 
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -41,6 +39,9 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.events.PreventPvPEvent;
 
 public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
+
+    private final NamespacedKey infinity = NamespacedKey.minecraft("infinity");
+    private final Enchantment infinityEnchantment = Registry.ENCHANTMENT.get(infinity);
     
     // For EntityShootBow event being called multiple times when using the enchantment Multishot
     private Set<Player> justFiredCrossbow = Collections.newSetFromMap(new WeakHashMap<>());
@@ -52,16 +53,16 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     private static final Set<PotionEffectType> POSITIVE_EFFECTS = new HashSet<>(Arrays.asList(
             PotionEffectType.ABSORPTION,
             PotionEffectType.CONDUIT_POWER,
-            PotionEffectType.DAMAGE_RESISTANCE,
+            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("resistance")),
             PotionEffectType.DOLPHINS_GRACE,
-            PotionEffectType.FAST_DIGGING,
+            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("haste")),
             PotionEffectType.FIRE_RESISTANCE,
-            PotionEffectType.HEAL,
+            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("instant_health")),
             PotionEffectType.HEALTH_BOOST,
             PotionEffectType.HERO_OF_THE_VILLAGE,
-            PotionEffectType.INCREASE_DAMAGE,
+            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("strength")),
             PotionEffectType.INVISIBILITY,
-            PotionEffectType.JUMP,
+            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("jump_boost")),
             PotionEffectType.LUCK,
             PotionEffectType.NIGHT_VISION,
             PotionEffectType.REGENERATION,
@@ -272,12 +273,12 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             ItemStack bow = event.getBow();
             if (bow == null) return;
             ItemMeta meta = bow.getItemMeta();
-            if (meta != null && meta.hasEnchant(Enchantment.ARROW_INFINITE)) return;
-            if (Util.isRunningMinecraft(1, 14) && bow.getType() == Material.CROSSBOW) {
+            if (meta != null && meta.hasEnchant(infinityEnchantment)) return;
+            if (bow.getType() == Material.CROSSBOW) {
                 if (bow.getItemMeta() != null) {
                     List<ItemStack> projs = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles();
                     projectile = projs.get(0);
-                    
+
                     // EntityShootBowEvent is still fired for each projectile
                     // Only add the metadata to the first projectile launched within a short time
                     if (projs.size() > 1) {
