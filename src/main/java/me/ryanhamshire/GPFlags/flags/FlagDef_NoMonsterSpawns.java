@@ -24,18 +24,19 @@ public class FlagDef_NoMonsterSpawns extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntitySpawn(CreatureSpawnEvent event) {
+        Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);
+        if (flag == null) return;
+
         LivingEntity entity = event.getEntity();
         if (!Util.isMonster(entity)) return;
 
         SpawnReason reason = event.getSpawnReason();
+        if (reason == SpawnReason.SLIME_SPLIT) return;
 
         WorldSettings settings = this.settingsManager.get(event.getEntity().getWorld());
         if (settings.noMonsterSpawnIgnoreSpawners && (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG)) {
             return;
         }
-
-        Flag flag = this.getFlagInstanceAtLocation(event.getLocation(), null);
-        if (flag == null) return;
 
         event.setCancelled(true);
     }
