@@ -277,6 +277,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             if (bow.getType() == Material.CROSSBOW) {
                 if (bow.getItemMeta() != null) {
                     List<ItemStack> projs = ((CrossbowMeta) bow.getItemMeta()).getChargedProjectiles();
+                    if (projs.size() == 0) return;
                     projectile = projs.get(0);
 
                     // EntityShootBowEvent is still fired for each projectile
