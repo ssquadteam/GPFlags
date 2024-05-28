@@ -175,6 +175,7 @@ public class FlightManager implements Listener {
     private static void turnOnFlight(Player player) {
         player.setAllowFlight(true);
         MessagingUtil.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
+        if (player.isGliding()) return;
         Material below = player.getLocation().getBlock().getRelative(BlockFace.DOWN).getType();
         if (below == Material.AIR) {
             player.setFlying(true);
