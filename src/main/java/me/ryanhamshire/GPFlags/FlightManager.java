@@ -164,7 +164,7 @@ public class FlightManager implements Listener {
 
         Location location = player.getLocation();
         Block floor = location.getBlock();
-        while (floor.getY() > 2 && !floor.getType().isSolid() && floor.getType() != Material.WATER) {
+        while (floor.getY() > player.getWorld().getMinHeight() && !floor.getType().isSolid() && floor.getType() != Material.WATER) {
             floor = floor.getRelative(BlockFace.DOWN);
         }
         if (location.getY() - floor.getY() >= 4) {
