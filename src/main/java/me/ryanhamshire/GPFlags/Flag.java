@@ -54,7 +54,7 @@ public class Flag {
     }
 
     /**
-     * Gets whether or not this flag is currently active
+     * Gets if this flag is currently active
      *
      * @return Activity of flag
      */
@@ -63,9 +63,9 @@ public class Flag {
     }
 
     /**
-     * Sets whether or not this flag is currently active
+     * Sets if this flag is currently active
      *
-     * @param value Whether or not the flag is active
+     * @param value if the flag is active
      */
     public void setSet(boolean value) {
         this.set = value;
