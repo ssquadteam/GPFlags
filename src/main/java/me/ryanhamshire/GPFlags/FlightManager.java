@@ -163,13 +163,24 @@ public class FlightManager implements Listener {
         player.setAllowFlight(false);
 
         Location location = player.getLocation();
-        Block floor = location.getBlock();
-        while (floor.getY() > player.getWorld().getMinHeight() && !floor.getType().isSolid() && floor.getType() != Material.WATER) {
-            floor = floor.getRelative(BlockFace.DOWN);
-        }
+        Block floor = getFloor(location.getBlock());
         if (location.getY() - floor.getY() >= 4) {
             fallImmune.add(player);
         }
+    }
+
+    /**
+     * Gets the block where a player who fell from another block would land
+     * @param block the starting block
+     * @return The landing block
+     */
+    private static Block getFloor(Block block) {
+        Material material = block.getType();
+        if (material.isSolid()) return block;
+        if (material == Material.WATER) return block;
+        Location location = block.getLocation();
+        if (location.getBlockY() <= Util.getMinHeight(location)) return block;
+        return getFloor(block.getRelative(BlockFace.DOWN));
     }
 
     private static void turnOnFlight(Player player) {
