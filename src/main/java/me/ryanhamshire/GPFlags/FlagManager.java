@@ -13,7 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -92,7 +92,7 @@ public class FlagManager {
         StringBuilder friendlyParameters = new StringBuilder();
         for (String arg : args) {
             friendlyParameters.append(arg).append(" ");
-            if (def.getName().equals("NoEnterPlayer") && arg.length() > 0) {
+            if (def.getName().equals("NoEnterPlayer") && !arg.isEmpty()) {
                 if (arg.length() <= 30) {
                     OfflinePlayer offlinePlayer;
                     try {
@@ -346,7 +346,7 @@ public class FlagManager {
                 }
             }
         }
-        if (errors.size() == 0 && FlagsDataStore.PRIOR_CONFIG_VERSION == 0) save();
+        if (errors.isEmpty() && FlagsDataStore.PRIOR_CONFIG_VERSION == 0) save();
         return errors;
     }
 
@@ -392,13 +392,13 @@ public class FlagManager {
         File file = new File(filepath);
         file.getParentFile().mkdirs();
         file.createNewFile();
-        Files.write(fileContent.getBytes("UTF-8"), file);
+        Files.write(fileContent.getBytes(StandardCharsets.UTF_8), file);
     }
 
     public List<MessageSpecifier> load(File file) throws IOException, InvalidConfigurationException {
         if (!file.exists()) return this.load("");
 
-        List<String> lines = Files.readLines(file, Charset.forName("UTF-8"));
+        List<String> lines = Files.readLines(file, StandardCharsets.UTF_8);
         StringBuilder builder = new StringBuilder();
         for (String line : lines) {
             builder.append(line).append('\n');
