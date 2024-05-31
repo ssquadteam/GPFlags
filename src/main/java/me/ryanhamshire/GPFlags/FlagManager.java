@@ -187,7 +187,7 @@ public class FlagManager {
      *
      * @param claimID ID of claim
      * @param flag    Name of flag definition to get
-     * @return Instance of flag
+     * @return Instance of flag. This can return unset flags too.
      */
     public Flag getFlag(String claimID, String flag) {
         if (claimID == null || flag == null) return null;
@@ -228,6 +228,12 @@ public class FlagManager {
         return null;
     }
 
+    /**
+     *
+     * @param location
+     * @param flagname
+     * @return Active instance of the flag. Null if disabled or not set
+     */
     public Flag getFlag(Location location, String flagname) {
         Flag flag = null;
         if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
