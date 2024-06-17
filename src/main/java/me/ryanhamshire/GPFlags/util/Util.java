@@ -363,8 +363,11 @@ public class Util {
     public static String getAvailableFlags(Permissible player) {
         StringBuilder flagDefsList = new StringBuilder();
         Collection<FlagDefinition> defs = GPFlags.getInstance().getFlagManager().getFlagDefinitions();
+        List<FlagDefinition> sortedDefs = new ArrayList<>(defs);
+        sortedDefs.sort(Comparator.comparing(FlagDefinition::getName));
+
         flagDefsList.append("<aqua>");
-        for (FlagDefinition def : defs) {
+        for (FlagDefinition def : sortedDefs) {
             if (player.hasPermission("gpflags.flag." + def.getName())) {
                 flagDefsList.append(def.getName()).append("<grey>,<aqua> ");
             }
