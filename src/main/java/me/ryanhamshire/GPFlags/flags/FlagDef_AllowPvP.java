@@ -5,13 +5,7 @@ import java.util.*;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.ThrownPotion;
-import org.bukkit.entity.Trident;
+import org.bukkit.entity.*;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -208,9 +202,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     public boolean isPlayerOrPet(Entity entity) {
         if (entity instanceof Player) return true;
         if (!(entity instanceof Tameable)) return false;
-        Tameable pet = (Tameable) entity;
-        if (pet.isTamed()) return true;
-        if (pet.getOwner() != null) return true;
+        Wolf wolf = (Wolf) entity;
+        if (wolf.isTamed()) return true;
         return false;
     }
 
@@ -227,6 +220,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
             }
         }
 
+        // both attacker and defender need to be a player or a dog
         if (!isPlayerOrPet(attacker)) return;
         if (!isPlayerOrPet(defender)) return;
 
@@ -235,7 +229,8 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         Flag flag2 = this.getFlagInstanceAtLocation(defender.getLocation(), null);
         if (flag != null && flag2 != null) return;
 
-        // Enderpearl are considered as FALL with event.getEntityType() = player...
+        // Enderpearl are considered as FALL with event.getEntityType() = player
+        // so we allow them to get hurt
         if (cause == DamageCause.FALL) return;
 
         // At this point, we know we will prevent the damage
