@@ -174,7 +174,7 @@ public class FlightManager implements Listener {
      * @param block the starting block
      * @return The landing block
      */
-    private static Block getFloor(Block block) {
+    public static Block getFloor(Block block) {
         Material material = block.getType();
         if (material.isSolid()) return block;
         if (material == Material.WATER) return block;
