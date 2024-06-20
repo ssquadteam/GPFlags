@@ -29,7 +29,7 @@ import java.util.List;
 
 public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
 
-    private Claim cachedClaim;
+    private Claim cachedClaim = null;
 
     public FlagDef_NoVehicle(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
