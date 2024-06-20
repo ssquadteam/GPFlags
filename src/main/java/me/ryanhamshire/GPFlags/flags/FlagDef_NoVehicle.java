@@ -29,6 +29,8 @@ import java.util.List;
 
 public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
 
+    private Claim cachedClaim;
+
     public FlagDef_NoVehicle(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
@@ -112,7 +114,8 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
             Entity entity = event.getEntity();
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
+                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, cachedClaim);
+                cachedClaim = claim;
                 if (Util.shouldBypass(player, claim, flag)) return;
                 event.setCollisionCancelled(true);
                 event.setCancelled(true);
