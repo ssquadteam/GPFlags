@@ -29,6 +29,7 @@ public abstract class FlagDefinition implements Listener {
     WorldSettingsManager settingsManager;
     private int instances = 0;
     protected GPFlags plugin;
+    protected Claim cachedClaim = null;
 
     public FlagDefinition(FlagManager manager, GPFlags plugin) {
         this.flagManager = manager;
