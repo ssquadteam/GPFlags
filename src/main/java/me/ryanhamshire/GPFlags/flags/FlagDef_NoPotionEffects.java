@@ -5,6 +5,7 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -65,14 +66,16 @@ public class FlagDef_NoPotionEffects extends PlayerMovementFlagDefinition implem
 
     @EventHandler
     public void onPotionEffect(EntityPotionEffectEvent event) {
-        Flag flag = this.getFlagInstanceAtLocation(event.getEntity().getLocation(), null);
+        Entity entity = event.getEntity();
+        Player player = null;
+        if (entity instanceof Player) {
+            player = (Player) event.getEntity();
+            if (player.hasPermission("gpflags.bypass.nopotioneffects")) return;
+        }
+        Flag flag = this.getFlagInstanceAtLocation(event.getEntity().getLocation(), player);
         if (flag == null) return;
         PotionEffect potionEffect = event.getNewEffect();
         if (potionEffect == null) return;
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
-            if (player.hasPermission("gpflags.bypass.nopotioneffects")) return;
-        }
 
         PotionEffectType effectType = potionEffect.getType();
         String[] paramArray = flag.getParametersArray();
