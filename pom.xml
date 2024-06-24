@@ -39,8 +39,8 @@
             <url>https://mvn.lumine.io/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>akiradev-repo</id>
-            <url>https://repo.luminescent.dev/repository/public/</url>
+            <id>elitemobs-repo</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -102,7 +102,8 @@
         <dependency>
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
-            <version>8.0.2</version>
+            <version>8.7.4-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.maven</groupId>
