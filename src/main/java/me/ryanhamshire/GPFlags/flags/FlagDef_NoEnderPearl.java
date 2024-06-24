@@ -35,31 +35,31 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(event.getFrom(), event.getPlayer());
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getFrom(), false, null);
-            if (!Util.shouldBypass(player, claim, flag)) {
-                event.setCancelled(true);
-                String owner = claim.getOwnerName();
-                String playerName = player.getName();
+            if (Util.shouldBypass(player, claim, flag)) return;
 
-                String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
-                msg = msg.replace("{p}", playerName).replace("{o}", owner);
-                msg = msg.replace("{1}", playerName).replace("{0}", owner);
-                MessagingUtil.sendMessage(player, TextMode.Warn + msg);
-                return;
-            }
+            event.setCancelled(true);
+            String owner = claim.getOwnerName();
+            String playerName = player.getName();
+
+            String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
+            msg = msg.replace("{p}", playerName).replace("{o}", owner);
+            msg = msg.replace("{1}", playerName).replace("{0}", owner);
+            MessagingUtil.sendMessage(player, TextMode.Warn + msg);
+            return;
+
         }
 
         flag = this.getFlagInstanceAtLocation(event.getTo(), event.getPlayer());
         if (flag != null) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getTo(), false, null);
-            if (!Util.shouldBypass(player, claim, flag)) {
-                event.setCancelled(true);
-                String owner = claim.getOwnerName();
+            if (!Util.shouldBypass(player, claim, flag)) return;
 
-                String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
-                MessagingUtil.sendMessage(player, TextMode.Warn + msg.replace("{o}", owner).replace("{p}", player.getName()));
-            }
+            event.setCancelled(true);
+            String owner = claim.getOwnerName();
+
+            String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
+            MessagingUtil.sendMessage(player, TextMode.Warn + msg.replace("{o}", owner).replace("{p}", player.getName()));
         }
-
     }
 
     @Override
