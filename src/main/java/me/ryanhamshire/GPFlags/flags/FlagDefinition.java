@@ -67,7 +67,6 @@ public abstract class FlagDefinition implements Listener {
     public Flag getFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
         Flag flag = null;
         if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
-            Claim cachedClaim = null;
             PlayerData playerData = null;
             if (player != null) {
                 playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
