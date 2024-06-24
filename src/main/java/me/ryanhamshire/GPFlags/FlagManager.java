@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -151,7 +152,7 @@ public class FlagManager {
      *
      * @param claim   Claim to get a flag from
      * @param flagDef Flag definition to get
-     * @return Instance of flag
+     * @return Raw instance of flag
      */
     public Flag getFlag(Claim claim, FlagDefinition flagDef) {
         if (claim == null || flagDef == null) return null;
@@ -163,7 +164,7 @@ public class FlagManager {
      *
      * @param claimID ID of claim
      * @param flagDef Flag definition to get
-     * @return Instance of flag
+     * @return Raw instance of flag
      */
     public Flag getFlag(String claimID, FlagDefinition flagDef) {
         if (claimID == null || flagDef == null) return null;
@@ -175,7 +176,7 @@ public class FlagManager {
      *
      * @param claim Claim to get a flag from
      * @param flag  Name of flag definition to get
-     * @return Instance of flag
+     * @return Raw instance of flag
      */
     public Flag getFlag(Claim claim, String flag) {
         if (claim == null || flag == null) return null;
@@ -187,7 +188,7 @@ public class FlagManager {
      *
      * @param claimID ID of claim
      * @param flag    Name of flag definition to get
-     * @return Instance of flag. This can return unset flags too.
+     * @return Raw instance of flag.
      */
     public Flag getFlag(String claimID, String flag) {
         if (claimID == null || flag == null) return null;
@@ -232,7 +233,7 @@ public class FlagManager {
      *
      * @param location
      * @param flagname
-     * @return Active instance of the flag. Null if disabled or not set
+     * @return Logical instance of the flag.
      */
     public Flag getFlag(Location location, String flagname) {
         Flag flag = null;
