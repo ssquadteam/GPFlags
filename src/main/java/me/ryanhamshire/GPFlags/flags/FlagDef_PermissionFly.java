@@ -31,10 +31,9 @@ public class FlagDef_PermissionFly extends FlagDefinition {
         }
     }
 
-    public static boolean letPlayerFly(Player player, Location location) {
-        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(location, "PermissionFly");
+    public static boolean letPlayerFly(Player player, Location location, Claim claim) {
+        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "PermissionFly", claim);
         if (flag == null) return false;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
         return Util.shouldBypass(player, claim, flag);
     }
 

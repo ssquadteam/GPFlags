@@ -52,12 +52,10 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         FlightManager.managePlayerFlight(owner, owner.getLocation());
     }
 
-    public static boolean letPlayerFly(Player player, Location location) {
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
+    public static boolean letPlayerFly(Player player, Location location, Claim claim) {
         if (claim == null) return false;
-        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
+        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "OwnerFly", claim);
         if (flag == null) return false;
-        if (!flag.getSet()) return false;
         return Util.canEdit(player, claim);
     }
 

@@ -60,9 +60,8 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
         GriefPrevention.instance.ejectPlayer(player);
     }
 
-    public static boolean allowedEntry(Player player, Location location) {
-        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(location, "NoEnterPlayer");
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, true, null);
+    public static boolean allowedEntry(Player player, Location location, Claim claim) {
+        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "NoEnterPlayer", claim);
         return isAllowed(player, claim, flag);
     }
 

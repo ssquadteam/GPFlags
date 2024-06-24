@@ -29,10 +29,9 @@ public class FlagDef_OwnerMemberFly extends FlagDefinition {
         }
     }
 
-    public static boolean letPlayerFly(Player player, Location location) {
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, null);
+    public static boolean letPlayerFly(Player player, Location location, Claim claim) {
         if (claim == null) return false;
-        Flag flag = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
+        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "OwnerMemberFly", claim);
         if (flag == null) return false;
         if (!flag.getSet()) return false;
         return Util.canAccess(claim, player);

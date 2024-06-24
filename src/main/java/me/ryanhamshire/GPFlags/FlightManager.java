@@ -5,6 +5,8 @@ import me.ryanhamshire.GPFlags.flags.*;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import me.ryanhamshire.GriefPrevention.events.TrustChangedEvent;
 import org.bukkit.Bukkit;
@@ -81,7 +83,7 @@ public class FlightManager implements Listener {
 
     @EventHandler
     public void onChangeClaim(PlayerPostClaimBorderEvent event) {
-        manageFlightLater(event.getPlayer(), 1);
+        manageFlightLater(event.getPlayer(), 5);
     }
 
     @EventHandler
@@ -103,32 +105,36 @@ public class FlightManager implements Listener {
         }
     }
 
-    public static boolean allowedEntry(Player player, Location location) {
-        if (!FlagDef_NoEnter.allowedEntry(player, location)) return false;
-        if (!FlagDef_NoEnterPlayer.allowedEntry(player, location)) return false;
+    public static boolean allowedEntry(Player player, Location location, Claim claim) {
+        if (!FlagDef_NoEnter.allowedEntry(player, location, claim)) return false;
+        if (!FlagDef_NoEnterPlayer.allowedEntry(player, location, claim)) return false;
         return true;
     }
 
     public static void managePlayerFlight(Player player, Location location) {
         boolean manageFlight = gpfManagesFlight(player);
-        if (!allowedEntry(player, location)) return;
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
+        if (!allowedEntry(player, location, claim)) return;
+
+
 
         // If you could already fly
         if (player.getAllowFlight()) {
             if (manageFlight) {
-                if (FlagDef_OwnerMemberFly.letPlayerFly(player, location)) {
+                if (FlagDef_OwnerMemberFly.letPlayerFly(player, location, claim)) {
                     return;
                 }
-                if (FlagDef_OwnerFly.letPlayerFly(player, location)) {
+                if (FlagDef_OwnerFly.letPlayerFly(player, location, claim)) {
                     return;
                 }
             }
-            if (!FlagDef_NoFlight.letPlayerFly(player, location)) {
+            if (!FlagDef_NoFlight.letPlayerFly(player, location, claim)) {
                 turnOffFlight(player);
                 return;
             }
             if (manageFlight) {
-                if (FlagDef_PermissionFly.letPlayerFly(player, location)) {
+                if (FlagDef_PermissionFly.letPlayerFly(player, location, claim)) {
                     return;
                 }
                 turnOffFlight(player);
@@ -138,20 +144,20 @@ public class FlightManager implements Listener {
 
         // If you couldn't already fly
         if (manageFlight) {
-            if (FlagDef_OwnerMemberFly.letPlayerFly(player, location)) {
+            if (FlagDef_OwnerMemberFly.letPlayerFly(player, location, claim)) {
                 turnOnFlight(player);
                 return;
             }
-            if (FlagDef_OwnerFly.letPlayerFly(player, location)) {
+            if (FlagDef_OwnerFly.letPlayerFly(player, location, claim)) {
                 turnOnFlight(player);
                 return;
             }
         }
-        if (!FlagDef_NoFlight.letPlayerFly(player, location)) {
+        if (!FlagDef_NoFlight.letPlayerFly(player, location, claim)) {
             return;
         }
         if (manageFlight) {
-            if (FlagDef_PermissionFly.letPlayerFly(player, location)) {
+            if (FlagDef_PermissionFly.letPlayerFly(player, location, claim)) {
                 turnOnFlight(player);
             }
         }
