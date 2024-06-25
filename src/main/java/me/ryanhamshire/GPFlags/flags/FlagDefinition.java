@@ -62,7 +62,7 @@ public abstract class FlagDefinition implements Listener {
      *
      * @param location Location for checking for flag
      * @param player Player for checking cached claims
-     * @return Instance of flag at location if set, otherwise null
+     * @return Logical instance of flag at location
      */
     public Flag getFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
         Flag flag = null;
