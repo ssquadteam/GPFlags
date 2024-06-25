@@ -83,7 +83,7 @@ public class FlightManager implements Listener {
 
     @EventHandler
     public void onChangeClaim(PlayerPostClaimBorderEvent event) {
-        manageFlightLater(event.getPlayer(), 5);
+        manageFlightLater(event.getPlayer(), 2);
     }
 
     @EventHandler
@@ -105,20 +105,10 @@ public class FlightManager implements Listener {
         }
     }
 
-    public static boolean allowedEntry(Player player, Location location, Claim claim) {
-        if (!FlagDef_NoEnter.allowedEntry(player, location, claim)) return false;
-        if (!FlagDef_NoEnterPlayer.allowedEntry(player, location, claim)) return false;
-        return true;
-    }
-
     public static void managePlayerFlight(Player player, Location location) {
         boolean manageFlight = gpfManagesFlight(player);
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
-        if (!allowedEntry(player, location, claim)) return;
-
-
-
         // If you could already fly
         if (player.getAllowFlight()) {
             if (manageFlight) {
