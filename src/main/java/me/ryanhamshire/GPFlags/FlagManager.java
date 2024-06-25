@@ -236,7 +236,7 @@ public class FlagManager {
      * @param cachedClaim
      * @return Logical instance of the flag.
      */
-    public Flag getLogicalFlag(Location location, String flagname, Claim cachedClaim) {
+    public Flag getLogicalFlag(Location location, String flagname, @Nullable Claim cachedClaim) {
         Flag flag = null;
         if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
