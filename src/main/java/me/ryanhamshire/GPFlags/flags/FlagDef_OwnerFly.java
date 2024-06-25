@@ -54,7 +54,7 @@ public class FlagDef_OwnerFly extends FlagDefinition {
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
         if (claim == null) return false;
-        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "OwnerFly", claim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getInheritedLogicalFlag(location, "OwnerFly", claim);
         if (flag == null) return false;
         return Util.canEdit(player, claim);
     }

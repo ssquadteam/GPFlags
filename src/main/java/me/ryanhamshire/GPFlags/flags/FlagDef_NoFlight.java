@@ -32,7 +32,7 @@ public class FlagDef_NoFlight extends FlagDefinition {
 
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
-        Flag flag = GPFlags.getInstance().getFlagManager().getLogicalFlag(location, "NoFlight", claim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getInheritedLogicalFlag(location, "NoFlight", claim);
         if (flag == null) return true;
         return Util.shouldBypass(player, claim, flag);
     }

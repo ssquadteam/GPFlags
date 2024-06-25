@@ -28,8 +28,8 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
         if (flag == null) return;
 
         // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
-        Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
-        Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("EnterMessage"));
+        Flag flagFrom = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, this.getName());
+        Flag flagToEnter = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, "EnterMessage");
 
         // Don't repeat the exit message of a claim in certain cases
         if (claimFrom != null && claimTo != null) {
@@ -43,7 +43,7 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
             }
 
             // moving between sub-claims and the sub claim does not have its own enter message
-            Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
+            Flag flagTo = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, this.getName());
             if (claimTo.parent == claimFrom.parent && (flagTo == null || !flagTo.getSet()) && (flagFrom == null || !flagFrom.getSet())) {
                 return;
             }

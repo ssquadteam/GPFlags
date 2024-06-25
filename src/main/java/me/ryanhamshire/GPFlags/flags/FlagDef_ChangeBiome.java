@@ -127,7 +127,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         if (e.getClaim().getOwnerName() == null) return; //don't restore a sub-claim
         Claim claim = e.getClaim();
 
-        if (GPFlags.getInstance().getFlagManager().getFlag(claim, this) == null)
+        if (GPFlags.getInstance().getFlagManager().getInheritedRawClaimFlag(claim, this.getName()) == null)
             return; // Return if flag is non existent
 
         resetBiome(claim);

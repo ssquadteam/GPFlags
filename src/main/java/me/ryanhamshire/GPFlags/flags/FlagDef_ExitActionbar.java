@@ -19,8 +19,8 @@ public class FlagDef_ExitActionbar extends PlayerMovementFlagDefinition {
         if (flag == null) return;
 
         // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
-        Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
-        Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
+        Flag flagFrom = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, this.getName());
+        Flag flagTo = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, this.getName());
 
         // Don't repeat the exit message of a claim in certain cases
         if (claimFrom != null && claimTo != null) {
@@ -39,7 +39,7 @@ public class FlagDef_ExitActionbar extends PlayerMovementFlagDefinition {
             }
 
             // moving to different claim with an enteractionbar
-            Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("EnterActionbar"));
+            Flag flagToEnter = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, "EnterActionbar");
             if (flagToEnter != null) {
                 return;
             }

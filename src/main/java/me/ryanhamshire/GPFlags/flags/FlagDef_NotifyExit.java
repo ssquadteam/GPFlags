@@ -23,8 +23,8 @@ public class FlagDef_NotifyExit extends PlayerMovementFlagDefinition {
         if (flag == null) return;
 
         // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
-        Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
-        Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("NotifyEnter"));
+        Flag flagFrom = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, this.getName());
+        Flag flagToEnter = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, "NotifyEnter");
 
 
         // Don't repeat the exit message of a claim in certain cases

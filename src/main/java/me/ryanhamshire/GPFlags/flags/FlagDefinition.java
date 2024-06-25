@@ -65,41 +65,11 @@ public abstract class FlagDefinition implements Listener {
      * @return Logical instance of flag at location
      */
     public Flag getFlagInstanceAtLocation(@NotNull Location location, @Nullable Player player) {
-        Flag flag = null;
-        if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
-            PlayerData playerData = null;
-            if (player != null) {
-                playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-                cachedClaim = playerData.lastClaim;
-            }
-
-            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
-            if (claim != null) {
-                if (playerData != null) {
-                    playerData.lastClaim = claim;
-                }
-
-                flag = this.flagManager.getFlag(claim.getID().toString(), this);
-                if (flag != null && !flag.getSet()) return null;
-
-                if (flag == null && claim.parent != null) {
-                    flag = this.flagManager.getFlag(claim.parent.getID().toString(), this);
-                    if (flag != null && !flag.getSet()) return null;
-                }
-            }
+        if (player != null) {
+            PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+            cachedClaim = playerData.lastClaim;
         }
-
-        if (flag == null) {
-            flag = this.flagManager.getFlag(location.getWorld().getName(), this);
-            if (flag != null && !flag.getSet()) return null;
-        }
-
-        if (flag == null) {
-            flag = this.flagManager.getFlag("everywhere", this);
-            if (flag != null && !flag.getSet()) return null;
-        }
-
-        return flag;
+        return flagManager.getInheritedLogicalFlag(location, this.getName(), cachedClaim);
     }
 
     public void incrementInstances() {
