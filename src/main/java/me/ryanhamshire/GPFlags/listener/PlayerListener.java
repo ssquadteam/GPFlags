@@ -43,7 +43,7 @@ public class PlayerListener implements Listener {
         processMovement(locTo, locFrom, player, event);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onTeleport(PlayerTeleportEvent event) {
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
