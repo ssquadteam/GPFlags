@@ -87,7 +87,7 @@ public class UpdateChecker {
             }
             int versionBNum = 0;
             boolean bIsNumber = true;
-            if (i < versionAComponents.length) {
+            if (i < versionBComponents.length) {
                 try {
                     versionBNum = Integer.parseInt(versionBComponents[i]);
                 } catch (Exception e) {
