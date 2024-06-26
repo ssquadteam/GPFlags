@@ -11,6 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -152,80 +152,71 @@ public class FlagManager {
         return result;
     }
 
-
     /**
-     * Get the flag, checking all higher levels
-     * @param claim an actual claim or subclaim
-     * @param flag name of the flag
-     * @return The raw flag at the location or its higher levels (can be set to false)
+     *
+     * @param claim claim or subclaim
+     * @param flag flag name in all lowercase
+     * @return The raw instance of the flag
      */
-    public Flag getInheritedRawClaimFlag(Claim claim, String flag) {
-        if (claim == null) return null;
-        if (flag == null) return null;
-        flag = flag.toLowerCase();
-        String claimId;
-
-        claimId = claim.getID().toString();
+    public @Nullable Flag getRawClaimFlag(@NotNull Claim claim, @NotNull String flag) {
+        String claimId = claim.getID().toString();
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimId);
-        if (claimFlags != null && claimFlags.containsKey(flag)) {
-            return claimFlags.get(flag);
-        }
-        Claim parent = claim.parent;
-        if (parent != null) {
-            claimFlags = flags.get(parent.getID().toString());
-            if (claimFlags != null && claimFlags.containsKey(flag)) {
-                return claimFlags.get(flag);
-            }
-        }
-
-        ConcurrentHashMap<String, Flag> defaultFlags = flags.get(DEFAULT_FLAG_ID);
-        if (defaultFlags != null && defaultFlags.containsKey(flag)) {
-            return defaultFlags.get(flag);
-        }
-
-        Flag worldFlag = getSelfRawWorldFlag(claim.getLesserBoundaryCorner().getWorld(), flag);
-        if (worldFlag != null) return worldFlag;
-
-        return getRawServerFlag(flag);
+        if (claimFlags == null) return null;
+        return claimFlags.get(flag);
     }
 
-    public Flag getSelfRawDefaultFlag(String flag) {
+    public @Nullable Flag getRawDefaultFlag(@NotNull String flag) {
         ConcurrentHashMap<String, Flag> defaultFlags = flags.get(DEFAULT_FLAG_ID);
         if (defaultFlags == null) return null;
         return defaultFlags.get(flag);
     }
 
-    public Flag getSelfRawWorldFlag(World world, String flag) {
+    public @Nullable Flag getRawWorldFlag(@NotNull World world, @NotNull String flag) {
         ConcurrentHashMap<String, Flag> worldFlags = flags.get(world.getName());
         if (worldFlags == null) return null;
         return worldFlags.get(flag);
     }
 
-    public Flag getRawServerFlag(String flag) {
+    public @Nullable Flag getRawServerFlag(@NotNull String flag) {
         ConcurrentHashMap<String, Flag> serverFlags = this.flags.get("everywhere");
         if (serverFlags == null) return null;
         return serverFlags.get(flag);
     }
 
     /**
-     *
      * @param location
      * @param flagname
      * @param cachedClaim
-     * @return Logical instance of the flag.
+     * @return the effective flag at the location
      */
-    public Flag getInheritedLogicalFlag(Location location, String flagname, @Nullable Claim cachedClaim) {
+    public @Nullable Flag getEffectiveFlag(@NotNull Location location, @NotNull String flagname, @Nullable Claim cachedClaim) {
         flagname = flagname.toLowerCase();
         Flag flag;
         if (GriefPrevention.instance.claimsEnabledForWorld(location.getWorld())) {
             Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
             if (claim != null) {
-                flag = getInheritedRawClaimFlag(claim, flagname);
-                if (flag != null && flag.getSet()) return flag;
+                flag = getRawClaimFlag(claim, flagname);
+                if (flag != null) {
+                    if (flag.getSet()) return flag;
+                    return null;
+                }
+                Claim parent = claim.parent;
+                if (parent != null) {
+                    flag = getRawClaimFlag(parent, flagname);
+                    if (flag != null) {
+                        if (flag.getSet()) return flag;
+                        return null;
+                    }
+                }
+                flag = getRawDefaultFlag(flagname);
+                if (flag != null) {
+                    if (flag.getSet()) return flag;
+                    return null;
+                }
             }
         }
 
-        flag = getSelfRawWorldFlag(location.getWorld(), flagname);
+        flag = getRawWorldFlag(location.getWorld(), flagname);
         if (flag != null && flag.getSet()) return flag;
 
         flag = getRawServerFlag(flagname);

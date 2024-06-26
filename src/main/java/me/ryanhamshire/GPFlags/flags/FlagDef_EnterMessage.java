@@ -10,6 +10,7 @@ import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,43 +27,25 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return;
+        if (claimTo == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagTo == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same params
+        if (flagFrom != null && flagFrom.parameters.equals(flagTo.parameters)) return;
 
-        // get specific EnterMessage flag of destination claim and ExitMessage flag of origin claim
-        Flag flagTo = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, this.getName());
-        Flag flagFromExit = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, "ExitMessage");
+        sendMessage(flagTo, player, claimTo);
 
-        // Don't repeat the enter message of a claim in certain cases
-        if (claimFrom != null && claimTo != null) {
-            // moving to sub-claim, and the sub claim does not have its own enter message
-            if (claimTo.parent == claimFrom && (flagTo == null || !flagTo.getSet())) {
-                return;
-            }
-            // moving to parent claim, and the sub claim does not have its own exit message
-            if (claimFrom.parent == claimTo && (flagFromExit == null || !flagFromExit.getSet())) {
-                return;
-            }
+    }
 
-            // moving between sub-claims and the sub claim does not have its own enter message
-            Flag flagFrom = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, this.getName());
-            if (claimTo.parent == claimFrom.parent && (flagTo == null || !flagTo.getSet()) && (flagFrom == null || !flagFrom.getSet())) {
-                return;
-            }
-
-            // moving to different claim with the same message
-            if (flagFrom != null && flagTo != null && flagFrom.parameters.equals(flagTo.parameters)) {
-                if (claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-            }
-        }
-
+    public void sendMessage(Flag flag, Player player, Claim claim) {
         String message = flag.parameters;
-        if (claimTo != null) {
-            message = message.replace("%owner%", claimTo.getOwnerName());
+        String ownerName = claim.getOwnerName();
+        if (ownerName != null) {
+            message = message.replace("%owner%", ownerName);
         }
         message = message.replace("%name%", player.getName());
-
         MessagingUtil.sendMessage(player, TextMode.Info + prefix + message);
     }
 
@@ -71,10 +54,10 @@ public class FlagDef_EnterMessage extends PlayerMovementFlagDefinition {
         Player player = e.getPlayer();
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
-        String message = flag.parameters;
-        message = message.replace("%owner%", claim.getOwnerName()).replace("%name%", player.getName());
-        MessagingUtil.sendMessage(player, TextMode.Info + prefix + message);
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+
+        sendMessage(flag, player, claim);
     }
 
     @Override

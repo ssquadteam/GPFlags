@@ -23,21 +23,26 @@ public class FlagDef_ExitCommand_Members extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == null) return;
-        Flag newFlag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == newFlag) return;
-        if (newFlag != null && flag.parameters.equals(newFlag.parameters)) {
-            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-        }
+        if (claimFrom == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same params
+        if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) return;
 
         if (player.hasPermission("gpflags.bypass.exitcommand")) return;
+        if (!Util.canAccess(claimTo, player)) return;
+        executeFlagCommandsFromConsole(flagFrom, player, claimFrom);
+    }
 
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaim(playerData.lastClaim.getID());
-        if (!Util.canAccess(claim, player)) return;
-        String[] commandLines = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
+    public void executeFlagCommandsFromConsole(Flag flag, Player player, Claim claim) {
+        String commandLinesString = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString());
+        String ownerName = claim.getOwnerName();
+        if (ownerName != null) {
+            commandLinesString = commandLinesString.replace("%owner%", ownerName);
+        }
+        String[] commandLines = commandLinesString.split(";");
         for (String commandLine : commandLines) {
             MessagingUtil.logFlagCommands("Exit command: " + commandLine);
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);

@@ -31,31 +31,15 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
     }
 
     @EventHandler
-    public void onMove(PlayerPreClaimBorderEvent event) {
+    public void onPreMove(PlayerPreClaimBorderEvent event) {
         Player player = event.getPlayer();
-        Location from = event.getLocFrom().clone();
-        int fromMaxHeight = Util.getMaxHeight(from);
-        if (from.getY() > fromMaxHeight) {
-            from.setY(fromMaxHeight);
-        }
-        int fromMinHeight = Util.getMinHeight(from);
-        if (from.getY() < fromMinHeight) {
-            from.setY(fromMinHeight);
-        }
-        Location to = event.getLocTo().clone();
-        int toMaxHeight = Util.getMaxHeight(to);
-        if (to.getY() > toMaxHeight) {
-            to.setY(toMaxHeight);
-        }
-        int toMinHeight = Util.getMinHeight(to);
-        if (to.getY() < toMinHeight) {
-            to.setY(toMaxHeight);
-        }
+        Location from = event.getLocFrom();
+        Location to = event.getLocTo();
         Claim claimFrom = event.getClaimFrom();
         Claim claimTo = event.getClaimTo();
         if (!this.allowMovement(player, from, to, claimFrom, claimTo)) {
             event.setCancelled(true);
-            event.getPlayer().setVelocity(new Vector());
+            player.setVelocity(new Vector());
         }
     }
 
@@ -64,6 +48,15 @@ public abstract class PlayerMovementFlagDefinition extends FlagDefinition {
         onChangeClaim(event.getPlayer(), event.getLocFrom(), event.getLocTo(), event.getClaimFrom(), event.getClaimTo());
     }
 
+    /**
+     * Called after a player has successfully moved from one region to another.
+     * This is not called for player join events but probably will be in a later version.
+     * @param player
+     * @param from A bound-adjusted location
+     * @param to A bound-adjusted location
+     * @param claimFrom The claim that the player is coming from
+     * @param claimTo The claim that the player is now in
+     */
     public void onChangeClaim(Player player, Location from, Location to, Claim claimFrom, Claim claimTo) {}
 
     @Override

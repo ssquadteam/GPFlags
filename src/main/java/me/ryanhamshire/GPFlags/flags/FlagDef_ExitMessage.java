@@ -23,43 +23,19 @@ public class FlagDef_ExitMessage extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == null) return;
-
-        // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
-        Flag flagFrom = plugin.getFlagManager().getInheritedRawClaimFlag(claimFrom, this.getName());
-        Flag flagToEnter = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, "EnterMessage");
-
-        // Don't repeat the exit message of a claim in certain cases
-        if (claimFrom != null && claimTo != null) {
-            // moving to parent claim, and the sub claim does not have its own exit message
-            if (claimFrom.parent == claimTo && (flagFrom == null || !flagFrom.getSet())) {
-                return;
-            }
-            // moving to sub-claim, and the sub claim does not have its own enter message
-            if (claimTo.parent == claimFrom && (flagToEnter == null || !flagToEnter.getSet())) {
-                return;
-            }
-
-            // moving between sub-claims and the sub claim does not have its own enter message
-            Flag flagTo = plugin.getFlagManager().getInheritedRawClaimFlag(claimTo, this.getName());
-            if (claimTo.parent == claimFrom.parent && (flagTo == null || !flagTo.getSet()) && (flagFrom == null || !flagFrom.getSet())) {
-                return;
-            }
-
-            // moving to different claim with the same message
-            if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) {
-                if (claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-            }
-        }
-
-        String message = flag.parameters;
-        if (claimFrom != null) {
-            message = message.replace("%owner%", claimFrom.getOwnerName());
+        if (claimFrom == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same message
+        if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) return;
+        String message = flagFrom.parameters;
+        String ownerName = claimFrom.getOwnerName();
+        if (ownerName != null) {
+            message = message.replace("%owner%", ownerName);
         }
         message = message.replace("%name%", player.getName());
-
         MessagingUtil.sendMessage(player, TextMode.Info + prefix + message);
     }
 

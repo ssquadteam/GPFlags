@@ -8,7 +8,8 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 /**
- * Called when a player enters/exits a claim
+ * Called when a player tries to change regions.
+ * It's expected that the same code that calls this event will also handle what happens when this gets cancelled
  */
 @SuppressWarnings("unused")
 public class PlayerPreClaimBorderEvent extends PlayerEvent implements Cancellable {

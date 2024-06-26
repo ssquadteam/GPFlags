@@ -84,6 +84,14 @@ public class PlayerListener implements Listener {
         }
     }
 
+    /**
+     *
+     * @param locTo
+     * @param locFrom
+     * @param player
+     * @param event
+     * @return If the created PreClaimBorderEvent was permitted
+     */
     public static boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;

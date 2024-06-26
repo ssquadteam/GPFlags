@@ -69,7 +69,7 @@ public abstract class FlagDefinition implements Listener {
             PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
             cachedClaim = playerData.lastClaim;
         }
-        return flagManager.getInheritedLogicalFlag(location, this.getName(), cachedClaim);
+        return flagManager.getEffectiveFlag(location, this.getName(), cachedClaim);
     }
 
     public void incrementInstances() {

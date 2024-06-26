@@ -1,22 +1,11 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.Collections;
 import java.util.List;
@@ -54,7 +43,7 @@ public class FlagDef_OwnerFly extends FlagDefinition {
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
         if (claim == null) return false;
-        Flag flag = GPFlags.getInstance().getFlagManager().getInheritedLogicalFlag(location, "OwnerFly", claim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, "OwnerFly", claim);
         if (flag == null) return false;
         return Util.canEdit(player, claim);
     }

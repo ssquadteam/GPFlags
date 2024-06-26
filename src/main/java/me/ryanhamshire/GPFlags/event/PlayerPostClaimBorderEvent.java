@@ -6,12 +6,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called when a player enters/exits a claim
  */
 @SuppressWarnings("unused")
-public class PlayerPostClaimBorderEvent extends PlayerEvent implements Cancellable {
+public class PlayerPostClaimBorderEvent extends PlayerEvent {
 
     private static HandlerList handlerList = new HandlerList();
     private Claim claimFrom, claimTo;
@@ -37,18 +38,18 @@ public class PlayerPostClaimBorderEvent extends PlayerEvent implements Cancellab
     /**
      * Get the claim the player exited
      *
-     * @return Claim the player exited (can be null)
+     * @return Claim the player exited
      */
-    public Claim getClaimFrom() {
+    public @Nullable Claim getClaimFrom() {
         return claimFrom;
     }
 
     /**
      * Get the claim the player entered
      *
-     * @return Claim the player entered (can be null)
+     * @return Claim the player entered
      */
-    public Claim getClaimTo() {
+    public @Nullable Claim getClaimTo() {
         return claimTo;
     }
 
@@ -68,16 +69,6 @@ public class PlayerPostClaimBorderEvent extends PlayerEvent implements Cancellab
      */
     public Location getLocTo() {
         return locTo;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
     }
 
     @Override

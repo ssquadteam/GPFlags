@@ -24,7 +24,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class FlagDef_ChangeBiome extends FlagDefinition {
 
     public FlagDef_ChangeBiome(FlagManager manager, GPFlags plugin) {
@@ -76,7 +75,6 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         runnable.runTaskLater(GPFlags.getInstance(), i);
     }
 
-    @SuppressWarnings("deprecation")
     private void refreshChunks(Claim claim) {
         int view = Bukkit.getServer().getViewDistance();
         Player player = Bukkit.getPlayer(claim.getOwnerName());
@@ -124,11 +122,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     @EventHandler
     public void onClaimDelete(ClaimDeletedEvent e) {
-        if (e.getClaim().getOwnerName() == null) return; //don't restore a sub-claim
+        if (e.getClaim().parent != null) return; //don't restore a sub-claim
         Claim claim = e.getClaim();
-
-        if (GPFlags.getInstance().getFlagManager().getInheritedRawClaimFlag(claim, this.getName()) == null)
-            return; // Return if flag is non existent
+        FlagManager fm = GPFlags.getInstance().getFlagManager();
+        if (fm.getEffectiveFlag(claim.getLesserBoundaryCorner(), this.getName(), claim) == null) return;
 
         resetBiome(claim);
     }

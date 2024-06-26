@@ -3,7 +3,6 @@ package me.ryanhamshire.GPFlags.flags;
 import me.ryanhamshire.GPFlags.*;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -32,7 +31,7 @@ public class FlagDef_PermissionFly extends FlagDefinition {
     }
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
-        Flag flag = GPFlags.getInstance().getFlagManager().getInheritedLogicalFlag(location, "PermissionFly", claim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, "PermissionFly", claim);
         if (flag == null) return false;
         return Util.shouldBypass(player, claim, flag);
     }
