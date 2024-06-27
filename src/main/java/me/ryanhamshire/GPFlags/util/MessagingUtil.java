@@ -63,7 +63,7 @@ public class MessagingUtil {
 
     public static void sendActionbar(Player player, String message) {
         Component component = MiniMessage.miniMessage().deserialize(message);
-        Audience.audience(player).sendMessage(component);
+        Audience.audience(player).sendActionBar(component);
     }
 
     public static void logFlagCommands(String log) {
