@@ -232,7 +232,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.PermissionFlightEnabled, "PermissionFly has been enabled in this region.", null);
         this.addDefault(defaults, Messages.PermissionFlightDisabled, "PermissionFly has been disabled in this region.", null);
 
-        this.addDefault(defaults, Messages.EnabledNoEnterPlayer, "Enabled NoEnterPlayer for: {0}", "0: players to block");
+        this.addDefault(defaults, Messages.EnabledNoEnterPlayer, "Enabled NoEnterPlayer for the following {1} players: {0}", "0: players to block. 1: number of players to block");
         this.addDefault(defaults, Messages.DisabledNoEnterPlayer, "Disabled NoEnterPlayer.", null);
         this.addDefault(defaults, Messages.NoEnterPlayerMessage, "You have been blocked from entering this claim.", null);
         this.addDefault(defaults, Messages.PlayerRequired, "Include the list of players to block when setting this flag.", null);

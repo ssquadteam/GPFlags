@@ -93,8 +93,9 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition {
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.EnabledNoEnterPlayer, parameters);
-
+        String[] words = parameters.split(" ");  // Split by one or more whitespace characters
+        String numPlayers = String.valueOf(words.length);
+        return new MessageSpecifier(Messages.EnabledNoEnterPlayer, parameters, numPlayers);
     }
 
     @Override
