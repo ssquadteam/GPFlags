@@ -52,6 +52,7 @@ public class MessagingUtil {
         try {
             message = PlaceholderApiHook.addPlaceholders(player, message);
         } catch (Throwable ignored) {}
+        message = message.replace(COLOR_CHAR, '&');
         Component component = MiniMessage.miniMessage().deserialize(message);
         Audience.audience(player).sendMessage(component);
     }
@@ -62,6 +63,7 @@ public class MessagingUtil {
     }
 
     public static void sendActionbar(Player player, String message) {
+        message = message.replace(COLOR_CHAR, '&');
         Component component = MiniMessage.miniMessage().deserialize(message);
         Audience.audience(player).sendActionBar(component);
     }
