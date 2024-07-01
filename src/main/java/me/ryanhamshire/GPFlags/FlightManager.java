@@ -17,11 +17,12 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,7 +44,7 @@ public class FlightManager implements Listener {
 
     public static void manageFlightLater(Player player, int ticks) {
         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-            managePlayerFlight(player, player.getLocation());
+            managePlayerFlight(player, null, player.getLocation());
         }, ticks);
     }
 
@@ -89,71 +90,79 @@ public class FlightManager implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        managePlayerFlight(player, player.getLocation());
+        managePlayerFlight(player, null, player.getLocation());
     }
 
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        managePlayerFlight(player, player.getLocation());
+        managePlayerFlight(player, null, player.getLocation());
     }
 
     @EventHandler
     public void onClaimDelete(ClaimDeletedEvent event) {
         for (Player player : Util.getPlayersIn(event.getClaim())) {
-            managePlayerFlight(player, player.getLocation());
+            managePlayerFlight(player, null, player.getLocation());
         }
     }
 
-    public static void managePlayerFlight(Player player, Location location) {
+    // Checks if GPF is the reason that the player is allowed flight
+    public static boolean gpfAllowsFlight(Player player, Location location, Claim cachedClaim) {
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
         boolean manageFlight = gpfManagesFlight(player);
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
-        // If you could already fly
-        if (player.getAllowFlight()) {
-            if (manageFlight) {
-                if (FlagDef_OwnerMemberFly.letPlayerFly(player, location, claim)) {
-                    return;
-                }
-                if (FlagDef_OwnerFly.letPlayerFly(player, location, claim)) {
-                    return;
-                }
-            }
-            if (!FlagDef_NoFlight.letPlayerFly(player, location, claim)) {
-                turnOffFlight(player);
-                return;
-            }
-            if (manageFlight) {
-                if (FlagDef_PermissionFly.letPlayerFly(player, location, claim)) {
-                    return;
-                }
-                turnOffFlight(player);
-            }
-            return;
-        }
-
-        // If you couldn't already fly
         if (manageFlight) {
             if (FlagDef_OwnerMemberFly.letPlayerFly(player, location, claim)) {
-                turnOnFlight(player);
-                return;
+                return true;
             }
             if (FlagDef_OwnerFly.letPlayerFly(player, location, claim)) {
-                turnOnFlight(player);
-                return;
+                return true;
             }
         }
         if (!FlagDef_NoFlight.letPlayerFly(player, location, claim)) {
-            return;
+            return false;
         }
         if (manageFlight) {
             if (FlagDef_PermissionFly.letPlayerFly(player, location, claim)) {
-                turnOnFlight(player);
+                return true;
             }
+        }
+        return false;
+    }
+
+    /**
+     * Sometimes we need to call this directly in case the flight status at old location changes
+     * */
+    public static void managePlayerFlight(@NotNull Player player, boolean flightAllowedAtOldLocation, boolean flightAllowedAtNewLocation) {
+        if (flightAllowedAtOldLocation && !flightAllowedAtNewLocation) {
+            turnOffFlight(player);
+            return;
+        }
+
+        if (!flightAllowedAtOldLocation && flightAllowedAtNewLocation) {
+            turnOnFlight(player);
+            return;
         }
     }
 
+    public static void managePlayerFlight(@NotNull Player player, @Nullable Location oldLocation, @NotNull Location newLocation) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(newLocation, false, playerData.lastClaim);
+
+        boolean flightAllowedAtNewLocation = gpfAllowsFlight(player, newLocation, claim);
+        if (oldLocation == null) {
+            if (flightAllowedAtNewLocation) {
+                turnOnFlight(player);
+            } else {
+                turnOffFlight(player);
+            }
+        }
+
+        boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
+        managePlayerFlight(player, flightAllowedAtOldLocation, flightAllowedAtNewLocation);
+    }
+
     private static void turnOffFlight(Player player) {
+        if (!player.getAllowFlight()) return;
         MessagingUtil.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
         player.setFlying(false);
         player.setAllowFlight(false);
@@ -180,6 +189,7 @@ public class FlightManager implements Listener {
     }
 
     private static void turnOnFlight(Player player) {
+        if (player.getAllowFlight()) return;
         player.setAllowFlight(true);
         MessagingUtil.sendMessage(player, TextMode.Success, Messages.EnterFlightEnabled);
         if (player.isGliding()) return;

@@ -17,14 +17,14 @@ public class FlagDef_OwnerMemberFly extends FlagDefinition {
     @Override
     public void onFlagSet(Claim claim, String param) {
         for (Player p : Util.getPlayersIn(claim)) {
-            FlightManager.managePlayerFlight(p, p.getLocation());
+            FlightManager.managePlayerFlight(p, null, p.getLocation());
         }
     }
 
     @Override
     public void onFlagUnset(Claim claim) {
         for (Player p : Util.getPlayersIn(claim)) {
-            FlightManager.managePlayerFlight(p, p.getLocation());
+            FlightManager.managePlayerFlight(p, null, p.getLocation());
         }
     }
 

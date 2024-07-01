@@ -24,7 +24,7 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         if (owner == null) return;
         Location location = owner.getLocation();
         if (!claim.contains(location, false, false)) return;
-        FlightManager.managePlayerFlight(owner, location);
+        FlightManager.managePlayerFlight(owner, null, location);
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FlagDef_OwnerFly extends FlagDefinition {
         if (!claim.contains(location, false, false)) {
             return;
         }
-        FlightManager.managePlayerFlight(owner, owner.getLocation());
+        FlightManager.managePlayerFlight(owner, null, owner.getLocation());
     }
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
