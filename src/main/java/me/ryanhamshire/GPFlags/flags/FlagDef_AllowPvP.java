@@ -201,9 +201,11 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
 
     public boolean isPlayerOrPet(Entity entity) {
         if (entity instanceof Player) return true;
-        if (!(entity instanceof Wolf)) return false;
-        Wolf wolf = (Wolf) entity;
-        if (wolf.isTamed()) return true;
+        if (entity.getRider() != null) return true;
+        if (entity instanceof Wolf) {
+            Wolf wolf = (Wolf) entity;
+            return wolf.isTamed();
+        }
         return false;
     }
 
