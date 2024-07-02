@@ -42,9 +42,25 @@ public class FlightManager implements Listener {
         fallImmune.remove(p);
     }
 
-    public static void manageFlightLater(Player player, int ticks) {
+    /**
+     *
+     * @param player
+     * @param ticks Number of ticks to wait before calculating new flight allow status and managing flight.
+     * @param oldLocation
+     */
+    public static void manageFlightLater(@NotNull Player player, int ticks, @Nullable Location oldLocation) {
+        if (oldLocation == null) {
+            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+                managePlayerFlight(player, null, player.getLocation());
+            }, ticks);
+            return;
+        }
+        // if oldLocation is passed in, we want to calculate that value immediately
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-            managePlayerFlight(player, null, player.getLocation());
+            boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
+            managePlayerFlight(player, oldFlightAllowedStatus, newFlightAllowedStatus);
         }, ticks);
     }
 
@@ -58,7 +74,7 @@ public class FlightManager implements Listener {
             Collection<Claim> claims = event.getClaims();
             for (Claim claim : claims) {
                 for (Player player : Util.getPlayersIn(claim)) {
-                    manageFlightLater(player, 1);
+                    manageFlightLater(player, 1, player.getLocation());
                 }
             }
             return;
@@ -69,7 +85,7 @@ public class FlightManager implements Listener {
             UUID uuid = UUID.fromString(identifier);
             Player player = Bukkit.getPlayer(uuid);
             if (player != null) {
-                manageFlightLater(player, 1);
+                manageFlightLater(player, 1, player.getLocation());
             }
             return;
         } catch (IllegalArgumentException ignored) {}
@@ -77,14 +93,14 @@ public class FlightManager implements Listener {
         // Otherwise, its a permission
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission(identifier)) {
-                manageFlightLater(player, 1);
+                manageFlightLater(player, 1, player.getLocation());
             }
         }
     }
 
     @EventHandler
     public void onChangeClaim(PlayerPostClaimBorderEvent event) {
-        manageFlightLater(event.getPlayer(), 1);
+        manageFlightLater(event.getPlayer(), 1, event.getLocFrom());
     }
 
     @EventHandler
@@ -101,6 +117,7 @@ public class FlightManager implements Listener {
 
     @EventHandler
     public void onClaimDelete(ClaimDeletedEvent event) {
+        // todo check that this is actually fired AFTER its deleted
         for (Player player : Util.getPlayersIn(event.getClaim())) {
             managePlayerFlight(player, null, player.getLocation());
         }
@@ -161,7 +178,7 @@ public class FlightManager implements Listener {
         managePlayerFlight(player, flightAllowedAtOldLocation, flightAllowedAtNewLocation);
     }
 
-    private static void turnOffFlight(Player player) {
+    private static void turnOffFlight(@NotNull Player player) {
         if (!player.getAllowFlight()) return;
         MessagingUtil.sendMessage(player, TextMode.Err, Messages.CantFlyHere);
         player.setFlying(false);
