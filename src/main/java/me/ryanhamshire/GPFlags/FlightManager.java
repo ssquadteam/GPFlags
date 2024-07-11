@@ -95,7 +95,7 @@ public class FlightManager implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        managePlayerFlight(player, player.getLocation());
+        manageFlightLater(player, 1);
     }
 
     @EventHandler
