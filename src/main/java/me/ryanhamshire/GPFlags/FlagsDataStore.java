@@ -158,7 +158,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.CommandListRequired, "Please provide a list of commands, separated by semicolons(;).", null);
         this.addDefault(defaults, Messages.CommandBlockedHere, "You don't have permission to use that command here.", null);
 
-        this.addDefault(defaults, Messages.CantFlyHere, "You can't fly here.", null);
+        this.addDefault(defaults, Messages.CantFlyHere, "Flags in this region don't permit flight.", null);
         this.addDefault(defaults, Messages.EnableNoFlight, "Now blocking flight in this area.", null);
         this.addDefault(defaults, Messages.DisableNoFlight, "Stopped preventing flight in this area.", null);
 
