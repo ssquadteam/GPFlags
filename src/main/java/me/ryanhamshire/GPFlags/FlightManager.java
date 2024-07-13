@@ -90,7 +90,7 @@ public class FlightManager implements Listener {
             return;
         } catch (IllegalArgumentException ignored) {}
 
-        // Otherwise, its a permission
+        // Otherwise, it's a permission
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission(identifier)) {
                 manageFlightLater(player, 1, player.getLocation());
@@ -112,12 +112,11 @@ public class FlightManager implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        managePlayerFlight(player, null, player.getLocation());
+        manageFlightLater(player, 1, null);
     }
 
     @EventHandler
     public void onClaimDelete(ClaimDeletedEvent event) {
-        // todo check that this is actually fired AFTER its deleted
         for (Player player : Util.getPlayersIn(event.getClaim())) {
             managePlayerFlight(player, null, player.getLocation());
         }
@@ -172,6 +171,7 @@ public class FlightManager implements Listener {
             } else {
                 turnOffFlight(player);
             }
+            return;
         }
 
         boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
