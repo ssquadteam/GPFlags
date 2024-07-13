@@ -42,29 +42,6 @@ public class FlightManager implements Listener {
         fallImmune.remove(p);
     }
 
-    /**
-     * Runs a manage flight operation between the oldLocation and the location that the player will be in ticks ticks
-     * @param player
-     * @param ticks Number of ticks to wait before calculating new flight allow status and managing flight.
-     * @param oldLocation If provided, will be able to avoid running a manage flight operation if the new status after ticks ticks is the same
-     */
-    public static void manageFlightLater(@NotNull Player player, int ticks, @Nullable Location oldLocation) {
-        if (oldLocation == null) {
-            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-                managePlayerFlight(player, null, player.getLocation());
-            }, ticks);
-            return;
-        }
-        // if oldLocation is passed in, we want to calculate that value immediately
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
-        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-            boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
-            managePlayerFlight(player, oldFlightAllowedStatus, newFlightAllowedStatus);
-        }, ticks);
-    }
-
-
     @EventHandler
     public void onTrustChanged(TrustChangedEvent event) {
         String identifier = event.getIdentifier();
@@ -120,6 +97,28 @@ public class FlightManager implements Listener {
         for (Player player : Util.getPlayersIn(event.getClaim())) {
             managePlayerFlight(player, null, player.getLocation());
         }
+    }
+
+    /**
+     * Runs a manage flight operation between the oldLocation and the location that the player will be in ticks ticks
+     * @param player
+     * @param ticks Number of ticks to wait before calculating new flight allow status and managing flight.
+     * @param oldLocation If provided, will be able to avoid running a manage flight operation if the new status after ticks ticks is the same
+     */
+    public static void manageFlightLater(@NotNull Player player, int ticks, @Nullable Location oldLocation) {
+        if (oldLocation == null) {
+            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+                managePlayerFlight(player, null, player.getLocation());
+            }, ticks);
+            return;
+        }
+        // if oldLocation is passed in, we want to calculate that value immediately
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
+        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+            boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
+            managePlayerFlight(player, oldFlightAllowedStatus, newFlightAllowedStatus);
+        }, ticks);
     }
 
     /**
