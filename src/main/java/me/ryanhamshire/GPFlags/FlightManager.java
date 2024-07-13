@@ -43,10 +43,10 @@ public class FlightManager implements Listener {
     }
 
     /**
-     *
+     * Runs a manage flight operation between the oldLocation and the location that the player will be in ticks ticks
      * @param player
      * @param ticks Number of ticks to wait before calculating new flight allow status and managing flight.
-     * @param oldLocation
+     * @param oldLocation If provided, will be able to avoid running a manage flight operation if the new status after ticks ticks is the same
      */
     public static void manageFlightLater(@NotNull Player player, int ticks, @Nullable Location oldLocation) {
         if (oldLocation == null) {
@@ -122,8 +122,39 @@ public class FlightManager implements Listener {
         }
     }
 
-    // Checks if GPF is the reason that the player is allowed flight
-    public static boolean gpfAllowsFlight(Player player, Location location, Claim cachedClaim) {
+    /**
+     * Compares the flight permission of the player at the two locations and manages flight if different
+     * @param player
+     * @param oldLocation
+     * @param newLocation
+     */
+    public static void managePlayerFlight(@NotNull Player player, @Nullable Location oldLocation, @NotNull Location newLocation) {
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(newLocation, false, playerData.lastClaim);
+
+        boolean flightAllowedAtNewLocation = gpfAllowsFlight(player, newLocation, claim);
+        if (oldLocation == null) {
+            if (flightAllowedAtNewLocation) {
+                turnOnFlight(player);
+            } else {
+                turnOffFlight(player);
+            }
+            return;
+        }
+
+        boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
+        managePlayerFlight(player, flightAllowedAtOldLocation, flightAllowedAtNewLocation);
+    }
+
+
+    /**
+     * Checks if a flag is the reason that the player allows flight at a location
+     * @param player
+     * @param location
+     * @param cachedClaim
+     * @return
+     */
+    private static boolean gpfAllowsFlight(Player player, Location location, Claim cachedClaim) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
         boolean manageFlight = gpfManagesFlight(player);
         if (manageFlight) {
@@ -146,9 +177,12 @@ public class FlightManager implements Listener {
     }
 
     /**
-     * Sometimes we need to call this directly in case the flight status at old location changes
-     * */
-    public static void managePlayerFlight(@NotNull Player player, boolean flightAllowedAtOldLocation, boolean flightAllowedAtNewLocation) {
+     * If there's a difference in the two booleans, will set the player's flight to the new status
+     * @param player
+     * @param flightAllowedAtOldLocation
+     * @param flightAllowedAtNewLocation
+     */
+    private static void managePlayerFlight(@NotNull Player player, boolean flightAllowedAtOldLocation, boolean flightAllowedAtNewLocation) {
         if (flightAllowedAtOldLocation && !flightAllowedAtNewLocation) {
             turnOffFlight(player);
             return;
@@ -158,24 +192,6 @@ public class FlightManager implements Listener {
             turnOnFlight(player);
             return;
         }
-    }
-
-    public static void managePlayerFlight(@NotNull Player player, @Nullable Location oldLocation, @NotNull Location newLocation) {
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(newLocation, false, playerData.lastClaim);
-
-        boolean flightAllowedAtNewLocation = gpfAllowsFlight(player, newLocation, claim);
-        if (oldLocation == null) {
-            if (flightAllowedAtNewLocation) {
-                turnOnFlight(player);
-            } else {
-                turnOffFlight(player);
-            }
-            return;
-        }
-
-        boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
-        managePlayerFlight(player, flightAllowedAtOldLocation, flightAllowedAtNewLocation);
     }
 
     private static void turnOffFlight(@NotNull Player player) {
