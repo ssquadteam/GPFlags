@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -93,7 +94,7 @@ public class FlagManager {
      * @param args     Message parameters
      * @return Result of setting flag
      */
-    public SetFlagResult setFlag(String claimId, FlagDefinition def, boolean isActive, String... args) {
+    public SetFlagResult setFlag(String claimId, FlagDefinition def, boolean isActive, CommandSender sender, String... args) {
         StringBuilder internalParameters = new StringBuilder();
         StringBuilder friendlyParameters = new StringBuilder();
         for (String arg : args) {
@@ -117,7 +118,7 @@ public class FlagManager {
 
         SetFlagResult result;
         if (isActive) {
-            result = def.validateParameters(friendlyParameters.toString());
+            result = def.validateParameters(friendlyParameters.toString(), sender);
             if (!result.success) return result;
         } else {
             result = new SetFlagResult(true, def.getUnSetMessage());
@@ -273,7 +274,7 @@ public class FlagManager {
     public SetFlagResult unSetFlag(String claimId, FlagDefinition def) {
         ConcurrentHashMap<String, Flag> claimFlags = this.flags.get(claimId);
         if (claimFlags == null || !claimFlags.containsKey(def.getName().toLowerCase())) {
-            return this.setFlag(claimId, def, false);
+            return this.setFlag(claimId, def, false, null);
         } else {
             try {
                 Claim claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
@@ -302,7 +303,7 @@ public class FlagManager {
                 boolean set = yaml.getBoolean(claimID + "." + flagName + ".value", true);
                 FlagDefinition def = this.getFlagDefinitionByName(flagName);
                 if (def != null) {
-                    SetFlagResult result = this.setFlag(claimID, def, set, params);
+                    SetFlagResult result = this.setFlag(claimID, def, set, null, params);
                     if (!result.success) {
                         errors.add(result.message);
                     }

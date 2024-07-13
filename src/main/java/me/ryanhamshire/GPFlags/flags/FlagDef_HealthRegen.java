@@ -8,10 +8,14 @@ import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
 
@@ -61,10 +65,9 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty())
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
-
         int amount;
         try {
             amount = Integer.parseInt(parameters);
@@ -74,8 +77,29 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
         } catch (NumberFormatException e) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
         }
+        if (!senderHasPermissionForHealthAmount(sender, amount)) {
+            return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenTooHigh));
+        }
 
         return new SetFlagResult(true, this.getSetMessage(parameters));
+    }
+
+    private boolean senderHasPermissionForHealthAmount(CommandSender sender, int desired) {
+        int allowed = 1;
+        Set<PermissionAttachmentInfo> attachments = sender.getEffectivePermissions();
+        for (PermissionAttachmentInfo attachment : attachments) {
+            String permName = attachment.getPermission().toLowerCase();
+            if (permName.startsWith("gpflags.flag.healthregen.") && attachment.getValue()) {
+                try {
+                    int newVal = Integer.parseInt(permName.replace("gpflags.healthregen.", ""));
+                    if (newVal > allowed) {
+                        allowed = newVal;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return desired <= allowed;
     }
 
     @Override

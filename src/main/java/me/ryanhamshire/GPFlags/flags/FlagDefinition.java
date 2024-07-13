@@ -12,6 +12,7 @@ import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 ;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +40,7 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract String getName();
 
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         return new SetFlagResult(true, this.getSetMessage(parameters));
     }
 

@@ -69,6 +69,7 @@ public enum Messages {
     EnableHealthRegen,
     DisableHealthRegen,
     HealthRegenGreaterThanZero,
+    HealthRegenTooHigh,
     EnableNoHunger,
     DisableNoHunger,
     FoodRegenInvalid,

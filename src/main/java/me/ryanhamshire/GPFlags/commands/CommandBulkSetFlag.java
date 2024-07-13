@@ -54,7 +54,7 @@ public class CommandBulkSetFlag implements TabExecutor {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         Vector<Claim> playerClaims = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId()).getClaims();
         for (Claim claim : playerClaims) {
-            SetFlagResult result = gpflags.getFlagManager().setFlag(claim.getID().toString(), def, true, params);
+            SetFlagResult result = gpflags.getFlagManager().setFlag(claim.getID().toString(), def, true, commandSender, params);
             String color = result.isSuccess() ? TextMode.Success : TextMode.Err;
             MessagingUtil.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
             if (result.isSuccess()) gpflags.getFlagManager().save();

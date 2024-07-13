@@ -56,7 +56,7 @@ public class CommandSetWorldFlag implements TabExecutor {
         String[] params = new String[args.length - 2];
         System.arraycopy(args, 2, params, 0, args.length - 2);
 
-        SetFlagResult result = gpflags.getFlagManager().setFlag(world.getName(), def, true, params);
+        SetFlagResult result = gpflags.getFlagManager().setFlag(world.getName(), def, true, sender, params);
         String color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         if (result.isSuccess()) {
             MessagingUtil.sendMessage(sender, color, Messages.WorldFlagSet);

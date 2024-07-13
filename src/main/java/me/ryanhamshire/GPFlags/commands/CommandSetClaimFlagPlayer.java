@@ -66,7 +66,7 @@ public class CommandSetClaimFlagPlayer implements TabExecutor {
             if (!flagD.changeBiome(commandSender, claim, biome)) return true;
         }
 
-        SetFlagResult result = gpflags.getFlagManager().setFlag(claim.getID().toString(), def, true, params);
+        SetFlagResult result = gpflags.getFlagManager().setFlag(claim.getID().toString(), def, true, commandSender, params);
         String color = result.isSuccess() ? TextMode.Success : TextMode.Err;
         MessagingUtil.sendMessage(commandSender, color, result.getMessage().getMessageID(), result.getMessage().getMessageParams());
         if (result.isSuccess()) {

@@ -146,6 +146,7 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnableHealthRegen, "Now regenerating player health here.", null);
         this.addDefault(defaults, Messages.DisableHealthRegen, "Stopped regenerating player health here.", null);
         this.addDefault(defaults, Messages.HealthRegenGreaterThanZero, "Please specify how many health points (minimum: 1) players should regenerate per 5 seconds.", null);
+        this.addDefault(defaults, Messages.HealthRegenTooHigh, "The selected regen amount is too high", null);
 
         this.addDefault(defaults, Messages.EnableNoHunger, "Disabled food level loss and hunger damage in this area.", null);
         this.addDefault(defaults, Messages.DisableNoHunger, "Enabled food level loss and hunger damage in this area.", null);

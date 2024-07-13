@@ -67,7 +67,7 @@ public class CommandBuySubclaim implements CommandExecutor {
         
         // Remove the flag from the subclaim so it can't be re-bought
         FlagManager flagManager = GPFlags.getInstance().getFlagManager();
-        SetFlagResult result = flagManager.setFlag(claim.getID().toString(), flag.getFlagDefinition(), false);
+        SetFlagResult result = flagManager.setFlag(claim.getID().toString(), flag.getFlagDefinition(), false, sender);
         if (!result.isSuccess()) {
             MessagingUtil.sendMessage(sender, TextMode.Err, Messages.ProblemWithFlagSetup);
             return true;
