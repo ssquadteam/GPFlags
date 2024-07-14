@@ -199,8 +199,15 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
         this.handleEntityDamageEvent(event, true, event.getDamager(), event.getEntity(), event.getCause());
     }
 
+    private boolean hasPlayerRider(Entity entity) {
+        List<Entity> passengers = entity.getPassengers();
+        if (passengers.isEmpty()) return false;
+        return passengers.get(0) instanceof Player;
+    }
+
     public boolean isPlayerOrPet(Entity entity) {
         if (entity instanceof Player) return true;
+        if (hasPlayerRider(entity)) return true;
         if (entity.getRider() != null) return true;
         if (entity instanceof Wolf) {
             Wolf wolf = (Wolf) entity;
