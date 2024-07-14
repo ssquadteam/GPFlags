@@ -10,7 +10,6 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
-;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
