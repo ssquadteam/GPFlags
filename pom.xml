@@ -9,6 +9,9 @@
     <version>5.13.3-SNAPSHOT</version>
 
     <properties>
+<!--        this is the real java version used for compilation-->
+<!--        the mc server must have a java version equal or higher than this-->
+<!--        the intelliJ project version is just used for linting-->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,9 +51,15 @@
         </repository>
     </repositories>
     <dependencies>
+<!--        <dependency>-->
+<!--            <groupId>org.purpurmc.purpur</groupId>-->
+<!--            <artifactId>purpur-api</artifactId>-->
+<!--            <version>1.20.4-R0.1-SNAPSHOT</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>org.purpurmc.purpur</groupId>
-            <artifactId>purpur-api</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -121,6 +130,11 @@
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.16.0</version>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.3.3</version>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -177,8 +191,16 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>me.kyori.adventure-text-minimessage</pattern>
-                                    <shadedPattern>me.ryanhamshire.gpflags.libs.minimessage</shadedPattern>
+                                    <pattern>net.kyori.adventure</pattern>
+                                    <shadedPattern>me.ryanhamshire.GPFlags.libs.kyori.adventure</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.kyori.examination</pattern>
+                                    <shadedPattern>me.ryanhamshire.GPFlags.libs.kyori.examination</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.kyori.option</pattern>
+                                    <shadedPattern>me.ryanhamshire.GPFlags.libs.kyori.option</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>

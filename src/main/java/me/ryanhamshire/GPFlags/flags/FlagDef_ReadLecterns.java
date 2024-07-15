@@ -60,7 +60,11 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
             fauxMeta.setAuthor("GPFlags");
             fauxMeta.setTitle("Book and Quill");
             BookMeta meta = (BookMeta) book.getItemMeta();
-            fauxMeta.pages(meta.pages());
+            try {
+                fauxMeta.pages(meta.pages());
+            } catch (Exception e) {
+                fauxMeta.setPages(meta.getPages());
+            }
             writtenBook.setItemMeta(fauxMeta);
             player.openBook(writtenBook);
             return;

@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -45,14 +44,13 @@ public class UpdateChecker {
             connection.setConnectTimeout(5000);
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) return null;
             json = JsonParser.parseReader(new InputStreamReader(connection.getInputStream()));
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             return null;
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
-        connection.disconnect();
         return json;
     }
 

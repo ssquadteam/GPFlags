@@ -44,6 +44,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         return false;
     }
 
+    // todo this should be moved to PlayerListener.java
     @EventHandler
     private void onVehicleMove(VehicleMoveEvent event) {
         Vehicle vehicle = event.getVehicle();

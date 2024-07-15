@@ -42,29 +42,36 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
     
     public FlagDef_AllowPvP(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+        createPositiveEffects();
     }
 
-    private static final Set<PotionEffectType> POSITIVE_EFFECTS = new HashSet<>(Arrays.asList(
-            PotionEffectType.ABSORPTION,
-            PotionEffectType.CONDUIT_POWER,
-            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("resistance")),
-            PotionEffectType.DOLPHINS_GRACE,
-            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("haste")),
-            PotionEffectType.FIRE_RESISTANCE,
-            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("instant_health")),
-            PotionEffectType.HEALTH_BOOST,
-            PotionEffectType.HERO_OF_THE_VILLAGE,
-            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("strength")),
-            PotionEffectType.INVISIBILITY,
-            Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("jump_boost")),
-            PotionEffectType.LUCK,
-            PotionEffectType.NIGHT_VISION,
-            PotionEffectType.REGENERATION,
-            PotionEffectType.SATURATION,
-            PotionEffectType.SLOW_FALLING,
-            PotionEffectType.SPEED,
-            PotionEffectType.WATER_BREATHING
-    ));
+    private static HashSet POSITIVE_EFFECTS = new HashSet<>();
+
+    public static void createPositiveEffects() {
+        try {
+            POSITIVE_EFFECTS = new HashSet( Arrays.asList(
+                    PotionEffectType.ABSORPTION,
+                    PotionEffectType.CONDUIT_POWER,
+                    Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("resistance")),
+                    PotionEffectType.DOLPHINS_GRACE,
+                    Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("haste")),
+                    PotionEffectType.FIRE_RESISTANCE,
+                    Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("instant_health")),
+                    PotionEffectType.HEALTH_BOOST,
+                    PotionEffectType.HERO_OF_THE_VILLAGE,
+                    Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("strength")),
+                    PotionEffectType.INVISIBILITY,
+                    Registry.POTION_EFFECT_TYPE.get(NamespacedKey.minecraft("jump_boost")),
+                    PotionEffectType.LUCK,
+                    PotionEffectType.NIGHT_VISION,
+                    PotionEffectType.REGENERATION,
+                    PotionEffectType.SATURATION,
+                    PotionEffectType.SLOW_FALLING,
+                    PotionEffectType.SPEED,
+                    PotionEffectType.WATER_BREATHING));
+        } catch (Exception ignored) {}
+    }
+
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {

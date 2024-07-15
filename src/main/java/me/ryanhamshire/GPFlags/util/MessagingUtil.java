@@ -4,7 +4,6 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.GPFlagsConfig;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.hooks.PlaceholderApiHook;
-import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -54,7 +53,8 @@ public class MessagingUtil {
         } catch (Throwable ignored) {}
         message = message.replace(COLOR_CHAR, '&');
         Component component = MiniMessage.miniMessage().deserialize(message);
-        Audience.audience(player).sendMessage(component);
+        GPFlags.getInstance().getAdventure().player(player).sendMessage(component);
+//        Audience.audience(player).sendMessage(component);
     }
 
     private static void logToConsole(String message) {
@@ -65,7 +65,7 @@ public class MessagingUtil {
     public static void sendActionbar(Player player, String message) {
         message = message.replace(COLOR_CHAR, '&');
         Component component = MiniMessage.miniMessage().deserialize(message);
-        Audience.audience(player).sendActionBar(component);
+        GPFlags.getInstance().getAdventure().player(player).sendActionBar(component);
     }
 
     public static void logFlagCommands(String log) {

@@ -107,7 +107,10 @@ public class FlagManager {
                         if (offlinePlayer != null) {
                             arg = offlinePlayer.getUniqueId().toString();
                         }
-                    } catch (NoSuchMethodError ignored) {}
+                    } catch (NoSuchMethodError ignored) {
+                        offlinePlayer = Bukkit.getOfflinePlayer(arg);
+                        arg = offlinePlayer.getUniqueId().toString();
+                    }
 
                 }
             }
