@@ -43,7 +43,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
 
             String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
             msg = msg.replace("{p}", playerName).replace("{o}", owner);
-            msg = msg.replace("{1}", playerName).replace("{0}", owner);
+            msg = msg.replace("{0}", playerName).replace("{1}", owner);
             MessagingUtil.sendMessage(player, TextMode.Warn + msg);
             return;
 
