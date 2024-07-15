@@ -62,7 +62,7 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
             BookMeta meta = (BookMeta) book.getItemMeta();
             try {
                 fauxMeta.pages(meta.pages());
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 fauxMeta.setPages(meta.getPages());
             }
             writtenBook.setItemMeta(fauxMeta);

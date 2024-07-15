@@ -69,7 +69,7 @@ public class FlagDef_AllowPvP extends PlayerMovementFlagDefinition {
                     PotionEffectType.SLOW_FALLING,
                     PotionEffectType.SPEED,
                     PotionEffectType.WATER_BREATHING));
-        } catch (Exception ignored) {}
+        } catch (Throwable ignored) {}
     }
 
 

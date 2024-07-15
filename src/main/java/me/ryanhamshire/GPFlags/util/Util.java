@@ -60,7 +60,7 @@ public class Util {
         int rev;
         try {
             rev = Integer.parseInt(version[2]);
-        } catch (Exception ignore) {
+        } catch (Throwable ignore) {
             rev = 0;
         }
         return maj > major || min > minor || (min == minor && rev >= revision);

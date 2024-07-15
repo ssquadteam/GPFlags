@@ -263,7 +263,7 @@ public class GPFlagsConfig {
                 MessagingUtil.sendMessage(null, "<red>Problems encountered reading the flags data file! " +
                         "Please share this log and your 'flagsError.yml' and 'flags.yml' files with the developer.");
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             MessagingUtil.sendMessage(null, "<red>Unable to initialize the file system data store.  Details:");
             MessagingUtil.sendMessage(null, e.getMessage());
         }

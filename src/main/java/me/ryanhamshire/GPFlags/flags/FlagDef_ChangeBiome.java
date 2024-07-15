@@ -95,7 +95,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         Biome b;
         try {
             b = Biome.valueOf(biome);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             sender.sendMessage("<red>Invalid biome");
             return false;
         }

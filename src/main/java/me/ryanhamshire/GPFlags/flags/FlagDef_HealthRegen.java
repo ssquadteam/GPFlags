@@ -95,7 +95,7 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
                     if (newVal > allowed) {
                         allowed = newVal;
                     }
-                } catch (Exception ignored) {
+                } catch (Throwable ignored) {
                 }
             }
         }

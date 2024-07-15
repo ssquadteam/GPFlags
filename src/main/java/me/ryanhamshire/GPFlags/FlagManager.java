@@ -143,7 +143,7 @@ public class FlagManager {
         Claim claim;
         try {
             claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
-        } catch (Exception ignored) {
+        } catch (Throwable ignored) {
             return result;
         }
         if (claim != null) {
@@ -282,7 +282,7 @@ public class FlagManager {
             try {
                 Claim claim = GriefPrevention.instance.dataStore.getClaim(Long.parseLong(claimId));
                 def.onFlagUnset(claim);
-            } catch (Exception ignored) {}
+            } catch (Throwable ignored) {}
             claimFlags.remove(def.getName().toLowerCase());
             return new SetFlagResult(true, def.getUnSetMessage());
         }
@@ -320,7 +320,7 @@ public class FlagManager {
     public void save() {
         try {
             this.save(FlagsDataStore.flagsFilePath);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             e.printStackTrace();
         }
     }

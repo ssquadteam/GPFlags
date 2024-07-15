@@ -14,7 +14,7 @@ public class UpdateChecker {
         new Thread(() -> {
             try {
                 checkForUpdates(plugin, projectName);
-            } catch (Error ignored) {}
+            } catch (Throwable ignored) {}
         }).start();
     }
 
@@ -78,7 +78,7 @@ public class UpdateChecker {
             if (i < versionAComponents.length) {
                 try {
                     versionANum = Integer.parseInt(versionAComponents[i]);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     aIsNumber = false;
                     versionANum = Integer.parseInt(versionAComponents[i].replaceAll("[^0-9]", ""));
                 }
@@ -88,7 +88,7 @@ public class UpdateChecker {
             if (i < versionBComponents.length) {
                 try {
                     versionBNum = Integer.parseInt(versionBComponents[i]);
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     bIsNumber = false;
                     versionBNum = Integer.parseInt(versionBComponents[i].replaceAll("[^0-9]", ""));
                 }
