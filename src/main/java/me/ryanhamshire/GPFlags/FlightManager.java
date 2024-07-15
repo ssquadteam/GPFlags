@@ -114,9 +114,9 @@ public class FlightManager implements Listener {
         }
         // if oldLocation is passed in, we want to calculate that value immediately
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
+        Boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
         Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
-            boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
+            Boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
             managePlayerFlight(player, oldFlightAllowedStatus, newFlightAllowedStatus);
         }, ticks);
     }
@@ -131,8 +131,14 @@ public class FlightManager implements Listener {
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(newLocation, false, playerData.lastClaim);
 
-        boolean flightAllowedAtNewLocation = gpfAllowsFlight(player, newLocation, claim);
+        Boolean flightAllowedAtNewLocation = gpfAllowsFlight(player, newLocation, claim);
         if (oldLocation == null) {
+            if (flightAllowedAtNewLocation == null) {
+                if (gpfManagesFlight(player)) {
+                    turnOffFlight(player);
+                }
+                return;
+            }
             if (flightAllowedAtNewLocation) {
                 turnOnFlight(player);
             } else {
@@ -141,7 +147,7 @@ public class FlightManager implements Listener {
             return;
         }
 
-        boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
+        Boolean flightAllowedAtOldLocation = gpfAllowsFlight(player, oldLocation, claim);
         managePlayerFlight(player, flightAllowedAtOldLocation, flightAllowedAtNewLocation);
     }
 
@@ -153,7 +159,7 @@ public class FlightManager implements Listener {
      * @param cachedClaim
      * @return
      */
-    private static boolean gpfAllowsFlight(Player player, Location location, Claim cachedClaim) {
+    private static Boolean gpfAllowsFlight(Player player, Location location, Claim cachedClaim) {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, cachedClaim);
         boolean manageFlight = gpfManagesFlight(player);
         if (manageFlight) {
@@ -172,7 +178,7 @@ public class FlightManager implements Listener {
                 return true;
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -181,14 +187,21 @@ public class FlightManager implements Listener {
      * @param flightAllowedAtOldLocation
      * @param flightAllowedAtNewLocation
      */
-    private static void managePlayerFlight(@NotNull Player player, boolean flightAllowedAtOldLocation, boolean flightAllowedAtNewLocation) {
-        if (flightAllowedAtOldLocation && !flightAllowedAtNewLocation) {
-            turnOffFlight(player);
+    private static void managePlayerFlight(@NotNull Player player, @Nullable Boolean flightAllowedAtOldLocation, @Nullable Boolean flightAllowedAtNewLocation) {
+        if (flightAllowedAtNewLocation == null) {
+            if (Boolean.TRUE.equals(flightAllowedAtOldLocation)) {
+                if (gpfManagesFlight(player)) {
+                    turnOffFlight(player);
+                }
+            }
             return;
         }
-
-        if (!flightAllowedAtOldLocation && flightAllowedAtNewLocation) {
+        if (flightAllowedAtNewLocation) {
             turnOnFlight(player);
+            return;
+        }
+        if (!flightAllowedAtNewLocation) {
+            turnOffFlight(player);
             return;
         }
     }
