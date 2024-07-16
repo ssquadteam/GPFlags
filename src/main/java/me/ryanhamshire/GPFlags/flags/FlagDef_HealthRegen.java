@@ -85,6 +85,7 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
     }
 
     private boolean senderHasPermissionForHealthAmount(CommandSender sender, int desired) {
+        if (sender == null) return true;
         int allowed = 1;
         Set<PermissionAttachmentInfo> attachments = sender.getEffectivePermissions();
         for (PermissionAttachmentInfo attachment : attachments) {
