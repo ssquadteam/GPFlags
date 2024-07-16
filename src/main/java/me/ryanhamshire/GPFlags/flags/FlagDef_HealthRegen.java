@@ -92,7 +92,7 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
             String permName = attachment.getPermission().toLowerCase();
             if (permName.startsWith("gpflags.flag.healthregen.") && attachment.getValue()) {
                 try {
-                    int newVal = Integer.parseInt(permName.replace("gpflags.healthregen.", ""));
+                    int newVal = Integer.parseInt(permName.toLowerCase().replace("gpflags.flag.healthregen.", ""));
                     if (newVal > allowed) {
                         allowed = newVal;
                     }
