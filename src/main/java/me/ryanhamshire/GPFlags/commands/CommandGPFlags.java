@@ -4,6 +4,8 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommandYamlParser;
@@ -28,6 +30,18 @@ public class CommandGPFlags implements TabExecutor {
             MessagingUtil.sendMessage(commandSender, TextMode.Success, Messages.ReloadComplete);
             return true;
         }
+
+        if (args.length > 0 && args[0].equalsIgnoreCase("debug")) {
+            if (!commandSender.hasPermission("gpflags.command.debug")) {
+                MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
+                return true;
+            }
+            MessagingUtil.sendMessage(commandSender, "<orange>Server version: <yellow>" + Bukkit.getServer().getVersion());
+            MessagingUtil.sendMessage(commandSender, "<orange>GP version: <yellow>" + GriefPrevention.instance.getDescription().getVersion());
+            MessagingUtil.sendMessage(commandSender, "<orange>GPF version: <yellow>" + GPFlags.getInstance().getDescription().getVersion());
+            return true;
+        }
+
         if (!commandSender.hasPermission("gpflags.command.help")) {
             MessagingUtil.sendMessage(commandSender, TextMode.Err, Messages.NoCommandPermission, command.toString());
             return true;
@@ -48,6 +62,9 @@ public class CommandGPFlags implements TabExecutor {
         if (args.length == 1) {
             if (commandSender.hasPermission("gpflags.command.reload")) {
                 list.add("reload");
+            }
+            if (commandSender.hasPermission("gpflags.command.debug")) {
+                list.add("debug");
             }
             if (commandSender.hasPermission("gpflags.command.help")) {
                 list.add("help");
