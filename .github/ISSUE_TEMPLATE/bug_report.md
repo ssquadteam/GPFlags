@@ -28,6 +28,4 @@ If you think it might help, paste configs into [binflop](https://bin.birdflop.co
  - GPFlags config
 
 **Versions:**
- - GriefPrevention version 
- - GPFlags version (ex 5.13.1)
- - Server version (ex Paper 1.20.6-144)
+ - Show the output of /gpflags debug
