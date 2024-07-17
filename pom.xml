@@ -16,6 +16,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!--This is used to show the build number for jenkins.-->
+        <!--suppress UnresolvedMavenProperty -->
         <build.number>${env.BUILD_NUMBER}</build.number>
     </properties>
 
