@@ -20,20 +20,16 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 
 public class PlayerListener implements Listener {
 
     private static final DataStore dataStore = GriefPrevention.instance.dataStore;
-    private final FlagManager FLAG_MANAGER = GPFlags.getInstance().getFlagManager();
 
     @EventHandler(ignoreCancelled = true)
     private void onMove(PlayerMoveEvent event) {
@@ -89,7 +85,7 @@ public class PlayerListener implements Listener {
      * @param locTo
      * @param locFrom
      * @param player
-     * @param event
+     * @param event A cancellable event. If you need to use null here, remember to also teleport the player back to their old location
      * @return If the created PreClaimBorderEvent was permitted
      */
     public static boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {

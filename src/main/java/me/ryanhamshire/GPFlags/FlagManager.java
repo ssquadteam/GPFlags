@@ -362,6 +362,13 @@ public class FlagManager {
         Files.write(fileContent.getBytes(StandardCharsets.UTF_8), file);
     }
 
+    /**
+     *
+     * @param file
+     * @return A list of errors
+     * @throws IOException
+     * @throws InvalidConfigurationException
+     */
     public List<MessageSpecifier> load(File file) throws IOException, InvalidConfigurationException {
         if (!file.exists()) return this.load("");
 

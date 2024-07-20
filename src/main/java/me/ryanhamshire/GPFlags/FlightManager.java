@@ -178,6 +178,7 @@ public class FlightManager implements Listener {
                 return true;
             }
         }
+        // we have no flight context set, so we need to compare the response for this method from both claims to determine if they should fly
         return null;
     }
 

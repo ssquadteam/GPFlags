@@ -39,7 +39,7 @@ public abstract class FlagDefinition implements Listener {
 
     public abstract String getName();
 
-    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
+    public SetFlagResult validateParameters(String parameters, @Nullable CommandSender sender) {
         return new SetFlagResult(true, this.getSetMessage(parameters));
     }
 
