@@ -3,11 +3,13 @@ package me.ryanhamshire.GPFlags.flags;
 import java.util.Arrays;
 import java.util.List;
 
+import me.ryanhamshire.GriefPrevention.events.ClaimPermissionCheckEvent;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Lectern;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -28,30 +30,35 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
     public FlagDef_ReadLecterns(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
-    
+
     @EventHandler
-    public void onInvOpen(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        
-        Block block = event.getClickedBlock();
+    public void onLectern(ClaimPermissionCheckEvent event) {
+        Event triggeringEvent = event.getTriggeringEvent();
+        if (!(triggeringEvent instanceof PlayerInteractEvent)) return;
+        PlayerInteractEvent interactEvent = (PlayerInteractEvent) triggeringEvent;
+        if (interactEvent.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Block block = interactEvent.getClickedBlock();
         if (block == null) return;
         BlockState state = block.getState();
         if (!(state instanceof Lectern)) return;
-        
+
         Flag flag = this.getFlagInstanceAtLocation(block.getLocation(), null);
         if (flag == null) return;
-        
-        Player player = event.getPlayer();
+
+        Player player = interactEvent.getPlayer();
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(block.getLocation(), false, playerData.lastClaim);
         if (claim == null) return;
         if (claim.ownerID == null) return;
-        if (claim.ownerID.equals(player.getUniqueId()) || claim.checkPermission(player, ClaimPermission.Inventory, event) == null) return;
-        
+        if (claim.ownerID.equals(player.getUniqueId())) return;
+        if (claim.checkPermission(player, ClaimPermission.Inventory, event) == null) return;
+
         Lectern lectern = (Lectern) state;
         ItemStack book = lectern.getInventory().getItem(0);
         if (book == null) return;
+
+        event.setDenialReason(() -> "Lectern opened in view-only state");
 
         // If it's a book and quill, pretend it's signed
         if (book.getType() == Material.WRITABLE_BOOK) {
