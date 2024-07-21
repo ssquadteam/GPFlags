@@ -52,7 +52,7 @@ public class FlagDef_ReadLecterns extends FlagDefinition {
         if (claim == null) return;
         if (claim.ownerID == null) return;
         if (claim.ownerID.equals(player.getUniqueId())) return;
-        if (claim.checkPermission(player, ClaimPermission.Inventory, event) == null) return;
+        if (claim.checkPermission(player, ClaimPermission.Inventory, interactEvent) == null) return;
 
         Lectern lectern = (Lectern) state;
         ItemStack book = lectern.getInventory().getItem(0);
