@@ -223,6 +223,8 @@ public enum Messages {
     DisabledAllowWitherDamage,
     EnableNoEliteMobSpawns,
     DisableNoEliteMobSpawns,
+    EnableNoPlayerCropTrampling,
+    DisableNoPlayerCropTrampling,
 
     EnabledNoStructureGrowth,
     DisableNoStructureGrowth,

@@ -371,6 +371,9 @@ public class FlagsDataStore {
         this.addDefault(defaults, Messages.EnabledAllowInfest, "Silverfish can now infest blocks in this area.", null);
         this.addDefault(defaults, Messages.DisabledAllowInfest, "Silverfish can no longer infest blocks in this area.", null);
 
+        this.addDefault(defaults, Messages.EnableNoPlayerCropTrampling, "Players can no longer trample blocks in this area.", null);
+        this.addDefault(defaults, Messages.EnableNoPlayerCropTrampling, "Players can now trample blocks in this area.", null);
+
         this.addDefault(defaults, Messages.EnabledNoPotionEffects, "Potion effects are now disabled in this region.", null);
         this.addDefault(defaults, Messages.DisabledNoPotionEffects, "Potion effects are now enabled in this region.", null);
         this.addDefault(defaults, Messages.NotValidPotionName, "{0} is not a valid potion effect type. See https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/potion/PotionEffectType.html for a complete list.", "0: invalid potion effect type");
