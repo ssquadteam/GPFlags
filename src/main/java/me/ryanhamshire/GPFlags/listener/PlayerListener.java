@@ -31,13 +31,13 @@ public class PlayerListener implements Listener, Runnable {
 
     private static final DataStore dataStore = GriefPrevention.instance.dataStore;
 
-    private static final long TASK_PERIOD_SECONDS = 1L;
+    private static final long TASK_PERIOD_MILLISECONDS = 500L;
     private static final int DISTANCE_THRESHOLD_SQUARED = (int) Math.pow(3, 2);
 
     private final ConcurrentMap<UUID, Location> lastLocation = new ConcurrentHashMap<>();
 
     public PlayerListener() {
-        GPFlags.getScheduler().getImpl().runTimer(this, TASK_PERIOD_SECONDS, TASK_PERIOD_SECONDS, TimeUnit.SECONDS);
+        GPFlags.getScheduler().getImpl().runTimer(this, TASK_PERIOD_MILLISECONDS, TASK_PERIOD_MILLISECONDS, TimeUnit.MILLISECONDS);
     }
 
     @Override

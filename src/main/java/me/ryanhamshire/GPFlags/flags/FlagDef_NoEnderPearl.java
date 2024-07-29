@@ -11,11 +11,14 @@ import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +27,39 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
 
     public FlagDef_NoEnderPearl(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!event.getAction().isRightClick()) {
+            return;
+        }
+
+        final ItemStack item = event.getItem();
+        if (item == null || item.getType() != Material.ENDER_PEARL) {
+            return;
+        }
+
+        final Player player = event.getPlayer();
+        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), event.getPlayer());
+        if (flag == null) {
+            return;
+        }
+
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        if (Util.shouldBypass(player, claim, flag)) {
+            return;
+        }
+
+        event.setCancelled(true);
+
+        String owner = claim.getOwnerName();
+        String playerName = player.getName();
+
+        String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
+        msg = msg.replace("{p}", playerName).replace("{o}", owner);
+        msg = msg.replace("{0}", playerName).replace("{1}", owner);
+        MessagingUtil.sendMessage(player, TextMode.Warn + msg);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
