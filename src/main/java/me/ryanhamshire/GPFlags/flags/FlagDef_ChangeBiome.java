@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
 import me.ryanhamshire.GPFlags.util.MessagingUtil;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
@@ -73,7 +74,8 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
      * @param biome
      */
     private void changeBiome(Claim claim, Biome biome) {
-        Location greater = claim.getGreaterBoundaryCorner().toHighestLocation();
+        Location greater = claim.getGreaterBoundaryCorner();
+        greater.setY(Util.getMaxHeight(greater));
         Location lesser = claim.getLesserBoundaryCorner();
         int i = changeBiome(greater, lesser, biome);
         BukkitRunnable runnable = new BukkitRunnable() {
