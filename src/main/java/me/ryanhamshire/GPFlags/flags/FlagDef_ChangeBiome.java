@@ -29,6 +29,13 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         super(manager, plugin);
     }
 
+    /**
+     * What actually does all the biome changing stuff
+     * @param greater corner
+     * @param lesser corner
+     * @param biome the biome to set it to
+     * @return The number of ticks it's going to take to finish changing the biome
+     */
     private int changeBiome(Location greater, Location lesser, Biome biome) {
         int lX = (int) lesser.getX();
         int lY = (int) lesser.getY();
@@ -37,7 +44,6 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         int gY = (int) greater.getY();
         int gZ = (int) greater.getZ();
         World world = lesser.getWorld();
-        assert world != null;
         int i = 0;
         for (int x = lX; x < gX; x++) {
             int finalX = x;
@@ -61,8 +67,13 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         return i;
     }
 
+    /**
+     * Runs the other changeBiome and then refreshes chunks in the claim
+     * @param claim
+     * @param biome
+     */
     private void changeBiome(Claim claim, Biome biome) {
-        Location greater = claim.getGreaterBoundaryCorner();
+        Location greater = claim.getGreaterBoundaryCorner().toHighestLocation();
         Location lesser = claim.getLesserBoundaryCorner();
         int i = changeBiome(greater, lesser, biome);
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -91,6 +102,13 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         }
     }
 
+    /**
+     * Validates biome name and permissions and then runs the changeBiome command
+     * @param sender
+     * @param claim
+     * @param biome
+     * @return
+     */
     public boolean changeBiome(CommandSender sender, Claim claim, String biome) {
         Biome b;
         try {
@@ -100,7 +118,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
             return false;
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
-        assert world != null;
+        if (world == null) {
+            sender.sendMessage("<red>World does not exist");
+            return false;
+        }
         if (!sender.hasPermission("gpflags.flag.changebiome." + biome)) {
             MessagingUtil.sendMessage(sender,"<red>You do not have permissions for the biome <aqua>" + biome + " <red>." );
             return false;
