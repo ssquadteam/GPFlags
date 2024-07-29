@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class FlightManager implements Listener {
     private static final HashSet<Player> fallImmune = new HashSet<>();
@@ -107,18 +108,19 @@ public class FlightManager implements Listener {
      */
     public static void manageFlightLater(@NotNull Player player, int ticks, @Nullable Location oldLocation) {
         if (oldLocation == null) {
-            Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+            GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> {
                 managePlayerFlight(player, null, player.getLocation());
-            }, ticks);
+            }, ticks * 50L, TimeUnit.MILLISECONDS);
             return;
         }
         // if oldLocation is passed in, we want to calculate that value immediately
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         Boolean oldFlightAllowedStatus = gpfAllowsFlight(player, oldLocation, playerData.lastClaim);
-        Bukkit.getScheduler().runTaskLater(GPFlags.getInstance(), () -> {
+
+        GPFlags.getScheduler().getImpl().runAtEntityLater(player, () -> {
             Boolean newFlightAllowedStatus = gpfAllowsFlight(player, player.getLocation(), playerData.lastClaim);
             managePlayerFlight(player, oldFlightAllowedStatus, newFlightAllowedStatus);
-        }, ticks);
+        }, ticks * 50L, TimeUnit.MILLISECONDS);
     }
 
     /**
