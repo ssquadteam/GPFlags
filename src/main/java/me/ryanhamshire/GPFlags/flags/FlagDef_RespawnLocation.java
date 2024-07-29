@@ -9,6 +9,7 @@ import me.ryanhamshire.GPFlags.SetFlagResult;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -56,7 +57,7 @@ public class FlagDef_RespawnLocation extends FlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         String[] params = parameters.split(" ");
 
         if (params.length < 4) {

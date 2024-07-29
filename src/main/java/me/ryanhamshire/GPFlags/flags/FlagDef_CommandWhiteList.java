@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -35,7 +36,7 @@ public class FlagDef_CommandWhiteList extends CommandListFlagDefinition {
 
         if (!this.commandInList(flag.parameters, event.getMessage())) {
             event.setCancelled(true);
-            Util.sendClaimMessage(player, TextMode.Err, Messages.CommandBlockedHere);
+            MessagingUtil.sendMessage(player, TextMode.Err, Messages.CommandBlockedHere);
         }
     }
 

@@ -22,21 +22,15 @@ public class ClaimResizeListener implements Listener {
         for (Player player : world.getPlayers()) {
             Location loc = Util.getInBoundsLocation(player);
 
-            // Resizing a claim to be smaller and falling on the outside
+            // Resizing a claim and falling on the outside
             if (!claimTo.contains(loc, false, false) && claimFrom.contains(loc, false, false)) {
-                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
+                PlayerPostClaimBorderEvent borderEvent = new PlayerPostClaimBorderEvent(player, claimFrom, null, claimFrom.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
-                if (!borderEvent.isCancelled()) {
-                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
-                }
             }
-            // Resizing a claim to be larger and falling on the inside
+            // Resizing a claim and falling on the inside
             if (claimTo.contains(loc, false, false) && !claimFrom.contains(loc, false, false)) {
-                PlayerPreClaimBorderEvent borderEvent = new PlayerPreClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
+                PlayerPostClaimBorderEvent borderEvent = new PlayerPostClaimBorderEvent(player, null, claimTo, claimTo.getLesserBoundaryCorner(), loc);
                 Bukkit.getPluginManager().callEvent(borderEvent);
-                if (!borderEvent.isCancelled()) {
-                    Bukkit.getPluginManager().callEvent(new PlayerPostClaimBorderEvent(borderEvent));
-                }
             }
         }
     }

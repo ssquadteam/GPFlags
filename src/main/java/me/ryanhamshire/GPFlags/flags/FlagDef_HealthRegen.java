@@ -6,12 +6,16 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
 
@@ -36,8 +40,8 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
         if (flag.parameters != null && !flag.parameters.isEmpty()) {
             try {
                 healAmount = Integer.parseInt(flag.parameters);
-            } catch (NumberFormatException e) {
-                Util.log("Problem with health regen amount @ " + player.getLocation().getBlock().getLocation().toString());
+            } catch (NumberFormatException ignored) {
+                // Simply don't heal if amount is invalid
             }
         }
 
@@ -61,10 +65,9 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty())
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
-
         int amount;
         try {
             amount = Integer.parseInt(parameters);
@@ -74,8 +77,30 @@ public class FlagDef_HealthRegen extends TimedPlayerFlagDefinition {
         } catch (NumberFormatException e) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenGreaterThanZero));
         }
+        if (!senderHasPermissionForHealthAmount(sender, amount)) {
+            return new SetFlagResult(false, new MessageSpecifier(Messages.HealthRegenTooHigh));
+        }
 
         return new SetFlagResult(true, this.getSetMessage(parameters));
+    }
+
+    private boolean senderHasPermissionForHealthAmount(CommandSender sender, int desired) {
+        if (sender == null) return true;
+        int allowed = 1;
+        Set<PermissionAttachmentInfo> attachments = sender.getEffectivePermissions();
+        for (PermissionAttachmentInfo attachment : attachments) {
+            String permName = attachment.getPermission().toLowerCase();
+            if (permName.startsWith("gpflags.flag.healthregen.") && attachment.getValue()) {
+                try {
+                    int newVal = Integer.parseInt(permName.toLowerCase().replace("gpflags.flag.healthregen.", ""));
+                    if (newVal > allowed) {
+                        allowed = newVal;
+                    }
+                } catch (Throwable ignored) {
+                }
+            }
+        }
+        return desired <= allowed;
     }
 
     @Override

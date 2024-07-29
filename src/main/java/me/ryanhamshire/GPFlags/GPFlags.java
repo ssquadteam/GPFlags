@@ -1,24 +1,21 @@
 package me.ryanhamshire.GPFlags;
 
+import java.util.*;
 import com.tcoded.folialib.FoliaLib;
 import me.ryanhamshire.GPFlags.commands.*;
-import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
 import me.ryanhamshire.GPFlags.flags.FlagDefinition;
-import me.ryanhamshire.GPFlags.listener.ClaimModifiedListener;
-import me.ryanhamshire.GPFlags.listener.ClaimResizeListener;
-import me.ryanhamshire.GPFlags.listener.EntityMoveListener;
-import me.ryanhamshire.GPFlags.listener.PlayerListener;
+import me.ryanhamshire.GPFlags.listener.*;
 import me.ryanhamshire.GPFlags.metrics.Metrics;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
+import me.ryanhamshire.GPFlags.flags.FlagDef_ViewContainers;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * <b>Main GriefPrevention Flags class</b>
@@ -31,15 +28,15 @@ public class GPFlags extends JavaPlugin {
     private FlagsDataStore flagsDataStore;
     private final FlagManager flagManager = new FlagManager();
     private WorldSettingsManager worldSettingsManager;
-
+    public BukkitAudiences adventure;
     boolean registeredFlagDefinitions = false;
     private PlayerListener playerListener;
-
 
     public void onEnable() {
         long start = System.currentTimeMillis();
         instance = this;
         scheduler = new FoliaLib(this);
+        this.adventure = BukkitAudiences.create(this);
 
         this.playerListener = new PlayerListener();
         Bukkit.getPluginManager().registerEvents(playerListener, this);
@@ -54,7 +51,8 @@ public class GPFlags extends JavaPlugin {
         } catch (ClassNotFoundException e) {
             Bukkit.getPluginManager().registerEvents(new ClaimModifiedListener(), this);
         }
-
+        Bukkit.getPluginManager().registerEvents(new ClaimTransferListener(), this);
+        Bukkit.getPluginManager().registerEvents(new FlightManager(), this);
 
         this.flagsDataStore = new FlagsDataStore();
         reloadConfig();
@@ -73,6 +71,9 @@ public class GPFlags extends JavaPlugin {
         getCommand("unsetdefaultclaimflag").setExecutor(new CommandUnsetDefaultClaimFlag());
         getCommand("unsetserverflag").setExecutor(new CommandUnsetServerFlag());
         getCommand("unsetworldflag").setExecutor(new CommandUnsetWorldFlag());
+        getCommand("bulksetflag").setExecutor(new CommandBulkSetFlag());
+        getCommand("bulkunsetflag").setExecutor(new CommandBulkUnsetFlag());
+
 
         Metrics metrics = new Metrics(this, 17786);
         Set<String> usedFlags = GPFlags.getInstance().getFlagManager().getUsedFlags();
@@ -87,10 +88,10 @@ public class GPFlags extends JavaPlugin {
             return GriefPrevention.instance.getDescription().getVersion();
         }));
 
-        UpdateChecker.checkForUpdates(this);
+        UpdateChecker.run(this, "gpflags");
 
         float finish = (float) (System.currentTimeMillis() - start) / 1000;
-        Util.log("Successfully loaded in &b%.2f seconds", finish);
+        MessagingUtil.sendMessage(null, "Successfully loaded in " + String.format("%.2f", finish) + " seconds");
     }
 
     public void onDisable() {
@@ -98,12 +99,20 @@ public class GPFlags extends JavaPlugin {
             inv.setContents(new ItemStack[inv.getSize()]);
             new ArrayList<>(inv.getViewers()).forEach(HumanEntity::closeInventory);
         });
-        if (flagsDataStore != null) {
-            flagsDataStore.close();
-            flagsDataStore = null;
+        flagsDataStore = null;
+        if (this.adventure != null) {
+            this.adventure.close();
+            this.adventure = null;
         }
         instance = null;
         playerListener = null;
+    }
+
+    public @NonNull BukkitAudiences getAdventure() {
+        if (this.adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return this.adventure;
     }
 
     /**

@@ -1,15 +1,19 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -21,30 +25,15 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return;
         if (claimTo == null) return;
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flag == null) return;
 
-        // get specific EnterMessage flag of destination claim and ExitMessage flag of origin claim
-        Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
-        Flag flagFromExit = plugin.getFlagManager().getFlag(claimFrom, plugin.getFlagManager().getFlagDefinitionByName("NotifyExit"));
-
-        // Don't repeat the enter message of a claim in certain cases
-        if (claimFrom != null) {
-            // moving to sub-claim, and the sub claim does not have its own enter message
-            if (claimTo.parent == claimFrom && (flagTo == null || !flagTo.getSet())) {
-                return;
-            }
-            // moving to parent claim, and the sub claim does not have its own exit message
-            if (claimFrom.parent == claimTo && (flagFromExit == null || !flagFromExit.getSet())) {
-                return;
-            }
-        }
         if (shouldNotify(player, claimTo)) notifyEntry(flag, claimTo, player);
     }
 
-    public boolean shouldNotify(Player p, Claim c) {
+    public boolean shouldNotify(@NotNull Player p, @Nullable Claim c) {
+        if (c == null) return false;
         UUID ownerID = c.getOwnerID();
         if (ownerID == null) return false;
         Player owner = Bukkit.getPlayer(ownerID);
@@ -56,7 +45,7 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
         return true;
     }
 
-    public void notifyEntry(Flag flag, Claim claim, Player player) {
+    public void notifyEntry(@NotNull Flag flag, @NotNull Claim claim, @NotNull Player player) {
         Player owner = Bukkit.getPlayer(claim.getOwnerID());
         if (owner == null) return;
         if (owner.getName().equals(player.getName())) return;
@@ -64,17 +53,20 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
         if (param == null || param.isEmpty()) {
             param = "claim " + claim.getID();
         }
-        Util.sendClaimMessage(owner, TextMode.Info, Messages.NotifyEnter, player.getName(), param);
+        MessagingUtil.sendMessage(owner, TextMode.Info, Messages.NotifyEnter, player.getName(), param);
 
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
-        if (flag == null) return;
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        Location location = player.getLocation();
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
         if (claim == null) return;
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, this.getName(), claim);
+        if (flag == null) return;
+
         if (shouldNotify(player, claim)) notifyEntry(flag, claim, player);
     }
 
@@ -84,7 +76,7 @@ public class FlagDef_NotifyEnter extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         return new SetFlagResult(true, this.getSetMessage(parameters));
     }
 

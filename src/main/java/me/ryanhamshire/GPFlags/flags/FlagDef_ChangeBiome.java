@@ -5,11 +5,12 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
+import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,20 +24,27 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class FlagDef_ChangeBiome extends FlagDefinition {
 
     public FlagDef_ChangeBiome(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
+    /**
+     * What actually does all the biome changing stuff
+     * @param greater corner
+     * @param lesser corner
+     * @param biome the biome to set it to
+     * @return The number of ticks it's going to take to finish changing the biome
+     */
     private int changeBiome(Location greater, Location lesser, Biome biome) {
         int lX = (int) lesser.getX();
+        int lY = (int) lesser.getY();
         int lZ = (int) lesser.getZ();
         int gX = (int) greater.getX();
+        int gY = (int) greater.getY();
         int gZ = (int) greater.getZ();
         World world = lesser.getWorld();
-        assert world != null;
         int i = 0;
         for (int x = lX; x < gX; x++) {
             int finalX = x;
@@ -47,7 +55,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
                     if (!(loadChunk.isLoaded())) {
                         loadChunk.load();
                     }
-                    for (int y = 0; y <= 255; y++) {
+                    for (int y = lY; y <= gY; y++) {
                         world.setBiome(finalX, y, z, biome);
                     }
                 }
@@ -57,8 +65,14 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         return i;
     }
 
+    /**
+     * Runs the other changeBiome and then refreshes chunks in the claim
+     * @param claim
+     * @param biome
+     */
     private void changeBiome(Claim claim, Biome biome) {
         Location greater = claim.getGreaterBoundaryCorner();
+        greater.setY(Util.getMaxHeight(greater));
         Location lesser = claim.getLesserBoundaryCorner();
         int i = changeBiome(greater, lesser, biome);
         Runnable runnable = new Runnable() {
@@ -70,7 +84,6 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         GPFlags.getScheduler().getImpl().runAtLocationLater(lesser, runnable, 50L, TimeUnit.MILLISECONDS);
     }
 
-    @SuppressWarnings("deprecation")
     private void refreshChunks(Claim claim) {
         int view = Bukkit.getServer().getViewDistance();
         Player player = Bukkit.getPlayer(claim.getOwnerName());
@@ -88,19 +101,28 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
         }
     }
 
+    /**
+     * Validates biome name and permissions and then runs the changeBiome command
+     * @param sender
+     * @param claim
+     * @param biome
+     * @return
+     */
     public boolean changeBiome(CommandSender sender, Claim claim, String biome) {
         Biome b;
         try {
             b = Biome.valueOf(biome);
-        } catch (Exception e) {
-            sender.sendMessage(ChatColor.RED + "Invalid biome");
+        } catch (Throwable e) {
+            sender.sendMessage("<red>Invalid biome");
             return false;
         }
         World world = claim.getLesserBoundaryCorner().getWorld();
-        assert world != null;
+        if (world == null) {
+            sender.sendMessage("<red>World does not exist");
+            return false;
+        }
         if (!sender.hasPermission("gpflags.flag.changebiome." + biome)) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    "&cYou do not have permissions for the biome &b" + biome + " &c."));
+            MessagingUtil.sendMessage(sender,"<red>You do not have permissions for the biome <aqua>" + biome + " <red>." );
             return false;
         }
         changeBiome(claim, b);
@@ -119,11 +141,10 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
 
     @EventHandler
     public void onClaimDelete(ClaimDeletedEvent e) {
-        if (e.getClaim().getOwnerName() == null) return; //don't restore a sub-claim
+        if (e.getClaim().parent != null) return; //don't restore a sub-claim
         Claim claim = e.getClaim();
-
-        if (GPFlags.getInstance().getFlagManager().getFlag(claim, this) == null)
-            return; // Return if flag is non existent
+        FlagManager fm = GPFlags.getInstance().getFlagManager();
+        if (fm.getEffectiveFlag(claim.getLesserBoundaryCorner(), this.getName(), claim) == null) return;
 
         resetBiome(claim);
     }
@@ -134,7 +155,7 @@ public class FlagDef_ChangeBiome extends FlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.MessageRequired));
         }

@@ -1,11 +1,12 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,23 +20,25 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return;
-        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == oldFlag) return;
-        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) {
-            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-        }
+        if (claimTo == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagTo == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same params
+        if (flagFrom != null && flagFrom.parameters.equals(flagTo.parameters)) return;
 
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        String message = flag.getParameters()
-                .replace("%name%", player.getName())
-                .replace("%uuid%", player.getUniqueId().toString());
-        if (playerData.lastClaim != null) {
-            message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
+        sendActionbar(flagTo, player, claimTo);
+    }
+
+    public void sendActionbar(Flag flag, Player player, Claim claim) {
+        String message = flag.parameters;
+        String owner = claim.getOwnerName();
+        if (owner != null) {
+            message = message.replace("%owner%", owner);
         }
-        player.sendActionBar(Util.getColString(message));
+        message = message.replace("%name%", player.getName());
+        MessagingUtil.sendActionbar(player, message);
     }
 
     @EventHandler
@@ -44,14 +47,9 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
         Flag flag = this.getFlagInstanceAtLocation(player.getLocation(), player);
         if (flag == null) return;
         PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        Claim lastClaim = playerData.lastClaim;
-        String message = flag.getParameters()
-                .replace("%name%", player.getName())
-                .replace("%uuid%", player.getUniqueId().toString());
-        if (lastClaim != null) {
-                message = message.replace("%owner%", playerData.lastClaim.getOwnerName());
-        }
-        player.sendActionBar(Util.getColString(message));
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, playerData.lastClaim);
+
+        sendActionbar(flag, player, claim);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class FlagDef_EnterActionbar extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.ActionbarRequired));
         }

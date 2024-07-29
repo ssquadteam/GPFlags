@@ -6,6 +6,7 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -25,15 +26,15 @@ public class FlagDef_RaidMemberOnly extends FlagDefinition {
 
     @EventHandler
     private void onRaidTrigger(RaidTriggerEvent event) {
-        Flag flag = this.getFlagInstanceAtLocation(event.getPlayer().getLocation(), null);
+        Flag flag = this.getFlagInstanceAtLocation(event.getRaid().getLocation(), null);
         if (flag == null) return;
         Player player = event.getPlayer();
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getRaid().getLocation(), false, null);
         if (claim == null) return;
         if (!Util.canAccess(claim, player)) {
             event.setCancelled(true);
             player.removePotionEffect(PotionEffectType.BAD_OMEN);
-            Util.sendClaimMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
+            MessagingUtil.sendMessage(player, TextMode.Warn, Messages.RaidMemberOnlyDeny);
         }
     }
 

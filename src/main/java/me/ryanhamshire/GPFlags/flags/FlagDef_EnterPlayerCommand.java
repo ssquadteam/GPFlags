@@ -6,13 +6,16 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.SetFlagResult;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 
 public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
@@ -23,21 +26,41 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return;
-        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == oldFlag) return;
-        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) {
-            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-        }
+        if (claimTo == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagTo == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same params
+        if (flagFrom != null && flagFrom.parameters.equals(flagTo.parameters)) return;
 
-        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
-        String[] commandLines = flag.parameters.replace("%owner%", playerData.lastClaim.getOwnerName()).replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString()).split(";");
-        for (String commandLine : commandLines) {
-            Util.logFlagCommands("Entrance command: " + commandLine);
-            Bukkit.getServer().dispatchCommand(player, commandLine);
+        executeFlagCommands(flagTo, player, claimTo);
+    }
+
+    public void executeFlagCommands(Flag flag, Player player, Claim claim) {
+        String commandLinesString = flag.parameters.replace("%name%", player.getName()).replace("%uuid%", player.getUniqueId().toString());
+        String ownerName = claim.getOwnerName();
+        if (ownerName != null) {
+            commandLinesString = commandLinesString.replace("%owner%", ownerName);
         }
+        String[] commandLines = commandLinesString.split(";");
+        for (String commandLine : commandLines) {
+            MessagingUtil.logFlagCommands("Entrance command: " + commandLine);
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), commandLine);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e) {
+        Player player = e.getPlayer();
+        Location location = player.getLocation();
+        PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
+        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(location, false, playerData.lastClaim);
+        if (claim == null) return;
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, this.getName(), claim);
+        if (flag == null) return;
+
+        executeFlagCommands(flag, player, claim);
     }
 
     @Override
@@ -46,7 +69,7 @@ public class FlagDef_EnterPlayerCommand extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty()) {
             return new SetFlagResult(false, new MessageSpecifier(Messages.PlayerCommandRequired));
         }

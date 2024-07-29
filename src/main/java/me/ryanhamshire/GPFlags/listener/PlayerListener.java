@@ -20,9 +20,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
@@ -36,7 +34,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PlayerListener implements Listener, Runnable {
 
-    private final HashMap<Player, Boolean> fallingPlayers = new HashMap<>();
     private static final DataStore dataStore = GriefPrevention.instance.dataStore;
     private final FlagManager FLAG_MANAGER = GPFlags.getInstance().getFlagManager();
 
@@ -107,7 +104,7 @@ public class PlayerListener implements Listener, Runnable {
         processMovement(locTo, locFrom, player, event);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     private void onTeleport(PlayerTeleportEvent event) {
         Location locTo = event.getTo();
         Location locFrom = event.getFrom();
@@ -148,16 +145,24 @@ public class PlayerListener implements Listener, Runnable {
         }
     }
 
+    /**
+     *
+     * @param locTo
+     * @param locFrom
+     * @param player
+     * @param event A cancellable event. If you need to use null here, remember to also teleport the player back to their old location
+     * @return If the created PreClaimBorderEvent was permitted
+     */
     public static boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {
         if (locTo.getBlockX() == locFrom.getBlockX() && locTo.getBlockY() == locFrom.getBlockY() && locTo.getBlockZ() == locFrom.getBlockZ())
             return true;
         Location locFrom2 = locFrom.clone();
-        int maxWorldHeightFrom = locFrom2.getWorld().getMaxHeight();
+        int maxWorldHeightFrom = Util.getMaxHeight(locFrom2);
         if (locFrom2.getY() >= maxWorldHeightFrom) {
             locFrom2.setY(maxWorldHeightFrom - 1);
         }
         Location locTo2 = locTo.clone();
-        int maxWorldHeightTo = locTo2.getWorld().getMaxHeight();
+        int maxWorldHeightTo = Util.getMaxHeight(locTo2);
         if (locTo2.getY() >= maxWorldHeightTo) {
             locTo2.setY(maxWorldHeightTo - 1);
         }
@@ -175,34 +180,4 @@ public class PlayerListener implements Listener, Runnable {
         return !playerPreClaimBorderEvent.isCancelled();
     }
 
-    @EventHandler
-    // Disable flight when a player deletes their claim
-    private void onDeleteClaim(ClaimDeletedEvent event) {
-        Claim claim = event.getClaim();
-        World world = claim.getGreaterBoundaryCorner().getWorld();
-        Flag flagOwnerFly = FLAG_MANAGER.getFlag(claim, "OwnerFly");
-        Flag flagOwnerMemberFly = FLAG_MANAGER.getFlag(claim, "OwnerMemberFly");
-        assert world != null;
-        if (flagOwnerFly != null || flagOwnerMemberFly != null) {
-            for (Player player : world.getPlayers()) {
-                if (claim.contains(Util.getInBoundsLocation(player), false, true)) {
-                    Util.disableFlight(player);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    private void onRespawnEvent(PlayerRespawnEvent event) {
-        Location loc = event.getRespawnLocation();
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(loc, false, null);
-        if (claim != null) {
-            Flag flagOwnerFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerFly");
-            Flag flagOwnerMemberFly = GPFlags.getInstance().getFlagManager().getFlag(claim, "OwnerMemberFly");
-            if (flagOwnerFly != null || flagOwnerMemberFly != null) {
-                return;
-            }
-        }
-        Util.disableFlight(event.getPlayer());
-    }
 }

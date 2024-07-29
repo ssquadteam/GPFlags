@@ -1,11 +1,12 @@
 package me.ryanhamshire.GPFlags.flags;
 
 import me.ryanhamshire.GPFlags.*;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -40,7 +41,7 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
         if (parameters.isEmpty())
             return new SetFlagResult(false, new MessageSpecifier(Messages.CostRequired));
 
@@ -65,7 +66,7 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (claimTo.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         if (player.getUniqueId().equals(claimTo.getOwnerID())) return;
-        Util.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
     }
 
     @EventHandler
@@ -78,6 +79,6 @@ public class FlagDef_BuyAccessTrust extends PlayerMovementFlagDefinition {
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Build) return;
         if (claim.getPermission(player.getUniqueId().toString()) == ClaimPermission.Inventory) return;
         if (player.getUniqueId().equals(claim.getOwnerID())) return;
-        Util.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
+        MessagingUtil.sendMessage(player, TextMode.Info, Messages.AccessTrustPrice, flag.parameters);
     }
 }

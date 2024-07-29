@@ -6,11 +6,10 @@ import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.MessageSpecifier;
 import me.ryanhamshire.GPFlags.Messages;
 import me.ryanhamshire.GPFlags.TextMode;
-import me.ryanhamshire.GPFlags.util.Util;
+import me.ryanhamshire.GPFlags.util.Util; 
+import me.ryanhamshire.GPFlags.util.MessagingUtil;
 import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.Entity;
@@ -19,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.entity.EntityPlaceEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
@@ -42,10 +40,11 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         if (flag == null) return true;
         if (Util.shouldBypass(player, claimTo, flag)) return true;
 
-        Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+        MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
         return false;
     }
 
+    // todo this should be moved to PlayerListener.java
     @EventHandler
     private void onVehicleMove(VehicleMoveEvent event) {
         Vehicle vehicle = event.getVehicle();
@@ -73,7 +72,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
 
             if (isTeleportEvent) {
                 player.leaveVehicle();
-                Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+                MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
                 return;
             }
             vehicle.eject();
@@ -84,7 +83,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
                     vehicle.remove();
                 }
             }
-            Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+            MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
         }
     }
 
@@ -100,7 +99,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
                 if (!Util.shouldBypass(player, claim, flag)) {
                     event.setCancelled(true);
-                    Util.sendMessage(player, TextMode.Err, Messages.NoEnterVehicle);
+                    MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoEnterVehicle);
                 }
             }
         }
@@ -114,7 +113,8 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
             Entity entity = event.getEntity();
             if (entity instanceof Player) {
                 Player player = (Player) entity;
-                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, null);
+                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(vehicle.getLocation(), false, cachedClaim);
+                cachedClaim = claim;
                 if (Util.shouldBypass(player, claim, flag)) return;
                 event.setCollisionCancelled(true);
                 event.setCancelled(true);
@@ -133,7 +133,7 @@ public class FlagDef_NoVehicle extends PlayerMovementFlagDefinition {
         Claim claim = GriefPrevention.instance.dataStore.getClaimAt(entity.getLocation(), false, null);
         Player player = event.getPlayer();
         if (Util.shouldBypass(player, claim, flag)) return;
-        Util.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
+        MessagingUtil.sendMessage(player, TextMode.Err, Messages.NoVehicleAllowed);
     }
      */
 

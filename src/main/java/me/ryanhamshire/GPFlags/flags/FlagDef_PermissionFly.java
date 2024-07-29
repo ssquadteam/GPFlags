@@ -5,14 +5,14 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import java.util.Collections;
+
+import java.util.Arrays;
 import java.util.List;
 
-import java.util.concurrent.TimeUnit;
 
-public class FlagDef_OwnerMemberFly extends FlagDefinition {
+public class FlagDef_PermissionFly extends FlagDefinition {
 
-    public FlagDef_OwnerMemberFly(FlagManager manager, GPFlags plugin) {
+    public FlagDef_PermissionFly(FlagManager manager, GPFlags plugin) {
         super(manager, plugin);
     }
 
@@ -31,33 +31,30 @@ public class FlagDef_OwnerMemberFly extends FlagDefinition {
     }
 
     public static boolean letPlayerFly(Player player, Location location, Claim claim) {
-        if (claim == null) return false;
-        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, "OwnerMemberFly", claim);
+        Flag flag = GPFlags.getInstance().getFlagManager().getEffectiveFlag(location, "PermissionFly", claim);
         if (flag == null) return false;
-        if (!flag.getSet()) return false;
-        return Util.canAccess(claim, player);
+        return Util.shouldBypass(player, claim, flag);
     }
-
 
     @Override
     public String getName() {
-        return "OwnerMemberFly";
+        return "PermissionFly";
     }
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        return new MessageSpecifier(Messages.OwnerMemberFlightEnabled);
+        return new MessageSpecifier(Messages.PermissionFlightEnabled);
     }
 
     @Override
     public MessageSpecifier getUnSetMessage() {
-        return new MessageSpecifier(Messages.OwnerMemberFlightDisabled);
+        return new MessageSpecifier(Messages.PermissionFlightDisabled);
     }
 
     @Override
     public List<FlagType> getFlagType() {
-        return Collections.singletonList(FlagType.CLAIM);
+        return Arrays.asList(FlagType.CLAIM, FlagType.WORLD, FlagType.SERVER);
     }
 
-
 }
+
