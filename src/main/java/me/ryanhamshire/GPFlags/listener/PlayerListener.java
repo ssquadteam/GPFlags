@@ -1,7 +1,5 @@
 package me.ryanhamshire.GPFlags.listener;
 
-import me.ryanhamshire.GPFlags.Flag;
-import me.ryanhamshire.GPFlags.FlagManager;
 import me.ryanhamshire.GPFlags.GPFlags;
 import me.ryanhamshire.GPFlags.event.PlayerPostClaimBorderEvent;
 import me.ryanhamshire.GPFlags.event.PlayerPreClaimBorderEvent;
@@ -9,10 +7,8 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.DataStore;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
-import me.ryanhamshire.GriefPrevention.events.ClaimDeletedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -26,7 +22,6 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -35,7 +30,6 @@ import java.util.concurrent.TimeUnit;
 public class PlayerListener implements Listener, Runnable {
 
     private static final DataStore dataStore = GriefPrevention.instance.dataStore;
-    private final FlagManager FLAG_MANAGER = GPFlags.getInstance().getFlagManager();
 
     private static final long TASK_PERIOD_SECONDS = 1L;
     private static final int DISTANCE_THRESHOLD_SQUARED = (int) Math.pow(3, 2);
@@ -72,28 +66,6 @@ public class PlayerListener implements Listener, Runnable {
                 player.teleportAsync(lastLocation);
             });
         }
-    }
-
-    @EventHandler
-    private void onFall(EntityDamageEvent e) {
-        if (!(e.getEntity() instanceof Player)) return;
-        Player p = ((Player) e.getEntity());
-        EntityDamageEvent.DamageCause cause = e.getCause();
-        if (cause != EntityDamageEvent.DamageCause.FALL) return;
-        Boolean val = fallingPlayers.get(p);
-        if (val != null && val) {
-            e.setCancelled(true);
-            fallingPlayers.remove(p);
-        }
-    }
-
-    /**
-     * Add a player to prevent fall damage under certain conditions
-     *
-     * @param player Player to add
-     */
-    public void addFallingPlayer(Player player) {
-        this.fallingPlayers.put(player, true);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -146,11 +118,10 @@ public class PlayerListener implements Listener, Runnable {
     }
 
     /**
-     *
      * @param locTo
      * @param locFrom
      * @param player
-     * @param event A cancellable event. If you need to use null here, remember to also teleport the player back to their old location
+     * @param event   A cancellable event. If you need to use null here, remember to also teleport the player back to their old location
      * @return If the created PreClaimBorderEvent was permitted
      */
     public static boolean processMovement(Location locTo, Location locFrom, Player player, Cancellable event) {

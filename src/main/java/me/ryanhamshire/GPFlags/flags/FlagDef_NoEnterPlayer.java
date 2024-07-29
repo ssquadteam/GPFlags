@@ -12,13 +12,12 @@ import me.ryanhamshire.GPFlags.util.Util;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.concurrent.TimeUnit;
 
 public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition implements Runnable {
 
@@ -100,7 +99,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition implemen
                     return;
                 }
 
-                Util.sendClaimMessage(onlinePlayer, TextMode.Err, Messages.NoEnterPlayerMessage);
+                MessagingUtil.sendMessage(onlinePlayer, TextMode.Err, Messages.NoEnterPlayerMessage);
                 GriefPrevention.instance.ejectPlayer(onlinePlayer);
             });
         }
@@ -122,7 +121,7 @@ public class FlagDef_NoEnterPlayer extends PlayerMovementFlagDefinition implemen
 
     @Override
     public MessageSpecifier getSetMessage(String parameters) {
-        String[] words = parameters.split(" "); 
+        String[] words = parameters.split(" ");
         String numPlayers = String.valueOf(words.length);
         return new MessageSpecifier(Messages.EnabledNoEnterPlayer, parameters, numPlayers);
     }

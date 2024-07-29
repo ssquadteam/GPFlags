@@ -15,6 +15,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
@@ -25,31 +26,13 @@ public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == null) return;
-
-        // get specific ExitMessage flag of origin claim and EnterMessage flag of destination claim
-        Flag flagFrom = plugin.getFlagManager().getFlag(claimFrom, this);
-        Flag flagTo = plugin.getFlagManager().getFlag(claimTo, this);
-
-        // Don't repeat the exit message of a claim in certain cases
-        if (claimFrom != null && claimTo != null) {
-            // moving to parent claim, and the sub claim does not have its own exit message
-            if (claimFrom.parent == claimTo && (flagFrom == null || !flagFrom.getSet())) {
-                return;
-            }
-            // moving to sub-claim, and the sub claim does not have its own exit message
-            if (claimTo.parent == claimFrom && (flagTo == null || !flagTo.getSet())) {
-                return;
-            }
-
-            // moving to different claim with an entertitle
-            Flag flagToEnter = plugin.getFlagManager().getFlag(claimTo, plugin.getFlagManager().getFlagDefinitionByName("EnterTitle"));
-            if (flagToEnter != null) {
-                return;
-            }
-        }
+        if (claimFrom == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same message
+        if (flagTo != null && flagTo.parameters.equals(flagFrom.parameters)) return;
 
         final PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         final String owner = playerData.lastClaim != null ? playerData.lastClaim.getOwnerName() : "N/A";
@@ -68,7 +51,7 @@ public class FlagDef_ExitTitle extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
 //        if (parameters.isEmpty()) {
 //            return new SetFlagResult(false, new MessageSpecifier(Messages.ActionbarRequired));
 //        }

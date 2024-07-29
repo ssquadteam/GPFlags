@@ -40,7 +40,7 @@ public class FlagDef_PlayerGamemode extends PlayerMovementFlagDefinition impleme
             if (player.getGameMode() != GameMode.CREATIVE && player.getGameMode() != GameMode.SPECTATOR) {
                 Block block = player.getLocation().getBlock();
                 Block fallTo = FlightManager.getFloor(block.getRelative(BlockFace.DOWN));
-                player.teleport(fallTo.getRelative(BlockFace.UP).getLocation());
+                player.teleportAsync(fallTo.getRelative(BlockFace.UP).getLocation());
             }
             return;
         }

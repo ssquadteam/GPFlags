@@ -15,6 +15,7 @@ import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.title.Title;
 import net.kyori.adventure.util.Ticks;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -27,14 +28,13 @@ public class FlagDef_EnterTitle extends PlayerMovementFlagDefinition {
 
     @Override
     public void onChangeClaim(Player player, Location lastLocation, Location to, Claim claimFrom, Claim claimTo) {
-        if (lastLocation == null) return;
-        Flag flag = this.getFlagInstanceAtLocation(to, player);
-        if (flag == null) return;
-        Flag oldFlag = this.getFlagInstanceAtLocation(lastLocation, player);
-        if (flag == oldFlag) return;
-        if (oldFlag != null && flag.parameters.equals(oldFlag.parameters)) {
-            if (claimFrom != null && claimTo != null && claimFrom.getOwnerName().equals(claimTo.getOwnerName())) return;
-        }
+        if (claimTo == null) return;
+        Flag flagTo = plugin.getFlagManager().getEffectiveFlag(to, this.getName(), claimTo);
+        if (flagTo == null) return;
+        Flag flagFrom = plugin.getFlagManager().getEffectiveFlag(lastLocation, this.getName(), claimFrom);
+        if (flagFrom == flagTo) return;
+        // moving to different claim with the same params
+        if (flagFrom != null && flagFrom.parameters.equals(flagTo.parameters)) return;
 
         final PlayerData playerData = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId());
         final String owner = playerData.lastClaim != null ? playerData.lastClaim.getOwnerName() : "N/A";
@@ -70,7 +70,7 @@ public class FlagDef_EnterTitle extends PlayerMovementFlagDefinition {
     }
 
     @Override
-    public SetFlagResult validateParameters(String parameters) {
+    public SetFlagResult validateParameters(String parameters, CommandSender sender) {
 //        if (parameters.isEmpty()) {
 //            return new SetFlagResult(false, new MessageSpecifier(Messages.ActionbarRequired));
 //        }

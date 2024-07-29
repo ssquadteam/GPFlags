@@ -83,7 +83,7 @@ public class FlagDef_NoEnter extends PlayerMovementFlagDefinition implements Run
                     return;
                 }
 
-                Util.sendClaimMessage(onlinePlayer, TextMode.Err, Messages.NoEnterMessage);
+                MessagingUtil.sendMessage(onlinePlayer, TextMode.Err, Messages.NoEnterMessage);
                 GriefPrevention.instance.ejectPlayer(onlinePlayer);
             });
         }
