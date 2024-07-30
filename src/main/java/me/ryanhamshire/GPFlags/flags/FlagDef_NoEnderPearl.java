@@ -66,11 +66,11 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onThrownEnderPearlHitEvent(ThrownEnderPearlHitEvent event) {
-        if (!(event.getEntity() instanceof Player)) {
+        if (!(event.getSource() instanceof Player)) {
             return;
         }
 
-        Player player = (Player) event.getEntity();
+        Player player = (Player) event.getSource();
         Location location = event.getHitBlock().getLocation();
 
         Flag flag = this.getFlagInstanceAtLocation(location, player);
