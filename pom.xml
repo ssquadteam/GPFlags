@@ -78,9 +78,9 @@
     </repositories>
     <dependencies>
         <dependency>
-            <groupId>org.purpurmc.purpur</groupId>
-            <artifactId>purpur-api</artifactId>
-            <version>1.21-R0.1-SNAPSHOT</version>
+            <groupId>ltd.lemongaming.citrus</groupId>
+            <artifactId>citrus-api</artifactId>
+            <version>1.20.6-R0.1-20240730.120225-8</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
