@@ -28,6 +28,10 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public</url>
         </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
         <!-- GriefPrevention Repo -->
         <repository>
             <id>jitpack.io</id>
@@ -68,9 +72,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.griefprevention</groupId>
-            <artifactId>GriefPrevention</artifactId>
-            <version>16.18.3-SNAPSHOT</version>
+            <groupId>com.github.ssquadteam</groupId>
+            <artifactId>GriefPrevention-Folia</artifactId>
+            <version>Release</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -114,6 +118,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.6-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.magmaguy</groupId>
             <artifactId>EliteMobs</artifactId>
             <version>8.7.4-SNAPSHOT</version>
@@ -134,13 +144,13 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>5.0.0-SNAPSHOT</version>
+            <version>5.3.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.5</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
