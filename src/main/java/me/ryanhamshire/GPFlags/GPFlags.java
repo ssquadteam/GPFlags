@@ -54,7 +54,7 @@ public class GPFlags extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ClaimTransferListener(), this);
         Bukkit.getPluginManager().registerEvents(new FlightManager(), this);
 
-        this.flagsDataStore = new FlagsDataStore();
+        FlagsDataStore.getInstance().reloadMessages();
         reloadConfig();
 
         // Register Commands
@@ -147,7 +147,7 @@ public class GPFlags extends JavaPlugin {
      * @return Instance of the flags data store
      */
     public FlagsDataStore getFlagsDataStore() {
-        return this.flagsDataStore;
+        return FlagsDataStore.getInstance();
     }
 
     /**
