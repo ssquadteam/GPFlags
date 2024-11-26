@@ -56,7 +56,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
         String owner = claim.getOwnerName();
         String playerName = player.getName();
 
-        String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
+        String msg = plugin.getFlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
         msg = msg.replace("{p}", playerName).replace("{o}", owner);
         msg = msg.replace("{0}", playerName).replace("{1}", owner);
         MessagingUtil.sendMessage(player, TextMode.Warn + msg);
@@ -77,7 +77,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
             String owner = claim.getOwnerName();
             String playerName = player.getName();
 
-            String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
+            String msg = plugin.getFlagsDataStore().getMessage(Messages.NoEnderPearlInClaim);
             msg = msg.replace("{p}", playerName).replace("{o}", owner);
             msg = msg.replace("{0}", playerName).replace("{1}", owner);
             MessagingUtil.sendMessage(player, TextMode.Warn + msg);
@@ -93,7 +93,7 @@ public class FlagDef_NoEnderPearl extends FlagDefinition {
             event.setCancelled(true);
             String owner = claim.getOwnerName();
 
-            String msg = new FlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
+            String msg = plugin.getFlagsDataStore().getMessage(Messages.NoEnderPearlToClaim);
             MessagingUtil.sendMessage(player, TextMode.Warn + msg.replace("{o}", owner).replace("{p}", player.getName()));
         }
     }
